@@ -74,6 +74,8 @@
     "Compare Gaalkacyo on meteoblue ↗": "Isbarbardhig saadaasha Gaalkacyo ee meteoblue ↗",
     "Hourly conditions are weather model estimates. Later forecast days are less certain, and missing fields are labeled. meteoblue is an external comparison; this app does not reproduce its forecast data.": "Xaaladaha saacad kasta waa qiyaasaha moodellada cimilada. Saadaasha maalmaha fog hubanti yar ayay leedahay, meelaha xogtu ka maqanna waa la calaamadiyaa. meteoblue waa il dibadda ah oo lagu isbarbardhigo saadaasha; abkani ma soo guuriyo xogta saadaasheeda.",
     "Live source status": "Xaaladda ilaha xogta cusub",
+    "Dashboard sections": "Qaybaha bogga",
+    "Sources": "Ilaha xogta",
     "Connecting": "Xiriirinaya",
     "Retrieval time means when this app received a source response, not a new model run. Providers update at different intervals. Older observations and failed refreshes are labeled.": "Waqtiga soo qaadashadu waa markii abkani jawaab ka helay isha xogta, mana aha waqtiga moodellada dib loo xisaabiyay. Bixiyayaasha xogtu waxay cusboonaysiiyaan waqtiyo kala duwan. Xogta hore iyo cusboonaysiinta fashilantay waa la calaamadiyaa.",
     "EXPLORE CITIES, TERRAIN & SITUATIONS": "EEG MAGAALOOYINKA, DHULKA IYO XAALADAHA",

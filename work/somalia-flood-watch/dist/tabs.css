@@ -1,0 +1,39 @@
+/* El Nino Watch: horizontal section tabs for the public view (tabs.js).
+   Every rule is scoped to body:not(.mayor-view) or to the tab bar itself, so the
+   mayor dashboard and its tool views keep their own layout. */
+
+.site-tabs{position:sticky;top:var(--site-tabs-top,87px);z-index:1050;margin:0 0 22px;padding:8px;border:1px solid var(--line,#dce6f0);border-radius:18px;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);box-shadow:0 10px 30px rgba(11,44,76,.08)}
+.site-tabs-inner{position:relative;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
+.site-tabs-inner::-webkit-scrollbar{display:none}
+.site-tab{position:relative;flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:10px 18px;border-radius:12px;color:var(--muted,#586f89);font-weight:650;font-size:14px;white-space:nowrap;text-decoration:none;scroll-snap-align:start;transition:background .18s ease,color .18s ease,box-shadow .18s ease}
+.site-tab svg{width:20px;height:20px;flex:none;opacity:.85}
+.site-tab:hover{background:#eef4fb;color:var(--navy,#082448);text-decoration:none}
+.site-tab:focus-visible{outline:3px solid #64ddf4;outline-offset:2px}
+.site-tab[aria-selected="true"]{background:var(--navy,#082448);color:#fff;box-shadow:0 6px 16px rgba(8,36,72,.22)}
+.site-tab[aria-selected="true"] svg{opacity:1}
+.site-tab[aria-selected="true"]::after{content:"";position:absolute;left:18px;right:18px;bottom:5px;height:3px;border-radius:3px;background:#64ddf4}
+.site-tab-badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:#e5effa;color:var(--navy,#082448);font-size:12px;font-weight:750;font-variant-numeric:tabular-nums}
+.site-tab[data-site-tab-link="alerts"] .site-tab-badge{background:#fde8e4;color:#a1301c}
+.site-tab[aria-selected="true"] .site-tab-badge{background:rgba(255,255,255,.18);color:#fff}
+.site-tab-badge[hidden]{display:none}
+
+/* Without JavaScript nothing is hidden and the tabs work as jump links. */
+body.site-tabs-ready:not(.mayor-view) main > .site-tab-hidden{display:none}
+body.site-tabs-ready:not(.mayor-view) main [data-site-tab-part].site-tab-part-hidden{display:none}
+body.mayor-view .site-tabs{display:none}
+/* In the public view the tab bar replaces the section links in the top bar;
+   the mayor view keeps them as its own tools. */
+body.site-tabs-ready:not(.mayor-view) #primary-nav [data-manager-tool]{display:none}
+
+.site-tab-enter{animation:site-tab-in .22s ease-out}
+@keyframes site-tab-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* A tab is one subject, so the long alert list scrolls inside its card. */
+body.site-tabs-ready:not(.mayor-view) #alerts-list{max-height:min(74vh,940px);overflow:auto;overscroll-behavior:contain;padding:2px 6px 2px 2px;scrollbar-width:thin;scrollbar-color:#b9cde0 transparent;mask-image:linear-gradient(to bottom,#000 calc(100% - 36px),transparent);-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 36px),transparent)}
+body.site-tabs-ready:not(.mayor-view) #scenes{max-height:min(68vh,640px);overflow:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-width:thin;scrollbar-color:#b9cde0 transparent}
+body.site-tabs-ready:not(.mayor-view) #alerts-list:focus-visible{outline:3px solid #64ddf4;outline-offset:4px;border-radius:12px}
+
+@media (max-width:1100px){.site-tab{padding:10px 14px}}
+@media (max-width:760px){.site-tabs{margin:0 -4px 16px;border-radius:14px;padding:6px}.site-tab{flex:0 0 auto;min-height:44px;padding:9px 13px;font-size:13px;gap:7px}.site-tab svg{width:18px;height:18px}}
+@media (prefers-reduced-motion:reduce){.site-tab-enter{animation:none}.site-tab{transition:none}}
+@media print{.site-tabs{display:none}body.site-tabs-ready:not(.mayor-view) main > .site-tab-hidden,body.site-tabs-ready:not(.mayor-view) main [data-site-tab-part].site-tab-part-hidden{display:revert}}
