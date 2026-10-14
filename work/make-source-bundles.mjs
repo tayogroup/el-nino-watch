@@ -9,7 +9,7 @@ const work=path.dirname(fileURLToPath(import.meta.url)),root=path.dirname(work);
 const app=path.join(work,'somalia-flood-watch'),out=path.join(root,'outputs');
 const staging=path.join(work,'portable-release');
 const releaseDate='2026-10-14';
-const runtime=['server.mjs','feeds.mjs','hazards.mjs','alerts-feed.mjs','observed-flood.mjs','copernicus.mjs','community.mjs','docker-entrypoint.mjs','backup.mjs','Start-Live-App.ps1','README.md'];
+const runtime=['server.mjs','feeds.mjs','hazards.mjs','alerts-feed.mjs','observed-flood.mjs','copernicus.mjs','community.mjs','docker-entrypoint.mjs','backup.mjs','forecast-relay.mjs','Start-Live-App.ps1','README.md'];
 const appChecks=['verify.mjs','verify-daily.mjs','verify-interaction.mjs','verify-map.mjs'];
 const write=async(base,file,value)=>{const target=path.join(base,file);await fs.mkdir(path.dirname(target),{recursive:true});await fs.writeFile(target,value);};
 const copy=async(source,base,file)=>{await fs.mkdir(path.dirname(path.join(base,file)),{recursive:true});await fs.copyFile(source,path.join(base,file));};

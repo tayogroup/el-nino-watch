@@ -9,6 +9,7 @@ import {loadOfficialAlerts, ALERT_SOURCES} from './alerts-feed.mjs';
 import {loadObservedFlood, loadRadarPoint, OBSERVED_SOURCE_URL} from './observed-flood.mjs';
 import {loadCopernicusCity} from './copernicus.mjs';
 import {backupFromEnv} from './backup.mjs';
+import {createForecastRelay} from './forecast-relay.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'dist');
 const CITY_DATA = JSON.parse(await readFile(new URL('./dist/cities.json', import.meta.url), 'utf8'));
@@ -53,6 +54,7 @@ function reply(res, status, body, contentType = 'text/plain; charset=utf-8', hea
 
 export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null} = {}) {
   const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES});
+  const forecasts = createForecastRelay({cities:CITY_DATA});
   return http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, 'http://127.0.0.1');
@@ -82,6 +84,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
         const data = await feed(url.pathname);
         return reply(res, data.available ? 200 : 503, JSON.stringify(data), 'application/json; charset=utf-8', req.method === 'HEAD');
       }
+      if (await forecasts(req, res, url)) return;
       if (url.pathname === '/api/backup-status') return reply(res, 200, JSON.stringify(backup ? backup.status() : {enabled:false}), 'application/json; charset=utf-8', req.method === 'HEAD');
       if (url.pathname.startsWith('/api/')) return reply(res, 404, 'Unknown data endpoint.');
       const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);

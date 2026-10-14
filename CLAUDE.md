@@ -56,6 +56,11 @@ Setup and the one-instance rule are in `DEPLOYMENT.md` under "Live hosting".
 The root `DEPLOYMENT.md` has that section and `work/make-source-bundles.mjs`'s
 template does not; the portable ZIP bundles are host-neutral on purpose.
 
+Forecasts: the server relays the page's Open-Meteo requests
+(`forecast-relay.mjs`, `dist/forecast-relay.js`); `app.js` still builds the
+Open-Meteo URLs, so a new forecast field must also be allowed in the relay —
+`forecast-relay.test.mjs` reads `app.js` and fails if they drift.
+
 Report backups: `backup.mjs` snapshots the volume to a private Bunny Storage
 zone when `BACKUP_STORAGE_ZONE`/`BACKUP_STORAGE_KEY` are set in the Bunny app's
 environment, and restores on start when `reports.json` is missing. Check

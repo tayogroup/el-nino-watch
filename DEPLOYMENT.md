@@ -66,7 +66,11 @@ The ZIP deliberately contains no existing reports, uploads, deletion receipt has
 
 Language preferences, additional-city lists, Mayor actions, private notes and browser deletion receipts belong to each browser's local storage. They do not migrate with the code ZIP. Moving to a different origin can leave those records and receipt access in the old browser origin.
 
-Live weather, warnings, river readings, satellite observations and external Earth/Street View links need internet access and remain subject to their providers' availability and terms. The bundled Natural Earth geography is offline reference context, not live satellite imagery. No current flood event data are fabricated or bundled as sample community reports.
+Live weather, warnings, river readings, satellite observations and external Earth/Street View links need internet access and remain subject to their providers' availability and terms.
+
+The Open-Meteo forecasts the page shows (the 30-city daily forecast, the 30-city GloFAS river forecast and the selected city's hourly detail) are fetched by the server and shared by every visitor (`forecast-relay.mjs`, routes `/api/open-meteo/forecast` and `/api/open-meteo/flood`), because Open-Meteo's free service limits requests per internet address and many visitors share one. A copy is served for at most 15 minutes (60 for the river forecast); on an upstream failure the relay answers 502 instead of serving older data, and the page then fetches from Open-Meteo directly. Only the 30 monitored cities and the fields the page uses are accepted, so the routes are not an open proxy. Additional cities, place search and point elevation still go from the browser to Open-Meteo.
+
+The bundled Natural Earth geography is offline reference context, not live satellite imagery. No current flood event data are fabricated or bundled as sample community reports.
 
 ## Verify the package
 
