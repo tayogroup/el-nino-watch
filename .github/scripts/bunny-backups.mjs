@@ -7,6 +7,7 @@
 //
 //   node bunny-backups.mjs inspect   read-only report
 //   node bunny-backups.mjs apply     set BACKUP_STORAGE_ZONE/KEY on the container
+//   node bunny-backups.mjs create-and-apply   create the private zone if missing, then apply
 const [mode = 'inspect'] = process.argv.slice(2);
 const {BUNNYNET_API_KEY: key, BUNNY_APP_ID: appId, BUNNY_CONTAINER: containerName = 'el-nino-watch', BACKUP_ZONE: zoneName = 'el-nino-watch-backups'} = process.env;
 if (!key || !appId) { console.error('BUNNYNET_API_KEY and BUNNY_APP_ID are required.'); process.exit(2); }
@@ -42,13 +43,20 @@ console.log(`Volume mounts: ${volumes.map(item => item.mountPath || item.path ||
 
 const zones = (await api('GET', '/storagezone')).filter?.(item => !item.Deleted) ?? [];
 for (const item of zones) mask(item.Password), mask(item.ReadOnlyPassword);
-const zone = zones.find(item => item.Name === zoneName);
+let zone = zones.find(item => item.Name === zoneName);
+// create-and-apply: a private Standard zone in Falkenstein (near the app in
+// Frankfurt, a separate data centre), with no pull zone.
+if (!zone && mode === 'create-and-apply') {
+  zone = await api('POST', '/storagezone', {Name: zoneName, Region: 'DE', ZoneTier: 0});
+  mask(zone?.Password); mask(zone?.ReadOnlyPassword);
+  console.log(`Created storage zone ${zoneName}.`);
+}
 console.log(`Storage zone ${zoneName}: ${zone ? `exists, region ${zone.Region}, pull zones attached: ${(zone.PullZones || []).length}` : 'NOT FOUND'}`);
 // Only zones that look like this app's are named; the account's others are counted.
 const candidates = zones.filter(item => item.Name !== zoneName && /nino|backup/i.test(item.Name));
 console.log(`Other zones that may be this app's: ${candidates.map(item => `${item.Name} (region ${item.Region}, pull zones ${(item.PullZones || []).length})`).join(', ') || 'none'}; other storage zones on the account: ${zones.length - candidates.length - (zone ? 1 : 0)}`);
 
-if (mode !== 'apply') process.exit(0);
+if (mode !== 'apply' && mode !== 'create-and-apply') process.exit(0);
 
 if (!zone) { console.error(`Create the storage zone ${zoneName} first.`); process.exit(1); }
 if ((zone.PullZones || []).length) { console.error('Refusing: that storage zone has a pull zone, so backups would be public.'); process.exit(1); }

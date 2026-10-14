@@ -67,6 +67,9 @@ test('real reports and photos back up, skip unchanged runs, survive a restart an
   try {
     const empty = backupFor(storage, dataDir);
     assert.equal((await empty.runOnce()).result, 'nothing-to-back-up');
+    assert.ok(storage.calls.some(call => call.startsWith('GET ') && call.endsWith('/snapshots/')), 'an empty run still reaches the store');
+    const wrongKeyEmpty = createBackup({dataDir, zone:ZONE, key:'wrong', endpoint:storage.endpoint, prefix:PREFIX, log:quiet});
+    assert.equal((await wrongKeyEmpty.runOnce()).result, 'failed', 'a wrong key shows before the first report exists');
     assert.deepEqual(names(storage.files, 'snapshots'), []);
 
     const app = await listen(createServer({dataDir}));

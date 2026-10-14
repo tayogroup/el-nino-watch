@@ -105,8 +105,8 @@
     },
     {
       "path": "work/backup.test.mjs",
-      "bytes": 11424,
-      "sha256": "98f1f2d1a051c3e23e0cb17da42ccdb98631e87cbf730672cb2e77178d0336cf"
+      "bytes": 11812,
+      "sha256": "758660be6de8a173bc6d3cfb7a19902a3d8cedbf75f00860cf2924d85c5eeee2"
     },
     {
       "path": "work/basemap-source/countries.geojson",
@@ -350,8 +350,8 @@
     },
     {
       "path": "work/somalia-flood-watch/backup.mjs",
-      "bytes": 10569,
-      "sha256": "a1cc957da8974c2ede1703adcc276c8b1528906f40a0ce2ab07d447e32c9bdc7"
+      "bytes": 10734,
+      "sha256": "d6ffc28bae6a87a312c6628f32c60fb86fbd4391891aaaed50c592357d52f518"
     },
     {
       "path": "work/somalia-flood-watch/community.mjs",

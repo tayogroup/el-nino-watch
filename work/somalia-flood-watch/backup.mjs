@@ -74,7 +74,13 @@ export function createBackup({dataDir, zone, key, endpoint, prefix = 'el-nino-wa
   async function backupOnce(now) {
     let bytes;
     try { bytes = await readFile(database); }
-    catch (error) { if (error.code === 'ENOENT') return {result:'nothing-to-back-up'}; throw error; }
+    catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      // Still reach the store, so a wrong zone or key shows as a failure even
+      // before the first report exists.
+      await snapshotNames();
+      return {result:'nothing-to-back-up'};
+    }
     const saved = parseDatabase(bytes), ids = mediaIds(saved);
 
     // Media first, so a snapshot never names a file the backup does not hold.

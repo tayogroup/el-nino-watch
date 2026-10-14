@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: inspect (read-only) or apply (set the backup variables)
+        description: inspect (read-only), apply (set the backup variables) or create-and-apply (create the private zone first)
         required: true
         default: inspect
         type: choice
-        options: [inspect, apply]
+        options: [inspect, apply, create-and-apply]
       zone:
         description: Name of the private backup storage zone
         required: true
