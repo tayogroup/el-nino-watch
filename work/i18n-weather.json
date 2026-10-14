@@ -281,10 +281,10 @@
     "Store processing credentials only in the server configuration. Do not include them in reports, comments or browser code.": "Aqoonsiyada gelitaanka ee habaynta ku kaydi oo keliya dejinta server-ka. Ha ku darin warbixinnada, faallooyinka ama koodhka biraawsarka.",
     "Copernicus STAC API documentation ↗": "Dukumentiyada API-ga STAC ee Copernicus ↗",
     "The flood layer could not be selected. Use the satellite observation controls to check available dates.": "Lakabka fatahaadda lama dooran karin. Adeegso xakamaynta kormeerka dayax-gacmeedka si aad u hubiso taariikhaha la hayo.",
-    "Official warning / event API": "API-ga digniinaha rasmiga ah iyo dhacdooyinka",
+    "Forecast / event API": "API-ga saadaasha iyo dhacdooyinka",
     "Rainfall forecast": "Saadaasha roobka",
     "River observations": "Cabbirrada webiyada",
-    "Official warning · SNMA API": "Digniin rasmi ah · API-ga SNMA",
+    "Regional forecast · ICPAC": "Saadaal gobol · ICPAC",
     "GDACS model-based signal": "Tilmaanta GDACS ee ku salaysan moodeel",
     "GDACS event monitoring": "La socodka dhacdooyinka GDACS",
     "Somalia country-level · city extent unspecified": "Heerka dalka Soomaaliya · baaxadda magaalooyinka lama qeexin",
@@ -302,14 +302,14 @@
     "high-risk": "khatar sare",
     "moderate-risk": "khatar dhexdhexaad ah",
     "Follow SWALIM and local authority updates. Review routes away from the river; confirm any inundation with current mapped or field evidence.": "La soco wararka SWALIM iyo hay'adaha deegaanka. Dib u eeg waddooyinka webiga ka fog; ku xaqiiji fatahaad kasta xogta khariidadda ee cusub ama caddeyn goobta laga helay.",
-    "Official warning and event coverage may be incomplete. No returned notice does not establish safety.": "Daboolitaanka digniinaha rasmiga ah iyo dhacdooyinku wuxuu noqon karaa mid aan dhammaystirnayn. In ogeysiis aan la helin ma xaqiijinayso badbaado.",
+    "Forecast and event coverage may be incomplete. No returned signal does not establish safety.": "Daboolitaanka saadaasha iyo dhacdooyinku wuxuu noqon karaa mid aan dhammaystirnayn. In tilmaan aan la helin ma xaqiijinayso badbaado.",
     "Browser notifications unavailable": "Ogeysiisyada biraawsarka lama heli karo",
     "Notifications blocked in browser": "Ogeysiisyada waxaa xannibay biraawsarka",
     "Disable browser alerts": "Dami digniinaha biraawsarka",
     "Enable browser alerts": "Daar digniinaha biraawsarka",
     "While this app is open, show up to 3 browser notices per refresh for new dated source signals or app screening severities in the selected scope. Enabling may show current signals once. All signals remain visible here.": "Inta abkani furan yahay, cusboonaysiin kasta muuji ugu badnaan 3 ogeysiis oo biraawsarka ah oo ku saabsan tilmaamo cusub oo taariikhaysan oo ka yimid ilaha ama heerarka qiimeynta abka ee baaxadda la doortay. Markaad daarto, tilmaamaha hadda jira waxaa laga yaabaa inay hal mar muuqdaan. Tilmaamaha oo dhan halkan way ku sii muuqanayaan.",
     "Browser permission was not granted. In-app alerts remain available.": "Oggolaanshaha biraawsarka lama bixin. Digniinaha ku jira abka weli waa la heli karaa.",
-    "Official warnings": "Digniinaha rasmiga ah",
+    "ICPAC forecasts": "Saadaalaha ICPAC",
     "Source event signals": "Tilmaamaha dhacdooyinka ee ilaha",
     "River thresholds": "Xuduudaha digniinta webiga",
     "App rainfall screens": "Qiimeynaha hordhaca ah ee roobka ee abka",
@@ -488,9 +488,34 @@
     "WMO / Cap-Net: Integrated Urban Flood Management ↗": "WMO / Cap-Net: maaraynta isku dhafan ee fatahaadaha magaalooyinka ↗",
     "WMO / APFM: environmental aspects of flood management ↗": "WMO / APFM: arrimaha deegaanka ee maaraynta fatahaadda ↗",
     "FAO: Somalia flood management and modelling ↗": "FAO: maaraynta fatahaadda iyo samaynta moodeellada ee Soomaaliya ↗",
-    "SWALIM river gauge thresholds ↗": "Xuduudaha digniinta ee cabbirrada webiyada SWALIM ↗"
+    "SWALIM river gauge thresholds ↗": "Xuduudaha digniinta ee cabbirrada webiyada SWALIM ↗",
+    "Regional model forecast for this week, not an official warning. Check local conditions and follow local authority advice.": "Tani waa saadaal moodeel gobol ah oo toddobaadkan ah, ma aha digniin rasmi ah. Hubi xaaladda deegaanka oo raac talada maamulka deegaanka.",
+    "heavy rainfall": "roob xooggan",
+    "very heavy rainfall": "roob aad u xooggan",
+    "extremely heavy rainfall": "roob aad iyo aad u xooggan"
   },
   "patterns": [
+    {
+      "en": "{0} · ICPAC forecast: {1}, {2}",
+      "so": "{0} · Saadaasha ICPAC: {1}, {2}",
+      "translate": [
+        1
+      ]
+    },
+    {
+      "en": "ICPAC's weekly forecast puts {0} above the {1}th percentile of rainfall usually seen in this week of the year ({2}), with about {3} mm forecast for the week. This is a regional model forecast at about 11 km resolution, not an official local warning.",
+      "so": "Saadaasha toddobaadlaha ah ee ICPAC waxay {0} u saadaalisay roob ka badan boqolleyda {1}aad ee roobka caadiga u ah toddobaadkan sanadka ({2}), iyadoo toddobaadka lagu saadaaliyay qiyaastii {3} mm. Tani waa saadaal moodeel gobol ah oo qiyaastii 11 km ah, ma aha digniin rasmi ah oo deegaan.",
+      "translate": [
+        2
+      ]
+    },
+    {
+      "en": "ICPAC's weekly forecast puts {0} above the {1}th percentile of rainfall usually seen in this week of the year ({2}). This is a regional model forecast at about 11 km resolution, not an official local warning.",
+      "so": "Saadaasha toddobaadlaha ah ee ICPAC waxay {0} u saadaalisay roob ka badan boqolleyda {1}aad ee roobka caadiga u ah toddobaadkan sanadka ({2}). Tani waa saadaal moodeel gobol ah oo qiyaastii 11 km ah, ma aha digniin rasmi ah oo deegaan.",
+      "translate": [
+        2
+      ]
+    },
     {
       "en": "{0} EAT, temperature {1}, rainfall {2}",
       "so": "{0} EAT, heerkul {1}, roob {2}",

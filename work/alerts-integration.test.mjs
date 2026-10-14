@@ -8,15 +8,15 @@ const [alertScript, html] = await Promise.all([
 assert.ok(html.indexOf('src="alerts.js"') < html.indexOf('src="app.js"'), 'alert module loads before the controller');
 for (const id of ['alerts-panel','alerts-list','alerts-summary','alerts-status','alerts-scope','alerts-type']) assert.ok(html.includes(`id="${id}"`), `${id} exists`);
 const NOW = new Date(BASE).toISOString();
-const notice = (id, city, extra={}) => ({id, sourceId:'snma', title:`${city || 'Somalia'} official warning`, source:'SNMA', sourceUrl:'https://meteosomalia.so/alerts/',
+const notice = (id, city, extra={}) => ({id, sourceId:'icpac', title:`${city || 'Somalia'} official warning`, source:'ICPAC', sourceUrl:'https://www.icpac.net/weekly-forecast/',
   issuedAt:new Date(BASE-3600000).toISOString(), startsAt:new Date(BASE).toISOString(), endsAt:new Date(BASE+DAY).toISOString(),
-  severity:'severe', status:'active', scope:{country:'Somalia',cities:city ? [city] : []}, description:'Fixture official rain notice', basis:'official-warning', ...extra});
+  severity:'severe', status:'active', scope:{country:'Somalia',cities:city ? [city] : []}, description:'Fixture official rain notice', basis:'regional-forecast', ...extra});
 const official = {available:true, fetchedAt:NOW, alerts:[
   notice('mogadishu','Mogadishu'), notice('hargeisa','Hargeisa'), notice('expired','Mogadishu',{endsAt:new Date(BASE-1).toISOString(),title:'Expired CAP notice'}),
   notice('model',null,{sourceId:'gdacs', title:'GDACS model-based event', source:'GDACS / GLOFAS', basis:'model-event',severity:'minor'}),
   notice('nonactive','Mogadishu',{status:'cancelled',title:'Cancelled CAP notice'})
 ], sources:[
-  {id:'snma', name:'SNMA CAP', available:true, fetchedAt:NOW, publishedAt:new Date(BASE-3600000).toISOString(), returnedCount:4, rejectedExpired:1},
+  {id:'icpac', name:'ICPAC weekly forecast', available:true, fetchedAt:NOW, publishedAt:new Date(BASE-3600000).toISOString(), returnedCount:4, rejectedExpired:1},
   {id:'gdacs', name:'GDACS', available:true, fetchedAt:NOW}
 ], coverageNote:'No returned warning establishes safety.'};
 const weather = weatherFixture();
@@ -79,7 +79,7 @@ assert.doesNotMatch(h.get('alerts-list').innerHTML,/Hargeisa/);
 // Source freshness is evaluated independently of weather; failed source status
 // must not turn old official notices into live alerts or suppress other feeds.
 h.get('alerts-type').onchange({target:{value:'all'}});
-h.evaluate("feeds.alerts.data.sources.find(s=>s.id==='snma').fetchedAt=new Date(Date.now()-3*3600000).toISOString();renderAlerts()");
+h.evaluate("feeds.alerts.data.sources.find(s=>s.id==='icpac').fetchedAt=new Date(Date.now()-3*3600000).toISOString();renderAlerts()");
 assert.doesNotMatch(h.get('alerts-list').innerHTML,/Mogadishu official warning/);
 assert.match(h.get('alerts-list').innerHTML,/GDACS model-based signal/);
 assert.match(h.get('alerts-list').innerHTML,/App rainfall screening/);
@@ -90,7 +90,7 @@ assert.match(h.get('alerts-list').innerHTML,/App rainfall screening/);
 h.evaluate("feeds.alerts.stale=false;feeds.alerts.error='Refresh failed';renderAlerts()");
 assert.doesNotMatch(h.get('alerts-list').innerHTML,/GDACS model-based signal|Mogadishu official warning/);
 assert.match(h.get('alerts-status').innerHTML,/Refresh failed/);
-h.evaluate("feeds.alerts.error=null;feeds.alerts.data.sources.find(s=>s.id==='snma').fetchedAt=new Date().toISOString();feeds.alerts.data.alerts.forEach(a=>a.endsAt=new Date(Date.now()-1).toISOString());renderAlerts()");
+h.evaluate("feeds.alerts.error=null;feeds.alerts.data.sources.find(s=>s.id==='icpac').fetchedAt=new Date().toISOString();feeds.alerts.data.alerts.forEach(a=>a.endsAt=new Date(Date.now()-1).toISOString());renderAlerts()");
 assert.doesNotMatch(h.get('alerts-list').innerHTML,/GDACS model-based signal|Mogadishu official warning/,'expired responses are never active even with a fresh retrieval');
 h.setTime(BASE+3*3600000);
 h.evaluate('renderAlerts()');

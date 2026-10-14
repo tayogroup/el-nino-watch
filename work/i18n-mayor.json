@@ -63,7 +63,7 @@
     "Forecast source unavailable": "Isha saadaasha lama heli karo",
     "Last known forecast · stale or refresh failed": "Saadaashii ugu dambaysay ee la helay · xogtu waa duug ama cusboonaysiintu way fashilantay",
     "Live forecast · app screening": "Saadaasha hadda la helay · qiimeynta hordhaca ah ee abka",
-    "Official notice feed unavailable or stale": "Xogta ogeysiisyada rasmiga ah lama heli karo ama waa duug",
+    "ICPAC forecast unavailable or stale": "Saadaasha ICPAC lama hayo ama way duugoowday",
     "Briefing generated": "Warbixin kooban ayaa la diyaariyey",
     "Export daily briefing ↓": "Soo dejiso warbixinta kooban ee maalinlaha ah ↓",
     "Independent mayor planning view. This is not a government dashboard. Actions and review stages are saved on this device; they are not sent to authorities or other users.": "Tani waa bog qorsheyn oo madaxa bannaan oo duqa magaalada loogu talagalay. Ma aha bog maamul oo dawladdu leedahay. Hawlaha iyo marxaladaha dib-u-eegista waxaa lagu kaydiyaa qalabkan; looma diro hay’adaha ama isticmaalayaasha kale.",
@@ -80,7 +80,7 @@
     "Within 7 days · partial returned feed": "7-dii maalmood ee u dambeeyey · qayb ka mid ah xogta ayaa la helay",
     "Observed within 7 days · loaded public reports": "Wax la arkay 7-dii maalmood ee u dambeeyay · warbixinnaha dadweynaha ee la soo qaaday",
     "Report feed unavailable, old or refreshing": "Xogta warbixinnada lama heli karo, waa duug ama waa la cusboonaysiinayaa",
-    "City-specific official warnings": "Digniinaha rasmiga ah ee magaaladan gaar u ah",
+    "City-specific ICPAC heavy-rain forecasts": "Saadaalaha roob xooggan ee ICPAC ee magaaladan gaar u ah",
     "Rainfall decision window": "Muddada lagu qiimeynayo roobka si go'aan loo gaaro",
     "Today and the next two days · daily totals": "Maanta iyo labada maalmood ee ku xiga · wadarta roobka maalin kasta",
     "Last known": "Xogtii ugu dambaysay ee la helay",
@@ -95,8 +95,8 @@
     "Warnings & priorities": "Digniinaha iyo hawlaha mudnaanta leh",
     "Source notices and practical checks": "Ogeysiisyada ilaha xogta iyo hubinta xaaladda dhabta ah",
     "Read issuing source ↗": "Akhri isha soo saartay ↗",
-    "No active city-specific official notice returned. Somalia-wide notices may still apply.": "Lama helin ogeysiis rasmi ah oo hadda shaqaynaya oo magaaladan gaar u ah. Ogeysiisyada Soomaaliya oo dhan khuseeya weli way khusayn karaan magaaladan.",
-    "Official notices are unavailable or stale. Check the issuing authority directly.": "Ogeysiisyada rasmiga ah lama heli karo ama waa duug. Si toos ah uga hubi hay'adda soo saarta.",
+    "No ICPAC heavy-rain forecast for this city this week. Local flooding is still possible.": "Toddobaadkan ma jirto saadaal roob xooggan oo ICPAC ah oo magaaladan ku saabsan. Fatahaad deegaan weli waa suurtagal.",
+    "The ICPAC forecast is unavailable or stale. Check ICPAC directly.": "Saadaasha ICPAC lama hayo ama way duugoowday. Si toos ah u eeg ICPAC.",
     "city extent unspecified.": "Meelaha magaalada ee uu khuseeyo lama cayimin.",
     "Read notices ↗": "Akhri ogeysiisyada ↗",
     "Source coverage details": "Faahfaahinta inta ay ilaha xogtu daboolayaan",
@@ -349,9 +349,24 @@
     "connected": "waa ku xiran yahay",
     "level unknown": "heerka biyaha lama hayo",
     "Matched gauge: none": "Saldhig cabbir oo lala xiriiriyey: ma jiro",
-    "unavailable or stale; retained reports are last known": "lama heli karo ama waa duug; warbixinnada la hayo waa kuwii ugu dambeeyey ee la helay"
+    "unavailable or stale; retained reports are last known": "lama heli karo ama waa duug; warbixinnada la hayo waa kuwii ugu dambeeyey ee la helay",
+    "Weekly regional model forecast · not an official warning": "Saadaal moodeel gobol oo toddobaadle ah · ma aha digniin rasmi ah"
   },
   "patterns": [
+    {
+      "en": "ICPAC forecast source: {0}",
+      "so": "Isha saadaasha ICPAC: {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "City-specific ICPAC heavy-rain forecasts: {0}",
+      "so": "Saadaalaha roob xooggan ee ICPAC ee magaaladan: {0}",
+      "translate": [
+        0
+      ]
+    },
     {
       "en": "{0} planning desk",
       "so": "Xarunta qorshaynta {0}"
@@ -415,10 +430,6 @@
     {
       "en": "Report {0}",
       "so": "Warbixinta {0}"
-    },
-    {
-      "en": "{0} Somalia-wide notices separately; city extent may be unspecified",
-      "so": "{0} ogeysiis oo Soomaaliya oo dhan khuseeya ayaa gooni loo muujiyey; meelaha magaalada ee ay khuseeyaan waxaa dhici karta inaan la cayimin"
     },
     {
       "en": "Forecast retrieved {0}. Confidence decreases further into the forecast.",
@@ -604,20 +615,6 @@
     {
       "en": "Weather source: {0}; retrieved {1}",
       "so": "Isha cimilada: {0}; xogta waxaa la helay {1}",
-      "translate": [
-        0
-      ]
-    },
-    {
-      "en": "Official notice source: {0}",
-      "so": "Isha ogeysiiska rasmiga ah: {0}",
-      "translate": [
-        0
-      ]
-    },
-    {
-      "en": "City-specific active official notices: {0}",
-      "so": "Ogeysiisyada rasmiga ah ee hadda shaqaynaya ee magaaladan gaar u ah: {0}",
       "translate": [
         0
       ]

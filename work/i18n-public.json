@@ -29,7 +29,7 @@
     "Share a local report ↗": "Soo gudbi warbixin deegaanka ah ↗",
     "14-day forecasts": "Saadaasha 14 maalmood",
     "Dated satellite observations": "Xog dayax-gacmeed oo taariikhaysan",
-    "Official warning feeds": "Ilaha digniinaha rasmiga ah",
+    "Regional rainfall forecasts": "Saadaalaha roobka ee gobolka",
     "CLIMATE WATCH": "DABAGALKA CIMILADA MUDDADA DHEER",
     "Checking latest advisory…": "Waxaa la hubinayaa ogeysiiska ugu dambeeyay…",
     "Connecting to the current NOAA advisory.": "Waxaa la soo qaadanayaa ogeysiiska hadda jira ee NOAA.",
@@ -52,7 +52,7 @@
     "Current community view · unverified": "Warbixinnaha bulshada ee hadda la muujinayo · aan la xaqiijin",
     "City rainfall and flood watch rankings": "Kala sarreynta magaalooyinka ee roobka iyo dabagalka fatahaadda",
     "Loading today’s and seven-day city comparisons…": "Waxaa la soo qaadanayaa isbarbardhigga magaalooyinka ee maanta iyo toddobada maalmood…",
-    "OFFICIAL WARNINGS & EARLY ACTION": "DIGNIINAHA RASMIGA AH IYO TALLAABOOYINKA HORE",
+    "REGIONAL FORECASTS & EARLY ACTION": "SAADAALAHA GOBOLKA IYO TALLAABOOYINKA HORE",
     "Alerts & early-action signals": "Digniino iyo tilmaamaha tallaabooyinka hore",
     "Enable browser alerts": "Daar digniinaha biraawsarka",
     "Coverage": "Baaxadda dabagalka",
@@ -61,9 +61,9 @@
     "All signals": "Dhammaan tilmaamaha",
     "Source warnings & observations": "Digniinaha iyo xogta laga helay ilaha",
     "App rainfall screening": "Qiimeynta hordhaca ah ee roobka ee abka",
-    "Connecting to official warning APIs…": "Waxaa lala xiriirayaa API-yada digniinaha rasmiga ah…",
-    "Somalia National Meteorological Agency ↗": "Somalia National Meteorological Agency ↗",
-    "WMO registered warning authority ↗": "Hay'adda digniinaha ee WMO ka diiwaangashan ↗",
+    "Connecting to forecast and alert sources…": "Waxaa lala xiriirayaa ilaha saadaasha iyo digniinaha…",
+    "ICPAC weekly forecast ↗": "Saadaasha toddobaadlaha ah ee ICPAC ↗",
+    "East Africa Hazards Watch ↗": "East Africa Hazards Watch ↗",
     "DETAILED DAILY · EAST AFRICA TIME": "FAAHFAAHINTA MAALINLAHA AH · WAQTIGA BARIGA AFRIKA",
     "Weather through the day": "Cimilada saacadaha maalinta",
     "Select city for detailed daily weather": "Dooro magaalo si aad u eegto faahfaahinta cimilada maalinlaha ah",
@@ -261,7 +261,7 @@
     "NOAA ENSO advisory": "Ogeysiiska ENSO ee NOAA",
     "SWALIM river observations": "Xogta webiyada ee SWALIM",
     "Copernicus / selected city": "Copernicus / magaalada la doortay",
-    "Official warnings / SNMA + GDACS": "Digniinaha rasmiga ah / SNMA + GDACS",
+    "Forecasts & alerts / ICPAC + GDACS": "Saadaal iyo digniino / ICPAC + GDACS",
     "Satellite flood observations": "Xogta fatahaadda ee dayax-gacmeedka",
     "Live sources connected. Auto-refresh is active.": "Ilaha xogta cusub waa xiriirsan yihiin. Cusboonaysiinta tooska ahi way shaqaynaysaa.",
     "Source response did not include all 30 cities": "Jawaabta isha xogtu ma wada darin 30-ka magaalo",
@@ -276,8 +276,8 @@
     "Run Start-Live-App.ps1 from the ZIP to connect NOAA through the local data relay.": "Ka shaqaysii Start-Live-App.ps1 xirmada ZIP si NOAA loogu xiro adeegga gudbinta xogta ee qalabkan.",
     "Invalid station response": "Jawaabta xarunta cabbirka waa khaldan tahay",
     "Run Start-Live-App.ps1 from the ZIP to connect SWALIM through the local data relay.": "Ka shaqaysii Start-Live-App.ps1 xirmada ZIP si SWALIM loogu xiro adeegga gudbinta xogta ee qalabkan.",
-    "Invalid official warning response": "Jawaabta digniinaha rasmiga ahi waa khaldan tahay",
-    "Run Start-Live-App.ps1 to connect the official warning API.": "Ku shaqaysii Start-Live-App.ps1 si loogu xirmo API-ga digniinaha rasmiga ah.",
+    "Invalid alert response": "Jawaabta digniinaha waa khaldan tahay",
+    "Run Start-Live-App.ps1 to connect the forecast and alert sources.": "Ku shaqaysii Start-Live-App.ps1 si loogu xirmo ilaha saadaasha iyo digniinaha.",
     "Report is in memory only: browser storage unavailable.": "Warbixintu waxay ku jirtaa xusuusta ku meelgaarka ah oo keliya: kaydinta biraawsarka lama heli karo.",
     "Use an http or https source URL.": "Isticmaal xiriirka isha xogta oo ku bilaabma http ama https.",
     "No forecast data available to export.": "Ma jirto xog saadaal ah oo la soo dejisan karo.",
@@ -485,9 +485,32 @@
     "stale feed": "xog duugoobay",
     "date unavailable": "taariikhda lama hayo",
     "No terrain class is inferred.": "Wax heer ah oo dhulka ah lagama soo gunaanado.",
-    "▧ Google satellite": "▧ Sawirrada dayax-gacmeedka Google"
+    "▧ Google satellite": "▧ Sawirrada dayax-gacmeedka Google",
+    "ICPAC heavy-rain forecast · this week": "Saadaasha roob xooggan ee ICPAC · toddobaadkan",
+    "ICPAC weekly rainfall forecast": "Saadaasha roobka toddobaadka ee ICPAC",
+    "The ICPAC forecast week is not available yet, so its layers cannot be shown.": "Toddobaadka saadaasha ICPAC weli lama hayo, sidaas darteed lakabyadeeda lama muujin karo.",
+    "Rainfall above the usual for this week": "Roob ka badan inta caadiga u ah toddobaadkan",
+    "Heavy (above 90th percentile)": "Xooggan (ka badan boqolleyda 90aad)",
+    "Very heavy (above 95th percentile)": "Aad u xooggan (ka badan boqolleyda 95aad)",
+    "Extremely heavy (above 99th percentile)": "Aad iyo aad u xooggan (ka badan boqolleyda 99aad)",
+    "Weekly rainfall total (mm)": "Wadarta roobka toddobaadka (mm)",
+    "Some ICPAC map tiles did not load.": "Qaar ka mid ah qaybaha khariidadda ICPAC lama soo rarin.",
+    "Source: ICPAC East Africa Hazards Watch · regional model forecast, not an official warning.": "Isha: ICPAC East Africa Hazards Watch · saadaal moodeel gobol ah, ma aha digniin rasmi ah.",
+    "ICPAC weekly exceptional rainfall forecast": "Saadaasha toddobaadlaha ah ee roobka aan caadiga ahayn ee ICPAC"
   },
   "patterns": [
+    {
+      "en": "ICPAC forecast week: {0}",
+      "so": "Toddobaadka saadaasha ICPAC: {0}"
+    },
+    {
+      "en": "ICPAC weekly exceptional rainfall forecast: {0} cities could not be checked against the ICPAC forecast; coverage is incomplete.",
+      "so": "Saadaasha toddobaadlaha ah ee roobka aan caadiga ahayn ee ICPAC: {0} magaalo lagama hubin karin saadaasha ICPAC; daboolitaanku ma dhammaystirna."
+    },
+    {
+      "en": "ICPAC weekly exceptional rainfall forecast: ICPAC's latest weekly forecast ({0}) has ended and a newer one is not yet published. Coverage is incomplete.",
+      "so": "Saadaasha toddobaadlaha ah ee roobka aan caadiga ahayn ee ICPAC: saadaashii ugu dambaysay ee toddobaadlaha ahayd ee ICPAC ({0}) way dhammaatay, mid cusubna weli lama daabicin. Daboolitaanku ma dhammaystirna."
+    },
     {
       "en": "El Nino Watch | All 30 cities",
       "so": "El Nino Watch | Dhammaan 30-ka magaalo"

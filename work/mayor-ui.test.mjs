@@ -48,8 +48,8 @@ test('satellite metadata never creates a city inundation classification; stale r
   data.catalogueFeed.data.missions.radar.scenes.push({datetime:'2026-10-14T15:00:00Z'});assert.equal(h.api.build(data).catalogue.radarScene.datetime,'2026-10-12T15:08:23Z');
 });
 
-test('city-specific official notices are separate from Somalia-wide notices and model events',()=>{
-  const h=harness(),base={basis:'official-warning',status:'active',issuedAt:'2026-10-13T08:00:00Z',endsAt:'2026-10-14T08:00:00Z'};
+test('city-specific ICPAC forecasts are separate from Somalia-wide signals and model events',()=>{
+  const h=harness(),base={basis:'regional-forecast',status:'active',issuedAt:'2026-10-13T08:00:00Z',endsAt:'2026-10-14T08:00:00Z'};
   const alerts=[{...base,id:'city',title:'City warning',cityNames:['Galkayo']},{...base,id:'country',title:'Somalia-wide warning',cityNames:[]},{...base,id:'other',title:'Another city',cityNames:['Mogadishu']},{...base,id:'expired',cityNames:['Galkayo'],endsAt:'2026-10-13T09:00:00Z'},{...base,id:'model',cityNames:['Galkayo'],basis:'model-event'}];
   const data=input(h,{alertModel:{alerts,fresh:{official:true},coverageNote:'Incomplete coverage.'}}),model=h.api.build(data);
   assert.equal(model.cityWarningCount,1);assert.equal(model.countryWarningCount,1);assert.equal(model.cityWarnings[0].id,'city');assert.equal(model.countryWarnings[0].id,'country');
@@ -95,7 +95,7 @@ test('real local store supports action CRUD, persistent per-city drafts, review 
 test('source failures and storage failures remain visible and unknown values do not become zero',()=>{
   const h=harness({storageFailure:true}),data=input(h,{weatherFeed:{data:null,error:'weather outage'},officialFeed:{data:null,error:'notice outage'},catalogueFeed:{data:null,error:'catalogue outage'},community:{available:false,records:null,error:'report outage'},observedState:{metadata:null,error:'observation outage'}});
   data.weatherRows=[];const model=h.api.render(data);assert.equal(model.todaysRain,null);assert.equal(model.next72Max,null);assert.equal(model.reportCount,null);assert.equal(model.cityWarningCount,null);assert.equal(model.observation.available,false);
-  assert.match(h.rootElement.innerHTML,/Unknown/);assert.match(h.rootElement.innerHTML,/Browser storage is unavailable or full/);assert.match(h.rootElement.innerHTML,/report outage/);assert.match(h.rootElement.innerHTML,/Official notices are unavailable or stale/);
+  assert.match(h.rootElement.innerHTML,/Unknown/);assert.match(h.rootElement.innerHTML,/Browser storage is unavailable or full/);assert.match(h.rootElement.innerHTML,/report outage/);assert.match(h.rootElement.innerHTML,/The ICPAC forecast is unavailable or stale/);
   h.dispatch('input',target({'data-action-field':'title'},'Local memory action'));h.dispatch('submit',target({id:'mayor-action-form'}));assert.equal(h.store.list('galkayo')[0].title,'Local memory action');assert.match(h.rootElement.innerHTML,/may not survive closing this page/);
 });
 

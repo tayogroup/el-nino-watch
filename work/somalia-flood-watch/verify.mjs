@@ -89,7 +89,7 @@ function harness(options = {}) {
       let extra;
       if (u === '/api/enso') extra = { available: true, fetchedAt: new FakeDate().toISOString(), issuedAt: '2026-10-08', alertStatus: 'Fixture advisory', synopsis: 'Fixture ENSO climate context', weekly: { date: '2026-10-05', nino34Anomaly: .4 } };
       if (u === '/api/stations') extra = { available: true, fetchedAt: new FakeDate().toISOString(), stations: [{ code: 'SH001', name: 'Beledweyne', river: 'Shabelle', levelM: 4.2, moderateM: 6.5, highM: 7.3, bankFullM: 8.3, observedAt: '2026-10-12', status: 'Daily reading', sourceUrl: 'https://www.faoswalim.org/' }] };
-      if (u === '/api/alerts') extra = { available: true, fetchedAt: new FakeDate().toISOString(), alerts: [], sources: [{ id: 'snma', name: 'SNMA fixture warning feed', available: true, fetchedAt: new FakeDate().toISOString(), returnedCount: 0 }] };
+      if (u === '/api/alerts') extra = { available: true, fetchedAt: new FakeDate().toISOString(), alerts: [], sources: [{ id:'icpac', name: 'ICPAC fixture forecast', available: true, fetchedAt: new FakeDate().toISOString(), returnedCount: 0 }] };
       if (u.includes('gdacs.org/')) extra = { features: [{ properties: { eventtype: 'FL', iso3: 'SOM', name: 'Fixture source flood event', fromdate: '2026-10-10', todate: '2026-10-14', datemodified: '2026-10-13T07:00:00Z', alertlevel: 'Green', iscurrent: true, source: 'GDACS', url: { report: 'https://www.gdacs.org/' } } }] };
       if (u.startsWith('/api/copernicus?')) extra = copernicusFixture(new URL(u, 'http://localhost').searchParams.get('city'), now);
       if (!isWeather && !isRiver && !extra) throw new Error(`Unstubbed feed: ${u}`);

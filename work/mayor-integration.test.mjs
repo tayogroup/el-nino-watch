@@ -348,13 +348,13 @@ await test('delivered HTML starts on all 30 cities and offers an explicit mayor 
 await test('city-scoped alert model keeps national notices distinct and excludes another city notice', async () => {
   const s = await setup(); await s.mayor();
   s.h.evaluate(`feeds.alerts.data.alerts = [
-    {id:'country',title:'Somalia source notice',basis:'official-warning',status:'active',sourceId:'snma',severity:'moderate',issuedAt:'2026-10-13T07:00:00Z',endsAt:'2026-10-14T07:00:00Z',scope:{country:'Somalia',cities:[]}},
-    {id:'other-city',title:'Galkayo source notice',basis:'official-warning',status:'active',sourceId:'snma',severity:'severe',issuedAt:'2026-10-13T07:00:00Z',endsAt:'2026-10-14T07:00:00Z',scope:{country:'Somalia',cities:['Galkayo']}}
+    {id:'country',title:'Somalia source notice',basis:'regional-forecast',status:'active',sourceId:'icpac',severity:'moderate',issuedAt:'2026-10-13T07:00:00Z',endsAt:'2026-10-14T07:00:00Z',scope:{country:'Somalia',cities:[]}},
+    {id:'other-city',title:'Galkayo source notice',basis:'regional-forecast',status:'active',sourceId:'icpac',severity:'severe',issuedAt:'2026-10-13T07:00:00Z',endsAt:'2026-10-14T07:00:00Z',scope:{country:'Somalia',cities:['Galkayo']}}
   ]; renderMayor();`);
   const model = s.latest().alertModel;
   assert.equal(model.scope, 'city');
   assert.equal(model.selectedCity, 'Mogadishu');
-  assert.equal(model.counts.official, 1);
+  assert.equal(model.counts.regional, 1);
   assert.match(model.alerts.find(value => value.id === 'country').scopeLabel, /city extent unspecified/);
   assert.ok(!model.alerts.some(value => value.id === 'other-city'));
   assert.ok(s.alertInputs.every(input => input.scope === 'city' && input.type === 'all'));

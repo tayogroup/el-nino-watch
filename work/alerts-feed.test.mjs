@@ -1,36 +1,11 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {ALERT_SOURCES, parseCapRss, parseCapDocument, parseGdacsEvents, loadOfficialAlerts} from './somalia-flood-watch/alerts-feed.mjs';
+import {ALERT_SOURCES, ICPAC_LAYERS, parseIcpacDatasets, parseIcpacPoint, icpacPointUrl, icpacAlert, parseGdacsEvents, loadOfficialAlerts} from './somalia-flood-watch/alerts-feed.mjs';
 
 const NOW = new Date('2026-10-13T09:00:00Z');
-function cap({id='warning-1', status='Actual', scope='Public', type='Alert', sent='2026-10-13T10:00:00+03:00', expires='2026-10-14T18:00:00+03:00', refs='', onset='2026-10-13T15:00:00+03:00'} = {}) {
-  return `<?xml version="1.0"?><cap:alert xmlns:cap="urn:oasis:names:tc:emergency:cap:1.2"><cap:identifier>${id}</cap:identifier><cap:sender>official@example.test</cap:sender><cap:sent>${sent}</cap:sent><cap:status>${status}</cap:status><cap:scope>${scope}</cap:scope><cap:msgType>${type}</cap:msgType><cap:references>${refs}</cap:references><cap:info><cap:language>en</cap:language><cap:event>Rain/Wet Spell</cap:event><cap:severity>Moderate</cap:severity><cap:onset>${onset}</cap:onset><cap:expires>${expires}</cap:expires><cap:headline>Heavy rain &amp; thunderstorms</cap:headline><cap:description>Risk of flash flooding.</cap:description><cap:instruction>Avoid flooded roads.</cap:instruction><cap:area><cap:areaDesc>Benadir</cap:areaDesc></cap:area></cap:info></cap:alert>`;
-}
-function rss(items=[]) {
-  return `<?xml version="1.0"?><rss version="2.0"><channel><lastBuildDate>Tue, 13 Oct 2026 07:00:00 GMT</lastBuildDate><pubDate>Tue, 13 Oct 2026 07:00:00 GMT</pubDate>${items.map(item=>`<item><guid>${item.id}</guid><title>Weather warning</title><pubDate>Tue, 13 Oct 2026 07:00:00 GMT</pubDate><link>${item.url}</link></item>`).join('')}</channel></rss>`;
-}
 const gdacs = (extra={}) => ({type:'Feature', properties:{eventtype:'FL', eventid:123, episodeid:1, iso3:'SOM', country:'Somalia', iscurrent:'true', fromdate:'2026-10-12T01:00:00', todate:'2026-10-14T01:00:00', datemodified:'2026-10-13T06:00:00', source:'GLOFAS', alertlevel:'Green', name:'Flood in Somalia', ...extra}});
 const collection = (...features) => ({type:'FeatureCollection', features});
 const response = body => ({ok:true, status:200, text:async()=>typeof body === 'string' ? body : JSON.stringify(body)});
-
-const current = parseCapDocument(cap(), {now:NOW});
-assert.equal(current.alert.basis, 'official-warning');
-assert.equal(current.alert.sourceId, 'snma');
-assert.equal(current.alert.title, 'Heavy rain & thunderstorms');
-assert.equal(current.alert.issuedAt, '2026-10-13T07:00:00.000Z');
-assert.equal(current.alert.startsAt, '2026-10-13T12:00:00.000Z');
-assert.deepEqual(current.alert.scope, {country:'Somalia', cities:[], areaDescription:'Benadir'});
-assert.equal(current.alert.instruction, 'Avoid flooded roads.');
-assert.equal(parseCapDocument(cap({expires:'2026-10-13T12:00:00+03:00', onset:'2026-10-12T15:00:00+03:00'}), {now:NOW}).reason, 'expired', 'expiry at now is excluded');
-assert.equal(parseCapDocument(cap({sent:'2026-10-13T10:00:00'}), {now:NOW}).reason, 'missing-identity-or-date', 'timezone-less CAP dates cannot become current by host timezone');
-assert.equal(parseCapDocument(cap({expires:''}), {now:NOW}).reason, 'unknown-validity');
-assert.equal(parseCapDocument(cap({status:'Test'}), {now:NOW}).reason, 'not-public-actual');
-assert.equal(parseCapDocument(cap({scope:'Private'}), {now:NOW}).reason, 'not-public-actual');
-assert.equal(parseCapDocument(cap({type:'Cancel'}), {now:NOW}).reason, 'cancelled');
-assert.equal(parseCapDocument(cap({sent:'2026-10-14T10:00:00+03:00'}), {now:NOW}).reason, 'future-issued');
-assert.throws(()=>parseCapRss('<html>No feed</html>'), /format/);
-assert.throws(()=>parseCapDocument('<!DOCTYPE cap [<!ENTITY x SYSTEM "file://example">]>'+cap(), {now:NOW}), /declarations/);
-assert.equal(parseCapRss(rss([{id:'bad',url:'https://example.test/evil.xml'}])).items[0].capUrl, null, 'only official host links are fetched');
 
 const model = parseGdacsEvents(collection(gdacs()), {now:NOW});
 assert.equal(model.alerts.length, 1);
@@ -46,43 +21,99 @@ assert.equal(parseGdacsEvents(collection(gdacs({iso3:'ETH',country:'Ethiopia',af
 assert.equal(parseGdacsEvents(collection(gdacs({iso3:'ETH',country:'Ethiopia',description:'Nearby Somalia'})), {now:NOW}).alerts.length, 0, 'description is not country membership');
 assert.throws(()=>parseGdacsEvents({features:[]}, {now:NOW}), /format/);
 
-const urls = ['https://meteosomalia.so/api/cap/active.xml','https://meteosomalia.so/api/cap/cancel.xml'];
-const requests=[];
-const fakeFetch = async url => {
-  requests.push(String(url));
-  if (url === ALERT_SOURCES.snma) return response(rss([{id:'warning-1',url:urls[0]},{id:'warning-2',url:urls[1]}]));
-  if (url === urls[0]) return response(cap());
-  if (url === urls[1]) return response(cap({id:'warning-2',type:'Cancel',refs:'official@example.test,warning-1,2026-10-13T10:00:00+03:00'}));
-  if (String(url).startsWith(ALERT_SOURCES.gdacs)) return response(collection());
-  throw new Error('Unexpected test URL');
-};
-const cancelled = await loadOfficialAlerts({now:NOW, fetchImpl:fakeFetch});
-assert.equal(cancelled.alerts.length, 0, 'CAP cancellation retires the referenced active warning');
-assert.equal(cancelled.officialWarningsAvailable, true);
-assert.equal(cancelled.sources[0].publishedAt, '2026-10-13T07:00:00.000Z');
-assert.match(cancelled.coverageNote, /does not mean there is no flood risk/);
-assert.ok(requests.find(url=>url.includes('fromdate=2026-09-13') && url.includes('todate=2026-10-13')), 'search dates are derived from retrieval date');
-const halfFailed = await loadOfficialAlerts({now:NOW, fetchImpl:async url=>{
-  if (url === ALERT_SOURCES.snma) throw new Error('Offline CAP source');
-  return response(collection(gdacs()));
-}});
-assert.equal(halfFailed.officialWarningsAvailable, false);
-assert.equal(halfFailed.eventFeedAvailable, true);
-assert.equal(halfFailed.alerts[0].basis, 'model-event');
-assert.match(halfFailed.coverageNote, /unavailable/);
-await assert.rejects(loadOfficialAlerts({now:NOW,fetchImpl:async()=>{throw new Error('Offline');}}), /Offline/);
-const partial = await loadOfficialAlerts({now:NOW,fetchImpl:async url=>{
-  if (url === ALERT_SOURCES.snma) return response(rss([{id:'warning-1',url:urls[0]}]));
-  if (url === urls[0]) throw new Error('CAP document failure');
-  return response(collection());
-}});
-assert.equal(partial.officialWarningsAvailable, false);
-assert.equal(partial.sources[0].available, true);
-assert.equal(partial.sources[0].partial, true);
-assert.equal(partial.sources[0].failedCount, 1);
+// ICPAC weekly exceptional rainfall forecast, against real responses saved on 2026-10-14.
+const fixture = name => readFile(new URL('./' + name, import.meta.url), 'utf8');
+const cities = JSON.parse(await fixture('somalia-flood-watch/dist/cities.json'));
+const datasets = JSON.parse(await fixture('icpac-datasets.json'));
+const points = {extreme: await fixture('icpac-point-extreme.gml'), veryHeavy: await fixture('icpac-point-very-heavy.gml'), heavy: await fixture('icpac-point-heavy.gml'), none: await fixture('icpac-point-none.gml'), empty: await fixture('icpac-point-empty.gml')};
 
-// Actual retrieved RSS is historical: retrieval must not relabel its dates.
-const actualRss = parseCapRss(await readFile(new URL('./somalia-cap-feed.xml', import.meta.url), 'utf8'));
-assert.equal(actualRss.items.length, 3);
-assert.equal(actualRss.lastBuildAt, '2026-05-11T11:21:00.000Z');
-console.log('Official warning feed checks passed: CAP dates/status/expiry/cancellation; country scope; model separation; partial and failed sources.');
+const week = parseIcpacDatasets(datasets);
+assert.equal(week.time, '2026-10-13', 'the WMS time is the issue date in East Africa time');
+assert.equal(week.issuedAt, '2026-10-13T05:00:00.000Z');
+assert.equal(week.startsAt, '2026-10-12T21:00:00.000Z', '13 Oct from midnight EAT');
+assert.equal(week.endsAt, '2026-10-20T20:59:59.999Z', '20 Oct is included');
+assert.equal(week.weekLabel, '13 Oct–20 Oct');
+assert.equal(parseIcpacDatasets({results: datasets}).time, '2026-10-13', 'a paginated list is read too');
+assert.equal(parseIcpacDatasets(datasets.map(item => ({...item, summary: 'no range given'}))).endsAt, '2026-10-20T04:59:59.999Z', 'without a stated range the week runs seven days from issue');
+assert.throws(() => parseIcpacDatasets({nope: true}), /format/);
+assert.throws(() => parseIcpacDatasets(datasets.filter(item => item.name !== 'Exceptional Rainfall')), /not listed/);
+assert.throws(() => parseIcpacDatasets(datasets.map(item => ({...item, latest_date: 'soon'}))), /date is missing/);
+
+assert.deepEqual(parseIcpacPoint(points.extreme), {category: 'extreme', totalMm: 217.8});
+assert.deepEqual(parseIcpacPoint(points.veryHeavy), {category: 'very-heavy', totalMm: 114.8});
+assert.deepEqual(parseIcpacPoint(points.heavy), {category: 'heavy', totalMm: 38});
+assert.deepEqual(parseIcpacPoint(points.none), {category: null, totalMm: 16.2});
+assert.deepEqual(parseIcpacPoint(points.empty), {category: null, totalMm: null}, 'no data is not zero rain');
+assert.throws(() => parseIcpacPoint('<html>error</html>'), /not recognized/);
+
+const pointUrl = new URL(icpacPointUrl(2.0469, 45.3182, '2026-10-13'));
+assert.equal(pointUrl.origin + pointUrl.pathname, ALERT_SOURCES.icpacWms);
+assert.equal(pointUrl.searchParams.get('REQUEST'), 'GetFeatureInfo');
+assert.equal(pointUrl.searchParams.get('time'), '2026-10-13');
+assert.equal(pointUrl.searchParams.get('QUERY_LAYERS'), Object.values(ICPAC_LAYERS).filter(layer => layer !== ICPAC_LAYERS.total).concat(ICPAC_LAYERS.total).join(','));
+
+const guriceel = cities.find(city => city[0] === 'Guriceel');
+const extremeAlert = icpacAlert(guriceel, parseIcpacPoint(points.extreme), week);
+assert.equal(extremeAlert.basis, 'regional-forecast');
+assert.equal(extremeAlert.sourceId, 'icpac');
+assert.equal(extremeAlert.severity, 'severe');
+assert.equal(extremeAlert.title, 'Guriceel · ICPAC forecast: extremely heavy rainfall, 13 Oct–20 Oct');
+assert.deepEqual(extremeAlert.scope.cities, ['Guriceel']);
+assert.match(extremeAlert.description, /above the 99th percentile .* about 218 mm .* not an official local warning/);
+assert.equal(icpacAlert(guriceel, {category: 'heavy', totalMm: null}, week).description.includes(' mm '), false, 'an unknown total is left out, not shown as zero');
+assert.equal(icpacAlert(guriceel, parseIcpacPoint(points.none), week), null, 'below the heavy threshold: no alert');
+
+const NOW_IN_WEEK = new Date('2026-10-14T09:00:00Z');
+const byCity = {Guriceel: points.extreme, Beledweyne: points.veryHeavy, Hargeisa: points.heavy, Laasqoray: points.empty};
+function icpacFetch({failCity = null, offline = false} = {}) {
+  const calls = [];
+  const fetchImpl = async url => {
+    calls.push(String(url));
+    if (url === ALERT_SOURCES.icpacDatasets) { if (offline) throw new Error('ICPAC offline'); return response(datasets); }
+    if (String(url).startsWith(ALERT_SOURCES.icpacWms)) {
+      const u = new URL(url), [minLon, minLat] = u.searchParams.get('BBOX').split(',').map(Number);
+      const city = cities.find(c => Math.abs(c[3] - (minLon + 0.05)) < 1e-6 && Math.abs(c[2] - (minLat + 0.05)) < 1e-6);
+      if (city?.[0] === failCity) throw new Error('point timeout');
+      return response(byCity[city?.[0]] || points.none);
+    }
+    if (String(url).startsWith(ALERT_SOURCES.gdacs)) return response(collection());
+    throw new Error('Unexpected test URL ' + url);
+  };
+  return {fetchImpl, calls};
+}
+
+const live = icpacFetch();
+const loaded = await loadOfficialAlerts({now: NOW_IN_WEEK, fetchImpl: live.fetchImpl, cities});
+assert.deepEqual(loaded.alerts.map(alert => alert.scope.cities[0]).sort(), ['Beledweyne', 'Guriceel', 'Hargeisa']);
+assert.equal(loaded.regionalForecastAvailable, true);
+assert.equal(loaded.sources[0].id, 'icpac');
+assert.equal(loaded.sources[0].publishedAt, week.issuedAt);
+assert.equal(loaded.sources[0].returnedCount, 30);
+assert.equal(loaded.sources[0].cityForecasts.find(item => item.city === 'Laasqoray').totalMm, null);
+assert.match(loaded.coverageNote, /not an official warning/);
+assert.match(loaded.coverageNote, /30 of 30 cities checked for 13 Oct–20 Oct/);
+assert.match(loaded.coverageNote, /does not mean there is no flood risk/);
+assert.ok(live.calls.find(url => url.includes('fromdate=2026-09-14') && url.includes('todate=2026-10-14')), 'GDACS search dates come from retrieval date');
+assert.equal(live.calls.filter(url => url.startsWith(ALERT_SOURCES.icpacWms)).length, 30, 'one point request per city');
+await loadOfficialAlerts({now: NOW_IN_WEEK, fetchImpl: live.fetchImpl, cities});
+assert.equal(live.calls.filter(url => url.startsWith(ALERT_SOURCES.icpacWms)).length, 30, 'the same forecast week is not asked again');
+
+const gap = await loadOfficialAlerts({now: NOW_IN_WEEK, fetchImpl: icpacFetch({failCity: 'Mogadishu'}).fetchImpl, cities});
+assert.equal(gap.sources[0].available, true);
+assert.equal(gap.sources[0].partial, true);
+assert.equal(gap.sources[0].error, undefined, 'one silent city does not hide the others');
+assert.match(gap.sources[0].notice, /1 cities could not be checked/);
+assert.equal(gap.alerts.length, 3);
+assert.equal(gap.regionalForecastAvailable, false);
+
+const ended = await loadOfficialAlerts({now: new Date('2026-10-22T09:00:00Z'), fetchImpl: icpacFetch().fetchImpl, cities});
+assert.equal(ended.alerts.length, 0, 'an ended forecast week raises nothing');
+assert.match(ended.sources[0].error, /13 Oct–20 Oct\) has ended/);
+
+const icpacDown = await loadOfficialAlerts({now: NOW_IN_WEEK, fetchImpl: async url => { if (String(url).startsWith(ALERT_SOURCES.gdacs)) return response(collection(gdacs({todate:'2026-10-16T01:00:00'}))); throw new Error('ICPAC offline'); }, cities});
+assert.equal(icpacDown.regionalForecastAvailable, false);
+assert.equal(icpacDown.eventFeedAvailable, true);
+assert.equal(icpacDown.alerts[0].basis, 'model-event');
+assert.match(icpacDown.coverageNote, /ICPAC forecast is unavailable/);
+await assert.rejects(loadOfficialAlerts({now: NOW_IN_WEEK, fetchImpl: async () => { throw new Error('Offline'); }, cities}), /Offline/);
+console.log('Alert feed checks passed: ICPAC forecast week, categories, totals and no-data points; per-week cache; partial, ended and failed sources; GDACS dates and model separation.');

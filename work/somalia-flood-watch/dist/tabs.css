@@ -42,6 +42,16 @@ body.site-tabs-ready:not(.mayor-view) #primary-nav [data-manager-tool]{display:n
 .home-city-button.is-home:hover{background:#ffefc7}
 .home-city-button[hidden]{display:none}
 
+/* ICPAC forecast layers on the flood map (icpac-map.js). */
+.icpac-legend{margin:10px 0 0;padding:12px 14px;border:1px solid var(--line,#dce6f0);border-radius:12px;background:#fff;font-size:13px}
+.icpac-legend[hidden]{display:none}
+.icpac-head{margin:0 0 8px}
+.icpac-group{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin:6px 0}
+.icpac-title{flex-basis:100%;font-weight:700;color:var(--muted,#586f89);font-size:12px}
+.icpac-key{display:inline-flex;align-items:center;gap:6px}
+.icpac-key i{display:inline-block;width:16px;height:12px;border-radius:3px;border:1px solid rgba(0,0,0,.15)}
+.icpac-legend .note{margin:6px 0 0}
+
 .site-tab-enter{animation:site-tab-in .22s ease-out}
 @keyframes site-tab-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 

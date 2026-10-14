@@ -161,7 +161,7 @@ async function make(source){
  for(const file of runtime)await copy(path.join(app,file),folder,path.join(appRelative,file==='README.md'&&!source?'APP-GUIDE.md':file));
  if(source){
   for(const file of appChecks)await copy(path.join(app,file),folder,path.join(appRelative,file));
-  const developer=['build-somali-catalog.mjs','i18n-public.json','i18n-weather.json','i18n-mayor.json','build-basemap.mjs','package-flood-app.mjs','make-source-bundles.mjs','verify-portable-release.mjs','verify-observed-flood.mjs','somalia-cap-feed.xml','observed-gfm-capabilities.xml','observed-gibs-capabilities.xml'];
+  const developer=['build-somali-catalog.mjs','i18n-public.json','i18n-weather.json','i18n-mayor.json','build-basemap.mjs','package-flood-app.mjs','make-source-bundles.mjs','verify-portable-release.mjs','verify-observed-flood.mjs','icpac-datasets.json','icpac-point-extreme.gml','icpac-point-very-heavy.gml','icpac-point-heavy.gml','icpac-point-none.gml','icpac-point-empty.gml','observed-gfm-capabilities.xml','observed-gibs-capabilities.xml'];
   for(const file of [...developer,...(await fs.readdir(work)).filter(name=>name.endsWith('.test.mjs'))])await copy(path.join(work,file),folder,'work/'+file);
   await fs.cp(path.join(work,'basemap-source'),path.join(folder,'work/basemap-source'),{recursive:true});
   const records=parseStations(await fs.readFile(path.join(work,'swalim-stations.html'),'utf8'));

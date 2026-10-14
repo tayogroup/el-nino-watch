@@ -32,7 +32,7 @@ function harness() {
 
 function input(h, changes = {}) {
   const warning = {
-    basis: 'official-warning', status: 'active', issuedAt: '2026-10-14T07:00:00Z',
+    basis: 'regional-forecast', status: 'active', issuedAt: '2026-10-14T07:00:00Z',
     endsAt: '2026-10-15T08:00:00Z', cityNames: ['Galkayo'],
     scopeLabel: 'Somalia country-level · city extent unspecified'
   };

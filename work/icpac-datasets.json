@@ -1,0 +1,110 @@
+[
+ {
+  "id": "9247a020-8f04-4c83-bae3-dbe14c1446f8",
+  "name": "Exceptional Rainfall",
+  "summary": "Latest: 13 Oct 2026 To 20 Oct 2026 (Initialized 13 Oct 2026)",
+  "period_type": "weekly",
+  "latest_date": "2026-10-13T08:00:00+03:00",
+  "layers": [
+   {
+    "id": "5032f506-c401-4ffd-a3ea-7648339809aa",
+    "name": "Extremely Heavy Rainfall",
+    "layerName": "weekly_extreme_heavy_rainfall",
+    "legendConfig": {
+     "type": "basic",
+     "items": [
+      {
+       "name": "Extremely Heavy Rainfal",
+       "color": "#06008B"
+      }
+     ]
+    }
+   },
+   {
+    "id": "09279d04-3129-4250-840f-ec77a79245bb",
+    "name": "Very Heavy Rainfall",
+    "layerName": "weekly_very_heavy_rainfall",
+    "legendConfig": {
+     "type": "basic",
+     "items": [
+      {
+       "name": "Very heavy rainfall",
+       "color": "#1774CD"
+      }
+     ]
+    }
+   },
+   {
+    "id": "7be48e40-363c-4a2e-ac35-0934b7077e2c",
+    "name": "Heavy Rainfall",
+    "layerName": "weekly_heavy_rainfall",
+    "legendConfig": {
+     "type": "basic",
+     "items": [
+      {
+       "name": "Heavy rainfall",
+       "color": "#AFEEEE"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "f5012c24-2902-408c-9815-466290d34bca",
+  "name": "Total Rainfall Forecast",
+  "summary": "Latest: 13 Oct 2026 To 20 Oct 2026 (Initialized 13 Oct 2026)",
+  "period_type": "weekly",
+  "latest_date": "2026-10-13T08:00:00+03:00",
+  "layers": [
+   {
+    "id": "ce4d4a70-e42d-485e-986a-d8c0470f65e7",
+    "name": "Weekly Total Rainfall Forecast",
+    "layerName": "weekly_total_precipitation",
+    "legendConfig": {
+     "type": "choropleth",
+     "items": [
+      {
+       "name": "1",
+       "color": "#D9D9D9"
+      },
+      {
+       "name": "10",
+       "color": "#FFA500"
+      },
+      {
+       "name": "30",
+       "color": "#FEFF00"
+      },
+      {
+       "name": "50",
+       "color": "#CAFF70"
+      },
+      {
+       "name": "100",
+       "color": "#00FF00"
+      },
+      {
+       "name": "200",
+       "color": "#67CD01"
+      },
+      {
+       "name": "mm",
+       "color": "#238B21"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "other",
+  "name": "Seasonal Rainfall Probabilistic Forecast",
+  "latest_date": "2026-09-01T08:00:00+03:00",
+  "layers": [
+   {
+    "layerName": "seasonal_rainfall_probabilistic"
+   }
+  ]
+ }
+]

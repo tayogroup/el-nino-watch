@@ -39,8 +39,8 @@ function fragments(html) {
   return result;
 }
 
-const properNames=new Set([...cities.flatMap(city=>[city[0],city[1]]),'El Nino Watch','Mandek Consulting','Somalia National Meteorological Agency ↗','EL NIÑO / ENSO · NOAA','Galkayo','Mudug','Hobyo','Station Name','Copernicus radar','CEMS GFM','NASA composite','Noor Hassan','fixture-outage']);
-const providerWords=['Copernicus CEMS Global Flood Monitoring','Copernicus Data Space','FAO SWALIM','CEMS GFM','Open-Meteo','GloFAS','SWALIM','GDACS','NOAA','SNMA','WMO','NASA','Sentinel-1','Sentinel-2','Google Earth','Google Maps','Google Street View','meteoblue','Copernicus','Mandek Consulting'];
+const properNames=new Set([...cities.flatMap(city=>[city[0],city[1]]),'El Nino Watch','Mandek Consulting','East Africa Hazards Watch ↗','EL NIÑO / ENSO · NOAA','Galkayo','Mudug','Hobyo','Station Name','Copernicus radar','CEMS GFM','NASA composite','Noor Hassan','fixture-outage']);
+const providerWords=['Copernicus CEMS Global Flood Monitoring','Copernicus Data Space','FAO SWALIM','CEMS GFM','Open-Meteo','GloFAS','SWALIM','GDACS','NOAA','ICPAC','East Africa Hazards Watch','WMO','NASA','Sentinel-1','Sentinel-2','Google Earth','Google Maps','Google Street View','meteoblue','Copernicus','Mandek Consulting'];
 function requiresTranslation(text) {
   if(properNames.has(text)||/^(?:https?:|mailto:|blob:)/i.test(text)||/^[\w.+-]+@[\w.-]+$/.test(text)||/^elninowatch\.so(?:\s*↗)?$/.test(text))return false;
   let rest=text;
@@ -172,22 +172,27 @@ test('Copernicus metadata labels cover optical clouds, radar and catalogue conne
   h.root.CopernicusScenes.render({...input,clearerOnly:true});assertCoverage(h.node('scenes').innerHTML,h.translate,'Copernicus cloud filter');
 });
 
-test('alert screens and browser status translate while authority title and description remain original',()=>{
+test('alert screens and browser status translate; source event text stays original and ICPAC forecasts are translated',()=>{
   const h=componentHarness(),rawTitle='Rainfall today',rawDescription='Official source wording: request-id=A_101; preserve this exact notice.';
   const forecast=cities.map(()=>({daily:{time:days,precipitation_sum:days.map(()=>20)}}));
-  const official={basis:'official-warning',status:'active',id:'SNMA_101',title:rawTitle,description:rawDescription,severity:'moderate',issuedAt:'2026-10-14T08:00:00Z',startsAt:'2026-10-14T07:00:00Z',endsAt:'2026-10-15T08:00:00Z',scope:{country:'Somalia',cities:['Galkayo']},source:'SNMA',sourceUrl:'https://meteosomalia.so/alerts/'};
-  const notices=['official-warning','model-event','event-monitoring'].map((basis,index)=>({...official,basis,id:'SOURCE_'+index}));
+  const official={basis:'event-monitoring',status:'active',id:'GDACS_101',title:rawTitle,description:rawDescription,severity:'moderate',issuedAt:'2026-10-14T08:00:00Z',startsAt:'2026-10-14T07:00:00Z',endsAt:'2026-10-15T08:00:00Z',scope:{country:'Somalia',cities:['Galkayo']},source:'GDACS',sourceUrl:'https://www.gdacs.org/'};
+  // GDACS text is the source's own wording and stays as written; ICPAC alerts are written by this app and are translated.
+  const icpac={...official,basis:'regional-forecast',id:'ICPAC_1',source:'ICPAC',sourceUrl:'https://www.icpac.net/weekly-forecast/',title:'Galkayo · ICPAC forecast: very heavy rainfall, 13 Oct–20 Oct',description:"ICPAC's weekly forecast puts Galkayo above the 95th percentile of rainfall usually seen in this week of the year (very heavy rainfall), with about 70 mm forecast for the week. This is a regional model forecast at about 11 km resolution, not an official local warning."};
+  const notices=[...['model-event','event-monitoring'].map((basis,index)=>({...official,basis,id:'SOURCE_'+index})),icpac];
   h.root.FloodAlerts.render({now:new Clock().toISOString(),cities:h.root.SOMALIA_CITIES,selectedCity:10,scope:'all',type:'all',weatherFeed:{...feed(),data:forecast},stationFeed:{...feed(),data:{stations:[]}},officialFeed:{...feed(),data:{alerts:notices,sources:[]}}});
   for(const id of ['alerts-summary','alerts-list','alerts-status'])assertCoverage(h.node(id).innerHTML,h.translate,`Alerts ${id}`);
   assert.ok(h.node('alerts-list').innerHTML.includes('data-i18n-skip lang="und">'+rawTitle));
   assert.ok(h.node('alerts-list').innerHTML.includes(rawDescription));
-  assert.equal([...h.node('alerts-list').innerHTML.matchAll(/data-i18n-skip lang="und">Rainfall today/g)].length,3,'all three source bases protect authority/event titles');
+  assert.equal([...h.node('alerts-list').innerHTML.matchAll(/data-i18n-skip lang="und">Rainfall today/g)].length,2,'both GDACS bases protect event titles');
+  assert.ok(!h.node('alerts-list').innerHTML.includes('data-i18n-skip lang="und">Galkayo · ICPAC'),'ICPAC titles are open to translation');
+  assert.equal(h.translate(icpac.title),'Galkayo · Saadaasha ICPAC: roob aad u xooggan, 13 Oct–20 Oct');
+  assert.match(h.translate(icpac.description),/^Saadaasha toddobaadlaha ah ee ICPAC waxay Galkayo u saadaalisay .*\(roob aad u xooggan\).*qiyaastii 70 mm/);
   assert.ok(!fragments(h.node('alerts-list').innerHTML).some(item=>item.text===rawTitle||item.text===rawDescription),'raw notices are excluded from translation coverage checks');
 });
 
 test('Mayor dashboard and additional-city dialog labels remain bilingual without changing stored identities',()=>{
   const h=componentHarness(),rows=days.map((date,i)=>({date,rain:i===0?10:i===1?25:0,probability:40,maxTemperature:32}));
-  const input={cities:h.root.SOMALIA_CITIES,selectedCity:10,selectedDate:days[0],days,weatherRows:rows,weatherFeed:feed(),station:null,stationFeed:{...feed(),data:{stations:[]}},officialFeed:{...feed(),data:{alerts:[],sources:[]}},catalogueFeed:{...feed(),data:{missions:{radar:{available:true,scenes:[]},optical:{available:true,scenes:[]}}}},observedState:{source:'radar',date:'2026-10-13',metadata:{radar:{available:true,provider:'CEMS GFM',resolutionM:20}},lastSuccess:LAST,stale:false},community:{available:true,cityId:'galkayo',records:[],lastSuccess:LAST,total:0,truncated:false},alertModel:{alerts:[],fresh:{official:true},coverageNote:'Official warning and event coverage may be incomplete. No returned notice does not establish safety.',messages:[]},actions:[],now:new Clock().toISOString(),floodOutlook:outlookInput()};
+  const input={cities:h.root.SOMALIA_CITIES,selectedCity:10,selectedDate:days[0],days,weatherRows:rows,weatherFeed:feed(),station:null,stationFeed:{...feed(),data:{stations:[]}},officialFeed:{...feed(),data:{alerts:[],sources:[]}},catalogueFeed:{...feed(),data:{missions:{radar:{available:true,scenes:[]},optical:{available:true,scenes:[]}}}},observedState:{source:'radar',date:'2026-10-13',metadata:{radar:{available:true,provider:'CEMS GFM',resolutionM:20}},lastSuccess:LAST,stale:false},community:{available:true,cityId:'galkayo',records:[],lastSuccess:LAST,total:0,truncated:false},alertModel:{alerts:[],fresh:{official:true},coverageNote:'Forecast and event coverage may be incomplete. No returned signal does not establish safety.',messages:[]},actions:[],now:new Clock().toISOString(),floodOutlook:outlookInput()};
   h.root.CityManager.init({cities:h.root.SOMALIA_CITIES});h.root.CityManager.render(input);
   const added=h.root.ExtraCitiesStore.add({name:'Hobyo',region:'Mudug',lat:5.3505,lon:48.5268});assert.equal(added.name,'Hobyo');
   h.root.ExtraCities.init();h.root.ExtraCities.open();assertCoverage(h.node('extra-cities-root').innerHTML,h.translate,'Additional cities');

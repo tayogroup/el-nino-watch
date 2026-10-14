@@ -60,7 +60,8 @@ window.FloodExplorer=(()=>{
   }
   function clearPoint(){pointRequest++;if(pointLayer)map?.removeLayer(pointLayer);pointLayer=null;el('point-info').textContent='Click a map point to inspect its elevation and mapped flood susceptibility.';window.FloodTerrain?.clearPoint();}
   function getState(){return{cityIndex:lastState?.cityIndex,selectedDate:lastState?.selectedDate,scenario:lastState?.scenario,config,basemap:{mode:imageryMode==='satellite'?'satellite-context':'regional-reference',ready:basemapReady},communityPins:reportMarkers.length,activeLayers:Object.keys(layers).filter(k=>el('layer-'+k).checked),layerState:{...layerState}};}
-  return{init,update,focus,focusPoint,overview,inspect,clearPoint,getState,setBasemap,communityReports,showTerrain,resize:()=>{if(!map)return;map.invalidateSize({animate:false});if(pendingView&&sized()){const view=pendingView;pendingView=null;view()}}};
+  /* Extra WMS overlays owned by other modules (icpac-map.js): add with a spec, remove with null.
+   They default to the hazard pane: the default tile pane sits under the filled geography. */const extraOverlays={};function overlay(key,spec){if(!map||!window.L)return false;if(extraOverlays[key]){map.removeLayer(extraOverlays[key]);delete extraOverlays[key];}if(!spec)return true;const layer=L.tileLayer.wms(spec.url,{layers:spec.layers,format:'image/png',transparent:true,version:'1.1.1',opacity:spec.opacity??0.7,attribution:spec.attribution||'',pane:spec.pane||'hazardPane',...(spec.params||{})});if(spec.onError)layer.on('tileerror',spec.onError);layer.addTo(map);extraOverlays[key]=layer;return true;}return{init,update,focus,focusPoint,overview,inspect,clearPoint,getState,setBasemap,communityReports,showTerrain,overlay,resize:()=>{if(!map)return;map.invalidateSize({animate:false});if(pendingView&&sized()){const view=pendingView;pendingView=null;view()}}};
 })();
 
 

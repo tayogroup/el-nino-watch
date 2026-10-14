@@ -1,12 +1,29 @@
-// Keyless official CAP warnings and separately labelled GDACS event monitoring.
-// CAP authority: https://alertingauthority.wmo.int/authorities.php?recId=339
+// Keyless regional rainfall forecasts (ICPAC) and separately labelled GDACS event
+// monitoring. Neither is an official national warning.
+// ICPAC Weekly Exceptional Rainfall: forecast weekly rainfall compared with the
+//   long-term observed rainfall for the same week; above the 90th, 95th and 99th
+//   percentiles is heavy, very heavy and exceptional (extremely heavy).
+//   https://eahazardswatch.icpac.net/  ·  https://www.icpac.net/weekly-forecast/
 // GDACS API: https://gdacs.org/Documents/2025/GDACS_API_quickstart_v1.pdf
 export const ALERT_SOURCES = Object.freeze({
-  snma: 'https://meteosomalia.so/api/cap/rss.xml',
-  snmaAuthority: 'https://alertingauthority.wmo.int/authorities.php?recId=339',
+  icpac: 'https://www.icpac.net/weekly-forecast/',
+  icpacHazardsWatch: 'https://eahazardswatch.icpac.net/',
+  icpacDatasets: 'https://eahazardswatch.icpac.net/api/datasets/',
+  icpacWms: 'https://eahazardswatch.icpac.net/mapserver/',
   gdacs: 'https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH'
 });
+export const ICPAC_LAYERS = Object.freeze({
+  extreme: 'weekly_extreme_heavy_rainfall', veryHeavy: 'weekly_very_heavy_rainfall', heavy: 'weekly_heavy_rainfall', total: 'weekly_total_precipitation'
+});
+// Highest category first.
+const ICPAC_CATEGORIES = [
+  {key: 'extreme', layer: ICPAC_LAYERS.extreme, label: 'Extremely heavy', percentile: 99, severity: 'severe'},
+  {key: 'very-heavy', layer: ICPAC_LAYERS.veryHeavy, label: 'Very heavy', percentile: 95, severity: 'moderate'},
+  {key: 'heavy', layer: ICPAC_LAYERS.heavy, label: 'Heavy', percentile: 90, severity: 'minor'}
+];
 const DAY = 86400000;
+const EAT_MS = 3 * 3600 * 1000;
+const MONTHS = {jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11};
 
 function safeUrl(value, hosts) {
   try {
@@ -27,23 +44,9 @@ function plain(value) {
     }).replace(/\s+/g, ' ').trim();
 }
 
-function xmlCheck(xml) {
-  if (typeof xml !== 'string' || xml.length > 2_000_000) throw new Error('Warning XML response is invalid or too large.');
-  // The parser does not resolve entities; reject DTD/entity declarations entirely.
-  if (/<!DOCTYPE|<!ENTITY/i.test(xml)) throw new Error('Warning XML contains unsupported declarations.');
-  return xml.replace(/<!--[\s\S]*?-->/g, '');
-}
-
-function sections(xml, tag) {
-  const expression = new RegExp(`<(?:(?:[A-Za-z_][\\w.-]*):)?${tag}\\b[^>]*>([\\s\\S]*?)<\\/(?:(?:[A-Za-z_][\\w.-]*):)?${tag}\\s*>`, 'gi');
-  return [...xml.matchAll(expression)].map(match => match[1]);
-}
-const tagText = (xml, tag) => plain(sections(xml, tag)[0] || '');
-
-function isoDate(value, {gdacs = false, end = false, cap = false} = {}) {
+function isoDate(value, {gdacs = false, end = false} = {}) {
   if (!value || typeof value !== 'string') return null;
   let label = value.trim();
-  if (cap && !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?(?:Z|[+-]\d\d:\d\d)$/.test(label)) return null;
   if (gdacs && /^\d{4}-\d\d-\d\d$/.test(label)) label += end ? 'T23:59:59.999Z' : 'T00:00:00Z';
   // GDACS returns UTC ISO values without the Z. Do not apply the host timezone.
   if (gdacs && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?$/.test(label)) label += 'Z';
@@ -51,53 +54,88 @@ function isoDate(value, {gdacs = false, end = false, cap = false} = {}) {
   return Number.isFinite(parsed) ? new Date(parsed).toISOString() : null;
 }
 
-export function parseCapRss(xml) {
-  const clean = xmlCheck(xml);
-  if (!/<rss\b/i.test(clean) || !/<channel\b/i.test(clean) || !/<\/rss\s*>/i.test(clean)) throw new Error('SNMA CAP RSS format was not recognized.');
-  const channel = sections(clean, 'channel')[0];
-  const beforeItems = channel.split(/<item\b/i)[0];
-  const items = sections(channel, 'item').map(item => ({
-    id: tagText(item, 'guid'), title: tagText(item, 'title'),
-    issuedAt: isoDate(tagText(item, 'pubDate')),
-    capUrl: safeUrl(tagText(item, 'link'), ['meteosomalia.so', 'www.meteosomalia.so'])
-  }));
-  return {items, publishedAt: isoDate(tagText(beforeItems, 'pubDate')), lastBuildAt: isoDate(tagText(beforeItems, 'lastBuildDate'))};
+// "13 Oct 2026" -> midnight East Africa Time that day, in epoch ms.
+function eatDayStart(text) {
+  const match = /^(\d{1,2}) ([A-Za-z]{3})[a-z]* (\d{4})$/.exec(String(text || '').trim());
+  if (!match || !Object.hasOwn(MONTHS, match[2].toLowerCase())) return NaN;
+  return Date.UTC(Number(match[3]), MONTHS[match[2].toLowerCase()], Number(match[1])) - EAT_MS;
+}
+const eatDate = ms => new Date(ms + EAT_MS).toISOString().slice(0, 10);
+const shortDay = ms => new Date(ms + EAT_MS).toLocaleDateString('en-GB', {day:'numeric', month:'short', timeZone:'UTC'});
+
+// The latest weekly forecast, from the Hazards Watch dataset list.
+export function parseIcpacDatasets(payload) {
+  const list = Array.isArray(payload) ? payload : payload?.results;
+  if (!Array.isArray(list)) throw new Error('ICPAC dataset list format was not recognized.');
+  const dataset = list.find(item => (item?.layers || []).some(layer => layer?.layerName === ICPAC_LAYERS.extreme));
+  if (!dataset) throw new Error('ICPAC exceptional rainfall forecast is not listed.');
+  const issued = Date.parse(dataset.latest_date);
+  if (!Number.isFinite(issued)) throw new Error('ICPAC forecast date is missing.');
+  // "Latest: 13 Oct 2026 To 20 Oct 2026 (Initialized 13 Oct 2026)"; the end day is included.
+  const range = /(\d{1,2} [A-Za-z]{3,9} \d{4})\s+To\s+(\d{1,2} [A-Za-z]{3,9} \d{4})/i.exec(String(dataset.summary || ''));
+  let start = range ? eatDayStart(range[1]) : NaN, end = range ? eatDayStart(range[2]) + DAY - 1 : NaN;
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) { start = issued; end = issued + 7 * DAY - 1; }
+  return {time: eatDate(issued), issuedAt: new Date(issued).toISOString(), startsAt: new Date(start).toISOString(), endsAt: new Date(end).toISOString(),
+    weekLabel: `${shortDay(start)}–${shortDay(end)}`, totalListed: list.some(item => (item?.layers || []).some(layer => layer?.layerName === ICPAC_LAYERS.total))};
 }
 
-export function parseCapDocument(xml, {now = new Date(), sourceUrl = ALERT_SOURCES.snma} = {}) {
-  const clean = xmlCheck(xml);
-  if (!/<(?:[A-Za-z_][\w.-]*:)?alert\b/i.test(clean) || !/urn:oasis:names:tc:emergency:cap:1\.[12]/.test(clean)) throw new Error('SNMA CAP warning format was not recognized.');
-  const id = tagText(clean, 'identifier');
-  const issuedAt = isoDate(tagText(clean, 'sent'), {cap:true});
-  const msgType = tagText(clean, 'msgType');
-  const references = tagText(clean, 'references').split(/\s+/).filter(Boolean).map(reference => reference.split(',')[1]).filter(Boolean);
-  const record = {id, issuedAt, references, msgType, alert: null, reason: null};
-  if (!id || !issuedAt) return {...record, reason: 'missing-identity-or-date'};
-  if (tagText(clean, 'status') !== 'Actual' || tagText(clean, 'scope') !== 'Public') return {...record, reason: 'not-public-actual'};
-  if (!['Alert', 'Update', 'Cancel'].includes(msgType)) return {...record, reason: 'unsupported-message'};
-  if (Date.parse(issuedAt) > new Date(now).getTime()) return {...record, reason: 'future-issued'};
-  if (msgType === 'Cancel') return {...record, reason: 'cancelled'};
-  const infoBlocks = sections(clean, 'info');
-  const info = infoBlocks.find(block => /^en(?:-|$)/i.test(tagText(block, 'language'))) || infoBlocks[0];
-  if (!info) return {...record, reason: 'missing-info'};
-  const endsAt = isoDate(tagText(info, 'expires'), {cap:true});
-  const startsAt = isoDate(tagText(info, 'onset'), {cap:true}) || isoDate(tagText(info, 'effective'), {cap:true}) || issuedAt;
-  if (!endsAt || Date.parse(endsAt) < Date.parse(startsAt)) return {...record, reason: 'unknown-validity'};
-  if (Date.parse(endsAt) <= new Date(now).getTime()) return {...record, reason: 'expired'};
-  // A future onset with an already issued warning is still actionable preparedness.
-  const severityText = tagText(info, 'severity');
-  const severity = ({Extreme:'severe', Severe:'severe', Moderate:'moderate', Minor:'minor', Unknown:'unknown'})[severityText] || 'unknown';
-  const areaDescription = sections(info, 'area').map(area => tagText(area, 'areaDesc')).filter(Boolean).join('; ');
-  const web = safeUrl(tagText(info, 'web'), ['meteosomalia.so', 'www.meteosomalia.so']);
-  const description = tagText(info, 'description');
-  const instruction = tagText(info, 'instruction');
-  return {...record, alert: {
-    id: `snma:${id}`, sourceId: 'snma', title: tagText(info, 'headline') || tagText(info, 'event') || 'Somalia weather warning',
-    source: 'SNMA', sourceUrl: web || safeUrl(sourceUrl, ['meteosomalia.so', 'www.meteosomalia.so']) || ALERT_SOURCES.snma,
-    issuedAt, startsAt, endsAt, severity, severityText, status: 'active',
-    scope: {country:'Somalia', cities:[], areaDescription: areaDescription || 'Area not specified by the warning'},
-    description, instruction, basis: 'official-warning', urgency: tagText(info, 'urgency'), certainty: tagText(info, 'certainty')
-  }};
+// One GetFeatureInfo answer for a city: its highest category and the week's total.
+export function parseIcpacPoint(gml) {
+  if (typeof gml !== 'string' || !/<msGMLOutput\b/.test(gml) || gml.length > 200_000) throw new Error('ICPAC point response was not recognized.');
+  const layers = new Set([...gml.matchAll(/<(weekly_[a-z_]+)_feature>/g)].map(match => match[1]));
+  const category = ICPAC_CATEGORIES.find(item => layers.has(item.layer)) || null;
+  const total = Number(/<precip>\s*([-\d.eE+]+)\s*<\/precip>/.exec(gml)?.[1]);
+  return {category: category?.key || null, totalMm: Number.isFinite(total) && total >= 0 ? Math.round(total * 10) / 10 : null};
+}
+
+export function icpacPointUrl(lat, lon, time) {
+  const d = 0.05, layers = [ICPAC_LAYERS.extreme, ICPAC_LAYERS.veryHeavy, ICPAC_LAYERS.heavy, ICPAC_LAYERS.total].join(',');
+  const url = new URL(ALERT_SOURCES.icpacWms);
+  url.search = new URLSearchParams({SERVICE:'WMS', VERSION:'1.1.1', REQUEST:'GetFeatureInfo', LAYERS:layers, QUERY_LAYERS:layers, STYLES:'', SRS:'EPSG:4326',
+    BBOX:[lon - d, lat - d, lon + d, lat + d].join(','), WIDTH:'101', HEIGHT:'101', X:'50', Y:'50', INFO_FORMAT:'application/vnd.ogc.gml', FEATURE_COUNT:'4', time}).toString();
+  return url.href;
+}
+
+export function icpacAlert(city, point, forecast) {
+  const category = ICPAC_CATEGORIES.find(item => item.key === point.category);
+  if (!category) return null;
+  const [name, region] = city;
+  const total = point.totalMm === null ? '' : `, with about ${Math.round(point.totalMm)} mm forecast for the week`;
+  return {
+    id: `icpac:${forecast.time}:${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`, sourceId: 'icpac',
+    title: `${name} · ICPAC forecast: ${category.label.toLowerCase()} rainfall, ${forecast.weekLabel}`,
+    source: 'ICPAC', sourceUrl: ALERT_SOURCES.icpac, issuedAt: forecast.issuedAt, startsAt: forecast.startsAt, endsAt: forecast.endsAt,
+    severity: category.severity, severityText: category.label, status: 'active',
+    scope: {country: 'Somalia', cities: [name], areaDescription: region ? `${name} (${region})` : name},
+    description: `ICPAC's weekly forecast puts ${name} above the ${category.percentile}th percentile of rainfall usually seen in this week of the year (${category.label.toLowerCase()} rainfall)${total}. This is a regional model forecast at about 11 km resolution, not an official local warning.`,
+    basis: 'regional-forecast', forecastTotalMm: point.totalMm, category: category.key
+  };
+}
+
+// The points answer for a forecast week, kept until ICPAC publishes the next week.
+const icpacPoints = {time: null, results: null, fetchImpl: null};
+
+async function loadIcpac(now, fetchImpl, cities) {
+  const forecast = parseIcpacDatasets(JSON.parse(await fetchBody(ALERT_SOURCES.icpacDatasets, fetchImpl, 'application/json')));
+  const expired = Date.parse(forecast.endsAt) <= new Date(now).getTime();
+  let results = icpacPoints.time === forecast.time && icpacPoints.fetchImpl === fetchImpl ? icpacPoints.results : null;
+  if (!results) {
+    results = [];
+    for (let i = 0; i < cities.length; i += 10) {
+      results.push(...await Promise.allSettled(cities.slice(i, i + 10).map(async city => parseIcpacPoint(await fetchBody(icpacPointUrl(city[2], city[3], forecast.time), fetchImpl, 'application/vnd.ogc.gml,application/xml')))));
+    }
+    if (results.every(result => result.status === 'fulfilled')) Object.assign(icpacPoints, {time: forecast.time, results, fetchImpl});
+  }
+  const cityForecasts = cities.map((city, index) => ({city: city[0], ...(results[index]?.status === 'fulfilled' ? results[index].value : {category: null, totalMm: null, unavailable: true})}));
+  const failedCount = cityForecasts.filter(item => item.unavailable).length;
+  const alerts = expired ? [] : cities.map((city, index) => results[index]?.status === 'fulfilled' ? icpacAlert(city, results[index].value, forecast) : null).filter(Boolean);
+  return {
+    alerts, forecast, cityForecasts, publishedAt: forecast.issuedAt, returnedCount: cities.length - failedCount, failedCount, rejectedExpired: expired ? cityForecasts.filter(item => item.category).length : 0, rejectedInvalid: 0,
+    partial: failedCount > 0 || expired,
+    ...(expired ? {error: `ICPAC's latest weekly forecast (${forecast.weekLabel}) has ended and a newer one is not yet published`}
+      // A city that did not answer is a gap, not a reason to hide the other cities' forecasts.
+      : failedCount ? {notice: `${failedCount} cities could not be checked against the ICPAC forecast; coverage is incomplete.`} : {})
+  };
 }
 
 function affectsSomalia(properties) {
@@ -141,32 +179,11 @@ export function parseGdacsEvents(payload, {now = new Date()} = {}) {
 }
 
 async function fetchBody(url, fetchImpl, type) {
-  const response = await fetchImpl(url, {headers:{Accept:type, 'User-Agent':'SomaliaFloodWatch/1.0 (public warning data dashboard)'}, signal:AbortSignal.timeout(20000), redirect:'error'});
+  const response = await fetchImpl(url, {headers:{Accept:type, 'User-Agent':'ElNinoWatch/1.0 (public flood awareness dashboard)'}, signal:AbortSignal.timeout(20000), redirect:'error'});
   if (!response.ok) throw new Error(`Source returned HTTP ${response.status}.`);
   const body = await response.text();
-  if (body.length > 8_000_000) throw new Error('Warning feed response is unexpectedly large.');
+  if (body.length > 8_000_000) throw new Error('Source response is unexpectedly large.');
   return body;
-}
-
-async function loadSnma(now, fetchImpl) {
-  const rss = parseCapRss(await fetchBody(ALERT_SOURCES.snma, fetchImpl, 'application/xml,text/xml'));
-  const entries = rss.items.slice(0, 30);
-  const documents = await Promise.allSettled(entries.map(async item => {
-    if (!item.capUrl || !new URL(item.capUrl).pathname.startsWith('/api/cap/')) throw new Error('RSS item has no allowlisted CAP document link.');
-    return parseCapDocument(await fetchBody(item.capUrl, fetchImpl, 'application/cap+xml,application/xml'), {now, sourceUrl:item.capUrl});
-  }));
-  const records = documents.filter(result => result.status === 'fulfilled').map(result => result.value);
-  const retired = new Set(records.filter(record => ['Update', 'Cancel'].includes(record.msgType) && !['not-public-actual', 'future-issued', 'missing-identity-or-date'].includes(record.reason)).flatMap(record => record.references));
-  const unique = new Map();
-  for (const record of records) if (record.alert && !retired.has(record.id)) unique.set(record.id, record.alert);
-  const failedCount = documents.filter(result => result.status === 'rejected').length;
-  return {
-    alerts:[...unique.values()], publishedAt:rss.publishedAt, lastBuildAt:rss.lastBuildAt, returnedCount:rss.items.length,
-    rejectedExpired:records.filter(record => record.reason === 'expired').length,
-    rejectedInvalid:records.filter(record => record.reason && record.reason !== 'expired').length,
-    partial:failedCount > 0 || rss.items.length > entries.length, failedCount,
-    ...(failedCount ? {error:`${failedCount} CAP documents could not be validated; coverage is incomplete.`} : {})
-  };
 }
 
 async function loadGdacs(now, fetchImpl) {
@@ -192,22 +209,23 @@ async function loadGdacs(now, fetchImpl) {
   return result;
 }
 
-export async function loadOfficialAlerts({now = new Date(), fetchImpl = fetch} = {}) {
-  if (!Number.isFinite(new Date(now).getTime())) throw new Error('Invalid warning retrieval date.');
-  const results = await Promise.allSettled([loadSnma(now, fetchImpl), loadGdacs(now, fetchImpl)]);
+export async function loadOfficialAlerts({now = new Date(), fetchImpl = fetch, cities = []} = {}) {
+  if (!Number.isFinite(new Date(now).getTime())) throw new Error('Invalid alert retrieval date.');
+  const results = await Promise.allSettled([loadIcpac(now, fetchImpl, cities), loadGdacs(now, fetchImpl)]);
   const fetchedAt = new Date().toISOString();
   const sources = results.map((result, index) => {
-    const id = index === 0 ? 'snma' : 'gdacs';
+    const id = index === 0 ? 'icpac' : 'gdacs';
     const data = result.status === 'fulfilled' ? result.value : null;
-    return {id, name:index === 0 ? 'Somalia National Meteorological Agency CAP' : 'Global Disaster Alert and Coordination System',
+    return {id, name:index === 0 ? 'ICPAC weekly exceptional rainfall forecast' : 'Global Disaster Alert and Coordination System',
       sourceUrl:ALERT_SOURCES[id], available:!!data, fetchedAt:data ? fetchedAt : null,
       ...(data ? {...data, alerts:undefined} : {error:result.reason?.message || 'Source unavailable.'})};
   });
   // Do not convert total source failure into a successfully retrieved empty feed.
   if (!sources.some(source => source.available)) throw new Error(sources.map(source => `${source.id}: ${source.error}`).join(' '));
   const alerts = results.flatMap(result => result.status === 'fulfilled' ? result.value.alerts : []).sort((a, b) => Date.parse(b.issuedAt) - Date.parse(a.issuedAt));
-  const officialWarningsAvailable = sources[0].available && !sources[0].partial;
+  const regionalForecastAvailable = sources[0].available && !sources[0].partial;
   const eventFeedAvailable = sources[1].available && !sources[1].partial;
-  const coverageNote = `SNMA CAP warnings are official national notices. GDACS is separate country-level flood event monitoring and may include model signals. ${sources[0].available ? `${sources[0].returnedCount} CAP records returned; ${sources[0].rejectedExpired} expired records excluded.` : 'Official CAP warning source unavailable.'} ${!officialWarningsAvailable || !eventFeedAvailable ? 'Some source coverage is incomplete. ' : ''}An empty active list does not mean there is no flood risk. Retrieval time is distinct from the warning publication date.`;
-  return {alerts, fetchedAt, sources, officialWarningsAvailable, eventFeedAvailable, sourceUrl:ALERT_SOURCES.snma, coverageNote};
+  const icpac = sources[0];
+  const coverageNote = `ICPAC's weekly regional forecast is checked at each monitored city: heavy, very heavy and extremely heavy rainfall mean above the 90th, 95th and 99th percentile for that week of the year. It is a model forecast, not an official warning. GDACS is separate country-level flood event monitoring and may include model signals. ${icpac.available ? `${icpac.returnedCount} of ${cities.length} cities checked for ${icpac.forecast.weekLabel}.` : 'The ICPAC forecast is unavailable.'} ${!regionalForecastAvailable || !eventFeedAvailable ? 'Some source coverage is incomplete. ' : ''}An empty active list does not mean there is no flood risk. Retrieval time is distinct from the forecast issue date.`;
+  return {alerts, fetchedAt, sources, regionalForecastAvailable, eventFeedAvailable, sourceUrl:ALERT_SOURCES.icpac, coverageNote};
 }
