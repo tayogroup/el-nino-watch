@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#082448">
+<title>Visitor statistics | El Nino Watch</title>
+<meta name="description" content="Anonymous visit counts for El Nino Watch: visits per day, tabs, cities, countries, languages and devices.">
+<style>
+:root{--ink:#153653;--muted:#586f89;--navy:#082448;--blue:#1473cf;--cyan:#64ddf4;--paper:#f0f5fb;--line:#dce6f0;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 'Segoe UI',system-ui,-apple-system,Arial,sans-serif}
+header{background:var(--navy);color:#fff;padding:18px max(16px,calc((100vw - 1100px)/2))}
+header a{color:#fff;text-decoration:none;font-weight:800;font-size:18px}
+header small{display:block;color:#a9c4e2;letter-spacing:.12em;font-size:11px;font-weight:700;margin-top:2px}
+main{max-width:1100px;margin:0 auto;padding:26px 16px 60px}
+h1{font-size:28px;margin:0 0 6px;color:var(--navy)}
+.lede{color:var(--muted);margin:0 0 22px;max-width:70ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 7px 26px rgba(11,44,76,.045)}
+.pending{text-align:center;padding:44px 20px}
+.pending strong{display:block;font-size:22px;color:var(--navy);margin-bottom:6px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.controls button{font:inherit;font-weight:700;border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:10px;padding:8px 14px;cursor:pointer}
+.controls button[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0 0 16px}
+.kpi label{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.kpi strong{font-size:30px;color:var(--navy)}
+.chart{width:100%;height:220px;display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:14px}
+h2{font-size:16px;margin:0 0 12px;color:var(--navy)}
+.bars{list-style:none;margin:0;padding:0}
+.bars li{display:grid;grid-template-columns:minmax(90px,38%) 1fr auto;gap:10px;align-items:center;margin:7px 0;font-size:14px}
+.bars .track{display:block;height:10px;background:#e9f1fa;border-radius:6px;overflow:hidden}
+.bars .fill{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:6px}
+.bars b{font-variant-numeric:tabular-nums;color:var(--navy)}
+.note{color:var(--muted);font-size:13px;margin-top:18px}
+a.back{color:var(--blue);font-weight:700}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--ink:#dbe7f5;--muted:#9fb3c9;--paper:#0b1626;--line:#22344b;--card:#111f33;--navy:#e6f0fb}header{background:#06101d}.controls button{background:#111f33}.controls button[aria-pressed="true"]{background:#e6f0fb;color:#0b1626}.bars .track{background:#1a2c44}}
+</style>
+</head>
+<body>
+<header><a href="/">El Nino Watch</a><small>VISITOR STATISTICS</small></header>
+<main>
+  <h1>Visitor statistics</h1>
+  <p class="lede">Anonymous counts of visits to El Nino Watch. Every page load is one visit, so one person visiting twice counts twice. No cookies are used and no internet addresses are stored. Browsers that ask not to be tracked are not counted.</p>
+  <div id="root" class="card pending" aria-live="polite"><strong>Loading…</strong></div>
+  <p class="note"><a class="back" href="/">← Back to El Nino Watch</a></p>
+</main>
+<script>
+(function () {
+  'use strict';
+  const root = document.getElementById('root');
+  const fmt = n => Number(n || 0).toLocaleString('en');
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+  const TAB_NAMES = {overview: '30 cities', weather: 'Weather', map: 'Flood map', alerts: 'Alerts', community: 'Reports', sources: 'Sources', mayor: 'Mayor dashboard'};
+  const DEVICE_NAMES = {mobile: 'Phone', tablet: 'Tablet', desktop: 'Computer'};
+  const LANGUAGE_NAMES = {en: 'English', so: 'Somali'};
+  let countryName = code => code;
+  try { const names = new Intl.DisplayNames(['en'], {type: 'region'}); countryName = code => code === 'unknown' ? 'Unknown' : (names.of(code) || code); } catch {}
+  let days = 30;
+
+  function bars(title, counts, label = key => key, limit = 10) {
+    const rows = Object.entries(counts || {}).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, limit);
+    const max = Math.max(1, ...rows.map(row => row[1]));
+    const body = rows.length ? rows.map(([key, n]) => `<li><span>${esc(label(key))}</span><span class="track"><span class="fill" style="width:${(n / max * 100).toFixed(1)}%"></span></span><b>${fmt(n)}</b></li>`).join('') : '<li><span>No data yet</span></li>';
+    return `<section class="card"><h2>${esc(title)}</h2><ul class="bars">${body}</ul></section>`;
+  }
+  function chart(series) {
+    const w = 1000, h = 220, pad = 28, max = Math.max(1, ...series.map(d => d.views)), step = (w - pad * 2) / Math.max(1, series.length);
+    const barW = Math.max(2, step * 0.7);
+    const cols = series.map((d, i) => {
+      const bh = (d.views / max) * (h - pad * 2), x = pad + i * step + (step - barW) / 2, y = h - pad - bh;
+      return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}" rx="3" fill="url(#g)"><title>${esc(d.date)}: ${fmt(d.views)} visits</title></rect>`;
+    }).join('');
+    const first = series[0]?.date || '', last = series[series.length - 1]?.date || '';
+    return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Visits per day, ${esc(first)} to ${esc(last)}"><defs><linearGradient id="g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#1473cf"/><stop offset="1" stop-color="#64ddf4"/></linearGradient></defs><line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" stroke="#c9d8e8"/>${cols}<text x="${pad}" y="${h - 8}" font-size="13" fill="#586f89">${esc(first)}</text><text x="${w - pad}" y="${h - 8}" font-size="13" fill="#586f89" text-anchor="end">${esc(last)}</text><text x="${pad}" y="16" font-size="13" fill="#586f89">${fmt(max)} max</text></svg>`;
+  }
+  function render(data) {
+    if (!data.published) {
+      root.className = 'card pending';
+      root.innerHTML = `<strong>Statistics are not published yet</strong><p>${esc(data.note || 'Visitor statistics are published once the site has had ' + fmt(data.threshold) + ' visits.')}</p>`;
+      return;
+    }
+    const t = data.totals, period = data.days.reduce((sum, d) => sum + d.views, 0);
+    const busiest = data.days.reduce((best, d) => d.views > (best?.views || 0) ? d : best, null);
+    root.className = '';
+    root.innerHTML = `<div class="controls" role="group" aria-label="Period">${[7, 30, 90, 365].map(n => `<button type="button" data-days="${n}" aria-pressed="${n === days}">${n} days</button>`).join('')}</div>
+      <div class="kpis"><div class="card kpi"><label>Visits, this period</label><strong>${fmt(period)}</strong></div><div class="card kpi"><label>Visits, all time</label><strong>${fmt(data.allTimeVisits)}</strong></div><div class="card kpi"><label>Busiest day</label><strong>${busiest ? fmt(busiest.views) : '—'}</strong><div>${busiest ? esc(busiest.date) : ''}</div></div></div>
+      <section class="card"><h2>Visits per day (East Africa time)</h2>${chart(data.days)}</section>
+      <div class="grid">${bars('Tabs viewed', t.tabs, key => TAB_NAMES[key] || key)}${bars('Cities viewed', t.cities, key => key === 'other' ? 'Additional cities' : key)}${bars('Countries', t.countries, countryName)}${bars('Language', t.languages, key => LANGUAGE_NAMES[key] || key)}${bars('Device', t.devices, key => DEVICE_NAMES[key] || key)}</div>
+      <p class="note">${esc(data.note)} Updated ${esc(new Date(data.generatedAt).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}))} EAT.</p>`;
+    root.querySelectorAll('[data-days]').forEach(button => button.addEventListener('click', () => { days = Number(button.dataset.days); load(); }));
+  }
+  function load() {
+    fetch('/api/visits?days=' + days, {cache: 'no-store'}).then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(render).catch(error => { root.className = 'card pending'; root.innerHTML = `<strong>Statistics are unavailable</strong><p>${esc(error.message)}</p>`; });
+  }
+  load();
+})();
+</script>
+</body>
+</html>

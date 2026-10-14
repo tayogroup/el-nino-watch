@@ -10,6 +10,7 @@ import {loadObservedFlood, loadRadarPoint, OBSERVED_SOURCE_URL} from './observed
 import {loadCopernicusCity} from './copernicus.mjs';
 import {backupFromEnv} from './backup.mjs';
 import {createForecastRelay} from './forecast-relay.mjs';
+import {createVisits} from './visits.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'dist');
 const CITY_DATA = JSON.parse(await readFile(new URL('./dist/cities.json', import.meta.url), 'utf8'));
@@ -53,12 +54,15 @@ function reply(res, status, body, contentType = 'text/plain; charset=utf-8', hea
 }
 
 export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null} = {}) {
-  const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES});
+  // A report change asks for a backup within minutes rather than the next 6-hour run.
+  const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES, onChange:() => backup?.soon?.()});
+  const visits = createVisits({dataDir, cities:CITY_DATA});
   const forecasts = createForecastRelay({cities:CITY_DATA});
-  return http.createServer(async (req, res) => {
+  const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, 'http://127.0.0.1');
       if (await community(req,res,url)) return;
+      if (await visits.handle(req,res,url)) return;
       if (!['GET', 'HEAD'].includes(req.method)) return reply(res, 405, 'Only GET and HEAD are supported.');
       if (url.pathname === '/api/copernicus') {
         const cityId = url.searchParams.get('city') || 'mogadishu';
@@ -87,7 +91,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
       if (await forecasts(req, res, url)) return;
       if (url.pathname === '/api/backup-status') return reply(res, 200, JSON.stringify(backup ? backup.status() : {enabled:false}), 'application/json; charset=utf-8', req.method === 'HEAD');
       if (url.pathname.startsWith('/api/')) return reply(res, 404, 'Unknown data endpoint.');
-      const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);
+      const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname === '/stats' ? '/stats.html' : url.pathname);
       if (requested.includes('\0')) return reply(res, 400, 'Invalid path.');
       // A backslash is a separator on Windows but a filename character on Linux;
       // refuse it everywhere so traversal attempts get the same 403 on both.
@@ -108,6 +112,8 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
       reply(res, error.code === 'ENOENT' || error.code === 'ENOTDIR' ? 404 : 400, 'File not found or invalid request.');
     }
   });
+  server.flushVisits = visits.flush;
+  return server;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -118,7 +124,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data');
   const backup = backupFromEnv({dataDir});
   if (backup) await backup.restoreIfEmpty();
-  createServer({dataDir, backup}).listen(port, host, () => {
+  const server = createServer({dataDir, backup});
+  // Bunny stops the container with SIGTERM on every deploy (Ctrl+C locally); save the visit counts first.
+  for (const signal of ['SIGTERM', 'SIGINT']) process.once(signal, () => { Promise.resolve(server.flushVisits?.()).finally(() => process.exit(0)); });
+  server.listen(port, host, () => {
     console.log(`El Nino Watch: http://127.0.0.1:${port}\nKeep this process running for the live data relays.`);
     backup?.start();
   });

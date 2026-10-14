@@ -42,8 +42,11 @@
   // Called by app.js whenever the city on screen changes.
   function current(name) {
     if (typeof name !== 'string' || !name) return;
+    const changed = name !== shown;
     shown = name;
     paint();
+    // For visits.js (anonymous city counts).
+    if (changed) window.dispatchEvent?.(new CustomEvent('site-city-change', {detail: {city: name}}));
   }
 
   // Called by app.js with the function that opens a city by name.

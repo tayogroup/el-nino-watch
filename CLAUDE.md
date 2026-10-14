@@ -61,6 +61,9 @@ Forecasts: the server relays the page's Open-Meteo requests
 Open-Meteo URLs, so a new forecast field must also be allowed in the relay —
 `forecast-relay.test.mjs` reads `app.js` and fails if they drift.
 
+Visits: `visits.mjs` counts page loads (not people), cookieless; public at
+`/stats` only after 3,000 visits (`PUBLISH_AFTER`).
+
 Report backups: `backup.mjs` snapshots the volume to a private Bunny Storage
 zone when `BACKUP_STORAGE_ZONE`/`BACKUP_STORAGE_KEY` are set in the Bunny app's
 environment, and restores on start when `reports.json` is missing. Check

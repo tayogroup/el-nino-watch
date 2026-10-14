@@ -175,3 +175,27 @@ test('storage failures are reported without secrets and never break the app; sta
     await on.close();
   } finally { await storage.close(); await rm(dataDir, {recursive:true, force:true}); }
 });
+
+test('visit counts are backed up and restored, and a report change backs up within minutes', async () => {
+  const storage = await fakeStorage(), dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-visits-backup-'));
+  try {
+    const counts = JSON.stringify({version:1, days:{'2026-10-14':{views:7, tabs:{}, cities:{}, countries:{}, languages:{}, devices:{}}}});
+    await writeFile(path.join(dataDir, 'visits.json'), counts);
+    const backup = backupFor(storage, dataDir);
+    assert.equal((await backup.runOnce()).result, 'nothing-to-back-up');
+    assert.equal(storage.files.get(`${PREFIX}/visits.json`)?.toString(), counts, 'counts go up even before the first report');
+    const puts = () => storage.calls.filter(call => call === `PUT ${ZONE}/${PREFIX}/visits.json`).length;
+    await backup.runOnce();
+    assert.equal(puts(), 1, 'unchanged counts are not uploaded again');
+
+    await rm(path.join(dataDir, 'visits.json'));
+    assert.equal(await backupFor(storage, dataDir).restoreIfEmpty(), false, 'no report snapshot exists yet');
+    assert.equal(await readFile(path.join(dataDir, 'visits.json'), 'utf8'), counts, 'the counts come back regardless');
+
+    const quick = backupFor(storage, dataDir);
+    quick.soon(20); quick.soon(20);
+    await new Promise(resolve => setTimeout(resolve, 80));
+    assert.equal(quick.status().lastResult, 'nothing-to-back-up', 'soon() ran a backup');
+    quick.stop();
+  } finally { await storage.close(); await rm(dataDir, {recursive:true, force:true}); }
+});

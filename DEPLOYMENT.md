@@ -52,11 +52,16 @@ Domain, registered at Namecheap: add `elninowatch.so` and `www.elninowatch.so` a
 
 Bunny volumes have no backups of their own, so the server makes them (`work/somalia-flood-watch/backup.mjs`). When `BACKUP_STORAGE_ZONE` and `BACKUP_STORAGE_KEY` are set it copies the reports to a Bunny Storage zone:
 
-- **A snapshot of `reports.json`** in `el-nino-watch/snapshots/<time>/`, every 6 hours (`BACKUP_INTERVAL_HOURS`), only when the reports changed since the last one. The first run is a minute after start.
+- **A snapshot of `reports.json`** in `el-nino-watch/snapshots/<time>/`, every 6 hours (`BACKUP_INTERVAL_HOURS`), only when the reports changed since the last one. The first run is a minute after start, and a report being added or deleted triggers a run within 5 minutes.
+- **Visit counts** (`visits.json`, see below) as one latest copy, `el-nino-watch/visits.json`, restored on start if missing.
 - **Photos and videos** in `el-nino-watch/media/`, uploading only files the backup does not already hold.
 - **Retention:** snapshots older than 14 days (`BACKUP_RETENTION_DAYS`) are deleted, but the newest three are always kept; media that no kept snapshot refers to is then deleted too. A report its author deletes is therefore gone from the backups within 14 days.
 - **Restore:** when the server starts and `reports.json` does not exist (a new or lost volume), it restores the newest snapshot and its media first. Set `BACKUP_RESTORE_IF_EMPTY=false` to start empty instead. If the storage cannot be reached after three tries the app starts empty and logs it; the snapshots stay in storage.
 - **Status:** `GET /api/backup-status` reports whether backups are on and the last attempt, success, result and error. It never includes the zone name or key. Successes and failures are also in the app's logs.
+
+### Visitor statistics
+
+The server counts visits itself (`visits.mjs`): every page load is one visit, plus which tab and city were viewed, the language, phone or computer, and the country Bunny reports. No cookies, no third party, and no internet address or browser string is stored; browsers asking not to be tracked are not counted. The counts are published at `/stats` (and a footer link appears) only once the site has had 3,000 visits; until then `/stats` says so and `/api/visits` returns no numbers.
 
 Setup: create a Storage zone (Delivery > Storage > Add Storage Zone, e.g. `el-nino-watch-backups`, Standard tier, main region Falkenstein) and **do not connect a pull zone to it**; the reports and photos must not be publicly reachable. Then in the Magic Containers app, Container settings > Environment variables, add `BACKUP_STORAGE_ZONE` (the zone name) and `BACKUP_STORAGE_KEY` (the zone's password from its FTP & API Access page). If the zone's main region is not Falkenstein, also set `BACKUP_STORAGE_ENDPOINT` to that region's storage endpoint, for example `https://uk.storage.bunnycdn.com`.
 

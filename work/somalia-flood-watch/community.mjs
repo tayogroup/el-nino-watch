@@ -166,7 +166,7 @@ function sameOrigin(req) {
   if (!['http:', 'https:'].includes(origin.protocol) || origin.host !== req.headers.host) fail(403, 'Community writes must come from this app.');
 }
 
-export function createCommunityHandler({dataDir, cities} = {}) {
+export function createCommunityHandler({dataDir, cities, onChange} = {}) {
   if (!dataDir || !Array.isArray(cities) || !cities.length) throw new Error('Community storage and supported cities are required.');
   const supported = new Map(cities.map(city => {
     const name = Array.isArray(city) ? city[0] : city.name;
@@ -200,6 +200,7 @@ export function createCommunityHandler({dataDir, cities} = {}) {
       await writeFile(temporary, JSON.stringify({version:1, reports:next}), {flag:'wx', mode:0o600});
       await rename(temporary, database);
       records = next;
+      try { onChange?.(); } catch {}
     } catch (error) { await unlink(temporary).catch(() => {}); throw error; }
   }
   function limit(req) {

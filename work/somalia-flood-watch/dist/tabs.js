@@ -98,6 +98,8 @@
     markLinks();
     writeHash();
     if (changed) refreshLayout(scroll);
+    // For visits.js (anonymous tab counts).
+    if (changed) window.dispatchEvent(new CustomEvent('site-tab-change', {detail: {tab}}));
     if (focus) links.find(link => link.dataset.siteTabLink === tab)?.focus();
     return true;
   }

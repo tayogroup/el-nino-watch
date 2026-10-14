@@ -43,10 +43,10 @@ export function backupFromEnv({dataDir, env = process.env, log = console} = {}) 
 }
 
 export function createBackup({dataDir, zone, key, endpoint, prefix = 'el-nino-watch', intervalHours = 6, retentionDays = 14, restoreIfEmpty: restoreEnabled = true, log = console, retryDelayMs = 5000}) {
-  const storage = path.resolve(dataDir), mediaDir = path.join(storage, 'media'), database = path.join(storage, 'reports.json');
+  const storage = path.resolve(dataDir), mediaDir = path.join(storage, 'media'), database = path.join(storage, 'reports.json'), visitsFile = path.join(storage, 'visits.json');
   const base = `${endpoint.replace(/\/+$/, '')}/${encodeURIComponent(zone)}/${prefix}`;
   const state = {enabled:true, intervalHours, retentionDays, lastAttemptAt:null, lastSuccessAt:null, lastResult:null, lastError:null, lastSnapshot:null, reports:null, mediaFiles:null};
-  let lastHash = null, running = null, timer = null;
+  let lastHash = null, lastVisitsHash = null, running = null, timer = null, soonTimer = null;
 
   // Errors name the operation and HTTP status only, never the zone or key.
   async function call(method, rel, body, headers = {}) {
@@ -71,7 +71,18 @@ export function createBackup({dataDir, zone, key, endpoint, prefix = 'el-nino-wa
     catch (error) { await unlink(temporary).catch(() => {}); throw error; }
   }
 
+  // The anonymous visit counts (visits.mjs): one latest copy, replaced when it changes.
+  async function backupVisits() {
+    let bytes;
+    try { bytes = await readFile(visitsFile); } catch (error) { if (error.code === 'ENOENT') return; throw error; }
+    const hash = sha256(bytes);
+    if (hash === lastVisitsHash) return;
+    await put('visits.json', bytes);
+    lastVisitsHash = hash;
+  }
+
   async function backupOnce(now) {
+    await backupVisits();
     let bytes;
     try { bytes = await readFile(database); }
     catch (error) {
@@ -154,6 +165,13 @@ export function createBackup({dataDir, zone, key, endpoint, prefix = 'el-nino-wa
 
   async function restoreIfEmpty() {
     if (!restoreEnabled) return false;
+    // Visit counts come back on their own, whether or not reports need restoring.
+    try { await stat(visitsFile); } catch (error) {
+      if (error.code === 'ENOENT') {
+        try { const response = await call('GET', 'visits.json'); await mkdir(storage, {recursive:true}); await writeAtomic(visitsFile, Buffer.from(await response.arrayBuffer())); log.log('Restore: visit counts restored.'); }
+        catch (failure) { if (!/HTTP 404/.test(failure.message)) log.error(`Visit counts not restored: ${failure.message}`); }
+      }
+    }
     try { await stat(database); return false; }
     catch (error) { if (error.code !== 'ENOENT') { log.error(`Restore skipped: ${error.message}`); return false; } }
     for (let attempt = 1; attempt <= 3; attempt++) {
@@ -191,8 +209,15 @@ export function createBackup({dataDir, zone, key, endpoint, prefix = 'el-nino-wa
     timer.unref?.();
     log.log(`Backups every ${intervalHours} h to private storage, ${retentionDays}-day retention.`);
   }
-  function stop() { clearTimeout(timer); timer = null; }
+  // A report was added or removed: back up within a few minutes rather than
+  // waiting up to the full interval. Repeated changes share one run.
+  function soon(delayMs = 5 * 60 * 1000) {
+    if (soonTimer) return;
+    soonTimer = setTimeout(() => { soonTimer = null; runOnce(); }, delayMs);
+    soonTimer.unref?.();
+  }
+  function stop() { clearTimeout(timer); clearTimeout(soonTimer); timer = null; soonTimer = null; }
   const status = () => ({...state});
 
-  return {runOnce, restoreIfEmpty, start, stop, status};
+  return {runOnce, restoreIfEmpty, start, stop, soon, status};
 }
