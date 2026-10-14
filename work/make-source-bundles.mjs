@@ -9,7 +9,7 @@ const work=path.dirname(fileURLToPath(import.meta.url)),root=path.dirname(work);
 const app=path.join(work,'somalia-flood-watch'),out=path.join(root,'outputs');
 const staging=path.join(work,'portable-release');
 const releaseDate='2026-10-14';
-const runtime=['server.mjs','feeds.mjs','hazards.mjs','alerts-feed.mjs','observed-flood.mjs','copernicus.mjs','community.mjs','Start-Live-App.ps1','README.md'];
+const runtime=['server.mjs','feeds.mjs','hazards.mjs','alerts-feed.mjs','observed-flood.mjs','copernicus.mjs','community.mjs','docker-entrypoint.mjs','Start-Live-App.ps1','README.md'];
 const appChecks=['verify.mjs','verify-daily.mjs','verify-interaction.mjs','verify-map.mjs'];
 const write=async(base,file,value)=>{const target=path.join(base,file);await fs.mkdir(path.dirname(target),{recursive:true});await fs.writeFile(target,value);};
 const copy=async(source,base,file)=>{await fs.mkdir(path.dirname(path.join(base,file)),{recursive:true});await fs.copyFile(source,path.join(base,file));};
@@ -122,10 +122,10 @@ ENV NODE_ENV=production HOST=0.0.0.0 PORT=4173 COMMUNITY_DATA_DIR=/app/data
 COPY --chown=node:node ${source?'work/somalia-flood-watch/':''}*.mjs ./
 COPY --chown=node:node ${source?'work/somalia-flood-watch/':''}dist/ ./dist/
 RUN mkdir -p /app/data && chown node:node /app/data
-USER node
 EXPOSE 4173
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||4173)+'/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
-CMD ["node", "server.mjs"]
+# Starts as root, makes the report volume writable, then runs as node.
+CMD ["node", "docker-entrypoint.mjs"]
 `;}
 const compose=`services:
   web:

@@ -30,6 +30,26 @@ Static-only hosts can serve the frontend, but cannot run reports/uploads/comment
 
 Open http://127.0.0.1:4173. Compose uses a named volume for report data and a single non-root Node container. To choose a different external port, set PORT before the command. The container's internal port remains 4173. The first image build requires internet access to obtain the official Node image. Docker configuration is included; validate it on your Docker host before publication.
 
+The container starts as root only to hand the report directory to the `node` user (`docker-entrypoint.mjs`), then runs the server as `node`. Hosts that mount a blank volume owned by root would otherwise leave community writes failing with 503.
+
+## Live hosting: Bunny Magic Containers (elninowatch.so)
+
+Every push to `main` runs `.github/workflows/deploy.yml`: `npm run check` and `npm test`, then a linux/amd64 image is published as `ghcr.io/tayogroup/el-nino-watch:<commit>` and `:latest`, then (once configured) the Bunny app is rolled to that commit.
+
+One-time setup in the bunny.net dashboard, Magic Containers, **+ Add App**:
+
+- Image: `ghcr.io/tayogroup/el-nino-watch`, tag `latest`. The container is named after the image (`el-nino-watch`).
+- Endpoint: **CDN**, container port `4173`.
+- Persistent volume: mount path `/app/data`, 5 GB to start (it can grow, never shrink).
+- Region: Frankfurt. **Exactly one instance in one region, autoscaling and autoprovisioning off.** Each pod gets its own blank volume, so a second instance would hold a different set of reports.
+- No environment variables are needed; the image sets HOST, PORT and COMMUNITY_DATA_DIR.
+
+Then, for automatic rollouts, add in GitHub (Settings > Secrets and variables > Actions) the variable `BUNNY_APP_ID` and the secret `BUNNYNET_API_KEY` (the main account API key; sub-user keys are not supported).
+
+Domain, registered at Namecheap: add `elninowatch.so` and `www.elninowatch.so` as hostnames on the app's CDN endpoint pull zone, and in Namecheap Advanced DNS point `www` (CNAME) and the apex `@` (ALIAS) at the pull zone's `*.b-cdn.net` hostname. Enable SSL for both hostnames in Bunny once DNS resolves. Community writes compare the Origin with the Host header, so the pull zone must forward the visitor's Host to the container; if posting a report returns 403 "Community writes must come from this app", enable **Forward Host Header** on the pull zone.
+
+Bunny volumes have no automatic backups. Copy `reports.json` and `media/` out periodically.
+
 ## Data and migration
 
 The ZIP deliberately contains no existing reports, uploads, deletion receipt hashes, credentials, logs, .git state or local hosting identity. A fresh deployment starts with an empty report board. To move actual shared records separately, stop writes/the old server, back up its complete data directory (reports.json and media/ together), restore it on the new server, set COMMUNITY_DATA_DIR to that location, and give the Node process read/write access. Keep backups private and outside dist.

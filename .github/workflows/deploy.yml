@@ -1,0 +1,72 @@
+# Test, publish the container image to GHCR, and roll it out on Bunny Magic Containers.
+#
+# The rollout step runs only once the repository variable BUNNY_APP_ID and the
+# secret BUNNYNET_API_KEY are set (Settings > Secrets and variables > Actions).
+# Until then every push still tests and publishes ghcr.io/tayogroup/el-nino-watch.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm run check
+      - run: npm test
+
+  image:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE: ghcr.io/${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Magic Containers runs linux/amd64 images only.
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+  deploy:
+    needs: image
+    if: vars.BUNNY_APP_ID != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      # Pinned to a commit: this action receives the Bunny account API key.
+      - uses: BunnyWay/actions/container-update-image@931a74b9c45ea9f9f01435fbbf1649830e67d3b3
+        with:
+          app_id: ${{ vars.BUNNY_APP_ID }}
+          api_key: ${{ secrets.BUNNYNET_API_KEY }}
+          container: ${{ vars.BUNNY_CONTAINER || 'el-nino-watch' }}
+          image_tag: ${{ github.sha }}

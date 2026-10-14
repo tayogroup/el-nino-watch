@@ -42,6 +42,16 @@ npm run bundle               # standalone HTML under outputs/ (gitignored)
 - **The repo is public.** Never commit `.env`, `data/`, uploaded reports or
   credentials. Commits use the noreply address set in this repo's git config.
 
+## Deploy
+
+Hosted on Bunny Magic Containers at https://elninowatch.so (set up
+2026-10-14; check DEPLOYMENT.md before assuming it is live). Pushing to `main`
+deploys: `.github/workflows/deploy.yml` tests, publishes
+`ghcr.io/tayogroup/el-nino-watch`, and rolls the Bunny app to that commit.
+Setup and the one-instance rule are in `DEPLOYMENT.md` under "Live hosting".
+The root `DEPLOYMENT.md` has that section and `work/make-source-bundles.mjs`'s
+template does not; the portable ZIP bundles are host-neutral on purpose.
+
 ## Git
 
 - Remotes: `origin` → https://github.com/tayogroup/el-nino-watch (public),
