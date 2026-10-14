@@ -590,8 +590,8 @@
     },
     {
       "path": "work/somalia-flood-watch/server.mjs",
-      "bytes": 7472,
-      "sha256": "4516518c34a30a4400d1671da0d7827dd83d0ba30358a066cbc8f3588b452307"
+      "bytes": 7720,
+      "sha256": "43a944488b1444252002e410757a43b735ba50c8b5e6959699cc07711087180e"
     },
     {
       "path": "work/somalia-flood-watch/Start-Live-App.ps1",

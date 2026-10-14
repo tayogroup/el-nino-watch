@@ -84,6 +84,9 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
       if (url.pathname.startsWith('/api/')) return reply(res, 404, 'Unknown data endpoint.');
       const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);
       if (requested.includes('\0')) return reply(res, 400, 'Invalid path.');
+      // A backslash is a separator on Windows but a filename character on Linux;
+      // refuse it everywhere so traversal attempts get the same 403 on both.
+      if (requested.includes('\\')) return reply(res, 403, 'Path is outside the app.');
       const target = path.resolve(ROOT, `.${requested}`);
       if (!target.startsWith(ROOT + path.sep)) return reply(res, 403, 'Path is outside the app.');
       // Reject links in each path component without relying on realpath, which
