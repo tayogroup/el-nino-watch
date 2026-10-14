@@ -486,6 +486,16 @@
   },
   "patterns": [
     {
+      "en": "★ My city: {0}",
+      "so": "★ Magaaladayda: {0}",
+      "translate": [0]
+    },
+    {
+      "en": "☆ Make {0} my city",
+      "so": "☆ Ka dhig {0} magaaladayda",
+      "translate": [0]
+    },
+    {
       "en": "El Nino Watch | All 30 cities",
       "so": "El Nino Watch | Dhammaan 30-ka magaalo"
     },

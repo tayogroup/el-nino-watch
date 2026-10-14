@@ -14,7 +14,7 @@ for(const file of ['vendor/leaflet.css','style.css','alerts.css','design.css','e
 }
 const hazardSources=await fs.readFile(new URL('dist/hazard-sources.json',base),'utf8');
 html=html.replace('</head>',()=>`<script>window.HAZARD_SOURCES=${hazardSources};</script></head>`);
-for(const file of ['vendor/leaflet.js','planning.js','basemap-data.js','cities.js','observed.js','map-context.js','terrain.js','map.js','daily.js','copernicus.js','alerts.js','community.js','flood-outlook.js','extra-cities-store.js','extra-cities.js','mayor-store.js','mayor.js','rankings.js','tabs.js','translations-so.js','i18n.js','app.js']){
+for(const file of ['vendor/leaflet.js','planning.js','basemap-data.js','cities.js','observed.js','map-context.js','terrain.js','map.js','daily.js','copernicus.js','alerts.js','community.js','flood-outlook.js','extra-cities-store.js','extra-cities.js','mayor-store.js','mayor.js','rankings.js','tabs.js','home-city.js','translations-so.js','i18n.js','app.js']){
  const content=(await fs.readFile(new URL('dist/'+file,base),'utf8')).replace(/<\/script/gi,'<\\/script');
  html=html.replace(`<script src="${file}"></script>`,()=>`<script>${content}</script>`);
 }
