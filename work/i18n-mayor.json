@@ -1,0 +1,683 @@
+{
+  "messages": {
+    "Mayor dashboard": "Bogga maamulka duqa magaalada",
+    "MAYOR DASHBOARD": "BOGGA MAAMULKA DUQA MAGAALADA",
+    "To do": "La qabanayo",
+    "In progress": "Socota",
+    "Blocked": "Hakaday",
+    "Done": "La dhammaystiray",
+    "Unreviewed": "Aan dib loo eegin",
+    "Checking": "Dib loo eegayo",
+    "Checked locally": "Qalabkan dib loogu eegay",
+    "Escalated locally": "Qalabkan loogu calaamadiyay gudbin heer sare",
+    "Date unavailable": "Taariikhda lama hayo",
+    "Time unavailable": "Waqtiga lama hayo",
+    "source gives date only": "Isha xogtu waxay bixisaa taariikhda oo keliya",
+    "Data unavailable": "Xogta lama hayo",
+    "Elevated rainfall": "Roob badan",
+    "Rainfall watch": "La socodka roobka",
+    "Below screening threshold": "Ka hooseeya xadka qiimeynta hordhaca ah",
+    "Selected city": "Magaalada la doortay",
+    "A different city feed is loaded.": "Waxaa soo muuqda xogta magaalo kale.",
+    "Warning coverage may be incomplete; no returned notice does not establish safety.": "Xogta digniinuhu waxay noqon kartaa mid aan dhammaystirnayn; digniin aan soo muuqan macnaheedu ma aha in xaaladdu ammaan tahay.",
+    "Moderate": "Dhexdhexaad",
+    "High": "Sare",
+    "Bank full": "Heerka biyuhu gaaraan jiinka webiga",
+    "Gauge": "Xarunta cabbirka biyaha webiga",
+    "City water classification is not established by product availability. Inspect a location and its exclusion mask; an unclassified or blank pixel does not prove dry conditions.": "Helitaanka xogta dayax-gacmeedku ma caddeeyo meelaha magaalada ee biyuhu joogaan. Eeg goobta iyo lakabka muujinaya meelaha laga reebay falanqaynta; barta sawirka ee aan la kala saarin ama madhan ma caddaynayso in goobtu qalalan tahay.",
+    "Unknown": "Xog aan la hayn",
+    "Rain chance unknown": "Suurtagalnimada roobka lama hayo",
+    "Temperature unknown": "Heerkulka lama hayo",
+    "Edit": "Wax ka beddel",
+    "Owner not assigned": "Cid masuul ka ah lama magacaabin",
+    "No due date": "Taariikh dhammaad lama cayimin",
+    "Overdue": "Waqtigii loo qabtay ayaa dhaafay",
+    "Status": "Xaaladda",
+    "Remove": "Ka saar",
+    "Flooding": "Fatahaad",
+    "Rainfall": "Roob",
+    "Flood impact": "Saameynta fatahaadda",
+    "Community report": "Warbixin bulshada ka timid",
+    "Unverified public report": "Warbixin dadweyne oo aan la xaqiijin",
+    "deaths reported": "dhimasho ayaa la soo sheegay",
+    "injuries reported": "dhaawac ayaa la soo sheegay",
+    "properties reported damaged": "hanti ayaa la sheegay inay waxyeello gaartay",
+    "Open report": "Fur warbixinta",
+    "View reported point ↗": "Eeg goobta la soo sheegay ↗",
+    "Coordinates not supplied": "Isku-duwayaasha goobta lama gelin",
+    "Source link ↗": "Xiriirka isha xogta ↗",
+    "Local review stage": "Marxaladda dib-u-eegista ee qalabkan",
+    "Edit local action": "Wax ka beddel hawsha qalabkan",
+    "Add a local action": "Ku dar hawl qalabkan lagu diiwaangeliyo",
+    "Cancel edit": "Jooji wax ka beddelka",
+    "Action title": "Cinwaanka hawsha",
+    "e.g. Check access to the temporary shelter": "Tusaale: Hubi in la gaari karo hoyga ku meel gaarka ah",
+    "Owner / team": "Qofka ama kooxda masuulka ah",
+    "Name or team": "Magaca qofka ama kooxda",
+    "Due date": "Taariikhda la rabo in la dhammaystiro",
+    "Priority": "Mudnaanta",
+    "Normal": "Caadi",
+    "Low": "Hoose",
+    "Save action": "Kaydi hawsha",
+    "Add action": "Ku dar hawl",
+    "Forecast source unavailable": "Isha saadaasha lama heli karo",
+    "Last known forecast · stale or refresh failed": "Saadaashii ugu dambaysay ee la helay · xogtu waa duug ama cusboonaysiintu way fashilantay",
+    "Live forecast · app screening": "Saadaasha hadda la helay · qiimeynta hordhaca ah ee abka",
+    "Official notice feed unavailable or stale": "Xogta ogeysiisyada rasmiga ah lama heli karo ama waa duug",
+    "Briefing generated": "Warbixin kooban ayaa la diyaariyey",
+    "Export daily briefing ↓": "Soo dejiso warbixinta kooban ee maalinlaha ah ↓",
+    "Independent mayor planning view. This is not a government dashboard. Actions and review stages are saved on this device; they are not sent to authorities or other users.": "Tani waa bog qorsheyn oo madaxa bannaan oo duqa magaalada loogu talagalay. Ma aha bog maamul oo dawladdu leedahay. Hawlaha iyo marxaladaha dib-u-eegista waxaa lagu kaydiyaa qalabkan; looma diro hay’adaha ama isticmaalayaasha kale.",
+    "City": "Magaalada",
+    "Forecast date · EAT": "Taariikhda saadaasha · EAT",
+    "Open flood map ↗": "Fur khariidadda fatahaadda ↗",
+    "Read alerts ↗": "Akhri digniinaha ↗",
+    "Submit a report ↗": "Gudbi warbixin ↗",
+    "Today’s forecast rain": "Roobka maanta la saadaaliyey",
+    "Next 3 days · peak daily rain": "3-da maalmood ee soo socda · roobka maalinlaha ah ee ugu badan",
+    "Maximum daily total; not a flood probability": "Wadarta roobka maalinlaha ah ee ugu badan; ma aha suurtagalnimada fatahaad",
+    "Incomplete three-day forecast · no maximum inferred": "Saadaasha saddexda maalmood ma dhammaystirna · lama go'aamin roobka ugu badan",
+    "Recent loaded city reports": "Warbixinnaha magaalada ee dhowaan la soo qaaday",
+    "Within 7 days · partial returned feed": "7-dii maalmood ee u dambeeyey · qayb ka mid ah xogta ayaa la helay",
+    "Observed within 7 days · loaded public reports": "Wax la arkay 7-dii maalmood ee u dambeeyay · warbixinnaha dadweynaha ee la soo qaaday",
+    "Report feed unavailable, old or refreshing": "Xogta warbixinnada lama heli karo, waa duug ama waa la cusboonaysiinayaa",
+    "City-specific official warnings": "Digniinaha rasmiga ah ee magaaladan gaar u ah",
+    "Rainfall decision window": "Muddada lagu qiimeynayo roobka si go'aan loo gaaro",
+    "Today and the next two days · daily totals": "Maanta iyo labada maalmood ee ku xiga · wadarta roobka maalin kasta",
+    "Last known": "Xogtii ugu dambaysay ee la helay",
+    "Forecast": "Saadaasha",
+    "Unavailable": "Lama heli karo",
+    "Below 10": "Ka yar 10",
+    "≥10 mm/day watch": "≥10 mm/maalin · la soco",
+    "≥25 mm/day elevated": "≥25 mm/maalin · roob badan",
+    "Unknown. App screening only; river flow, rainfall intensity and drainage also affect flooding.": "Xog aan la hayn. Tani waa qiimeyn hordhac ah oo abka ah oo keliya; qulqulka webiga, xoogga roobka iyo biyo-mareennadu sidoo kale waxay saameeyaan fatahaadda.",
+    "Explore the full 14-day forecast": "Eeg saadaasha buuxda ee 14-ka maalmood",
+    "Open detailed weather ↗": "Fur faahfaahinta cimilada ↗",
+    "Warnings & priorities": "Digniinaha iyo hawlaha mudnaanta leh",
+    "Source notices and practical checks": "Ogeysiisyada ilaha xogta iyo hubinta xaaladda dhabta ah",
+    "Read issuing source ↗": "Akhri isha soo saartay ↗",
+    "No active city-specific official notice returned. Somalia-wide notices may still apply.": "Lama helin ogeysiis rasmi ah oo hadda shaqaynaya oo magaaladan gaar u ah. Ogeysiisyada Soomaaliya oo dhan khuseeya weli way khusayn karaan magaaladan.",
+    "Official notices are unavailable or stale. Check the issuing authority directly.": "Ogeysiisyada rasmiga ah lama heli karo ama waa duug. Si toos ah uga hubi hay'adda soo saarta.",
+    "city extent unspecified.": "Meelaha magaalada ee uu khuseeyo lama cayimin.",
+    "Read notices ↗": "Akhri ogeysiisyada ↗",
+    "Source coverage details": "Faahfaahinta inta ay ilaha xogtu daboolayaan",
+    "Confirm field conditions": "Xaqiiji xaaladda dhabta ah ee goobta",
+    "Review reports and ask local teams to confirm water depth, access and vulnerable locations from safe positions.": "Dib u eeg warbixinnada, kooxaha deegaanka ka codso inay iyagoo jooga meelo ammaan ah xaqiijiyaan qotada biyaha, in goobaha la gaari karo iyo meelaha nugul.",
+    "Check drainage and low points": "Hubi biyo-mareennada iyo meelaha hooseeya",
+    "Review blocked drains and culverts. Ask qualified engineers and relevant authorities to assess any diversion and its downstream impacts.": "Eeg biyo-mareennada iyo dhuumaha biyaha ee waddooyinka hoostooda mara ee xanniban. Injineerro aqoon leh iyo hay'adaha ay khusayso ka codso inay qiimeeyaan leexin kasta oo biyaha lagu sameeyo iyo saameynteeda meelaha biyuhu u sii socdaan.",
+    "Coordinate support and access": "Isku dubbarid taageerada iyo gaarsiinta gargaarka",
+    "Confirm routes, shelter access and assistance needs with local authorities. A map colour does not establish a safe route.": "Hay'adaha deegaanka kala hubi waddooyinka, in hoyga la gaari karo iyo baahiyaha gargaarka. Midabka khariidaddu ma caddaynayo in waddo ammaan tahay.",
+    "Inspect low-lying areas and water layers ↗": "Eeg dhulka hooseeya iyo lakabyada muujinaya biyaha ↗",
+    "OBSERVATIONS & SOURCE QUALITY": "WAXA LA ARKAY IYO TAYADA ILAHA XOGTA",
+    "What the evidence supports": "Waxa caddeyntu muujinayso",
+    "Dates matter · coverage is incomplete": "Taariikhuhu waa muhiim · xogtu si buuxda uma daboolayso goobaha oo dhan",
+    "Dated water observation": "Biyo la arkay oo taariikh leh",
+    "City classification unknown": "Xaaladda biyaha magaalada lama go'aamin",
+    "Dated observation product unavailable": "Xogta indha-indhaynta ee taariikhda leh lama heli karo",
+    "older than 2 days": "Waxay ka weyn tahay 2 maalmood",
+    "stale metadata": "Faahfaahinta xogtu waa duug",
+    "Inspect a point & quality mask ↗": "Eeg goob iyo lakabka tayada xogta ↗",
+    "Matched river observation": "Cabbirka webiga ee magaaladan lala xiriiriyey",
+    "Level unknown": "Heerka biyaha lama hayo",
+    "No matched city gauge": "Ma jiro saldhig cabbir oo magaaladan lala xiriiriyey",
+    "old or unavailable feed": "Xogtu waa duug ama lama heli karo",
+    "Use rainfall, terrain and field reports for local drainage context.": "Xogta roobka, qaabka dhulka iyo warbixinnada goobta u adeegso fahamka biyo-mareennada deegaanka.",
+    "A river level does not map city inundation.": "Heerka biyaha webiga lagama go’aamin karo baaxadda dhulka magaalada ee fatahaaddu daboolayso.",
+    "Threshold ordering invalid; no risk comparison inferred.": "Kala-horraynta xadadka heerarka sax ma aha; lama sameyn isbarbardhig khatar.",
+    "Read river source ↗": "Akhri isha xogta webiga ↗",
+    "Copernicus acquisitions": "Sawirrada uu qaaday Copernicus",
+    "Last known catalogue": "Buugga xogta ee ugu dambeeyey ee la helay",
+    "Catalogue partly available": "Buugga xogta qayb ahaan ayaa la heli karaa",
+    "Catalogue connected": "Xiriirka buugga xogta wuu shaqaynayaa",
+    "Catalogue unavailable": "Buugga xogta lama heli karo",
+    "Radar": "Raadaar",
+    "Optical": "Sawir iftiin ku salaysan",
+    "No acquisition returned": "Sawir la qaaday lama helin",
+    "Scene-wide optical cloud cover unknown": "Boqolleyda daruuraha daboolaya sawirka iftiinka ku salaysan oo dhan lama hayo",
+    "Catalogue footprints and cloud percentages do not establish local flooding.": "Xuduudaha goobaha sawirradu daboolayaan iyo boqolleyda daruuruhu ma caddaynayaan fatahaadda deegaanka.",
+    "ground may be obscured": "Dhulka waxaa qarin kara daruuro",
+    "Open satellite evidence ↗": "Fur caddeynta dayax-gacmeedka ↗",
+    "Local action tracker": "Diiwaanka hawlaha qalabkan",
+    "Planning notes for this city · this device": "Qoraallada qorshaynta magaaladan · qalabkan",
+    "Export CSV ↓": "Soo dejiso CSV ↓",
+    "changes may not survive closing this page.": "Isbeddelladu way lumi karaan marka boggan la xiro.",
+    "Saved only in this browser on this device. Owners are text labels; adding an owner does not notify them.": "Waxaa lagu kaydiyaa biraawsarkan iyo qalabkan oo keliya. Magacyada dadka masuulka ah waa qoraal keliya; magacaabidda qof masuul ah ogeysiis uma dirto.",
+    "No local actions yet. Add a task, owner and due date above.": "Weli hawlo laguma diiwaangelin qalabkan. Kor ku dar hawl, cidda masuulka ka ah iyo taariikhda la rabo in la dhammaystiro.",
+    "Local action status is a planning record, not proof that a service or response is operational.": "Xaaladda hawsha ee qalabkan waa diiwaan qorshayn; ma caddaynayso in adeeg ama gurmad uu shaqaynayo.",
+    "Community report triage": "Kala-hormarinta warbixinnada bulshada",
+    "City observations from the last 7 days": "Waxa magaalada lagu arkay 7-dii maalmood ee u dambeeyey",
+    "Public feed": "Xogta dadweynaha",
+    "Connecting": "Xogta ayaa lagu xirmayaa",
+    "Last known / unavailable": "Xogtii ugu dambaysay ee la helay / lama heli karo",
+    "Impact counts are claims from individual reports. They may overlap and are not summed. “Checked locally” records your review stage; it does not verify a report or change its public status.": "Tirada waxyeelladu waa sheegashooyin ka yimid warbixinno shakhsiyeed. Tirooyinku way is-dulsaari karaan, lamana isku daro. “Qalabkan dib loogu eegay” waxay diiwaangelisaa marxaladda dib-u-eegistaada; ma xaqiijiso warbixinta, mana beddesho xaaladdeeda dadweynaha.",
+    "No reports returned for this city with an observation time in the last 7 days.": "Lama helin warbixin magaaladan ku saabsan oo waqtiga wax la arkay uu ku beegan yahay 7-dii maalmood ee u dambeeyey.",
+    "Recent city reports are unavailable or still connecting.": "Warbixinnada dhowaan laga soo gudbiyey magaalada lama heli karo ama weli xogtooda ayaa lagu xirmayaa.",
+    "This feed contains loaded reports and may not cover every incident.": "Xogtan waxay ka kooban tahay warbixinnaha la soo qaaday, waxaana laga yaabaa inaanay daboolin dhacdo kasta.",
+    "Open the city report board ↗": "Fur bogga warbixinnada magaalada ↗",
+    "For emergencies and support, contact local government offices or the relevant authority in your area. This dashboard supports situational review and planning; it does not dispatch help or issue official warnings.": "Xaaladaha degdegga ah iyo marka aad taageero u baahan tahay, la xiriir xafiisyada dawladda hoose ama hay’adda ay arrintu khusayso ee deegaankaaga. Boggan maamulka wuxuu taageeraa dib-u-eegista xaaladda iyo qorsheynta; ma diro gurmad, mana soo saaro digniino rasmi ah.",
+    "Export downloaded. The briefing includes source limitations and unverified report labels.": "Faylka waa la soo dejiyey. Warbixinta kooban waxay xusaysaa xaddidaadaha ilaha xogta, waxayna calaamadisaa warbixinnada aan la xaqiijin.",
+    "This browser could not download the export. Try the dashboard in a current browser.": "Biraawsarkan ma soo dejin karin faylka. Ku tijaabi bogga biraawsar cusub.",
+    "Local action storage is unavailable.": "Kaydinta hawlaha qalabkan lama heli karo.",
+    "The local change could not be saved.": "Isbeddelka qalabkan laguma kaydin karin.",
+    "Confirm removal": "Xaqiiji ka saarista",
+    "Click Confirm removal again to remove this local action.": "Mar kale taabo Xaqiiji ka saarista si aad u tirtirto hawshan qalabkan ku kaydsan.",
+    "Local action removed.": "Hawsha qalabkan waa laga saaray.",
+    "Local action stage updated.": "Marxaladda hawsha qalabkan waa la cusboonaysiiyey.",
+    "Review stage saved on this device. The public report remains unverified.": "Marxaladda dib-u-eegista waxaa lagu kaydiyey qalabkan. Warbixinta dadweynuhu weli lama xaqiijin.",
+    "Use an action title of 3–160 characters.": "Isticmaal cinwaan hawleed ka kooban 3–160 xaraf.",
+    "Use an owner or team name of up to 100 characters.": "Isticmaal magaca qofka ama kooxda masuulka ah oo aan ka badnayn 100 xaraf.",
+    "Use a valid due date, or leave it blank.": "Geli taariikh sax ah oo hawsha lagu dhammaystirayo, ama ka tag bannaan.",
+    "Local action updated.": "Hawsha qalabkan waa la cusboonaysiiyey.",
+    "Local action added. No message was sent to the named owner.": "Hawsha waxaa lagu daray qalabkan. Farriin looma dirin qofka masuulka ah ee la magacaabay.",
+    "Choose a supported city.": "Dooro magaalo liiska ku jirta.",
+    "Due date must be a valid YYYY-MM-DD date.": "Taariikhda dhammaystirku waa inay sax tahay oo qaabkeedu yahay YYYY-MM-DD.",
+    "Saved timestamp is invalid.": "Waqtiga la kaydiyey sax ma aha.",
+    "Browser storage is unavailable.": "Kaydka biraawsarka lama heli karo.",
+    "Browser storage did not save these changes.": "Kaydka biraawsarku ma kaydin isbeddelladan.",
+    "Browser storage is unavailable or full. Dashboard changes are kept in memory and may be lost when this page closes.": "Kaydka biraawsarka lama heli karo ama wuu buuxaa. Isbeddellada boggan waxaa lagu hayaa xusuusta ku meel gaarka ah, wayna lumi karaan marka boggan la xiro.",
+    "Saved dashboard data is too large.": "Xogta bogga ee la kaydiyey aad bay u badan tahay.",
+    "Saved dashboard version is unsupported.": "Nooca xogta bogga ee la kaydiyey lama taageero.",
+    "Saved city is unsupported.": "Magaalada la kaydiyey lama taageero.",
+    "Saved dashboard entries are invalid.": "Diiwaannada bogga ee la kaydiyey sax ma aha.",
+    "Saved dashboard contains too many reviews.": "Xogta bogga ee la kaydiyey waxaa ku jira dib-u-eegisyo aad u badan.",
+    "Saved action identity is invalid.": "Aqoonsiga hawsha la kaydiyey sax ma aha.",
+    "Saved action timestamps are invalid.": "Waqtiyada hawsha la kaydiyey sax ma aha.",
+    "Saved review identity is duplicated.": "Aqoonsiga dib-u-eegista la kaydiyey ayaa soo noqnoqday.",
+    "Saved dashboard data is invalid and was ignored. Add a new action to start fresh on this device.": "Xogta bogga ee la kaydiyey sax ma aha, waana la iska dhaafay. Ku dar hawl cusub si aad qalabkan dib uga bilowdo.",
+    "Browser storage is unavailable. Dashboard changes are kept in memory and may be lost when this page closes.": "Kaydka biraawsarka lama heli karo. Isbeddellada boggan waxaa lagu hayaa xusuusta ku meel gaarka ah, wayna lumi karaan marka boggan la xiro.",
+    "This action was not found in the selected city.": "Hawshan lagama helin magaalada la doortay.",
+    "Add latitude and longitude inside the Somalia map area before loading a forecast.": "Ka hor inta aadan soo qaadin saadaasha, ku dar loolka iyo dhigta oo ku jira aagga khariidadda Soomaaliya.",
+    "Weather dates must use Somalia time (UTC+3).": "Taariikhaha cimiladu waa inay adeegsadaan waqtiga Soomaaliya (UTC+3).",
+    "River discharge dates must use UTC.": "Taariikhaha qulqulka biyaha webigu waa inay adeegsadaan UTC.",
+    "Forecast dates are missing or invalid.": "Taariikhaha saadaashu way maqan yihiin ama waa khaldan yihiin.",
+    "Rainfall units must be millimetres.": "Halbeegga roobku waa inuu ahaadaa millimitir.",
+    "River discharge units must be cubic metres per second.": "Halbeegga qulqulka biyaha webigu waa inuu ahaadaa mitir saddex-jibbaaran ilbiriqsigiiba (m³/s).",
+    "City storage is unavailable.": "Kaydinta magaalooyinka lama heli karo.",
+    "Saved on this device; separate from the monitored 30 cities.": "Waxaa lagu kaydiyey qalabkan; waa ka gooni 30-ka magaalo ee lala socdo.",
+    "Memory only: city storage is unavailable. Keep this page open; additions will be lost after reload.": "Xusuusta ku meelgaarka ah oo keliya: kaydinta magaalooyinka lama heli karo. Boggan furnaantiisa sii hay; magaalooyinka lagu daray way lumi doonaan marka bogga dib loo cusboonaysiiyo.",
+    "Flood outlook presentation is unavailable. Please reload the app.": "Muuqaalka saadaasha hordhaca ah ee fatahaadda lama heli karo. Fadlan dib u cusboonaysii abka.",
+    "Rainfall is a screening signal; it does not establish flood depth or extent.": "Roobku waa tilmaame qiimeyn hordhac ah; ma caddeeyo qotada fatahaadda ama aagga ay gaarto.",
+    "Region not supplied": "Gobolka lama gelin",
+    "Additional location": "Goob dheeraad ah",
+    "Loading live outlook…": "Waxaa la soo qaadanayaa saadaasha ku salaysan xogta cusub…",
+    "Refresh 14-day outlook": "Cusboonaysii saadaasha hordhaca ah ee 14-ka maalmood",
+    "Load 14-day outlook": "Soo qaado saadaasha hordhaca ah ee 14-ka maalmood",
+    "Edit city": "Wax ka beddel magaalada",
+    "Add coordinates": "Ku dar isku-duwayaasha goobta",
+    "Keep city": "Hay magaalada",
+    "Remove this device’s saved city?": "Ma laga saaraa magaalada qalabkan ku kaydsan?",
+    "Add coordinates to load an outlook. Unknown coordinates remain unknown.": "Ku dar isku-duwayaasha goobta si loo soo qaado saadaasha. Isku-duwayaasha aan la hayn waxay ahaanayaan xog aan la hayn.",
+    "No additional cities yet": "Weli magaalooyin dheeraad ah ma jiraan",
+    "Save a Somali city below. The original 30-city watchlist stays separate.": "Hoos ku kaydi magaalo Soomaaliyeed. Liiska asalka ah ee 30-ka magaalo waa ka gooni.",
+    "The source could not produce this forecast.": "Isha xogtu ma soo saari karin saadaashan.",
+    "Latitude and longitude are needed to load an outlook.": "Loolka iyo dhigta ayaa loo baahan yahay si loo soo qaado saadaasha.",
+    "Source request timed out. Retry the outlook.": "Waqtigii loo qabtay codsiga isha xogta ayaa dhammaaday. Mar kale isku day inaad soo qaado saadaasha.",
+    "Find coordinates": "Raadi isku-duwayaasha goobta",
+    "Enter at least two letters of a city name to find coordinates.": "Geli ugu yaraan laba xaraf oo magaca magaalada ah si loo raadiyo isku-duwayaasha goobta.",
+    "Finding coordinates…": "Isku-duwayaasha goobta ayaa la raadinayaa…",
+    "Searching Somali populated places…": "Goobaha Soomaaliya ee dadku deggan yahay ayaa la raadinayaa…",
+    "Choose the matching city. Selecting coordinates does not save it yet.": "Dooro magaalada ku habboon. Doorashada isku-duwayaasha goobta weli ma kaydinayso magaalada.",
+    "Select location": "Dooro goobta",
+    "No matching Somali populated place was returned. Try another spelling or enter coordinates manually.": "Lama helin goob Soomaaliya ku taal oo dadku deggan yahay oo ku habboon raadinta. Isku day higgaad kale ama gacanta ku geli isku-duwayaasha goobta.",
+    "Coordinate lookup is unavailable. You can enter coordinates manually.": "Raadinta isku-duwayaasha goobta lama heli karo. Gacanta ayaad ku geli kartaa isku-duwayaasha goobta.",
+    "City lookup timed out.": "Waqtigii loo qabtay raadinta magaalada ayaa dhammaaday.",
+    "Add a Somali city": "Ku dar magaalo Soomaaliyeed",
+    "＋ Add city": "＋ Ku dar magaalo",
+    "Add city": "Ku dar magaalo",
+    "Save changes": "Kaydi isbeddellada",
+    "Review the saved city and save changes.": "Dib u eeg magaalada la kaydiyey, dabadeed kaydi isbeddellada.",
+    "City storage is unavailable. Reload the app and try again.": "Kaydinta magaalooyinka lama heli karo. Dib u cusboonaysii abka oo mar kale isku day.",
+    "Supply both latitude and longitude, or leave both fields blank.": "Geli loolka iyo dhigta labadaba, ama labada meeloodba bannaan ka tag.",
+    "The monitored 30 cities are unchanged.": "30-ka magaalo ee lala socdo isma beddelin.",
+    "This saved city could not be removed.": "Magaaladan la kaydiyey lagama saari karin.",
+    "Native dialog is unavailable.": "Sanduuqa wada-hadalka ee biraawsarka lama heli karo.",
+    "Local planning locations": "Goobaha qorshaynta ee qalabkan",
+    "Additional cities": "Magaalooyin dheeraad ah",
+    "Close additional cities": "Xir magaalooyinka dheeraadka ah",
+    "Keep locations beyond the 30-city watchlist here. Load a live two-week planning outlook for each location with coordinates.": "Halkan ku kaydi goobaha ka baxsan liiska dabagalka 30-ka magaalo. Goob kasta oo leh isku-duwayaasha goobta, u soo qaado saadaasha qorsheynta ee labada toddobaad ee ku salaysan xogta cusub.",
+    "Your additional-city list": "Liiskaaga magaalooyinka dheeraadka ah",
+    "Find a city’s coordinates or enter them manually. You can save its name first and add coordinates later. Names, common spelling variants and nearby coordinates are checked for duplicates against this list and the original 30 cities.": "Raadi isku-duwayaasha magaalada ama gacanta ku geli. Marka hore waad kaydin kartaa magaceeda, dabadeedna waad ku dari kartaa isku-duwayaasha. Magacyada, higgaadaha caanka ah ee isku magaca ah iyo isku-duwayaasha isu dhow waxaa laga hubiyaa inay hore ugu jiraan liiskan ama 30-ka magaalo ee asalka ah.",
+    "City name": "Magaca magaalada",
+    "e.g. A city outside the watchlist": "Tusaale: Magaalo aan ku jirin liiska la socodka",
+    "Region": "Gobolka",
+    "(optional)": "(ikhtiyaari)",
+    "Latitude": "Loolka",
+    "Longitude": "Dhigta",
+    "Decimal degrees": "Darajooyin jajab tobanle ah",
+    "Leave both coordinates blank, or supply both. Map area: latitude −2 to 13°, longitude 40 to 52°. This bounds check does not verify an administrative boundary. Coordinates locate one forecast point; they are not city boundaries.": "Labada isku-duweba bannaan ka tag, ama labadaba geli. Aagga khariidadda: loolka −2 ilaa 13°, dhigta 40 ilaa 52°. Hubinta xadadkani ma xaqiijinayso xuduud maamul. Isuduweyaashu waxay tilmaamaan hal goob oo saadaal laga bixiyo; ma aha xuduudaha magaalada.",
+    "Planning context": "Macluumaadka qorshaynta",
+    "Rainfall uses Somalia time (EAT). GloFAS river discharge uses UTC and a model grid cell; a matched local gauge is unavailable. These are model estimates, not flood-depth, impact or evacuation predictions. Official city warnings, community reporting and satellite coverage are not connected for additional locations.": "Xogta roobku waxay isticmaashaa waqtiga Soomaaliya (EAT). Xogta qulqulka webiga ee GloFAS waxay isticmaashaa UTC iyo unug ka mid ah shabakadda moodellada; xarun cabbir oo deegaanka lala xiriiriyay lama hayo. Kuwani waa qiyaasaha moodellada, mana aha saadaal qoto-dheeraanta fatahaadda, waxyeelladeeda ama daadgureynta. Digniinaha rasmiga ah ee magaalooyinka, warbixinnaha bulshada iyo daboolidda xogta dayax-gacmeedku kuma xirna goobaha dheeraadka ah.",
+    "City additions stay on this device. For emergency support, contact local government offices or the relevant authority.": "Magaalooyinka lagu daray waxay ku kaydsan yihiin qalabkan oo keliya. Marka aad u baahan tahay taageero degdeg ah, la xiriir xafiisyada dawladda hoose ama hay’adda ay arrintu khusayso.",
+    "Coordinate lookup source ↗": "Isha raadinta isku-duwayaasha goobta ↗",
+    "City edit cancelled.": "Wax ka beddelka magaalada waa la joojiyey.",
+    "The 30-city watchlist has not loaded. Reload the page before adding a city.": "Liiska dabagalka 30-ka magaalo lama soo qaadin. Dib u cusboonaysii bogga ka hor inta aadan magaalo ku darin.",
+    "Enter both latitude and longitude as valid numbers, or leave both blank.": "Loolka iyo dhigta labadaba u geli tirooyin sax ah, ama labadaba bannaan ka tag.",
+    "Coordinates must be within the Somalia-area map bounds: latitude −2 to 13, longitude 40 to 52. These map bounds do not verify a city or national boundary.": "Isuduweyaashu waa inay ku jiraan xadadka khariidadda aagga Soomaaliya: loolka −2 ilaa 13, dhigta 40 ilaa 52. Xadadka khariidaddu ma xaqiijiyaan xuduud magaalo ama xuduud qaran.",
+    "Saved city ID is invalid.": "Aqoonsiga magaalada la kaydiyey sax ma aha.",
+    "Saved city date is invalid.": "Taariikhda magaalada la kaydiyey sax ma aha.",
+    "Browser storage is unavailable or full. Additional cities are kept in memory and may be lost when this page closes.": "Kaydka biraawsarka lama heli karo ama wuu buuxaa. Magaalooyinka dheeraadka ah waxaa lagu hayaa xusuusta ku meel gaarka ah, wayna lumi karaan marka boggan la xiro.",
+    "Saved additional-city data is too large.": "Xogta magaalooyinka dheeraadka ah ee la kaydiyey aad bay u badan tahay.",
+    "Saved additional-city list is unsupported.": "Liiska magaalooyinka dheeraadka ah ee la kaydiyey lama taageero.",
+    "Saved list exceeds its limit.": "Liiska la kaydiyey wuxuu ka badan yahay xadka loo oggol yahay.",
+    "Saved city is a duplicate.": "Magaalada la kaydiyey hore ayay liiska ugu jirtay.",
+    "The saved additional-city list could not be read. New entries will remain in memory until browser storage can save them.": "Liiska magaalooyinka dheeraadka ah ee la kaydiyey lama akhrin karin. Gelinnada cusub waxay ku jiri doonaan xusuusta ku meel gaarka ah ilaa kaydka biraawsarku kaydin karo.",
+    "The 30-city watchlist has not loaded. Reload the page before editing a city.": "Liiska dabagalka 30-ka magaalo lama soo qaadin. Dib u cusboonaysii bogga ka hor inta aadan magaalo wax ka beddelin.",
+    "This additional city was not found.": "Magaaladan dheeraadka ah lama helin.",
+    "30 monitored cities": "30 magaalo oo lala socdo",
+    "＋ Additional cities": "＋ Magaalooyin dheeraad ah",
+    "Action must be an object.": "Hawsha waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Action cannot contain inherited fields.": "Hawsha ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Action contains an unsupported field.": "Hawsha waxaa ku jira qayb xogeed aan la taageerin.",
+    "Owner must be an object.": "Qofka masuulka ah waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Owner cannot contain inherited fields.": "Qofka masuulka ah ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Owner contains an unsupported field.": "Qofka masuulka ah waxaa ku jira qayb xogeed aan la taageerin.",
+    "Action update must be an object.": "Wax ka beddelka hawsha waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Action update cannot contain inherited fields.": "Wax ka beddelka hawsha ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Action update contains an unsupported field.": "Wax ka beddelka hawsha waxaa ku jira qayb xogeed aan la taageerin.",
+    "Saved dashboard must be an object.": "Bogga la kaydiyey waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Saved dashboard cannot contain inherited fields.": "Bogga la kaydiyey ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Saved dashboard contains an unsupported field.": "Bogga la kaydiyey waxaa ku jira qayb xogeed aan la taageerin.",
+    "Saved cities must be an object.": "Magaalooyinka la kaydiyey waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Saved cities cannot contain inherited fields.": "Magaalooyinka la kaydiyey ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Saved cities contains an unsupported field.": "Magaalooyinka la kaydiyey waxaa ku jira qayb xogeed aan la taageerin.",
+    "Saved city must be an object.": "Magaalada la kaydiyey waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Saved city cannot contain inherited fields.": "Magaalada la kaydiyey ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Saved city contains an unsupported field.": "Magaalada la kaydiyey waxaa ku jira qayb xogeed aan la taageerin.",
+    "Saved action must be an object.": "Hawsha la kaydiyey waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Saved action cannot contain inherited fields.": "Hawsha la kaydiyey ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Saved action contains an unsupported field.": "Hawsha la kaydiyey waxaa ku jira qayb xogeed aan la taageerin.",
+    "Saved report review must be an object.": "Dib-u-eegista warbixinta ee la kaydiyey waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Saved report review cannot contain inherited fields.": "Dib-u-eegista warbixinta ee la kaydiyey ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Saved report review contains an unsupported field.": "Dib-u-eegista warbixinta ee la kaydiyey waxaa ku jira qayb xogeed aan la taageerin.",
+    "City name must be an object.": "Magaca magaalada waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "City name cannot contain inherited fields.": "Magaca magaalada ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "City name contains an unsupported field.": "Magaca magaalada waxaa ku jira qayb xogeed aan la taageerin.",
+    "Region must be an object.": "Gobolka waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Region cannot contain inherited fields.": "Gobolka ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Region contains an unsupported field.": "Gobolka waxaa ku jira qayb xogeed aan la taageerin.",
+    "Saved list must be an object.": "Liiska la kaydiyey waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "Saved list cannot contain inherited fields.": "Liiska la kaydiyey ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "Saved list contains an unsupported field.": "Liiska la kaydiyey waxaa ku jira qayb xogeed aan la taageerin.",
+    "City must be an object.": "Magaalada waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "City cannot contain inherited fields.": "Magaalada ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "City contains an unsupported field.": "Magaalada waxaa ku jira qayb xogeed aan la taageerin.",
+    "City update must be an object.": "Wax ka beddelka magaalada waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
+    "City update cannot contain inherited fields.": "Wax ka beddelka magaalada ma yeelan karto qaybo laga dhaxlay xog kale.",
+    "City update contains an unsupported field.": "Wax ka beddelka magaalada waxaa ku jira qayb xogeed aan la taageerin.",
+    "Action must be plain text without control characters.": "Cinwaanka hawsha waa inuu ahaadaa qoraal caadi ah oo aan lahayn calaamado xakamayn.",
+    "Action must contain 1 to 160 characters.": "Cinwaanka hawsha waa inuu ka kooban yahay 1 ilaa 160 xaraf.",
+    "Action must contain at most 160 characters.": "Cinwaanka hawsha waa inuusan ka badnayn 160 xaraf.",
+    "Owner must be plain text without control characters.": "Magaca qofka masuulka ah waa inuu ahaadaa qoraal caadi ah oo aan lahayn calaamado xakamayn.",
+    "Owner must contain 1 to 100 characters.": "Magaca qofka masuulka ah waa inuu ka kooban yahay 1 ilaa 100 xaraf.",
+    "Owner must contain at most 100 characters.": "Magaca qofka masuulka ah waa inuusan ka badnayn 100 xaraf.",
+    "City name must be plain text without markup or control characters.": "Magaca magaalada waa inuu ahaadaa qoraal caadi ah oo aan lahayn summado HTML ama calaamado xakamayn.",
+    "City name must contain 2 to 80 characters and include a letter.": "Magaca magaalada waa inuu ka kooban yahay 2 ilaa 80 xaraf, kuna jiraa ugu yaraan hal xaraf oo alifbeetada ah.",
+    "City name must contain at most 80 characters.": "Magaca magaalada waa inuusan ka badnayn 80 xaraf.",
+    "Region must be plain text without markup or control characters.": "Magaca gobolka waa inuu ahaadaa qoraal caadi ah oo aan lahayn summado HTML ama calaamado xakamayn.",
+    "Region must contain 2 to 80 characters and include a letter.": "Magaca gobolka waa inuu ka kooban yahay 2 ilaa 80 xaraf, kuna jiraa ugu yaraan hal xaraf oo alifbeetada ah.",
+    "Region must contain at most 80 characters.": "Magaca gobolka waa inuusan ka badnayn 80 xaraf.",
+    "Choose a valid priority.": "Dooro heer mudnaan oo sax ah.",
+    "Choose a valid action status.": "Dooro xaalad hawleed oo sax ah.",
+    "Choose a valid review status.": "Dooro xaalad dib-u-eegis oo sax ah.",
+    "Record ID is invalid.": "Aqoonsiga diiwaanka sax ma aha.",
+    "Report ID is invalid.": "Aqoonsiga warbixinta sax ma aha.",
+    "Record ID": "Aqoonsiga diiwaanka",
+    "Report ID": "Aqoonsiga warbixinta",
+    "Saved dashboard": "Bogga la kaydiyey",
+    "Saved cities": "Magaalooyinka la kaydiyey",
+    "Saved city": "Magaalada la kaydiyey",
+    "Saved action": "Hawsha la kaydiyey",
+    "Saved report review": "Dib-u-eegista warbixinta ee la kaydiyey",
+    "Action update": "Wax ka beddelka hawsha",
+    "Saved list": "Liiska la kaydiyey",
+    "City update": "Wax ka beddelka magaalada",
+    "Independent mayor planning view. This is not a government dashboard.": "Tani waa bog qorsheyn oo madaxa bannaan oo duqa magaalada loogu talagalay. Ma aha bog maamul oo dawladdu leedahay.",
+    "Local actions and review stages are saved on this device and are not sent to authorities.": "Hawlaha iyo marxaladaha dib-u-eegista waxaa lagu kaydiyaa qalabkan, loomana diro hay'adaha.",
+    "Rainfall screening: watch ≥10 mm/day; elevated ≥25 mm/day. App thresholds, not flood probabilities.": "Qiimeynta hordhaca ah ee roobka: la soco ≥10 mm/maalin; roob badan ≥25 mm/maalin. Kuwani waa xadadka abka, ma aha suurtagalnimada fatahaadda.",
+    "NEXT 3 DAYS": "3-DA MAALMOOD EE SOO SOCDA",
+    "WARNINGS": "DIGNIINAHA",
+    "OBSERVATIONS": "WAXA LA ARKAY",
+    "COMMUNITY REPORTS — UNVERIFIED": "WARBIXINNADA BULSHADA — AAN LA XAQIIJIN",
+    "LOCAL ACTIONS — DEVICE ONLY": "HAWLAHA — QALABKAN OO KELIYA",
+    "Confirm field conditions and coordinate with local authorities. Review safe access and drainage; ask qualified engineers to assess any diversion and downstream impacts.": "Xaqiiji xaaladda dhabta ah ee goobta, lana shaqee hay'adaha deegaanka. Dib u eeg in goobaha si ammaan ah loo gaari karo iyo biyo-mareennada; injineerro aqoon leh ka codso inay qiimeeyaan leexin kasta oo biyaha lagu sameeyo iyo saameynteeda meelaha biyuhu u sii socdaan.",
+    "For emergencies and support, contact local government offices or the relevant authority in your area.": "Xaaladaha degdegga ah iyo marka aad taageero u baahan tahay, la xiriir xafiisyada dawladda hoose ama hay’adda ay arrintu khusayso ee deegaankaaga.",
+    "unavailable": "lama heli karo",
+    "last known / stale": "xogtii ugu dambaysay ee la helay / xog duug ah",
+    "fresh forecast": "saadaasha hadda la helay",
+    "fresh retrieval": "xog dhowaan la helay",
+    "unavailable or stale; active notices withheld": "lama heli karo ama waa duug; ogeysiisyada hadda shaqaynaya lama muujin",
+    "partly available": "qayb ahaan ayaa la heli karaa",
+    "connected": "waa ku xiran yahay",
+    "level unknown": "heerka biyaha lama hayo",
+    "Matched gauge: none": "Saldhig cabbir oo lala xiriiriyey: ma jiro",
+    "unavailable or stale; retained reports are last known": "lama heli karo ama waa duug; warbixinnada la hayo waa kuwii ugu dambeeyey ee la helay"
+  },
+  "patterns": [
+    {
+      "en": "{0} planning desk",
+      "so": "Xarunta qorshaynta {0}"
+    },
+    {
+      "en": "{0} · source gives date only",
+      "so": "{0} · Isha xogtu waxay bixisaa taariikhda oo keliya"
+    },
+    {
+      "en": "{0}% rain chance",
+      "so": "Suurtagalnimada roobka: {0}%"
+    },
+    {
+      "en": "{0}°C daily high",
+      "so": "Heerkulka maalinta ugu sarreeya: {0}°C"
+    },
+    {
+      "en": "low priority",
+      "so": "Mudnaan hoose"
+    },
+    {
+      "en": "normal priority",
+      "so": "Mudnaan caadi ah"
+    },
+    {
+      "en": "high priority",
+      "so": "Mudnaan sare"
+    },
+    {
+      "en": "Edit {0}",
+      "so": "Wax ka beddel {0}"
+    },
+    {
+      "en": "Status for {0}",
+      "so": "Xaaladda {0}"
+    },
+    {
+      "en": "Due {0}",
+      "so": "Taariikhda dhammaystirka: {0}"
+    },
+    {
+      "en": "{0} · Due {1}",
+      "so": "{0} · Taariikhda dhammaystirka: {1}"
+    },
+    {
+      "en": "{0} · No due date",
+      "so": "{0} · Taariikh dhammaad lama cayimin"
+    },
+    {
+      "en": "Observed {0}",
+      "so": "La arkay: {0}"
+    },
+    {
+      "en": "Open report · {0} media",
+      "so": "Fur warbixinta · {0} sawir ama muuqaal"
+    },
+    {
+      "en": "Local review stage for report {0}",
+      "so": "Marxaladda dib-u-eegista ee qalabkan ee warbixinta {0}"
+    },
+    {
+      "en": "Report {0}",
+      "so": "Warbixinta {0}"
+    },
+    {
+      "en": "{0} Somalia-wide notices separately; city extent may be unspecified",
+      "so": "{0} ogeysiis oo Soomaaliya oo dhan khuseeya ayaa gooni loo muujiyey; meelaha magaalada ee ay khuseeyaan waxaa dhici karta inaan la cayimin"
+    },
+    {
+      "en": "Forecast retrieved {0}. Confidence decreases further into the forecast.",
+      "so": "Saadaasha waxaa la helay {0}. Hubantidu way yaraataa marka saadaashu ka sii fogaato maanta."
+    },
+    {
+      "en": "Expires {0}",
+      "so": "Wuxuu dhacayaa {0}"
+    },
+    {
+      "en": "{0} Somalia-wide official notice",
+      "so": "{0} ogeysiis rasmi ah oo Soomaaliya oo dhan khuseeya"
+    },
+    {
+      "en": "{0} Somalia-wide official notices",
+      "so": "{0} ogeysiis oo rasmi ah oo Soomaaliya oo dhan khuseeya"
+    },
+    {
+      "en": "{0} source threshold reached. A river level does not map city inundation.",
+      "so": "Waxaa la gaaray xadka {0} ee isha xogta. Heerka biyaha webiga lagama go’aamin karo baaxadda dhulka magaalada ee fatahaaddu daboolayso.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0} source threshold reached. Threshold ordering invalid; no risk comparison inferred.",
+      "so": "Waxaa la gaaray xadka {0} ee isha xogta. Kala-horraynta xadadka heerarka sax ma aha; lama sameyn isbarbardhig khatar.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0}% scene-wide optical cloud cover. Catalogue footprints and cloud percentages do not establish local flooding.",
+      "so": "Daruuro ayaa daboolaya {0}% sawirka iftiinka ku salaysan oo dhan. Xuduudaha goobaha sawirradu daboolayaan iyo boqolleyda daruuruhu ma caddaynayaan fatahaadda deegaanka."
+    },
+    {
+      "en": "{0}% scene-wide optical cloud cover · ground may be obscured. Catalogue footprints and cloud percentages do not establish local flooding.",
+      "so": "Daruuro ayaa daboolaya {0}% sawirka iftiinka ku salaysan oo dhan · dhulka waxaa qarin kara daruuro. Xuduudaha goobaha sawirradu daboolayaan iyo boqolleyda daruuruhu ma caddaynayaan fatahaadda deegaanka."
+    },
+    {
+      "en": "Scene-wide optical cloud cover unknown. Catalogue footprints and cloud percentages do not establish local flooding.",
+      "so": "Boqolleyda daruuraha daboolaya sawirka iftiinka ku salaysan oo dhan lama hayo. Xuduudaha goobaha sawirradu daboolayaan iyo boqolleyda daruuruhu ma caddaynayaan fatahaadda deegaanka."
+    },
+    {
+      "en": "{0} · changes may not survive closing this page.",
+      "so": "{0} · Isbeddelladu way lumi karaan marka boggan la xiro.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Showing 12 of {0} recent loaded reports.",
+      "so": "Waxaa la muujiyey 12 ka mid ah {0} warbixinood oo dhowaan la soo qaaday."
+    },
+    {
+      "en": "Feed retrieved {0}. This feed contains loaded reports and may not cover every incident.",
+      "so": "Xogta waxaa la helay {0}. Waxay ka kooban tahay warbixinnaha la soo qaaday, mana dabooli karto dhacdo kasta."
+    },
+    {
+      "en": "Feed retrieved {0}. The feed is truncated; the recent count includes only returned reports.",
+      "so": "Xogta waxaa la helay {0}. Xogta la soo celiyey waa kooban tahay; tirada warbixinnada dhowaan la helay waxaa ku jira oo keliya kuwa la soo celiyey."
+    },
+    {
+      "en": "Feed retrieved {0}. The feed is truncated ({1} total city reports); the recent count includes only returned reports.",
+      "so": "Xogta waxaa la helay {0}. Xogta la soo celiyey waa kooban tahay (wadarta warbixinnada magaalada: {1}); tirada warbixinnada dhowaan la helay waxaa ku jira oo keliya kuwa la soo celiyey."
+    },
+    {
+      "en": "{0} additional city",
+      "so": "{0} magaalo dheeraad ah"
+    },
+    {
+      "en": "{0} additional cities",
+      "so": "{0} magaalo oo dheeraad ah"
+    },
+    {
+      "en": "{0} · Coordinates not supplied",
+      "so": "{0} · Isku-duwayaasha goobta lama gelin"
+    },
+    {
+      "en": "Source returned HTTP {0}.",
+      "so": "Isha xogtu waxay soo celisay HTTP {0}."
+    },
+    {
+      "en": "Invalid forecast field: {0}",
+      "so": "Qaybta xogta saadaasha ee aan saxda ahayn: {0}"
+    },
+    {
+      "en": "Coordinates selected for {0}. Review them, then select Add city.",
+      "so": "Isku-duwayaasha {0} waa la doortay. Dib u eeg, dabadeed dooro Ku dar magaalo."
+    },
+    {
+      "en": "{0} updated in the additional-city list. The monitored 30 cities are unchanged.",
+      "so": "{0} waxaa lagu cusboonaysiiyey liiska magaalooyinka dheeraadka ah. 30-ka magaalo ee lala socdo isma beddelin."
+    },
+    {
+      "en": "{0} added to the additional-city list. The monitored 30 cities are unchanged.",
+      "so": "{0} waxaa lagu daray liiska magaalooyinka dheeraadka ah. 30-ka magaalo ee lala socdo isma beddelin."
+    },
+    {
+      "en": "{0} removed from this device.",
+      "so": "{0} waxaa laga saaray qalabkan."
+    },
+    {
+      "en": "{0} is already in the 30-city watchlist.",
+      "so": "{0} waxay hore ugu jirtaa liiska la socodka ee 30-ka magaalo."
+    },
+    {
+      "en": "{0} is already in the additional-city list.",
+      "so": "{0} waxay hore ugu jirtaa liiska magaalooyinka dheeraadka ah."
+    },
+    {
+      "en": "These coordinates are within 2 km of {0}, which is already in the 30-city watchlist. Choose its existing entry or check the location.",
+      "so": "Isku-duwayaashani waxay 2 km gudahood u jiraan {0}, oo hore ugu jirta liiska la socodka ee 30-ka magaalo. Dooro gelinteeda hore ama hubi goobta."
+    },
+    {
+      "en": "These coordinates are within 2 km of {0}, which is already in the additional-city list. Choose its existing entry or check the location.",
+      "so": "Isku-duwayaashani waxay 2 km gudahood u jiraan {0}, oo hore ugu jirta liiska magaalooyinka dheeraadka ah. Dooro gelinteeda hore ama hubi goobta."
+    },
+    {
+      "en": "{0} invalid or duplicate saved city was skipped. Review this additional-city list; the 30-city watchlist is unchanged.",
+      "so": "Waxaa la iska dhaafay {0} magaalo oo la kaydiyey oo aan sax ahayn ama hore liiska ugu jirtay. Dib u eeg liiskan magaalooyinka dheeraadka ah; liiska la socodka ee 30-ka magaalo isma beddelin."
+    },
+    {
+      "en": "{0} invalid or duplicate saved cities were skipped. Review this additional-city list; the 30-city watchlist is unchanged.",
+      "so": "Waxaa la iska dhaafay {0} magaalo oo la kaydiyey oo aan sax ahayn ama hore liiska ugu jiray. Dib u eeg liiskan magaalooyinka dheeraadka ah; liiska la socodka ee 30-ka magaalo isma beddelin."
+    },
+    {
+      "en": "This device has reached its {0}-additional-city limit. Remove an entry to add another.",
+      "so": "Qalabkani wuxuu gaaray xadka {0} magaalo oo dheeraad ah. Ka saar gelin si aad mid kale ugu darto."
+    },
+    {
+      "en": "This city has reached its {0}-action limit. Remove completed actions to add more.",
+      "so": "Magaaladani waxay gaartay xadka {0} hawlood. Ka saar hawlaha la dhammaystiray si aad kuwo kale ugu darto."
+    },
+    {
+      "en": "This device has reached its {0}-review limit.",
+      "so": "Qalabkani wuxuu gaaray xadka {0} dib-u-eegisood."
+    },
+    {
+      "en": "{0} m product",
+      "so": "Xog xallinteedu tahay {0} m"
+    },
+    {
+      "en": "Saved on this device; separate from the monitored 30 cities. {0}",
+      "so": "Waxaa lagu kaydiyey qalabkan; waa ka gooni 30-ka magaalo ee lala socdo. {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Memory only: city storage is unavailable. Keep this page open; additions will be lost after reload. {0}",
+      "so": "Xusuusta ku meelgaarka ah oo keliya: kaydinta magaalooyinka lama heli karo. Boggan furnaantiisa sii hay; magaalooyinka lagu daray way lumi doonaan marka bogga dib loo cusboonaysiiyo. {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Somalia El Nino Watch — {0} daily planning briefing",
+      "so": "Somalia El Nino Watch — warbixinta kooban ee qorshaynta maalinlaha ah ee {0}"
+    },
+    {
+      "en": "Generated: {0}",
+      "so": "La diyaariyey: {0}"
+    },
+    {
+      "en": "Forecast date selected: {0} (EAT)",
+      "so": "Taariikhda saadaasha ee la doortay: {0} (EAT)"
+    },
+    {
+      "en": "Today’s rain: {0}",
+      "so": "Roobka maanta: {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Today + next 2 days · peak daily rain: {0}",
+      "so": "Maanta iyo 2-da maalmood ee ku xiga · roobka maalinlaha ah ee ugu badan: {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Weather source: {0}; retrieved {1}",
+      "so": "Isha cimilada: {0}; xogta waxaa la helay {1}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Official notice source: {0}",
+      "so": "Isha ogeysiiska rasmiga ah: {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "City-specific active official notices: {0}",
+      "so": "Ogeysiisyada rasmiga ah ee hadda shaqaynaya ee magaaladan gaar u ah: {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Somalia-wide notices with city extent unspecified: {0}",
+      "so": "Ogeysiisyada Soomaaliya oo dhan khuseeya ee aan lagu cayimin meelaha magaalada ee ay khuseeyaan: {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "City satellite flood classification: unknown. {0}",
+      "so": "Kala-saaridda fatahaadda magaalada ee dayax-gacmeedka: xog aan la hayn. {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Dated water product: {0}; selected date {1} UTC",
+      "so": "Xogta biyaha ee taariikhda leh: {0}; taariikhda la doortay {1} UTC"
+    },
+    {
+      "en": "Copernicus catalogue: {0}",
+      "so": "Buugga xogta Copernicus: {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Latest Copernicus radar acquisition: {0}",
+      "so": "Sawirkii raadaarka Copernicus ee ugu dambeeyey: {0}"
+    },
+    {
+      "en": "Latest Copernicus optical acquisition: {0}; scene-wide cloud cover {1}",
+      "so": "Sawirkii iftiinka ku salaysan ee Copernicus ee ugu dambeeyey: {0}; daruuraha daboolaya guud ahaan sawirka: {1}",
+      "translate": [
+        1
+      ]
+    },
+    {
+      "en": "Matched gauge: {0}; {1}; observed {2}",
+      "so": "Xarunta cabbirka ee lala xiriiriyay: {0}; {1}; la arkay {2}",
+      "translate": [
+        1
+      ]
+    },
+    {
+      "en": "Report feed: {0}; retrieved {1}",
+      "so": "Xogta warbixinnada: {0}; waxaa la helay {1}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Recent loaded city reports: {0}. Individual impact claims may overlap and are not summed.",
+      "so": "Warbixinnaha magaalada ee dhowaan la soo qaaday: {0}. Isla saameyn ayaa lagu sheegan karaa dhowr warbixin, sidaas darteed tirooyinka lama isku daro.",
+      "translate": [
+        0
+      ]
+    }
+  ]
+}

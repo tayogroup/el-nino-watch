@@ -1,0 +1,91 @@
+{
+  "provider": "FAO Somalia Water and Land Information Management (SWALIM)",
+  "wmsUrl": "https://spatial.faoswalim.org/geoserver/ows",
+  "wfsUrl": "https://spatial.faoswalim.org/geoserver/ows",
+  "attribution": "FAO SWALIM; terrain susceptibility derived from Copernicus DEM GLO-30",
+  "verifiedAt": "2026-10-13T07:35:19Z",
+  "servicesDocumentationUrl": "https://spatial.faoswalim.org/developer/",
+  "license": "Dataset metadata identifies the licence as not_specified. Public view/download permissions are available; consult FAO SWALIM for reuse terms.",
+  "layers": {
+    "susceptibility": {
+      "name": "geonode:flood_susceptibility_class_30m_somalia_adm0",
+      "title": "Terrain flood susceptibility · 30 m",
+      "style": "flood_susceptibility_class_30m_somalia_adm0",
+      "sourceUrl": "https://spatial.faoswalim.org/catalogue/#/dataset/609",
+      "metadataUrl": "https://spatial.faoswalim.org/api/v2/datasets/609",
+      "dateLabel": "Static terrain screening · published 8 September 2026",
+      "publishedAt": "2026-09-08T11:19:00Z",
+      "updatedAt": "2026-09-08T11:23:53.832923Z",
+      "legendUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WMS&request=GetLegendGraphic&format=image/png&WIDTH=20&HEIGHT=20&LAYER=geonode:flood_susceptibility_class_30m_somalia_adm0&STYLE=flood_susceptibility_class_30m_somalia_adm0&version=1.3.0&legend_options=fontAntiAliasing:true;fontSize:12;forceLabels:on",
+      "description": "Terrain screening derived from Copernicus DEM GLO-30 using height above nearest drainage, slope, depression depth, flow routing and upstream contributing area. High classes identify locations to inspect. This is not observed flooding, a flood forecast, water depth, a return period or engineering design data.",
+      "featureInfoProperty": "PALETTE_INDEX",
+      "noDataValues": [255],
+      "bbox": [40.994166666666665, -1.665, 51.41305555555555, 11.985277777777778],
+      "verifiedGetMapUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WMS&request=GetMap&version=1.1.1&layers=geonode:flood_susceptibility_class_30m_somalia_adm0&styles=flood_susceptibility_class_30m_somalia_adm0&format=image/png&transparent=true&width=512&height=512&srs=EPSG:4326&bbox=45.1,4.6,45.5,5.0",
+      "verifiedFeatureInfoUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WMS&version=1.1.1&request=GetFeatureInfo&layers=geonode:flood_susceptibility_class_30m_somalia_adm0&query_layers=geonode:flood_susceptibility_class_30m_somalia_adm0&styles=flood_susceptibility_class_30m_somalia_adm0&srs=EPSG:4326&bbox=45.49,2.77,45.51,2.79&width=101&height=101&x=50&y=50&info_format=application/json"
+    },
+    "history": {
+      "name": "geonode:som_flood_prone_areas_merge_of_historical0",
+      "title": "Historical flood footprint · 2013–2023",
+      "style": "som_flood_prone_areas_merge_of_historical0",
+      "sourceUrl": "https://spatial.faoswalim.org/catalogue/#/dataset/295",
+      "metadataUrl": "https://spatial.faoswalim.org/api/v2/datasets/295",
+      "dateLabel": "Historical extents 2013–2023 · catalogue updated 17 June 2025",
+      "publishedAt": "2025-05-08T21:29:00Z",
+      "updatedAt": "2025-06-17T07:03:19.971894Z",
+      "legendUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WMS&request=GetLegendGraphic&format=image/png&WIDTH=20&HEIGHT=20&LAYER=geonode:som_flood_prone_areas_merge_of_historical0&STYLE=som_flood_prone_areas_merge_of_historical0&version=1.3.0&legend_options=fontAntiAliasing:true;fontSize:12;forceLabels:on",
+      "color": "#4a90e2",
+      "description": "Union of SWALIM historical flood extents: Deyr 2023, Gu 2021, Gu/Hagaa 2020, Gu/Deyr 2019, Gu/Deyr 2018, Gu 2016, Gu 2015 and Deyr 2013. Shows where flooding was mapped in those seasons; absence from the footprint does not prove safety, and the layer is not a current flood extent.",
+      "bbox": [40.99564999904828, -1.623307531917021, 48.34046489723727, 6.010755708009583],
+      "verifiedGetMapUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WMS&request=GetMap&version=1.1.1&layers=geonode:som_flood_prone_areas_merge_of_historical0&styles=som_flood_prone_areas_merge_of_historical0&format=image/png&transparent=true&width=512&height=512&srs=EPSG:4326&bbox=45.1,4.6,45.5,5.0"
+    },
+    "breakages": {
+      "name": "geonode:som_river_breakage_shabelle_river_june_2026_frrmsa_short_form",
+      "title": "Shabelle bank breakages · August 2026 assessment",
+      "style": "som_river_breakage_shabelle_river_june_2026_frrmsa_short_form",
+      "sourceUrl": "https://spatial.faoswalim.org/catalogue/#/dataset/607",
+      "metadataUrl": "https://spatial.faoswalim.org/api/v2/datasets/607",
+      "dateLabel": "Issued August 2026 · each point carries its imagery date",
+      "publishedAt": "2026-08-20T07:04:00Z",
+      "updatedAt": "2026-08-21T07:49:29.831829Z",
+      "legendUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WMS&request=GetLegendGraphic&format=image/png&WIDTH=20&HEIGHT=20&LAYER=geonode:som_river_breakage_shabelle_river_june_2026_frrmsa_short_form&STYLE=som_river_breakage_shabelle_river_june_2026_frrmsa_short_form&version=1.3.0&legend_options=fontAntiAliasing:true;fontSize:12;forceLabels:on",
+      "description": "SWALIM Shabelle riverbank assessment from very high resolution imagery. Point status describes the observation on its imagery date. Remote sensing interpretation has limited field checks. Current condition and repair status need field verification. The August assessment does not cover the Juba River.",
+      "geometryAuthority": "Use GeoJSON geometry coordinates; some source longitude attributes are projected values.",
+      "properties": {"status":"status","date":"imagedate","comments":"comments","district":"district","settlement":"settlement","river":"river"},
+      "bbox": [44.12799999990011, 1.550999999950079, 45.67866999982067, 4.892940000180886],
+      "verifiedGetFeatureUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode:som_river_breakage_shabelle_river_june_2026_frrmsa_short_form&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=10&bbox=45.1,4.6,45.5,5.0,EPSG:4326"
+    },
+    "breakagesJuba": {
+      "name": "geonode:river_breakages_juba_shabelle_march2026",
+      "title": "Juba bank breakages · March 2026 assessment",
+      "cqlFilter": "river='Juba'",
+      "style": "river_breakages_juba_shabelle_march2026",
+      "sourceUrl": "https://spatial.faoswalim.org/catalogue/#/dataset/481",
+      "metadataUrl": "https://spatial.faoswalim.org/api/v2/datasets/481",
+      "dateLabel": "Issued March 2026 · each point carries its imagery date",
+      "publishedAt": "2026-03-26T06:23:00Z",
+      "updatedAt": "2026-05-28T11:33:03.527903Z",
+      "legendUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WMS&request=GetLegendGraphic&format=image/png&WIDTH=20&HEIGHT=20&LAYER=geonode:river_breakages_juba_shabelle_march2026&STYLE=river_breakages_juba_shabelle_march2026&version=1.3.0&legend_options=fontAntiAliasing:true;fontSize:12;forceLabels:on",
+      "description": "March 2026 Juba and Shabelle assessment. Filter river=Juba when combined with the newer Shabelle layer to avoid duplicate and older Shabelle points. Observation date is not a current live riverbank status.",
+      "properties": {"status":"status","date":"image date","comments":"comments","district":"district","settlement":"settlement","river":"river"},
+      "bbox": [42.06187852925861, -0.095961273859731, 45.67792175611577, 4.893462037080062],
+      "verifiedGetFeatureUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode:river_breakages_juba_shabelle_march2026&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=10&bbox=41.9,3.8,42.3,4.3,EPSG:4326"
+    }
+  },
+  "classLegend": [
+    {"value":4,"label":"Very high potential","color":"#c1341c"},
+    {"value":3,"label":"High potential","color":"#f4a259"},
+    {"value":2,"label":"Moderate potential","color":"#fde3a7"},
+    {"value":1,"label":"Low / not indicated","color":"#b9bfc5"}
+  ],
+  "breakageLegend": [
+    {"value":"O","label":"Open breakage","color":"#FF0000"},
+    {"value":"Of","label":"Overflow breakage","color":"#732600"},
+    {"value":"CI","label":"Canal flooding point","color":"#FFFF00"},
+    {"value":"P","label":"Potential breakage","color":"#FFD37F"},
+    {"value":"POf","label":"Potential overflow","color":"#FFD37F"},
+    {"value":"Cs","label":"Closed with sandbags","color":"#00FF00"}
+  ],
+  "legendVerification": "Colors and class values obtained from public WMS GetStyles version 1.1.1; PNG legends and city-bbox GetMap responses verified on 13 October 2026.",
+  "demScreeningLimits": "Absolute elevation or a few elevation samples alone cannot determine flood probability, flow direction or safe diversion. Use the official terrain susceptibility layer for screening and commission surveyed cross sections, drainage/culvert and downstream exposure checks with hydrologic/hydraulic analysis before drainage or riverbank works."
+}

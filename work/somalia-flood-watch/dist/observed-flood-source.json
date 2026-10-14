@@ -1,0 +1,252 @@
+{
+  "id": "nasa-gibs-modis-observed-flood",
+  "title": "Satellite-detected flood water",
+  "provider": "NASA LANCE / GIBS",
+  "type": "observed-satellite-classification",
+  "authenticationRequired": false,
+  "layer": "MODIS_Combined_Flood_3-Day",
+  "defaultDateAtVerification": "2026-10-13",
+  "verifiedAt": "2026-10-13T09:01:45Z",
+  "resolutionMeters": 250,
+  "compositeDays": 3,
+  "dateMeaning": "Three-day observation composite ending on the selected date; the current-day product may be partial.",
+  "refreshMinutes": 15,
+  "capabilitiesUrl": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml",
+  "metadataUrl": "https://gibs.earthdata.nasa.gov/layer-metadata/v1.0/MODIS_Combined_Flood_3-Day.json",
+  "tileTemplate": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Combined_Flood_3-Day/default/{date}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png",
+  "tileMatrixSet": "GoogleMapsCompatible_Level9",
+  "maxNativeZoom": 9,
+  "wmsUrl": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi",
+  "format": "image/png",
+  "attribution": "NASA LANCE MODIS / GIBS",
+  "citationUrl": "https://doi.org/10.5067/MODIS/MCDWD_L3_NRT.061",
+  "productUrl": "https://www.earthdata.nasa.gov/global-flood-product",
+  "legendUrl": "https://gibs.earthdata.nasa.gov/legends/MODIS_Flood_H.svg",
+  "colormapUrl": "https://gibs.earthdata.nasa.gov/colormaps/v1.3/MODIS_Flood.xml",
+  "classes": [
+    {
+      "value": 3,
+      "label": "Flood water detected",
+      "sourceLabel": "Flood",
+      "color": "#fa1e24",
+      "interpretation": "Satellite water detection outside the reference water and recurring-flood classes; confirm locally before operational decisions."
+    },
+    {
+      "value": 2,
+      "label": "Recurring flood water",
+      "sourceLabel": "Recurring Flood",
+      "color": "#ffff00",
+      "interpretation": "Detected water in locations identified by the reference mask as recurring flooding."
+    },
+    {
+      "value": 1,
+      "label": "Surface water",
+      "sourceLabel": "Surface Water",
+      "color": "#32d2f5",
+      "interpretation": "Detected water in the reference surface-water class, including normal water bodies; not evidence of new flooding."
+    },
+    {
+      "value": 255,
+      "label": "Insufficient observations",
+      "sourceLabel": "Insufficient Data",
+      "color": "#afafaf",
+      "interpretation": "The product cannot establish surface conditions here; commonly due to clouds or incomplete observations."
+    },
+    {
+      "value": 0,
+      "label": "No water detected / transparent",
+      "sourceLabel": "No Water",
+      "color": "transparent",
+      "interpretation": "No water detected by this product; does not exclude narrow, urban, under-canopy, or short-lived flooding."
+    }
+  ],
+  "qualityNotes": [
+    "An observation composite is not a forecast and is not a ground-confirmed incident report.",
+    "Gray pixels are unknown conditions, not dry land and not flooded land.",
+    "The nominal 250 m resolution cannot resolve many street-level floods, narrow channels, or small flooded areas.",
+    "Clouds, tree cover, building roofs, shadows, and the timing of satellite passes can hide flooding or cause classification errors.",
+    "Three-day compositing reduces cloud-shadow false positives but mixes observations from different days, so flood water may since have moved or receded.",
+    "NASA's current-day NRT tiles are updated as observations arrive; product dates indicate the composite endpoint and do not guarantee complete local coverage.",
+    "A successful transparent PNG response by itself is not evidence that a location was observed or that no flooding occurred.",
+    "The GIBS display is graphic imagery, not an authoritative vector flood boundary or an affected-population measurement."
+  ],
+  "verification": {
+    "capabilitiesStatus": 200,
+    "somaliaGetMapStatus": 200,
+    "somaliaGetMapContentType": "image/png",
+    "cors": "*",
+    "bboxLonLat": [
+      40,
+      -1,
+      52,
+      12
+    ],
+    "imageWidth": 720,
+    "imageHeight": 780,
+    "compositeWindow": [
+      "2026-10-11",
+      "2026-10-13"
+    ],
+    "coverageFinding": "Today's regional preview was predominantly gray insufficient observations. The bounding box also includes parts of neighboring countries and the sea. It cannot substantiate a Somalia-wide flooded-area total or city-specific flood absence.",
+    "previewUrl": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=MODIS_Combined_Flood_3-Day&STYLES=&FORMAT=image/png&TRANSPARENT=TRUE&CRS=EPSG:4326&BBOX=-1,40,12,52&WIDTH=720&HEIGHT=780&TIME=2026-10-13"
+  },
+  "alternative": {
+    "layer": "VIIRS_Combined_Flood_3-Day",
+    "defaultDateAtVerification": "2026-10-12",
+    "resolutionMeters": 375,
+    "outputGridMeters": 250,
+    "maxNativeZoom": 9,
+    "tileTemplate": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_Combined_Flood_3-Day/default/{date}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png",
+    "status": "Public PNG verified, but regional preview had a very large insufficient-observation footprint; not preferable to MODIS in this verification.",
+    "citationUrl": "https://doi.org/10.5067/VIIRS/VCDWD_L3_NRT.002"
+  },
+  "documentation": [
+    "https://nasa-gibs.github.io/gibs-api-docs/access-basics/",
+    "https://forum.earthdata.nasa.gov/viewtopic.php?t=7707",
+    "https://www.earthdata.nasa.gov/s3fs-public/2025-04/MCDWD_VCDWD_UserGuide_RevE_04.22.25.pdf"
+  ],
+  "layerId": "MODIS_Combined_Flood_3-Day",
+  "wmtsUrlTemplate": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Combined_Flood_3-Day/default/{date}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png",
+  "timeDefault": "2026-10-12",
+  "sourceTimeDefault": "2026-10-13",
+  "availableRange": [
+    "2025-09-07/2026-10-13/P1D"
+  ],
+  "resolutionM": 250,
+  "sourceUrl": "https://www.earthdata.nasa.gov/global-flood-product",
+  "limits": [
+    "An observation composite is not a forecast and is not a ground-confirmed incident report.",
+    "Gray pixels are unknown conditions, not dry land and not flooded land.",
+    "The nominal 250 m resolution cannot resolve many street-level floods, narrow channels, or small flooded areas.",
+    "Clouds, tree cover, building roofs, shadows, and the timing of satellite passes can hide flooding or cause classification errors.",
+    "Three-day compositing reduces cloud-shadow false positives but mixes observations from different days, so flood water may since have moved or receded.",
+    "NASA's current-day NRT tiles are updated as observations arrive; product dates indicate the composite endpoint and do not guarantee complete local coverage.",
+    "A successful transparent PNG response by itself is not evidence that a location was observed or that no flooding occurred.",
+    "The GIBS display is graphic imagery, not an authoritative vector flood boundary or an affected-population measurement."
+  ],
+  "legend": [
+    {
+      "rgba": [
+        250,
+        30,
+        36,
+        255
+      ],
+      "label": "Flood",
+      "value": 3,
+      "color": "#fa1e24",
+      "name": "Flood"
+    },
+    {
+      "rgba": [
+        255,
+        255,
+        0,
+        255
+      ],
+      "label": "Recurring Flood",
+      "value": 2,
+      "color": "#ffff00",
+      "name": "Recurring Flood"
+    },
+    {
+      "rgba": [
+        50,
+        210,
+        245,
+        255
+      ],
+      "label": "Surface Water",
+      "value": 1,
+      "color": "#32d2f5",
+      "name": "Surface Water"
+    },
+    {
+      "rgba": [
+        175,
+        175,
+        175,
+        255
+      ],
+      "label": "Insufficient Data",
+      "value": 255,
+      "color": "#afafaf",
+      "name": "Insufficient Data"
+    },
+    {
+      "rgba": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "label": "No Water",
+      "value": 0,
+      "color": "transparent",
+      "name": "No Water"
+    }
+  ],
+  "gfm": {
+    "sourceUrl": "https://extwiki.eodc.eu/GFM/PUM",
+    "limits": [
+      "The observed flood extent excludes normally flooded reference-water areas.",
+      "Use scene footprints and the exclusion mask to separate no detection from unknown coverage.",
+      "Satellite scenes are snapshots; water can move or recede after acquisition.",
+      "Radar works through cloud but may miss flood water in dense vegetation, urban areas, and areas of weak radar sensitivity.",
+      "A scene footprint is the observed image extent, not the flooded area.",
+      "Flooded-pixel totals returned with a footprint refer to the entire satellite scene and must not be assigned to a city."
+    ],
+    "exclusionLayerId": "gfm:exclusion_mask",
+    "provider": "Copernicus CEMS GFM / Sentinel-1",
+    "authenticationRequired": false,
+    "attribution": "Copernicus EMS Global Flood Monitoring / Sentinel-1",
+    "verification": {
+      "footprintGetFeatureInfoStatus": 200,
+      "status": 200,
+      "resolutionDocumentation": "https://extwiki.eodc.eu/gfm_assets/gfm4.0_pum_2025.pdf",
+      "type": "image/png",
+      "mogadishuSceneDates": [
+        "2026-10-11T15:15:10Z",
+        "2026-10-12T02:46:03Z"
+      ],
+      "timeWindow": {
+        "start": "2026-10-10T00:00:00Z",
+        "end": "2026-10-13T23:59:59Z"
+      }
+    },
+    "wmsUrl": "https://geoserver.gfm.eodc.eu/geoserver/gfm/wms",
+    "legendUrl": "https://geoserver.gfm.eodc.eu/geoserver/gfm/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image/png&width=20&height=20&layer=observed_flood_extent",
+    "verifiedAt": "2026-10-13T09:07:56.701Z",
+    "resolutionM": 20,
+    "legend": [
+      {
+        "label": "Floodwater",
+        "name": "Floodwater",
+        "rgba": [
+          232,
+          76,
+          120,
+          255
+        ],
+        "value": 1,
+        "color": "#e84c78"
+      },
+      {
+        "label": "No Floodwater",
+        "name": "No Floodwater",
+        "rgba": [
+          19,
+          222,
+          222,
+          0
+        ],
+        "value": 0,
+        "color": "transparent"
+      }
+    ],
+    "layerId": "gfm:observed_flood_extent",
+    "waterLayerId": "gfm:reference_water_mask",
+    "coverageLayerId": "gfm:observed_flood_extent_footprint",
+    "capabilitiesUrl": "https://geoserver.gfm.eodc.eu/geoserver/gfm/wms?service=WMS&request=GetCapabilities&version=1.3.0"
+  }
+}

@@ -1,0 +1,92 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+
+const status = {textContent:'', className:''};
+const feedback = {textContent:''};
+let handler;
+const button = {disabled:false, getAttribute(name) { assert.equal(name, 'data-radar-date'); return '2026-10-12'; }, addEventListener(name, fn) { assert.equal(name, 'click'); handler = fn; }};
+const root = {innerHTML:'', querySelectorAll() { return [button]; }, querySelector() { return feedback; }};
+const sandbox = {window:{document:{getElementById(id) { return id === 'scenes' ? root : id === 'copernicus-status' ? status : null; }}}, Date, URL};
+vm.runInNewContext(fs.readFileSync(new URL('./somalia-flood-watch/dist/copernicus.js', import.meta.url), 'utf8'), sandbox);
+const {build, render} = sandbox.window.CopernicusScenes;
+const now = '2026-10-13T12:00:00Z';
+const acquired = '2026-10-12T07:13:21Z';
+const scene = (id, cloud = 20, datetime = acquired) => ({id, datetime, cloudCoverPercent:cloud, platform:'Sentinel-2A', metadataUrl:`https://stac.dataspace.copernicus.eu/v1/collections/sentinel-2-l2a/items/${id}`, browserUrl:'https://browser.dataspace.copernicus.eu/?lat=6.7697&lng=47.4308', polarizations:[]});
+const data = {fetchedAt:'2026-10-13T11:55:00Z', queryWindow:{start:'2026-09-29T12:00:00Z', end:now}, missions:{radar:{available:true, scenes:[{...scene('radar-1', 99), platform:'Sentinel-1C', orbitDirection:'descending', polarizations:['VV','VH'], browserSelectionRequired:true}]}, optical:{available:true, scenes:[scene('optical-cloudy', 79.6), scene('optical-clear', 20), scene('optical-unknown', null), scene('optical-old', 0, '2026-10-09T07:13:21Z')]}}, coverageNote:'Catalogue metadata does not establish flooding.', processing:{requiresCredentials:true, note:'Image processing requires server credentials.'}};
+const input = {cityName:'Galkayo', feed:{data, lastSuccess:data.fetchedAt, stale:false, error:null, loading:false}, now, clearerOnly:false};
+
+let model = build(input);
+assert.equal(model.groups.length, 2);
+assert.equal(model.groups[0].title, 'Sentinel-1 radar');
+assert.equal(model.groups[0].scenes.length, 1);
+assert.equal(model.groups[0].scenes[0].cloudCoverPercent, null, 'Radar is not assigned optical cloud cover');
+assert.equal(model.groups[0].scenes[0].cloudLabel, 'Radar can observe through clouds');
+assert.equal(model.groups[1].scenes.length, 4);
+assert.equal(model.groups[1].scenes[0].acquiredAtLabel, '12 Oct 2026, 10:13:21 EAT', 'Acquisition displayed in Somalia time');
+assert.equal(model.groups[1].scenes[0].utcLabel, '12 Oct 2026, 07:13:21 UTC', 'Exact UTC acquisition also displayed');
+assert.equal(model.groups[1].scenes[0].heavyCloud, true);
+assert.equal(model.groups[1].scenes[2].cloudLabel, 'Scene-wide cloud cover unknown');
+assert.equal(model.groups[1].scenes[3].ageLabel, 'Older observation · over 2 days');
+assert.equal(model.stateLabel, 'Copernicus public API connected');
+assert.equal(model.stale, false);
+assert.equal(model.groups[1].scenes[3].older, true, 'Old acquisitions remain explicitly dated even when API retrieval is fresh');
+
+model = build({...input, clearerOnly:true});
+assert.equal(model.groups[1].scenes.length, 2);
+assert.equal(model.groups[1].totalCount, 4);
+assert.equal(model.groups[0].scenes.length, 1, 'Optical cloud filter never hides radar');
+assert.equal(build({...input, feed:{...input.feed, error:'HTTP 503'}}).stale, true);
+assert.equal(build({...input, feed:{...input.feed, lastSuccess:'2026-10-13T08:00:00Z'}}).stale, true);
+assert.equal(build({...input, feed:{...input.feed, lastSuccess:'2026-10-14T08:00:00Z'}}).stale, true);
+assert.equal(build({...input, feed:{...input.feed, data:{...data, missions:{...data.missions, optical:{available:false, scenes:[], error:'HTTP 502'}}}}}).stateLabel, 'Copernicus API partly available');
+assert.equal(build({...input, feed:{data:null, loading:true}}).stateLabel, 'Connecting to Copernicus public API');
+assert.equal(build({...input, feed:{data:null, loading:false}}).stateLabel, 'Copernicus catalogue unavailable');
+
+const forged = {...scene('<script>evil</script>', 110, 'timestamp without timezone'), browserUrl:'javascript:alert(1)', metadataUrl:'https://stac.dataspace.copernicus.eu.evil.example/something'};
+model = build({...input, feed:{...input.feed, data:{...data, missions:{radar:{available:true, scenes:[]}, optical:{available:true, scenes:[forged, {...scene('credentials'), browserUrl:'https://username:secret@browser.dataspace.copernicus.eu/'}, {...scene('http'), browserUrl:'http://browser.dataspace.copernicus.eu/'}, {...scene('future', null, '2026-10-14T10:00:00Z')}]}}}}});
+assert.equal(model.groups[1].scenes.find(s => s.id === forged.id).datetime, null);
+assert.equal(model.groups[1].scenes.find(s => s.id === forged.id).cloudCoverPercent, null);
+assert.equal(model.groups[1].scenes.find(s => s.id === forged.id).browserUrl, null);
+assert.equal(model.groups[1].scenes.find(s => s.id === forged.id).metadataUrl, null);
+assert.equal(model.groups[1].scenes.find(s => s.id === 'credentials').browserUrl, null);
+assert.equal(model.groups[1].scenes.find(s => s.id === 'http').browserUrl, null);
+assert.equal(model.groups[1].scenes.find(s => s.id === 'future').future, true);
+
+let requested;
+render({...input, onInspectRadar:date => { requested = date; return true; }});
+assert.match(root.innerHTML, /Sentinel-1 radar/);
+assert.match(root.innerHTML, /Sentinel-2 optical/);
+assert.match(root.innerHTML, /14|29 Sep/, 'Query date range displayed');
+assert.match(root.innerHTML, /Check flood layer for this date/);
+assert.match(root.innerHTML, /Open Browser · choose Sentinel-1 ↗/, 'Radar Browser link explicitly requires choosing its mission');
+assert.match(root.innerHTML, /does not prove that a listed acquisition was processed/);
+assert.doesNotMatch(root.innerHTML, /<img/, 'No thumbnail is inferred from metadata');
+assert.match(status.textContent, /Last successful retrieval: 13 Oct 2026, 14:55:00 EAT/);
+assert.doesNotMatch(status.textContent, /10:13:21/, 'Retrieval timestamp is distinct from acquisition time');
+await handler();
+assert.equal(requested, '2026-10-12');
+assert.equal(button.disabled, false);
+assert.match(feedback.textContent, /separate flood layer/);
+
+render({...input, onInspectRadar:() => false});
+await handler();
+assert.match(feedback.textContent, /does not offer 2026-10-12/);
+render({...input, onInspectRadar:() => { throw Error('Unavailable'); }});
+await handler();
+assert.match(feedback.textContent, /could not be selected/);
+assert.equal(button.disabled, false);
+
+render({...input, cityName:'<img src=x onerror=alert(1)>', feed:{...input.feed, data:{...data, missions:{radar:{available:true, scenes:[]}, optical:{available:true, scenes:[forged]}}}}});
+assert.doesNotMatch(root.innerHTML, /<script>evil|<img src=x|javascript:alert/);
+assert.match(root.innerHTML, /&lt;script&gt;evil/);
+assert.match(root.innerHTML, /&lt;img src=x/);
+assert.match(root.innerHTML, /cloud cover unknown/);
+render({...input, clearerOnly:true, feed:{...input.feed, data:{...data, missions:{...data.missions, optical:{available:true, scenes:[scene('cloudy', 50), scene('unknown', null)]}}}}});
+assert.match(root.innerHTML, /No returned optical acquisitions meet the ≤30%/);
+assert.match(root.innerHTML, /radar-1/);
+render({...input, feed:{...input.feed, data:{...data, missions:{radar:{available:true, scenes:[]}, optical:{available:true, scenes:[]}}}}});
+assert.match(root.innerHTML, /does not establish that the city is flood-free/);
+assert.doesNotMatch(root.innerHTML, /No flooding detected/);
+
+console.log('Copernicus catalogue UI: mission separation, cloud filter, timestamps, partial/stale states, safe links and dated map actions passed.');

@@ -1,0 +1,19 @@
+{
+  "name": "somalia-el-nino-watch-source",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "English/Somali weather awareness, flood observations and community reporting for Somalia.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node work/somalia-flood-watch/server.mjs",
+    "check": "node scripts/check-files.mjs",
+    "build:translations": "node work/build-somali-catalog.mjs",
+    "build:basemap": "node work/build-basemap.mjs",
+    "bundle": "node work/package-flood-app.mjs",
+    "test": "node scripts/run-tests.mjs",
+    "release": "node work/make-source-bundles.mjs"
+  }
+}

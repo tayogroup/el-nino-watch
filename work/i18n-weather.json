@@ -1,0 +1,1180 @@
+{
+  "messages": {
+    "Weather unavailable": "Xogta cimilada lama hayo",
+    "Clear night": "Habeen cirku furan yahay",
+    "Clear sky": "Cir furan",
+    "Mainly clear": "Cirku inta badan waa furan yahay",
+    "Partly cloudy": "Daruuruhu qayb ahaan ayay cirka daboolayaan",
+    "Overcast": "Cir gebi ahaan daruuro leh",
+    "Rime fog": "Ceeryaamo baraf ku samaysa dusha walxaha",
+    "Fog": "Ceeryaamo",
+    "Light drizzle": "Roob yar oo dhibco aad u yaryar leh",
+    "Moderate drizzle": "Roob dhexdhexaad ah oo dhibco aad u yaryar leh",
+    "Dense drizzle": "Roob xooggan oo dhibco aad u yaryar leh",
+    "Freezing drizzle": "Roob dhibco aad u yaryar leh oo baraf noqda marka uu dhulka ku dhaco",
+    "Light rain": "Roob yar",
+    "Moderate rain": "Roob dhexdhexaad ah",
+    "Heavy rain": "Roob xooggan",
+    "Freezing rain": "Roob baraf noqda marka uu dhulka ku dhaco",
+    "Light snow": "Baraf yar oo da'aya",
+    "Moderate snow": "Baraf dhexdhexaad ah oo da'aya",
+    "Heavy snow": "Baraf badan oo da'aya",
+    "Snow grains": "Baraf ku da'aya miro aad u yaryar",
+    "Light rain showers": "Roob yar oo goosgoos ah",
+    "Moderate rain showers": "Roob dhexdhexaad ah oo goosgoos ah",
+    "Violent rain showers": "Roob aad u xooggan oo goosgoos ah",
+    "Light snow showers": "Baraf yar oo goosgoos u da'aya",
+    "Heavy snow showers": "Baraf badan oo goosgoos u da'aya",
+    "Thunderstorm": "Roob onkod iyo hillaac wata",
+    "Thunderstorm with hail": "Roob onkod, hillaac iyo roob-dhagax wata",
+    "Date unavailable": "Taariikhda lama hayo",
+    "Retrieval time unavailable": "Waqtiga xogta la helay lama hayo",
+    "UV unavailable": "Xogta shucaaca UV lama hayo",
+    "Low": "Hooseeya",
+    "Moderate": "Dhexdhexaad",
+    "High": "Sarreeya",
+    "Very high": "Aad u sarreeya",
+    "Extreme": "Aad iyo aad u sarreeya",
+    "Rainfall unavailable": "Xogta roobka lama hayo",
+    "Elevated daily rainfall": "Roobka maalinta oo badan",
+    "Watch daily rainfall": "Roobka maalinta oo u baahan la socod",
+    "Lower daily rainfall": "Roobka maalinta oo yar",
+    "Hourly temperature and precipitation": "Heerkulka iyo roobka saacad kasta",
+    "Blue line is temperature in degrees Celsius on the left axis. Cyan bars are precipitation in millimetres on the right axis. All times are East Africa Time. Gaps indicate unavailable values. Select an hour for its details.": "Xariiqda buluugga ah waxay muujinaysaa heerkulka darajooyinka Celsius ee dhidibka bidix. Tiirarka buluugga khafiifka ah waxay muujinayaan roobka milimitir ahaan ee dhidibka midig. Waqtiyada oo dhan waa waqtiga Bariga Afrika. Meelaha bannaan waxay muujinayaan xog aan la hayn. Dooro saacad si aad u aragto faahfaahinteeda.",
+    "unavailable": "xog lama hayo",
+    "Unavailable": "Xog lama hayo",
+    "Unknown": "Xog lama hayo",
+    "Detailed hourly model forecast · all times EAT · — means unavailable": "Saadaasha moodeelka oo faahfaahsan saacad kasta · waqtiga oo dhan waa EAT · — waxay ka dhigan tahay in xogta aan la hayn",
+    "Time": "Waqti",
+    "Conditions": "Xaaladda cimilada",
+    "Temp °C": "Heerkul °C",
+    "Feels °C": "Heerkulka la dareemayo °C",
+    "Rain mm": "Roob mm",
+    "Rain chance %": "Suurtagalnimada roobka %",
+    "Humidity %": "Qoyaanka hawada %",
+    "Wind km/h": "Dabayl km/h",
+    "Gust km/h": "Dabayl kedis u xoogaysata km/h",
+    "Direction": "Jihada",
+    "Cloud %": "Daruuro %",
+    "Pressure hPa": "Cadaadiska hawada hPa",
+    "Visibility km": "Fogaanta aragtida km",
+    "Dew point °C": "Heerkulka uumigu biyo isu beddelo °C",
+    "Detailed daily weather": "Cimilada maalin kasta oo faahfaahsan",
+    "Selected city": "Magaalada la doortay",
+    "Daily rainfall screening only. Flood risk also depends on rivers, drainage and terrain.": "Tani waa qiimeynta hordhaca ah ee roobka maalinta oo keliya. Khatarta fatahaaddu waxay sidoo kale ku xiran tahay webiyada, biyo-mareennada iyo qaabka dhulka.",
+    "Rainfall & probability": "Roobka iyo suurtagalnimadiisa",
+    "Daily total · model estimate": "Wadarta maalinta · qiyaasta moodeelka",
+    "Wind & gusts": "Dabaylaha iyo dabaylaha kediska u xoogaysta",
+    "Daily maximum at 10 m": "Qiimaha ugu sarreeya maalinta, dhererka 10 m",
+    "Sunrise & sunset": "Qorrax-soobaxa iyo qorrax-dhaca",
+    "Sun times for selected city": "Waqtiyada qorraxda ee magaalada la doortay",
+    "Maximum UV index": "Tusmada ugu sarreysa shucaaca UV",
+    "Seek shade; use sun protection.": "Raadso meel hadh leh; isticmaal wax kaa ilaaliya qorraxda.",
+    "Lower UV exposure expected.": "Waxaa la filayaa shucaaca UV oo hooseeya.",
+    "UV forecast unavailable.": "Saadaasha shucaaca UV lama hayo.",
+    "UV is separate from flood risk": "Shucaaca UV waa arrin ka duwan khatarta fatahaadda",
+    "THE DAY, HOUR BY HOUR": "MAALINTA, SAACAD KASTA",
+    "Temperature & rainfall": "Heerkulka iyo roobka",
+    "24 hours · East Africa Time (UTC+3)": "24 saacadood · waqtiga Bariga Afrika (UTC+3)",
+    "Temperature · °C": "Heerkul · °C",
+    "Rainfall · mm": "Roob · mm",
+    "Gaps = unavailable": "Meelaha bannaan = xog lama hayo",
+    "Select forecast hour": "Dooro saacadda saadaasha",
+    "SELECTED HOUR": "SAACADDA LA DOORTAY",
+    "Temperature": "Heerkulka",
+    "Precipitation": "Roobka iyo barafka da'aya",
+    "Wind": "Dabaylaha",
+    "Humidity": "Qoyaanka hawada",
+    "Cloud cover": "Inta daruuruhu cirka daboolayaan",
+    "Pressure": "Cadaadiska hawada",
+    "Visibility": "Fogaanta aragtida",
+    "Dew point": "Heerkulka uumigu biyo isu beddelo",
+    "View all 24 hours in detail": "Eeg faahfaahinta dhammaan 24-ka saacadood",
+    "Refreshing detailed weather; showing the last response.": "Xogta cimilada oo faahfaahsan waa la cusboonaysiinayaa; waxaa la muujinayaa jawaabtii ugu dambaysay.",
+    "Connecting to detailed weather…": "Waxaa la xiriirayaa ilaha xogta cimilada oo faahfaahsan…",
+    "Showing last known model data; retrieval is stale.": "Waxaa la muujinayaa xogtii ugu dambaysay ee moodeelka; xogta la helay way duugoowday.",
+    "Detailed weather is unavailable.": "Xogta cimilada oo faahfaahsan lama hayo.",
+    "Daily summary unavailable for this date.": "Soo koobidda maalinta lama hayo taariikhdan.",
+    "Open-Meteo weather model forecast ↗": "Saadaasha cimilada ee moodeelka Open-Meteo ↗",
+    "Values are model estimates, not station observations. — means unavailable.": "Qiimayaashu waa qiyaasaha moodeelka, ma aha cabbirro laga qaaday xarun cimilo. — waxay ka dhigan tahay in xogta aan la hayn.",
+    "Compare Galkayo on meteoblue ↗": "Isbarbar dhig xogta Gaalkacyo ee meteoblue ↗",
+    "NWS flood preparedness and safety": "NWS: u diyaargarowga fatahaadda iyo badbaadada",
+    "Environment Agency: asset maintenance principles": "Environment Agency: mabaadi'da dayactirka kaabayaasha",
+    "WMO / Cap-Net: Integrated Urban Flood Management": "WMO / Cap-Net: maaraynta isku dhafan ee fatahaadaha magaalooyinka",
+    "WMO / APFM: environmental aspects of flood management": "WMO / APFM: arrimaha deegaanka ee maaraynta fatahaadda",
+    "FAO: Somalia flood management and modelling": "FAO: maaraynta fatahaadda iyo samaynta moodeellada ee Soomaaliya",
+    "Live conditions": "Xaaladaha hadda jira",
+    "Recommendations use the available live evidence and mapped susceptibility screening.": "Talooyinku waxay ku salaysan yihiin xogta hadda la hayo iyo qiimeynta u nuglaanshaha fatahaadda ee khariidadda.",
+    "Heavy rain exercise": "Layliga u diyaargarowga roobka xooggan",
+    "Hypothetical exercise: intense local rain tests preparedness. This does not change the live rainfall forecast or estimate flood depth.": "Layli mala-awaal ah: roob xooggan oo deegaanka ka da'a ayaa lagu tijaabinayaa u diyaargarowga. Tani ma beddelayso saadaasha roobka ee hadda jirta, mana qiyaasayso qoto-dheeraanta biyaha fatahaadda.",
+    "River rise exercise": "Layliga u diyaargarowga kor u kaca biyaha webiga",
+    "Hypothetical exercise: rising river water tests preparedness. No river level, flood extent or depth is simulated.": "Layli mala-awaal ah: kor u kaca biyaha webiga ayaa lagu tijaabinayaa u diyaargarowga. Lama samaynayo jilid heerka biyaha webiga, baaxadda fatahaadda ama qoto-dheeraanteeda.",
+    "Blocked drains exercise": "Layliga u diyaargarowga biyo-mareennada xirmay",
+    "Hypothetical exercise: obstructed drainage tests preparedness. No blockage has been verified by this app.": "Layli mala-awaal ah: biyo-mareennada xanniban ayaa lagu tijaabinayaa u diyaargarowga. Abkani ma xaqiijin in biyo-mareen xirmay.",
+    "Routine preparedness": "U diyaargarowga joogtada ah",
+    "Prepare and verify": "Diyaargarow oo xaqiiji",
+    "Agency / engineer review": "Dib u eegis hay'ad ama injineer",
+    "Contact authorities / verify": "La xiriir hay'adaha masuulka ah oo xaqiiji",
+    "Lower": "Hooseeya",
+    "Watch": "La socod",
+    "Elevated": "Sarreeya",
+    "retrieval timestamp unavailable": "waqtiga xogta la helay lama hayo",
+    "name unavailable": "magaca lama hayo",
+    "date unavailable": "taariikhda lama hayo",
+    "OLD OBSERVATION": "CABBIR HORE",
+    "FUTURE-DATED OBSERVATION": "CABBIR LEH TAARIIKH MUSTAQBAL AH",
+    "FEED STALE / last known response": "XOGTA ISHA WAY DUUGOOWDAY / jawaabtii ugu dambaysay",
+    "Gauge freshness is insufficient to confirm present river conditions. Obtain a current dated reading and local advice.": "Cabbirka webiga ma aha mid cusub oo ku filan in lagu xaqiijiyo xaaladda webiga ee hadda. Hel cabbir cusub oo taariikh leh iyo talo deegaanka ah.",
+    "Matched river observation: unavailable. River-rise conditions cannot be confirmed from this evidence.": "Cabbirka webiga ee ku habboon goobtan: lama hayo. Xogtan laguma xaqiijin karo xaaladda kor u kaca biyaha webiga.",
+    "Point susceptibility query: unavailable or no point selected. Inspect the mapped layer and verify low areas through a local survey and drainage information.": "Xogta u nuglaanshaha fatahaadda ee barta: lama hayo ama bar lama dooran. Eeg lakabka khariidadda, kuna xaqiiji dhulka hooseeya sahamin goobta ah iyo xogta biyo-mareennada.",
+    "Historical layer: this point intersects a mapped past flood extent; this does not establish current flooding.": "Lakabka taariikhiga ah: bartan waxay ku dhex taallaa dhul khariidaddu muujinayso inuu hore u fatahay; tani ma xaqiijinayso fatahaad hadda jirta.",
+    "Historical layer: no mapped past flood feature was returned at this point; flooding is still possible.": "Lakabka taariikhiga ah: xogta khariidaddu ma muujin fatahaad hore oo bartan ka dhacday; fatahaaddu weli waa suurtagal.",
+    "Plan access and protect essentials": "Qorshee waddooyinka la mari karo oo ilaali waxyaabaha daruuriga ah",
+    "Verify a route and shelter on higher ground with local authorities. Include children, older people, people with disabilities and livestock. Keep water, medicine and documents accessible. Follow SoDMA and local instructions; never walk or drive through floodwater.": "La xaqiiji hay'adaha deegaanka waddo la mari karo iyo meel lagu hoydo oo dhul sare ku taalla. Qorshaha ku dar carruurta, dadka waayeelka ah, dadka naafada ah iyo xoolaha. Biyaha, daawooyinka iyo dukumentiyada ku hay meel si fudud loo gaari karo. Raac tilmaamaha SoDMA iyo kuwa deegaanka; waligaa ha ku dhex socon ama ha ku dhex wadin baabuur biyaha fatahaadda.",
+    "Households + local disaster committee": "Qoysaska iyo guddiga musiibooyinka ee deegaanka",
+    "Inspect the assumed blockage safely": "Si badbaado leh u baar xannibaadda layliga lagu mala-awaalay",
+    "Check existing drains before rain": "Hubi biyo-mareennada jira ka hor roobka",
+    "Report blocked inlets, culverts and damaged drains from dry, safe ground. Municipal crews should clear debris and restore the existing designed system, with safe waste disposal. Do not enter culverts, manholes or floodwater, or alter a drain outlet yourself.": "Adigoo jooga dhul qalalan oo ammaan ah, soo sheeg meelaha biyuhu ka galaan biyo-mareennada oo xirmay, biyo-mareennada waddooyinka hoostooda mara iyo biyo-mareennada dhaawacmay. Shaqaalaha degmada waa inay qashinka ka saaraan oo soo celiyaan nidaamka jira ee naqshadaysan, iyagoo qashinka si ammaan ah u tuuraya. Ha gelin biyo-mareennada waddooyinka hoostooda mara, godadka biyo-mareennada ama biyaha fatahaadda, hana beddelin meesha biyo-mareenku biyaha ka sii daayo adiga oo keligaaga ah.",
+    "Municipal drainage / public works team": "Kooxda biyo-mareennada ama hawlaha guud ee degmada",
+    "Keep space for water": "U bannee biyaha meel ay ku ururaan",
+    "Protect natural depressions and flood storage from filling or building. Ask engineers to assess detention, retention or roof-water storage with controlled overflow, maintenance and water-quality checks. Storage can slow runoff; unsuitable infiltration can harm foundations or groundwater.": "Ka ilaali godadka dabiiciga ah iyo meelaha biyaha fatahaaddu ku kaydsamaan in la buuxiyo ama wax laga dhiso. Injineerrada ka codso inay qiimeeyaan kaydinta ku meelgaarka ah, kaydinta joogtada ah ama kaydinta biyaha saqafyada, iyadoo la xakameynayo biyaha dheeraadka ah, lana qorsheynayo dayactirka iyo hubinta tayada biyaha. Kaydintu waxay gaabin kartaa socodka biyaha dusha dhulka; biyo dhulka lagu nuugo oo aan goobtu ku habboonayn waxay dhaawici karaan aasaaska dhismayaasha ama biyaha dhulka hoostiisa.",
+    "Municipality + water / environmental engineer": "Degmada iyo injineerka biyaha ama deegaanka",
+    "Review river protection and escape routes": "Dib u eeg ilaalinta webiga iyo waddooyinka laga baxsan karo",
+    "Ask the responsible water authority to inspect embankments, existing canals and known breakage points. Coordinate repairs and vegetation protection through an approved programme. Use local river warnings to prepare movement before access is lost.": "Hay'adda biyaha ee masuulka ah ka codso inay baarto difaacyada webiga, kanaallada jira iyo meelaha la og yahay inay dillaaceen. Isku dubbarid dayactirka iyo ilaalinta dhirta adigoo raacaya barnaamij la ansixiyey. Adeegso digniinaha webiga ee deegaanka si loo diyaariyo guuritaanka ka hor inta aysan waddooyinku xidhmin.",
+    "This city is not labelled as a river corridor in the app. Verify the actual river or seasonal channel and exposed neighbourhoods with local authorities before applying river-rise planning.": "Abku magaaladan uma aqoonsana magaalo ku taalla marinka webiga. La xaqiiji hay'adaha deegaanka webiga ama togga xilliyeed ee dhabta ah iyo xaafadaha khatartu saamayn karto ka hor intaadan adeegsan qorshaha kor u kaca biyaha webiga.",
+    "Water authority + local disaster committee": "Hay'adda biyaha iyo guddiga musiibooyinka ee deegaanka",
+    "Check local flow paths and outfalls": "Hubi marinnada biyaha deegaanka iyo meelaha ay ka baxaan",
+    "Inspect streets, seasonal channels and existing coastal outfalls with public works. Engineers should check tide or sea-level backwater, erosion and outfall capacity before proposing changes. Keep channel corridors clear of development.": "La baar waaxda hawlaha guud waddooyinka, togagga xilliyeed iyo meelaha biyuhu uga baxaan xeebta ee jira. Injineerradu waa inay hubiyaan dib u celinta biyaha ee ka dhalata kacista iyo degista biyaha badda ama heerka badda, nabaadguurka iyo awoodda meelaha biyuhu ka baxaan ka hor inta aan wax isbeddel ah la soo jeedin. Marinnada biyaha ka ilaali dhismooyinka.",
+    "Map seasonal channels, road crossings and repeated ponding with public works and residents. Confirm actual flow paths and keep natural drainage corridors open. Prioritise verified access constraints rather than assuming every low point floods.": "La samee waaxda hawlaha guud iyo dadka deegaanka khariidad togagga xilliyeed, meelaha biyuhu ka gudbaan waddooyinka iyo meelaha ay biyuhu soo noqnoqda ugu fariistaan. Xaqiiji marinnada dhabta ah ee biyaha, kana dhig biyo-mareennada dabiiciga ah kuwo furan. Mudnaanta sii meelaha la xaqiijiyey inay xannibaan isu socodka, halkii loo qaadan lahaa in meel kasta oo hooseysa ay fatahayso.",
+    "Public works + water engineer": "Waaxda hawlaha guud iyo injineerka biyaha",
+    "Assess diversion as a designed option": "Qiimee weecinta biyaha oo leh naqshad injineernimo",
+    "A bypass, restored canal or protected outfall can transfer risk downstream. Any physical diversion needs a site survey, hydraulic modelling, agency and engineer review, community consultation and required permits. Check receiving capacity, erosion, backwater, land rights and downstream impacts. Do not cut embankments or dig an unplanned canal.": "Marin biyaha lagu leexiyo, kanaal dib loo soo celiyey ama meel biyuhu ka baxaan oo la difaacay waxay khatarta u gudbin karaan meelaha biyuhu u sii socdaan. Weecin kasta oo la dhisayo waxay u baahan tahay sahamin goobta ah, moodeelka socodka biyaha, dib u eegis hay'ad iyo injineer, la-tashi bulshada iyo oggolaanshaha loo baahan yahay. Hubi awoodda goobta biyaha loo weecinayo, nabaadguurka, biyaha dib u soo noqda, xuquuqda dhulka iyo saamaynta meelaha biyuhu u sii socdaan. Ha jarin difaacyada webiga, hana qodin kanaal aan la qorshayn.",
+    "Water authority + qualified hydraulic engineer": "Hay'adda biyaha iyo injineer aqoon u leh socodka biyaha",
+    "Verify the high gauge reading with authorities": "La xaqiiji hay'adaha masuulka ah cabbirka webiga ee sarreeya",
+    "Local disaster committee + water authority": "Guddiga musiibooyinka ee deegaanka iyo hay'adda biyaha",
+    "SWALIM river gauge thresholds": "Xuduudaha digniinta ee cabbirrada webiyada SWALIM",
+    "This is a planning checklist, not a drainage design, official warning or evacuation order. Confirm local conditions and agency advice.": "Tani waa liiska hubinta qorshaynta; ma aha naqshad biyo-mareen, digniin rasmi ah ama amar daad-gureyn. Xaqiiji xaaladaha deegaanka iyo talada hay'adaha masuulka ah.",
+    "DEM and susceptibility layers cannot resolve drains, culverts, protective embankments or building levels. They do not establish flood depth, safe shelter or diversion alignment. Point elevation and national terrain classes require field verification.": "Moodeelka joogga dhulka (DEM) iyo lakabyada u nuglaanshaha fatahaaddu ma kala saari karaan faahfaahinta biyo-mareennada, biyo-mareennada waddooyinka hoostooda mara, difaacyada webiga ama joogga dhismayaasha. Ma xaqiijiyaan qoto-dheeraanta fatahaadda, hoy ammaan ah ama marinka biyaha loo weecinayo. Joogga barta iyo qaybaha qaabka dhulka ee heer qaran waxay u baahan yihiin xaqiijin goobta ah.",
+    "Live forecasts are model estimates. Later forecast days are less certain; missing or old observations must remain unknown.": "Saadaasha hadda jirta waa qiyaasaha moodeelka. Maalmaha saadaasha ee fog hubantidoodu way yar tahay; cabbirrada maqan ama duugoobay waa inay ku sii muuqdaan xog aan la hayn.",
+    "Drainage guidance draws on general maintenance principles; the cited England guidance does not establish Somali legal requirements.": "Tilmaamaha biyo-mareennadu waxay ku salaysan yihiin mabaadi'da guud ee dayactirka; tilmaamaha Ingiriiska ee la xusay ma qeexayaan shuruudaha sharciga Soomaaliya.",
+    "Scenario was missing or unrecognised; live-evidence planning is shown.": "Xaaladdii layliga lama dooran ama lama aqoonsan; waxaa la muujinayaa qorshaynta ku salaysan xogta hadda jirta.",
+    "Scenario actions are hypothetical. The live forecast and live rainfall screen have not been altered.": "Tallaabooyinka layligu waa mala-awaal. Saadaasha hadda jirta iyo qiimeynta hordhaca ah ee roobka lama beddelin.",
+    "Rainfall: Open-Meteo weather model API": "Roobka: API-ga moodeelka cimilada Open-Meteo",
+    "River observation: SWALIM": "Cabbirka webiga: SWALIM",
+    "observation unavailable": "cabbirka lama hayo",
+    "Mapped susceptibility: FAO SWALIM, 30 m HAND / DEM-derived layer": "U nuglaanshaha khariidadda: FAO SWALIM, lakab 30 m ah oo laga soo saaray HAND / DEM",
+    "Static screening · published 8 September 2026": "Qiimeyn xog go'an ah · la daabacay 8 Sebteembar 2026",
+    "Historical flood extents: FAO SWALIM": "Baaxadaha fatahaadaha hore: FAO SWALIM",
+    "Historical extents 2013–2023 · not current floodwater": "Baaxadihii hore 2013–2023 · ma aha biyaha fatahaadda ee hadda",
+    "Point elevation: Open-Meteo / Copernicus DEM GLO-90": "Joogga barta: Open-Meteo / Copernicus DEM GLO-90",
+    "Static elevation · approximately 90 m grid": "Joog dhul oo go'an · shabakad qiyaastii 90 m ah",
+    "SOMALIA FLOOD WATCH — PLANNING CHECKLIST": "LA SOCODKA FATAHAADDA SOOMAALIYA — LIISKA HUBINTA QORSHAYNTA",
+    "EVIDENCE": "XOGTA CADDEYNTA",
+    "ACTIONS": "TALLAABOOYINKA",
+    "LIMITS": "XADDIDAADAHA",
+    "DATA SOURCES": "ILAHA XOGTA",
+    "No dimensions, water depths, construction alignment or design approval are provided.": "Lama bixin cabbirro dhismo, qoto-dheer biyood, marin dhismo ama ansixin naqshad.",
+    "Evidence used for this plan": "Xogta lagu saleeyey qorshahan",
+    "Planning limits and review requirements": "Xaddidaadaha qorshaynta iyo shuruudaha dib u eegista",
+    "Very high potential": "U nuglaansho aad u sarreeya",
+    "High potential": "U nuglaansho sarreeya",
+    "Moderate potential": "U nuglaansho dhexdhexaad ah",
+    "Low / not indicated": "U nuglaansho hooseeya / aan la tilmaamin",
+    "Terrain and drainage context": "Macnaha qaabka dhulka iyo biyo-mareennada",
+    "River corridor": "Marinka webiga",
+    "Coastal drainage": "Biyo-mareennada xeebta",
+    "Inland drainage": "Biyo-mareennada gudaha dalka",
+    "Explore ground beside river channels, drainage outlets and historical flood footprints. Upstream rainfall and river conditions also matter.": "Eeg dhulka ku dhow marinnada webiga, meelaha biyo-mareennadu ka baxaan iyo dhulkii hore biyaha fatahaaddu u dabooleen. Roobka ka da'a dhulka sare ee webigu ka yimaado iyo xaaladaha webiguna waa muhiim.",
+    "Explore drainage depressions, blocked outlets and locally low ground. Coastal proximity alone does not establish flood exposure.": "Eeg godadka biyo-mareennada, meelaha biyuhu ka baxaan oo xanniban iyo dhulka deegaanka ee hooseeya. U dhowaanshaha xeebtu keligiis ma xaqiijiyo in goobtu u nugushahay fatahaad.",
+    "Explore seasonal channels, drainage crossings and depressions. Locally low ground can collect water even in a high-elevation city.": "Eeg togagga xilliyeed, meelaha biyo-mareennadu ka gudbaan iyo godadka dhulka. Dhulka deegaanka ee hooseeya waxaa ku ururi kara biyo xitaa magaalo jooggeedu sarreeyo.",
+    "Mapped terrain class unavailable": "Qaybta qaabka dhulka ee khariidadda lama hayo",
+    "Inside a mapped historical footprint": "Waxay ku dhex taallaa dhul khariidaddu muujinayso inuu hore u fatahay",
+    "No historical feature returned at this point; flooding is still possible": "Xogta taariikhiga ahi ma muujin fatahaad hore oo bartan ka dhacday; fatahaaddu weli waa suurtagal",
+    "Historical query unavailable": "Xogta fatahaadaha hore lama heli karo",
+    "This sampled cell has higher terrain susceptibility. Check the surrounding drainage and verify conditions locally.": "Unuggan dhulka ee la baaray wuxuu leeyahay u nuglaansho sarreeya. Hubi biyo-mareennada ku hareeraysan, kuna xaqiiji xaaladaha goobta.",
+    "This sampled cell is in a lower terrain class. This does not establish that the location is safe.": "Unuggan dhulka ee la baaray wuxuu ku jiraa qayb u nuglaanshaheedu hooseeyo. Tani ma xaqiijinayso in goobtu ammaan tahay.",
+    "No terrain class is inferred from elevation or missing source data.": "Qaybta qaabka dhulka lagama qiyaasayo joogga dhulka ama xogta isha ee maqan.",
+    "Inspect a point to identify its mapped class": "Baar bar si aad u ogaato qaybta ay khariidadda kaga jirto",
+    "Click an orange or red ground cell, or inspect the selected city centre. A city-centre sample describes one point, not the whole city.": "Guji unug dhul oo liimi ama casaan ah, ama baar bartamaha magaalada la doortay. Baaritaanka bartamaha magaalada wuxuu sharxayaa hal bar, ma aha magaalada oo dhan.",
+    "Coordinates unavailable": "Isku-duwayaasha goobta lama hayo",
+    "Selected map point · one sampled cell": "Barta khariidadda ee la doortay · hal unug oo la baaray",
+    "SWALIM terrain class": "Qaybta qaabka dhulka ee SWALIM",
+    "Modelled ground elevation": "Joogga dhulka ee moodeelku qiyaasay",
+    "Static 30 m terrain screening · elevation is a separate 90 m DEM estimate. Neither shows current water, flood depth or a safe diversion route.": "Qiimeynta qaabka dhulka oo go'an, 30 m · joogga dhulku waa qiyaas gaar ah oo DEM 90 m ah. Midkoodna ma muujinayo biyaha hadda jira, qoto-dheeraanta fatahaadda ama marin ammaan ah oo biyaha loo weeciyo.",
+    "SWALIM source ↗": "Isha SWALIM ↗",
+    "Elevation source ↗": "Isha xogta joogga dhulka ↗",
+    "Connecting to FAO SWALIM terrain layers…": "Waxaa la xiriirayaa lakabyada qaabka dhulka ee FAO SWALIM…",
+    "connecting to map tiles": "waxaa la xiriirayaa qaybaha khariidadda",
+    "Terrain susceptibility hidden. Select “Show flood-prone terrain” to view the source overlay.": "U nuglaanshaha dhulka waa qarsoon yahay. Dooro “Muuji dhulka u nugul fatahaadda” si aad u aragto lakabka isha xogta.",
+    "SWALIM terrain susceptibility classes": "Qaybaha u nuglaanshaha dhulka ee SWALIM",
+    "Unmapped / no data": "Khariidad laguma darin / xog lama hayo",
+    "Orange and red ground cells show higher": "Unugyada dhulka ee liimiga iyo casaanka ahi waxay muujinayaan",
+    "terrain susceptibility": "u nuglaanshaha dhulka oo sarreeya",
+    "; city dots show rainfall screening. SWALIM uses height above nearby drainage, slope, depressions and flow pathways to locate flood-prone terrain. Absolute elevation alone cannot identify it.": "; dhibcaha magaalooyinku waxay muujinayaan qiimeynta hordhaca ah ee roobka. SWALIM waxay isticmaashaa joogga dhulka marka loo eego biyo-mareennada u dhow, jiirada, godadka iyo marinnada biyaha si loo helo dhulka u nugul fatahaadda. Joogga dhulka marka loo eego heerka badda keligiis laguma aqoonsan karo dhulkaas.",
+    "Static terrain potential · historical footprints cover 2013–2023 · neither layer shows flooding now.": "U nuglaanshaha qaabka dhulka oo go'an · dhulkii hore u fatahay wuxuu daboolayaa 2013–2023 · midkoodna ma muujinayo fatahaadda hadda jirta.",
+    "not loaded": "weli lama soo gelin",
+    "loading": "waa la soo gelinayaa",
+    "some tiles unavailable": "qaybo ka mid ah khariidadda lama hayo",
+    "source tiles loaded": "qaybaha khariidadda ee isha waa la soo geliyey",
+    "Observation product or its dated coverage is unavailable. No current flood extent is inferred.": "Wax soo saarka kormeerka ama daboolitaankiisa taariikhaysan lama hayo. Lagama qiyaasayo baaxad fatahaad oo hadda jirta.",
+    "current day, coverage incomplete": "maalinta hadda, daboolitaanku ma dhammaystirna",
+    "Selected date · held for comparison": "Taariikhda la doortay · loo hayo isbarbardhig",
+    "Following latest available completed UTC day": "Waxaa la raacayaa maalinta UTC ee ugu dambaysay ee dhammaystiran ee la hayo",
+    "water layer hidden": "lakabka biyaha waa qarsoon yahay",
+    "STALE / last known metadata": "XOG DUUGOOWDAY / xogtii sharaxaadda ee ugu dambaysay",
+    "Radar-detected flood water": "Biyo fatahaad ah oo raadaarku ogaaday",
+    "Dotted radar scene coverage · not floodwater": "Daboolitaanka sawirka raadaarka ee dhibcaha leh · ma aha biyo fatahaad",
+    "Flood detected": "Fatahaad ayaa la ogaaday",
+    "Recurring flood water": "Biyo fatahaad oo soo noqnoqda",
+    "Reference surface water · not new flooding": "Biyaha dusha dhulka ee xogta tixraaca · ma aha fatahaad cusub",
+    "Insufficient observations · unknown": "Kormeerro aan ku filnayn · xaaladda lama hayo",
+    "Zooming enlarges pixels; it does not add street-level detail.": "Soo dhoweyntu waxay weynaysaa unugyada sawirka; ma kordhiso faahfaahinta heerka waddada.",
+    "Radar may miss urban floods, dense vegetation and water outside its valid detection mask.": "Raadaarku wuu seegi karaa fatahaadaha magaalooyinka, meelaha dhirtu cufan tahay iyo biyaha ka baxsan aagga uu si sax ah wax uga ogaan karo.",
+    "Exclusion mask: source pixels that cannot be reliably classified. This quality layer is not flood extent.": "Lakabka ka reebista: unugyada sawirka isha ee aan si lagu kalsoonaan karo loo kala saari karin. Lakabkan tayadu ma aha baaxadda fatahaadda.",
+    "Product & limits ↗": "Wax soo saarka iyo xaddidaadihiisa ↗",
+    "Observation coverage unavailable for this selection.": "Daboolitaanka kormeerka lama hayo doorashadan.",
+    "Start the local server to receive live observed-water metadata and coverage dates.": "Daar server-ka deegaanka si aad u hesho xogta sharaxaadda biyaha la arkay iyo taariikhaha daboolitaanka.",
+    "Neither observation product is available": "Labada wax soo saar ee kormeerka midna lama hayo",
+    "Choose a valid map point to check radar observation coverage.": "Dooro bar khariidadda ku sax ah si loo hubiyo daboolitaanka kormeerka raadaarka.",
+    "NASA layer: interpret the colored satellite pixels and the gray unknown mask. No point-level flood conclusion is inferred.": "Lakabka NASA: fasir unugyada sawirka dayax-gacmeedka ee midabaysan iyo lakabka cawlan ee xaaladdiisa aan la hayn. Lagama soo saarayo go'aan fatahaad oo ku saabsan hal bar.",
+    "Radar observation coverage unavailable for this point.": "Daboolitaanka kormeerka raadaarka lama hayo bartan.",
+    "Water status unknown · Radar coverage query unavailable": "Xaaladda biyaha lama hayo · xogta daboolitaanka raadaarka lama heli karo",
+    "Satellite flood classification detected at this point": "Kala soocidda dayax-gacmeedku waxay bartan ku ogaatay fatahaad",
+    "Reference surface water · not evidence of new flooding": "Biyaha dusha dhulka ee xogta tixraaca · ma aha caddeyn fatahaad cusub",
+    "No flood water classified at this point · verify locally": "Bartan laguma aqoonsan biyo fatahaad · ku xaqiiji goobta",
+    "Water status unknown · Radar scene covers this point at the selected date": "Xaaladda biyaha lama hayo · sawirka raadaarku wuxuu daboolayaa bartan taariikhda la doortay",
+    "Water status unknown · No recent radar scene returned for this point": "Xaaladda biyaha lama hayo · sawir raadaar oo cusub lama helin bartan",
+    "Coverage alone does not establish whether land is flooded. No detection is not proof of safety.": "Daboolitaanka keliya ma xaqiijiyo in dhulku fatahay iyo in kale. In fatahaad aan la ogaan ma aha caddeyn badbaado.",
+    "Time unavailable": "Waqtiga lama hayo",
+    "Acquisition identifier unavailable": "Aqoonsiga sawirka la qaaday lama hayo",
+    "Acquisition time unavailable": "Waqtiga sawirka la qaaday lama hayo",
+    "Check future acquisition timestamp": "Hubi waqtiga sawirka ee leh taariikh mustaqbal ah",
+    "Older observation · over 2 days": "Kormeer hore · ka badan 2 maalmood",
+    "Recent acquisition": "Sawir dhowaan la qaaday",
+    "Radar can observe through clouds": "Raadaarku wuxuu wax ka arki karaa daruuraha dhexdiisa",
+    "Scene-wide cloud cover unknown": "Inta daruuruhu sawirka oo dhan daboolayaan lama hayo",
+    "Sentinel-1 radar": "Raadaarka Sentinel-1",
+    "Sentinel-2 optical": "Sawirrada iftiinka ee Sentinel-2",
+    "Connecting to Copernicus public API": "Waxaa la xiriirayaa API-ga dadweynaha ee Copernicus",
+    "Copernicus catalogue unavailable": "Liiska sawirrada Copernicus lama hayo",
+    "Last known catalogue · refresh unavailable or old": "Liiskii ugu dambeeyay ee la hayey · cusboonaysiin lama helin ama xogtu waa duug",
+    "Copernicus public API connected": "API-ga dadweynaha ee Copernicus waa la xiriiriyey",
+    "Copernicus API partly available": "API-ga Copernicus qayb ahaan ayaa la heli karaa",
+    "Not yet retrieved": "Weli lama helin",
+    "Acquisition metadata does not establish that flooding is present or absent. A scene footprint may only partly cover the city.": "Xogta sharaxaadda sawirku ma xaqiijiso in fatahaad jirto ama aanay jirin. Baaxadda sawirku waxay qayb ahaan oo keliya dabooli kartaa magaalada.",
+    "Custom Sentinel imagery processing requires Copernicus Data Space credentials configured on the server. This public catalogue connection does not need a key.": "Habayn gaar ah oo sawirrada Sentinel ah waxay u baahan tahay aqoonsiyada gelitaanka Copernicus Data Space oo lagu dejiyey server-ka. Xiriirka liiskan dadweynuhu uma baahna fure API.",
+    "Check flood layer for this date": "Hubi lakabka fatahaadda ee taariikhdan",
+    "ground may be obscured": "dhulka waxaa qarin kara daruuro",
+    "Open Browser · choose Sentinel-1 ↗": "Fur Copernicus Browser · dooro Sentinel-1 ↗",
+    "Inspect radar imagery ↗": "Baar sawirrada raadaarka ↗",
+    "Inspect optical imagery ↗": "Baar sawirrada iftiinka ↗",
+    "Acquisition metadata ↗": "Xogta sharaxaadda sawirka la qaaday ↗",
+    "Acquisition identifier": "Aqoonsiga sawirka la qaaday",
+    "Checking acquisition metadata…": "Waxaa la hubinayaa xogta sharaxaadda sawirrada la qaaday…",
+    "This mission catalogue is currently unavailable.": "Liiska sawirrada hawlgalkan hadda lama hayo.",
+    "No returned optical acquisitions meet the ≤30% scene-wide cloud filter. Radar acquisitions remain visible.": "Sawirrada iftiinka ee la helay midna ma buuxinayo shuruudda daruuraha sawirka oo dhan ee ≤30%. Sawirrada raadaarka weli way muuqdaan.",
+    "Cloud-independent observation · inspect interpretation": "Kormeer aan daruuruhu xannibin · hubi fasiraaddiisa",
+    "True-colour inspection · clouds affect visibility": "Baaritaanka midabada dhabta ah · daruuruhu waxay saameeyaan muuqashada",
+    "Radar acquisitions listed here are catalogue records. Checking their date opens a separate CEMS flood classification; it does not prove that a listed acquisition was processed or that the city has classification coverage. Optical cloud percentages apply to the whole scene, not this location.": "Sawirrada raadaarka ee halkan ku qoran waa diiwaannada liiska sawirrada. Hubinta taariikhdoodu waxay furaysaa kala soocidda fatahaadda ee CEMS oo gaar ah; ma caddaynayso in sawirka la sheegay la habeeyey ama in kala soociddu daboolayso magaalada. Boqolleyda daruuraha ee sawirrada iftiinku waxay khusaysaa sawirka oo dhan, ma aha goobtan oo keliya.",
+    "Catalogue query:": "Raadinta liiska sawirrada:",
+    "How this API connection works": "Sida xiriirkan API-gu u shaqeeyo",
+    "Store processing credentials only in the server configuration. Do not include them in reports, comments or browser code.": "Aqoonsiyada gelitaanka ee habaynta ku kaydi oo keliya dejinta server-ka. Ha ku darin warbixinnada, faallooyinka ama koodhka biraawsarka.",
+    "Copernicus STAC API documentation ↗": "Dukumentiyada API-ga STAC ee Copernicus ↗",
+    "The flood layer could not be selected. Use the satellite observation controls to check available dates.": "Lakabka fatahaadda lama dooran karin. Adeegso xakamaynta kormeerka dayax-gacmeedka si aad u hubiso taariikhaha la hayo.",
+    "Official warning / event API": "API-ga digniinaha rasmiga ah iyo dhacdooyinka",
+    "Rainfall forecast": "Saadaasha roobka",
+    "River observations": "Cabbirrada webiyada",
+    "Official warning · SNMA API": "Digniin rasmi ah · API-ga SNMA",
+    "GDACS model-based signal": "Tilmaanta GDACS ee ku salaysan moodeel",
+    "GDACS event monitoring": "La socodka dhacdooyinka GDACS",
+    "Somalia country-level · city extent unspecified": "Heerka dalka Soomaaliya · baaxadda magaalooyinka lama qeexin",
+    "Read the authority’s notice and follow local instructions.": "Akhri ogeysiiska hay'adda masuulka ah oo raac tilmaamaha deegaanka.",
+    "Review the linked source. This signal does not establish which city or neighbourhood is flooded.": "Dib u eeg isha ku xiran. Tilmaantani ma xaqiijinayso magaalada ama xaafadda fatahay.",
+    "unavailable or stale": "lama hayo ama way duugoowday",
+    "Elevated rainfall": "Roob badan",
+    "Rainfall watch": "La socodka roobka",
+    "Open-Meteo weather forecast": "Saadaasha cimilada Open-Meteo",
+    "App rainfall screening": "Qiimeynta hordhaca ah ee roobka ee abka",
+    "Check low points, drains and safe routes. Flooding also depends on rainfall intensity, terrain, upstream flow and drainage capacity.": "Hubi dhulka hooseeya, biyo-mareennada iyo waddooyinka ammaan ah. Fatahaaddu waxay sidoo kale ku xiran tahay xoogga roobka, qaabka dhulka, biyaha ka imanaya dhulka sare iyo awoodda biyo-mareennada.",
+    "FAO SWALIM river observation": "Cabbirka webiga ee FAO SWALIM",
+    "SWALIM observation · station threshold": "Cabbirka SWALIM · xadka xarunta cabbirka",
+    "bank full": "webigu buuxo ilaa jiinkiisa",
+    "high-risk": "khatar sare",
+    "moderate-risk": "khatar dhexdhexaad ah",
+    "Follow SWALIM and local authority updates. Review routes away from the river; confirm any inundation with current mapped or field evidence.": "La soco wararka SWALIM iyo hay'adaha deegaanka. Dib u eeg waddooyinka webiga ka fog; ku xaqiiji fatahaad kasta xogta khariidadda ee cusub ama caddeyn goobta laga helay.",
+    "Official warning and event coverage may be incomplete. No returned notice does not establish safety.": "Daboolitaanka digniinaha rasmiga ah iyo dhacdooyinku wuxuu noqon karaa mid aan dhammaystirnayn. In ogeysiis aan la helin ma xaqiijinayso badbaado.",
+    "Browser notifications unavailable": "Ogeysiisyada biraawsarka lama heli karo",
+    "Notifications blocked in browser": "Ogeysiisyada waxaa xannibay biraawsarka",
+    "Disable browser alerts": "Dami digniinaha biraawsarka",
+    "Enable browser alerts": "Daar digniinaha biraawsarka",
+    "While this app is open, show up to 3 browser notices per refresh for new dated source signals or app screening severities in the selected scope. Enabling may show current signals once. All signals remain visible here.": "Inta abkani furan yahay, cusboonaysiin kasta muuji ugu badnaan 3 ogeysiis oo biraawsarka ah oo ku saabsan tilmaamo cusub oo taariikhaysan oo ka yimid ilaha ama heerarka qiimeynta abka ee baaxadda la doortay. Markaad daarto, tilmaamaha hadda jira waxaa laga yaabaa inay hal mar muuqdaan. Tilmaamaha oo dhan halkan way ku sii muuqanayaan.",
+    "Browser permission was not granted. In-app alerts remain available.": "Oggolaanshaha biraawsarka lama bixin. Digniinaha ku jira abka weli waa la heli karaa.",
+    "Official warnings": "Digniinaha rasmiga ah",
+    "Source event signals": "Tilmaamaha dhacdooyinka ee ilaha",
+    "River thresholds": "Xuduudaha digniinta webiga",
+    "App rainfall screens": "Qiimeynaha hordhaca ah ee roobka ee abka",
+    "Read the source notice for details.": "Faahfaahinta ka akhri ogeysiiska isha.",
+    "Read source ↗": "Akhri isha ↗",
+    "No active signals returned for this view": "Muuqaalkan lagama helin tilmaamo weli shaqaynaya",
+    "Some feeds are unavailable or stale; check the status below.": "Ilaha xogta qaarkood lama hayo ama way duugoobeen; hubi xaaladda hoose.",
+    "No matching source notice or app threshold is present in the fresh responses.": "Jawaabaha cusub lagama helin ogeysiis il xogeed ama xad qiimeyn ab oo ku habboon doorashadan.",
+    "This does not confirm that an area is safe or free from flooding.": "Tani ma xaqiijinayso in aaggu ammaan yahay ama aan fatahaad ka jirin.",
+    "enabled": "waa shidan yihiin",
+    "off": "waa dansan yihiin",
+    "extreme": "aad iyo aad u sarreeya",
+    "severe": "aad u daran",
+    "high": "sarreeya",
+    "moderate": "dhexdhexaad",
+    "elevated": "sarreeya",
+    "minor": "yar",
+    "watch": "la socod",
+    "unknown": "xog lama hayo",
+    "Elevated rainfall screen": "Roob badan marka loo eego qiimeynta hordhaca ah",
+    "Below rainfall screen": "Ka hooseeya xadka qiimeynta hordhaca ah ee roobka",
+    "Bank full": "Webigu buuxo ilaa jiinkiisa",
+    "Matched gauge": "Xarunta cabbirka webiga ee ku habboon goobtan",
+    "Fourteen-day rainfall bars and modeled river discharge line. Rainfall is in millimetres on EAT days; discharge is in cubic metres per second on UTC model days. Gaps mean missing data.": "Tiirarka roobka ee afar iyo toban maalmood iyo xariiqda qulqulka webiga ee moodeelku qiyaasay. Roobku waa milimitir maalmaha EAT; qulqulku waa mitir kuyuubik ilbiriqsigiiba maalmaha UTC ee moodeelka. Meelaha bannaan waxay ka dhigan yihiin xog maqan.",
+    "14-day rainfall and river model outlook": "Saadaasha 14-ka maalmood ee roobka iyo moodeelka webiga",
+    "Two separate axes and different day boundaries. Colours show app rainfall screening levels only. The line does not show flood extent or river warning thresholds. Week two has lower forecast confidence. A detailed table follows.": "Laba dhidib oo kala duwan iyo xuduudo maalin oo kala duwan. Midabadu waxay muujinayaan oo keliya heerarka qiimeynta hordhaca ah ee roobka ee abka. Xariiqdu ma muujinayso baaxadda fatahaadda ama xuduudaha digniinta webiga. Saadaasha toddobaadka labaad hubantideedu way ka yar tahay. Jadwal faahfaahsan ayaa xiga.",
+    "Rain mm · EAT": "Roob mm · EAT",
+    "River m³/s · UTC": "Qulqulka webiga m³/s · UTC",
+    "Days 1–7": "Maalmaha 1–7",
+    "Days 8–14 · lower confidence": "Maalmaha 8–14 · heer hubanti hooseeya",
+    "No usable forecast values": "Ma jiraan qiimayaal saadaal oo la adeegsan karo",
+    "Last known data": "Xogtii ugu dambaysay ee la hayey",
+    "Refreshed model data": "Xogta moodeelka oo la cusboonaysiiyey",
+    "Lower confidence": "Heer hubanti hooseeya",
+    "Near-term planning": "Qorshaynta muddada dhow",
+    "mm rainfall total": "mm oo wadarta roobka ah",
+    "↑ Above day-one model flow": "↑ Ka sarreeya qulqulka maalinta koowaad ee moodeelka",
+    "↓ Below day-one model flow": "↓ Ka hooseeya qulqulka maalinta koowaad ee moodeelka",
+    "→ Same as day-one model flow": "→ La mid ah qulqulka maalinta koowaad ee moodeelka",
+    "Flow comparison unavailable": "Isbarbardhigga qulqulka lama hayo",
+    "River flow unknown": "Xogta qulqulka webiga lama hayo",
+    "Forecast values by calendar date. Rainfall days use EAT; river model days use UTC. Unknown means unavailable.": "Qiimayaasha saadaasha ee taariikh kasta. Maalmaha roobku waxay adeegsadaan EAT; maalmaha moodeelka webigu waxay adeegsadaan UTC. Xog aan la hayn waxay ka dhigan tahay xog aan la heli karin.",
+    "Date": "Taariikh",
+    "Daily high °C": "Heerkulka ugu sarreeya maalinta °C",
+    "Discharge m³/s · UTC": "Qulqulka webiga m³/s · UTC",
+    "Rainfall screen": "Qiimeynta hordhaca ah ee roobka",
+    "Horizon": "Muddada saadaasha",
+    "No matched river gauge: no observed gauge threshold is applied to this outlook.": "Ma jiro cabbir webi oo ku habboon goobtan: saadaashan laguma dabaqayo xad cabbir webi oo la arkay.",
+    "Current gauge status unknown; a today-dated usable observation is required.": "Xaaladda hadda ee cabbirka webiga lama hayo; waxaa loo baahan yahay cabbir la adeegsan karo oo taariikhdiisu maanta tahay.",
+    "Supplied threshold order is invalid.": "Kala horreynta xuduudaha la bixiyey sax ma aha.",
+    "Observed thresholds are not forecast river heights.": "Xuduudaha cabbirrada la arkay ma aha saadaasha heerarka biyaha webiga.",
+    "Confirm the missing source data before using this day to prioritise inspections.": "Xaqiiji xogta isha ee maqan ka hor intaadan maalintan u adeegsan kala mudnaansiinta baaritaannada.",
+    "Keep monitoring forecasts and ground reports. Below the rainfall screening threshold does not establish safety.": "Sii wad la socodka saadaasha iyo warbixinnada goobta. In roobku ka hooseeyo xadka qiimeynta hordhaca ah ma xaqiijinayso badbaado.",
+    "Prepare drainage checks and review low-lying access routes alongside local observations.": "Diyaari hubinta biyo-mareennada, dibna u eeg waddooyinka mara dhulka hooseeya adigoo adeegsanaya kormeerka deegaanka.",
+    "Prioritise ground checks at low-lying access routes and review response readiness with the relevant authority.": "Mudnaanta sii hubinta goobaha waddooyinku maraan dhulka hooseeya, lana eeg hay'adda masuulka ah u diyaargarowga gurmadka.",
+    "Rainfall values are retained from a previous retrieval.": "Qiimayaasha roobka waxaa laga hayaa xog hore loo helay.",
+    "Rainfall · EAT": "Roobka · EAT",
+    "Rain chance": "Suurtagalnimada roobka",
+    "Model flow · UTC": "Qulqulka moodeelka · UTC",
+    "Daily high": "Heerkulka ugu sarreeya maalinta",
+    "Two-week readiness": "U diyaargarowga laba toddobaad",
+    "14-day flood planning outlook": "Saadaasha qorshaynta fatahaadda ee 14-ka maalmood",
+    "Export 14 days": "Soo deji xogta 14-ka maalmood",
+    "Daily rainfall and modeled river flow support planning. This outlook does not predict flood extent, depth, casualties or the probability of flooding.": "Roobka maalin kasta iyo qulqulka webiga ee moodeelku qiyaasay waxay taageeraan qorshaynta. Saadaashani ma saadaalinayso baaxadda fatahaadda, qoto-dheeraanteeda, khasaaraha dadka ama suurtagalnimada fatahaadda.",
+    "Rainfall": "Roobka",
+    "River model": "Moodeelka webiga",
+    "Modeled river flow": "Qulqulka webiga ee moodeelku qiyaasay",
+    "? Missing rainfall": "? Xogta roobka oo maqan",
+    "Select a forecast date": "Dooro taariikhda saadaasha",
+    "Daily values & how to interpret this outlook": "Qiimayaasha maalin kasta iyo sida saadaashan loo fasirayo",
+    "Rain chance is a weather probability, not flood probability. Rainfall colours are app screening levels: below 10, 10–24.9 and ≥25 mm/day; they are not official warnings. River arrows compare modeled discharge with the first forecast day only, without city-wide flood thresholds.": "Suurtagalnimada roobku waxay tilmaamaysaa fursadda roob da'aya, ma aha suurtagalnimada fatahaadda. Midabada roobku waa heerarka qiimeynta hordhaca ah ee abka: ka hooseeya 10, 10–24.9 iyo ≥25 mm/maalin; ma aha digniino rasmi ah. Fallaadhaha webigu waxay isbarbardhigaan qulqulka moodeelka iyo kan maalinta koowaad ee saadaasha oo keliya, iyagoon adeegsan xuduudo fatahaad oo magaalada oo dhan khuseeya.",
+    "The approximately 5 km river grid may not represent the correct river channel or local drainage. EAT rainfall days and UTC river days are shown under their source calendar dates and cover different 24-hour periods. Retrieval times are when data were fetched, not model-run times. Days 8–14 have lower forecast confidence.": "Shabakadda webiga ee qiyaastii 5 km ahi waxaa laga yaabaa inaanay matalin marinka webiga ee saxda ah ama biyo-mareennada deegaanka. Maalmaha roobka ee EAT iyo maalmaha webiga ee UTC waxaa lagu muujinayaa taariikhaha ilahooda, waxayna daboolayaan muddooyin 24-saac ah oo kala duwan. Waqtiyada xogta la helay waa markii xogta la soo qaaday, ma aha markii moodeelka la socodsiiyey. Saadaasha maalmaha 8–14 hubantideedu way hooseysaa.",
+    "Use current observations, drainage checks and local authority advice to plan access, shelter and response. For emergency help, contact your local government or relevant authority.": "Adeegso kormeerka cusub, hubinta biyo-mareennada iyo talada hay'adaha deegaanka si aad u qorshayso isu socodka, hoyga iyo gurmadka. Caawimada xaaladaha degdegga ah, la xiriir maamulka deegaankaaga ama hay'adda ku shaqada leh.",
+    "Sources:": "Ilaha:",
+    "Open-Meteo weather": "Cimilada Open-Meteo",
+    "GloFAS river model via Open-Meteo": "Moodeelka webiga ee GloFAS oo laga helay Open-Meteo",
+    "Connecting…": "Waxaa la xiriirayaa…",
+    "Last known data · stale": "Xogtii ugu dambaysay ee la hayey · way duugoowday",
+    "Updating · previous retrieval shown": "Waa la cusboonaysiinayaa · xogtii hore ayaa la muujinayaa",
+    "Refreshed data": "Xog la cusboonaysiiyey",
+    "report": "warbixin",
+    "reports": "warbixinno",
+    "Ranking unavailable": "Kala sarreynta lama hayo",
+    "Flooding · next 7 days": "Fatahaadda · 7-da maalmood ee soo socda",
+    "Flooding today": "Fatahaadda maanta",
+    "Verified flood forecast": "Saadaal fatahaad oo la xaqiijiyey",
+    "Verified flooded-area ranking": "Kala sarreynta dhulka fatahay oo la xaqiijiyey",
+    "A calibrated city flood-extent or severity forecast is not available from the connected feeds.": "Ilaha la xiriiriyey lagama helayo saadaal lagu waafajiyey cabbirro dhab ah oo ku saabsan baaxadda ama darnaanta fatahaadda magaalooyinka.",
+    "Comparable, verified city-wide flooded-area measurements for today are not available from the connected feeds.": "Ilaha la xiriiriyey lagama helayo cabbirro maanta ah oo la xaqiijiyey, la isbarbardhigi karo, kuna saabsan dhulka fatahay ee magaalo kasta oo dhan.",
+    "Rainfall and modeled river flow alone cannot establish which cities will have the most flooding.": "Roobka iyo qulqulka webiga ee moodeelku qiyaasay keligood laguma xaqiijin karo magaalooyinka fatahaadda ugu badan ay ka dhici doonto.",
+    "Satellite acquisition dates, cloud/exclusion masks and ground verification limit current flood comparisons.": "Taariikhaha sawirrada dayax-gacmeedka, lakabyada daruuraha iyo ka reebista, iyo xaqiijinta goobta ayaa xaddidaya isbarbardhigga fatahaadaha hadda jira.",
+    "Review flood observation map": "Dib u eeg khariidadda kormeerka fatahaadda",
+    "Rainfall today": "Roobka maanta",
+    "Forecast full-day rainfall": "Saadaasha roobka maalinta oo dhan",
+    "cities with usable daily rainfall": "magaalo oo leh xog roob maalinle ah oo la adeegsan karo",
+    "No usable rainfall forecast for today. Missing rainfall is unknown, not zero.": "Ma jirto saadaal roob oo maanta la adeegsan karo. Xogta roobka ee maqan waa xog aan la hayn, ma aha eber.",
+    "Full-day forecast total; not rainfall already observed today. Ties are listed alphabetically.": "Wadarta saadaasha maalinta oo dhan; ma aha roobka maanta hore loo cabbiray. Magaalooyinka isku qiime ah waxaa loo kala hormariyaa sida alifbeetada.",
+    "Weather forecast": "Saadaasha cimilada",
+    "Rainfall · next 7 days": "Roobka · 7-da maalmood ee soo socda",
+    "Highest seven-day forecast totals": "Wadarta saadaasha roobka ee ugu badan toddobada maalmood",
+    "cities with all 7 daily values": "magaalo oo leh dhammaan qiimayaasha 7-da maalmood",
+    "Seven usable daily rainfall values are required. Cities with incomplete forecasts are excluded.": "Waxaa loo baahan yahay toddoba qiime oo roob maalinle ah oo la adeegsan karo. Magaalooyinka saadaashoodu aanay dhammaystirnayn waa laga reebayaa.",
+    "Seven days starting tomorrow; excludes today. Ties are listed alphabetically.": "Toddobo maalmood oo ka bilaabmaya berrito; maanta kuma jirto. Magaalooyinka isku qiime ah waxaa loo kala hormariyaa sida alifbeetada.",
+    "An all-city report feed is required; a selected-city feed cannot support a national ranking.": "Waxaa loo baahan yahay il warbixinno dhammaan magaalooyinka ah; il magaalada la doortay oo keliya ah laguma salayn karo kala sarreyn heer qaran.",
+    "The report feed does not include flooding reports.": "Isha warbixinnadu kuma jiraan warbixinno fatahaad.",
+    "The all-city community report feed is unavailable.": "Isha warbixinnada bulshada ee dhammaan magaalooyinka lama hayo.",
+    "Incomplete report feed; city totals cannot be compared.": "Isha warbixinnadu ma dhammaystirna; wadarta magaalooyinka lama isbarbardhigi karo.",
+    "No eligible flood reports observed today were loaded. This does not establish that no flooding occurred.": "Lama soo gelin warbixinno fatahaad oo buuxiya shuruudaha, dhacdooyinkoodana maanta la arkay. Tani ma xaqiijinayso in fatahaad aanay dhicin.",
+    "Community report activity · unverified": "Dhaqdhaqaaqa warbixinnada bulshada · aan la xaqiijin",
+    "cities with eligible loaded flood reports": "magaalo oo leh warbixinno fatahaad oo la soo geliyey, shuruudahana buuxiya",
+    "Counts measure submitted report activity, not flood severity, water depth or flooded area. Voluntary reporting has incomplete geographic coverage. Equal counts are listed alphabetically.": "Tiradu waxay cabbiraysaa inta warbixin ee la soo gudbiyey, ma aha darnaanta fatahaadda, qoto-dheeraanta biyaha ama baaxadda dhulka fatahay. Warbixinnada iskaa loo soo gudbiyo ma daboolaan dhammaan goobaha. Magaalooyinka isku tiro ah waxaa loo kala hormariyaa sida alifbeetada.",
+    "Community reports": "Warbixinnada bulshada",
+    "Flood watch · next 7 days": "La socodka fatahaadda · 7-da maalmood ee soo socda",
+    "Rainfall-based planning priorities": "Mudnaanta qorshaynta ee ku salaysan roobka",
+    "No complete city forecast reaches the ≥10 mm/day rainfall screen. This does not establish flood safety.": "Saadaasha magaalo ee dhammaystiran midna ma gaarin xadka qiimeynta roobka ee ≥10 mm/day. Tani ma xaqiijinayso badbaado ka dhan ah fatahaadda.",
+    "Seven usable rainfall days are required to apply the planning screen.": "Waxaa loo baahan yahay xog roob oo la adeegsan karo toddobo maalmood si loo dabaqo qiimeynta qorshaynta.",
+    "Rainfall screen: ≥10 mm/day. Ordered by highest daily rainfall, then number of days ≥10 mm, then 7-day total, then alphabetically. Not predicted inundation or calibrated flood probability.": "Qiimeynta hordhaca ah ee roobka: ≥10 mm/day. Waxaa loo kala hormariyaa roobka maalinta ugu badan, ka dib tirada maalmaha ≥10 mm, ka dib wadarta 7-da maalmood, ugu dambaynna sida alifbeetada. Tani ma aha saadaal dhulka biyuhu daboolayaan ama suurtagalnimada fatahaadda oo lagu waafajiyey cabbirro dhab ah.",
+    "CITY PRIORITIES": "MUDNAANTA MAGAALOOYINKA",
+    "Rainfall & flood watch": "La socodka roobka iyo fatahaadda",
+    "Rankings cover only cities with usable data; excluded cities could rank higher. Missing cities are not assumed dry or safe. These comparisons support planning; use local observations and relevant authority advice for emergency decisions.": "Kala sarreyntu waxay daboolaysaa oo keliya magaalooyinka leh xog la adeegsan karo; magaalooyinka laga reebay ayaa yeelan kara qiime ka sarreeya. Magaalooyinka xogtoodu maqan tahay looma qaadanayo kuwo qalalan ama ammaan ah. Isbarbardhigyadani waxay taageeraan qorshaynta; go'aannada degdegga ah ku salee kormeerka deegaanka iyo talada hay'adda ku shaqada leh.",
+    "Optical imagery may be obscured": "Sawirrada iftiinka waxaa qarin kara daruuro",
+    "Mean sea level": "Celceliska heerka badda",
+    "Model visibility estimate": "Qiyaasta moodeelka ee fogaanta aragtida",
+    "last known": "xogtii ugu dambaysay",
+    "last known data": "xogtii ugu dambaysay ee la hayey",
+    "refreshing": "waa la cusboonaysiinayaa",
+    "Rainfall screen: ≥10 mm/day.": "Qiimeynta hordhaca ah ee roobka: ≥10 mm/day.",
+    "Next 7 days": "7-da maalmood ee soo socda",
+    "Today": "Maanta",
+    "Today’s measured level": "Heerka biyaha ee maanta la cabbiray",
+    "source thresholds could not be applied": "xuduudaha isha lama dabaqi karin",
+    "no usable source thresholds supplied": "lama bixin xuduudo isha ah oo la adeegsan karo",
+    "no supplied source threshold reached": "xuduudaha isha ee la bixiyey midna lama gaarin",
+    "Current gauge status unknown; a today-dated usable observation is required. Observed thresholds are not forecast river heights.": "Xaaladda hadda ee cabbirka webiga lama hayo; waxaa loo baahan yahay cabbir la adeegsan karo oo taariikhdiisu maanta tahay. Xuduudaha cabbirrada la arkay ma aha saadaasha heerarka biyaha webiga.",
+    "Current gauge status unknown; a today-dated usable observation is required. Supplied threshold order is invalid. Observed thresholds are not forecast river heights.": "Xaaladda hadda ee cabbirka webiga lama hayo; waxaa loo baahan yahay cabbir la adeegsan karo oo taariikhdiisu maanta tahay. Kala horreynta xuduudaha la bixiyey sax ma aha. Xuduudaha cabbirrada la arkay ma aha saadaasha heerarka biyaha webiga.",
+    "Some feeds are unavailable or stale; check the status below. This does not confirm that an area is safe or free from flooding.": "Ilaha xogta qaarkood lama hayo ama way duugoobeen; hubi xaaladda hoose. Tani ma xaqiijinayso in aaggu ammaan yahay ama aan fatahaad ka jirin.",
+    "No matching source notice or app threshold is present in the fresh responses. This does not confirm that an area is safe or free from flooding.": "Jawaabaha cusub lagama helin ogeysiis il xogeed ama xad qiimeyn ab oo ku habboon doorashadan. Tani ma xaqiijinayso in aaggu ammaan yahay ama aan fatahaad ka jirin.",
+    "Ground coordinates": "Isku-duwayaasha goobta dhulka",
+    "Forecast date": "Taariikhda saadaasha",
+    "Model estimate": "Qiyaasta moodeelka",
+    "Model estimates": "Qiyaasaha moodeelka",
+    "No data": "Xog lama hayo",
+    "No observation": "Kormeer lama hayo",
+    "Below threshold": "Ka hooseeya xadka",
+    "Unknown means unavailable.": "Xog aan la hayn waxay ka dhigan tahay xog aan la heli karin.",
+    "Gauge stage is not flood depth at this city or map point.": "Heerka biyaha webigu ma aha qoto-dheeraanta fatahaadda ee magaaladan ama barta khariidadda.",
+    "A city-centre sample describes one point, not the whole city.": "Baaritaanka bartamaha magaalada wuxuu sharxayaa hal bar, ma aha magaalada oo dhan.",
+    "Product date does not guarantee this location was observed.": "Taariikhda wax soo saarku ma dammaanad qaadayso in goobtan la kormeeray.",
+    "Neither shows current water, flood depth or a safe diversion route.": "Midkoodna ma muujinayo biyaha hadda jira, qoto-dheeraanta fatahaadda ama marin ammaan ah oo biyaha loo weeciyo.",
+    "Active signals are withheld.": "Tilmaamaha shaqaynaya lama muujinayo.",
+    "This does not establish that the city is flood-free.": "Tani ma xaqiijinayso in magaaladu fatahaad ka badbaadsan tahay.",
+    "Coverage is incomplete.": "Daboolitaanku ma dhammaystirna.",
+    "A new API retrieval is not a new warning.": "Xog API oo cusub la helay macnaheedu ma aha digniin cusub.",
+    "Source signals and app screening are distinct.": "Tilmaamaha ilaha iyo qiimeynta hordhaca ah ee abku way kala duwan yihiin.",
+    "These are screening rules, not flood probabilities or official warning thresholds.": "Kuwani waa xeerar qiimeyn hordhac ah, ma aha suurtagalnimada fatahaadda ama xuduudaha digniinaha rasmiga ah.",
+    "A gauge threshold is a river risk indicator, not a measured flood footprint.": "Xadka cabbirka webigu waa tilmaame khatarta webiga, ma aha baaxad fatahaad oo la cabbiray.",
+    "Ties are listed alphabetically.": "Magaalooyinka isku qiime ah waxaa loo kala hormariyaa sida alifbeetada.",
+    "Missing rainfall is unknown, not zero.": "Xogta roobka ee maqan waa xog aan la hayn, ma aha eber.",
+    "Cities with incomplete forecasts are excluded.": "Magaalooyinka saadaashoodu aanay dhammaystirnayn waa laga reebayaa.",
+    "Seven days starting tomorrow; excludes today.": "Toddobo maalmood oo ka bilaabmaya berrito; maanta kuma jirto.",
+    "Not predicted inundation or calibrated flood probability.": "Tani ma aha saadaal dhulka biyuhu daboolayaan ama suurtagalnimada fatahaadda oo lagu waafajiyey cabbirro dhab ah.",
+    "Later forecast days may have fewer fields.": "Maalmaha saadaasha ee fog waxaa laga yaabaa inay leeyihiin xog ka yar.",
+    "Gaps mean missing data.": "Meelaha bannaan waxay ka dhigan yihiin xog maqan.",
+    "Week two has lower forecast confidence.": "Saadaasha toddobaadka labaad hubantideedu way ka yar tahay.",
+    "Days 8–14 have lower forecast confidence.": "Saadaasha maalmaha 8–14 hubantideedu way hooseysaa.",
+    "observed gauge, separate from the forecast.": "cabbirka webiga ee la arkay, kana duwan saadaasha.",
+    "Responsible: Households + local disaster committee": "Cidda masuulka ah: Qoysaska iyo guddiga musiibooyinka ee deegaanka",
+    "Responsible: Municipal drainage / public works team": "Cidda masuulka ah: Kooxda biyo-mareennada ama hawlaha guud ee degmada",
+    "Responsible: Municipality + water / environmental engineer": "Cidda masuulka ah: Degmada iyo injineerka biyaha ama deegaanka",
+    "Responsible: Water authority + local disaster committee": "Cidda masuulka ah: Hay'adda biyaha iyo guddiga musiibooyinka ee deegaanka",
+    "Responsible: Public works + water engineer": "Cidda masuulka ah: Waaxda hawlaha guud iyo injineerka biyaha",
+    "Responsible: Water authority + qualified hydraulic engineer": "Cidda masuulka ah: Hay'adda biyaha iyo injineer aqoon u leh socodka biyaha",
+    "Responsible: Local disaster committee + water authority": "Cidda masuulka ah: Guddiga musiibooyinka ee deegaanka iyo hay'adda biyaha",
+    "NWS flood preparedness and safety ↗": "NWS: u diyaargarowga fatahaadda iyo badbaadada ↗",
+    "Environment Agency: asset maintenance principles ↗": "Environment Agency: mabaadi'da dayactirka kaabayaasha ↗",
+    "WMO / Cap-Net: Integrated Urban Flood Management ↗": "WMO / Cap-Net: maaraynta isku dhafan ee fatahaadaha magaalooyinka ↗",
+    "WMO / APFM: environmental aspects of flood management ↗": "WMO / APFM: arrimaha deegaanka ee maaraynta fatahaadda ↗",
+    "FAO: Somalia flood management and modelling ↗": "FAO: maaraynta fatahaadda iyo samaynta moodeellada ee Soomaaliya ↗",
+    "SWALIM river gauge thresholds ↗": "Xuduudaha digniinta ee cabbirrada webiyada SWALIM ↗"
+  },
+  "patterns": [
+    {
+      "en": "{0} EAT, temperature {1}, rainfall {2}",
+      "so": "{0} EAT, heerkul {1}, roob {2}",
+      "translate": [
+        1,
+        2
+      ]
+    },
+    {
+      "en": "{0}, {1}, maximum {2}, rainfall {3}",
+      "so": "{0}, {1}, ugu sarreeya {2}, roob {3}",
+      "translate": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "en": "Daily high {0}° · low {1}°",
+      "so": "Heerkulka ugu sarreeya maalinta {0}° · ugu hooseeya {1}°"
+    },
+    {
+      "en": "Feels like {0}° / {1}°",
+      "so": "Heerkulka la dareemayo {0}° / {1}°"
+    },
+    {
+      "en": "Feels like {0} °C",
+      "so": "Heerkulka la dareemayo {0} °C"
+    },
+    {
+      "en": "{0}% maximum chance",
+      "so": "{0}% suurtagalnimada ugu badan"
+    },
+    {
+      "en": "{0}% chance",
+      "so": "{0}% suurtagalnimo"
+    },
+    {
+      "en": "Gusts up to {0} km/h",
+      "so": "Dabaylo kedis u xoogaysta oo gaara {0} km/h"
+    },
+    {
+      "en": "{0} sunset ↓ EAT",
+      "so": "{0} qorrax-dhaca ↓ EAT"
+    },
+    {
+      "en": "{0} · gust {1} km/h",
+      "so": "{0} · dabayl kedis u xoogaysata {1} km/h"
+    },
+    {
+      "en": "Detailed weather refresh failed: {0}",
+      "so": "Cusboonaysiinta xogta cimilada oo faahfaahsan ma guulaysan: {0}"
+    },
+    {
+      "en": "Partial hourly coverage: {0}/24 timestamps, {1}/24 temperatures, {2}/24 rainfall values, {3}/24 weather conditions. Later forecast days may have fewer fields.",
+      "so": "Daboolitaanka saacadaha oo qayb ah: {0}/24 waqti, {1}/24 heerkul, {2}/24 qiime roob, {3}/24 xaalado cimilo. Maalmaha saadaasha ee fog waxaa laga yaabaa inay leeyihiin xog ka yar."
+    },
+    {
+      "en": "Source timezone is {0}; verify times before use.",
+      "so": "Aagga waqtiga ee isha waa {0}; hubi waqtiyada ka hor isticmaalka."
+    },
+    {
+      "en": "· {0}. Values are model estimates, not station observations. — means unavailable.",
+      "so": "· {0}. Qiimayaashu waa qiyaasaha moodeelka, ma aha cabbirro laga qaaday xarun cimilo. — waxay ka dhigan tahay in xogta aan la hayn."
+    },
+    {
+      "en": "Selected planning day: {0}.",
+      "so": "Maalinta qorshaynta ee la doortay: {0}."
+    },
+    {
+      "en": "Live rainfall screen: {0}. This screen is not an official flood warning.",
+      "so": "Qiimeynta hordhaca ah ee roobka ee hadda: {0}. Qiimeyntani ma aha digniin fatahaad oo rasmi ah.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0} · stale / last known response",
+      "so": "{0} · xog duugoowday / jawaabtii ugu dambaysay",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Selected-day rainfall model: {0}.",
+      "so": "Moodeelka roobka ee maalinta la doortay: {0}.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Forecast retrieved: {0}.",
+      "so": "Saadaasha waxaa la helay: {0}.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Matched gauge: {0} · {1} m · observed {2}. Gauge stage is not flood depth at this city or map point.",
+      "so": "Cabbirka webiga ee ku habboon goobtan: {0} · {1} m · la cabbiray {2}. Heerka biyaha webigu ma aha qoto-dheeraanta fatahaadda ee magaaladan ama barta khariidadda."
+    },
+    {
+      "en": "{0} · OLD OBSERVATION",
+      "so": "{0} · CABBIR HORE"
+    },
+    {
+      "en": "{0} · FUTURE-DATED OBSERVATION",
+      "so": "{0} · CABBIR LEH TAARIIKH MUSTAQBAL AH"
+    },
+    {
+      "en": "{0} · FEED STALE / last known response",
+      "so": "{0} · XOGTA ISHA WAY DUUGOOWDAY / jawaabtii ugu dambaysay"
+    },
+    {
+      "en": "The recent gauge reading is at or above the source high-risk threshold ({0} m). Contact local authorities to verify the latest situation; this app does not issue a flood warning.",
+      "so": "Cabbirka webiga ee dhowaan la qaaday wuxuu gaaray ama ka sarreeyaa xadka khatarta sare ee isha ({0} m). La xiriir hay'adaha deegaanka si aad u xaqiijiso xaaladda ugu dambaysay; abkani ma soo saaro digniin fatahaad."
+    },
+    {
+      "en": "SWALIM mapped flood susceptibility at the selected point: {0}. This static HAND / DEM-derived screening layer is not current floodwater, a forecast or water depth.",
+      "so": "U nuglaanshaha fatahaadda ee khariidadda SWALIM ee barta la doortay: {0}. Lakabkan qiimeynta go'an ah ee laga soo saaray HAND / DEM ma aha biyaha fatahaadda ee hadda, saadaal ama qoto-dheer biyood.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Terrain screening: {0} of {1} sampled locations are relatively low. These are inspection priorities; no inundation is inferred.",
+      "so": "Qiimeynta qaabka dhulka: {0} ka mid ah {1} goobood oo la baaray ayaa marka loo eego hareerahooda hooseeya. Kuwani waa mudnaanta baaritaanka; lagama qiyaasayo in biyuhu daboolayaan."
+    },
+    {
+      "en": "Selected map point: {0}, {1} · elevation {2} · relative elevation {3} m.",
+      "so": "Barta khariidadda ee la doortay: {0}, {1} · joogga dhulka {2} · joogga marka loo eego hareeraha {3} m.",
+      "translate": [
+        2
+      ]
+    },
+    {
+      "en": "Selected map point: {0}, {1} · elevation {2}.",
+      "so": "Barta khariidadda ee la doortay: {0}, {1} · joogga dhulka {2}.",
+      "translate": [
+        2
+      ]
+    },
+    {
+      "en": "Map source note: {0}",
+      "so": "Faallada isha khariidadda: {0}"
+    },
+    {
+      "en": "The {0} gauge reading from {1} meets the source high-risk threshold. Contact the local disaster committee and water authority for current conditions, access and protective actions. Follow their instructions; a gauge reading alone is not a city-wide evacuation order.",
+      "so": "Cabbirka webiga ee {0}, taariikhdiisuna tahay {1}, wuxuu gaaray xadka khatarta sare ee isha. La xiriir guddiga musiibooyinka ee deegaanka iyo hay'adda biyaha si aad u hesho xaaladaha hadda, waddooyinka la mari karo iyo tallaabooyinka ilaalinta. Raac tilmaamahooda; cabbirka webiga keligiis ma aha amar daad-gureyn oo magaalada oo dhan ah."
+    },
+    {
+      "en": "Responsible: {0}",
+      "so": "Cidda masuulka ah: {0}"
+    },
+    {
+      "en": "Generated: {0}",
+      "so": "La diyaariyey: {0}"
+    },
+    {
+      "en": "Planning day: {0}",
+      "so": "Maalinta qorshaynta: {0}"
+    },
+    {
+      "en": "Mode: {0}",
+      "so": "Habka: {0}"
+    },
+    {
+      "en": "Guidance: {0}",
+      "so": "Tilmaamaha: {0}"
+    },
+    {
+      "en": "Checking selected city centre…",
+      "so": "Waxaa la hubinayaa bartamaha magaalada la doortay…"
+    },
+    {
+      "en": "Checking selected map point…",
+      "so": "Waxaa la hubinayaa barta khariidadda ee la doortay…"
+    },
+    {
+      "en": "{0}, {1} · reading elevation and source hazard layers.",
+      "so": "{0}, {1} · waxaa la akhrinayaa joogga dhulka iyo lakabyada khatarta ee isha."
+    },
+    {
+      "en": "{0} city centre · one sampled point",
+      "so": "Bartamaha magaalada {0} · hal bar oo la baaray"
+    },
+    {
+      "en": "{0} m above sea level",
+      "so": "{0} m oo ka sarreeya heerka badda"
+    },
+    {
+      "en": "Terrain overlays unavailable: {0}. No class is inferred.",
+      "so": "Lakabyada qaabka dhulka lama hayo: {0}. Qayb dhul lagama qiyaasayo."
+    },
+    {
+      "en": "Terrain susceptibility visible · {0}.",
+      "so": "U nuglaanshaha dhulka waa muuqdaa · {0}.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0} days old; flood conditions may have changed",
+      "so": "{0} maalmood ayay jirtay; xaaladaha fatahaaddu way isbeddeli kareen"
+    },
+    {
+      "en": "3-day composite ending {0} (includes the previous two UTC days)",
+      "so": "Sawir isku dhafan oo 3 maalmood ah kuna dhammaanaya {0} (waxaa ku jira labadii maalmood ee UTC ee ka horreeyey)"
+    },
+    {
+      "en": "Radar acquisitions on {0} UTC",
+      "so": "Sawirrada raadaarka ee la qaaday {0} UTC"
+    },
+    {
+      "en": "{0} · {1} m product resolution · {2}",
+      "so": "{0} · xallinta wax soo saarka {1} m · {2}",
+      "translate": [
+        0,
+        2
+      ]
+    },
+    {
+      "en": "{0} · coverage {1}",
+      "so": "{0} · daboolitaanka {1}",
+      "translate": [
+        0,
+        1
+      ]
+    },
+    {
+      "en": "{0} · exclusion mask {1}",
+      "so": "{0} · lakabka ka reebista {1}",
+      "translate": [
+        0,
+        1
+      ]
+    },
+    {
+      "en": "{0} · STALE / last known metadata",
+      "so": "{0} · XOG DUUGOOWDAY / xogtii sharaxaadda ee ugu dambaysay",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Latest source product date: {0} · API checked {1}. Product date does not guarantee this location was observed.",
+      "so": "Taariikhda ugu dambaysay ee wax soo saarka isha: {0} · API-ga la hubiyey {1}. Taariikhda wax soo saarku ma dammaanad qaadayso in goobtan la kormeeray."
+    },
+    {
+      "en": "Blank areas: no displayed flood classification or no observation; neither proves dry conditions. {0}",
+      "so": "Meelaha bannaan: ma jirto kala soocid fatahaad oo muuqata ama kormeer lama hayo; midkoodna ma caddaynayo in dhulku qalalan yahay. {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0} · partial today",
+      "so": "{0} · xogta maanta oo aan dhammaystirnayn"
+    },
+    {
+      "en": "Observation API HTTP {0}",
+      "so": "API-ga kormeerka HTTP {0}"
+    },
+    {
+      "en": "Observation refresh failed: {0}",
+      "so": "Cusboonaysiinta kormeerku ma guulaysan: {0}"
+    },
+    {
+      "en": "Checking radar coverage at {0}, {1} on {2}…",
+      "so": "Waxaa la hubinayaa daboolitaanka raadaarka ee {0}, {1} taariikhda {2}…"
+    },
+    {
+      "en": "{0} · latest acquisition {1}",
+      "so": "{0} · sawirkii ugu dambeeyay ee la qaaday {1}"
+    },
+    {
+      "en": "Radar point query unavailable: {0}. No water state is inferred.",
+      "so": "Xogta raadaarka ee barta lama heli karo: {0}. Xaalad biyood lagama qiyaasayo."
+    },
+    {
+      "en": "{0}% scene-wide cloud cover",
+      "so": "{0}% daruuro daboolaya sawirka oo dhan"
+    },
+    {
+      "en": "{0} · ground may be obscured",
+      "so": "{0} · dhulka waxaa qarin kara daruuro",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Check the separate flood classification for {0} UTC",
+      "so": "Hubi kala soocidda fatahaadda ee gaarka ah ee {0} UTC"
+    },
+    {
+      "en": "{0}. Last successful retrieval: {1}.",
+      "so": "{0}. Markii ugu dambaysay ee xogta si guul leh loo helay: {1}.",
+      "translate": [
+        0,
+        1
+      ]
+    },
+    {
+      "en": "{0}. Last successful retrieval: {1}. {2}",
+      "so": "{0}. Markii ugu dambaysay ee xogta si guul leh loo helay: {1}. {2}",
+      "translate": [
+        0,
+        1
+      ]
+    },
+    {
+      "en": "{0} · refreshing",
+      "so": "{0} · waa la cusboonaysiinayaa",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "No radar acquisitions returned for this city in the queried period. This does not establish that the city is flood-free.",
+      "so": "Sawirro raadaar lama helin magaaladan muddada la raadiyey. Tani ma xaqiijinayso in magaaladu fatahaad ka badbaadsan tahay."
+    },
+    {
+      "en": "No optical acquisitions returned for this city in the queried period. This does not establish that the city is flood-free.",
+      "so": "Sawirro iftiin lama helin magaaladan muddada la raadiyey. Tani ma xaqiijinayso in magaaladu fatahaad ka badbaadsan tahay."
+    },
+    {
+      "en": "{0} acquisitions for {1}",
+      "so": "Sawirrada {0} ee la qaaday, magaalada {1}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0} · retained acquisition metadata",
+      "so": "{0} · xogtii sharaxaadda sawirrada ayaa la hayaa"
+    },
+    {
+      "en": "Public Sentinel-1 and Sentinel-2 acquisition metadata is retrieved from the Copernicus Data Space STAC API without a key. {0}",
+      "so": "Xogta sharaxaadda sawirrada Sentinel-1 iyo Sentinel-2 ee dadweynaha waxaa laga helaa API-ga STAC ee Copernicus Data Space iyada oo aan fure API loo baahnayn. {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "The flood product does not offer {0}. Select an available date in the satellite observation controls.",
+      "so": "Wax soo saarka fatahaaddu ma bixiyo {0}. Ka dooro taariikh la hayo xakamaynta kormeerka dayax-gacmeedka."
+    },
+    {
+      "en": "Requested the separate flood layer for {0} UTC. Check its observation coverage, exclusions and source status on the map.",
+      "so": "Waxaa la codsaday lakabka fatahaadda ee gaarka ah ee {0} UTC. Khariidadda ka hubi daboolitaanka kormeerkiisa, ka reebista iyo xaaladda isha."
+    },
+    {
+      "en": "{0}: unavailable or connecting.",
+      "so": "{0}: lama hayo ama xiriir ayaa la samaynayaa.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0}: unavailable — {1}.",
+      "so": "{0}: lama hayo — {1}.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0}: refresh failed — {1}. Active signals are withheld.",
+      "so": "{0}: cusboonaysiintu ma guulaysan — {1}. Tilmaamaha shaqaynaya lama muujinayo.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0}: last response is stale or its retrieval date is invalid. Active signals are withheld.",
+      "so": "{0}: jawaabtii ugu dambaysay way duugoowday ama taariikhda la helay sax ma aha. Tilmaamaha shaqaynaya lama muujinayo.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Somalia country-level · city extent unspecified · source area: {0}",
+      "so": "Heerka dalka Soomaaliya · baaxadda magaalooyinka lama qeexin · aagga isha: {0}"
+    },
+    {
+      "en": "Starts {0} · Issued {1} · expires {2}",
+      "so": "Bilaabanaya {0} · la soo saaray {1} · dhacaya {2}"
+    },
+    {
+      "en": "Issued {0} · expires {1}",
+      "so": "La soo saaray {0} · dhacaya {1}"
+    },
+    {
+      "en": "{0}: {1}. Coverage is incomplete.",
+      "so": "{0}: {1}. Daboolitaanku ma dhammaystirna."
+    },
+    {
+      "en": "{0} · Elevated rainfall",
+      "so": "{0} · Roob badan"
+    },
+    {
+      "en": "{0} · Rainfall watch",
+      "so": "{0} · La socodka roobka"
+    },
+    {
+      "en": "{0} mm forecast for {1} (daily total). App screening thresholds: Watch ≥10 mm/day; Elevated ≥25 mm/day. These are screening rules, not flood probabilities or official warning thresholds.",
+      "so": "{0} mm ayaa la saadaaliyey {1} (wadarta maalinta). Xuduudaha qiimeynta hordhaca ah ee abka: La socod ≥10 mm/day; Sare ≥25 mm/day. Kuwani waa xeerar qiimeyn hordhac ah, ma aha suurtagalnimada fatahaadda ama xuduudaha digniinaha rasmiga ah."
+    },
+    {
+      "en": "Forecast day {0} · retrieved {1}",
+      "so": "Maalinta saadaasha {0} · xogta la helay {1}"
+    },
+    {
+      "en": "{0} · river {1} threshold reached",
+      "so": "{0} · xadka webiga ee {1} waa la gaaray",
+      "translate": [
+        1
+      ]
+    },
+    {
+      "en": "{0} · {1} gauge",
+      "so": "{0} · xarunta cabbirka webiga {1}"
+    },
+    {
+      "en": "Observed {0} (source gives date only) · retrieved {1}",
+      "so": "La cabbiray {0} (isha waxay bixisaa taariikh oo keliya) · xogta la helay {1}"
+    },
+    {
+      "en": "Observed {0} · retrieved {1}",
+      "so": "La cabbiray {0} · xogta la helay {1}"
+    },
+    {
+      "en": "{0}: {1} m; published {2} threshold {3} m. A gauge threshold is a river risk indicator, not a measured flood footprint.",
+      "so": "{0}: {1} m; xadka {2} ee la daabacay waa {3} m. Xadka cabbirka webigu waa tilmaame khatarta webiga, ma aha baaxad fatahaad oo la cabbiray.",
+      "translate": [
+        2
+      ]
+    },
+    {
+      "en": "{0} cities + Somalia-wide notices",
+      "so": "{0} magaalo iyo ogeysiisyada Soomaaliya oo dhan"
+    },
+    {
+      "en": "{0} + Somalia-wide notices",
+      "so": "{0} iyo ogeysiisyada Soomaaliya oo dhan"
+    },
+    {
+      "en": "Browser notifications could not be enabled: {0}",
+      "so": "Ogeysiisyada biraawsarka lama daari karin: {0}"
+    },
+    {
+      "en": "Browser notification failed: {0}",
+      "so": "Ogeysiiska biraawsarku ma guulaysan: {0}"
+    },
+    {
+      "en": "{0} · next 3 forecast days: {1}–{2} (including full today). Source signals and app screening are distinct.",
+      "so": "{0} · 3-da maalmood ee saadaasha xiga: {1}–{2} (waxaa ku jirta maanta oo dhan). Tilmaamaha ilaha iyo qiimeynta hordhaca ah ee abku way kala duwan yihiin.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0} · latest published notice / feed date: {1}. A new API retrieval is not a new warning.",
+      "so": "{0} · taariikhda ugu dambaysay ee ogeysiiska la daabacay ama isha xogta: {1}. Xog API oo cusub la helay macnaheedu ma aha digniin cusub."
+    },
+    {
+      "en": "{0} · latest published notice / feed date: {1} · {2} expired records excluded. A new API retrieval is not a new warning.",
+      "so": "{0} · taariikhda ugu dambaysay ee ogeysiiska la daabacay ama isha xogta: {1} · {2} diiwaan oo waqtigoodu dhacay ayaa laga reebay. Xog API oo cusub la helay macnaheedu ma aha digniin cusub."
+    },
+    {
+      "en": "Rainfall screening incomplete for {0}: missing values were not treated as zero.",
+      "so": "Qiimeynta hordhaca ah ee roobka ma dhammaystirna {0}: qiimayaasha maqan looma qaadan eber."
+    },
+    {
+      "en": "Browser alerts {0} · only while this app is open · selected scope and type · up to 3 notices per refresh. {1}",
+      "so": "Digniinaha biraawsarka {0} · oo keliya inta abkani furan yahay · baaxadda iyo nooca la doortay · ugu badnaan 3 ogeysiis cusboonaysiin kasta. {1}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Browser alerts {0} · only while this app is open · selected scope and type · up to 3 notices per refresh.",
+      "so": "Digniinaha biraawsarka {0} · oo keliya inta abkani furan yahay · baaxadda iyo nooca la doortay · ugu badnaan 3 ogeysiis cusboonaysiin kasta.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Partial forecast coverage {0}/14",
+      "so": "Daboolitaanka saadaasha oo qayb ah {0}/14"
+    },
+    {
+      "en": "{0} · last known data",
+      "so": "{0} · xogtii ugu dambaysay ee la hayey",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0} · last known",
+      "so": "{0} · xogtii ugu dambaysay",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Week {0} · {1}–{2}",
+      "so": "Toddobaadka {0} · {1}–{2}"
+    },
+    {
+      "en": "{0} days ≥10 mm · {1} days ≥25 mm",
+      "so": "{0} maalmood ≥10 mm · {1} maalmood ≥25 mm"
+    },
+    {
+      "en": "Rainfall available for {0}/7 days; total unknown",
+      "so": "Xogta roobka waxaa la hayaa {0}/7 maalmood; wadarta lama hayo"
+    },
+    {
+      "en": "Highest modeled flow {0} m³/s",
+      "so": "Qulqulka ugu sarreeya ee moodeelku qiyaasay {0} m³/s"
+    },
+    {
+      "en": "River model available for {0}/7 days; peak unknown",
+      "so": "Moodeelka webiga waxaa la hayaa {0}/7 maalmood; qulqulka ugu sarreeya lama hayo"
+    },
+    {
+      "en": "Day {0}",
+      "so": "Maalinta {0}"
+    },
+    {
+      "en": "{0} m³/s · UTC model",
+      "so": "{0} m³/s · moodeelka UTC"
+    },
+    {
+      "en": "{0} · observed gauge, separate from the forecast.",
+      "so": "{0} · cabbirka webiga ee la arkay, kana duwan saadaasha."
+    },
+    {
+      "en": "Today’s measured level {0} m · source thresholds could not be applied",
+      "so": "Heerka biyaha ee maanta la cabbiray {0} m · xuduudaha isha lama dabaqi karin"
+    },
+    {
+      "en": "Today’s measured level {0} m · no usable source thresholds supplied",
+      "so": "Heerka biyaha ee maanta la cabbiray {0} m · lama bixin xuduudo isha ah oo la adeegsan karo"
+    },
+    {
+      "en": "Today’s measured level {0} m · source threshold reached: {1}",
+      "so": "Heerka biyaha ee maanta la cabbiray {0} m · xadka isha ee la gaaray: {1}",
+      "translate": [
+        1
+      ]
+    },
+    {
+      "en": "Today’s measured level {0} m · no supplied source threshold reached",
+      "so": "Heerka biyaha ee maanta la cabbiray {0} m · xuduudaha isha ee la bixiyey midna lama gaarin"
+    },
+    {
+      "en": "{0} Observed thresholds are not forecast river heights.",
+      "so": "{0} Xuduudaha cabbirrada la arkay ma aha saadaasha heerarka biyaha webiga.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0} Supplied threshold order is invalid. Observed thresholds are not forecast river heights.",
+      "so": "{0} Kala horreynta xuduudaha la bixiyey sax ma aha. Xuduudaha cabbirrada la arkay ma aha saadaasha heerarka biyaha webiga.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Selected forecast day {0} · lower confidence",
+      "so": "Maalinta saadaasha ee la doortay {0} · heer hubanti hooseeya"
+    },
+    {
+      "en": "Selected forecast day {0}",
+      "so": "Maalinta saadaasha ee la doortay {0}"
+    },
+    {
+      "en": "{0} Rainfall values are retained from a previous retrieval.",
+      "so": "{0} Qiimayaasha roobka waxaa laga hayaa xog hore loo helay.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Rank {0}",
+      "so": "Kaalinta {0}"
+    },
+    {
+      "en": "TOP 5 · {0}",
+      "so": "5-TA UGU SARREEYA · {0}"
+    },
+    {
+      "en": "7-day total · peak {0} mm/day",
+      "so": "Wadarta 7-da maalmood · roobka ugu badan {0} mm/day"
+    },
+    {
+      "en": "{0} · distinct report IDs",
+      "so": "{0} · aqoonsiyo warbixin oo kala duwan"
+    },
+    {
+      "en": "Loaded {0} of {1} reports across all dates/types. Feed is truncated; the ranking is withheld until a complete report set is available.",
+      "so": "Waxaa la soo geliyey {0} ka mid ah {1} warbixin oo dhammaan taariikhaha iyo noocyada ah. Isha xogtu ma dhammaystirna; kala sarreynta lama muujinayo ilaa la helo warbixinnada oo dhammaystiran."
+    },
+    {
+      "en": "Loaded {0} of {1} reports across all dates/types.",
+      "so": "Waxaa la soo geliyey {0} ka mid ah {1} warbixin oo dhammaan taariikhaha iyo noocyada ah."
+    },
+    {
+      "en": "Loaded {0} reports across all dates/types. Feed is truncated; the ranking is withheld until a complete report set is available.",
+      "so": "Waxaa la soo geliyey {0} warbixin oo dhammaan taariikhaha iyo noocyada ah. Isha xogtu ma dhammaystirna; kala sarreynta lama muujinayo ilaa la helo warbixinnada oo dhammaystiran."
+    },
+    {
+      "en": "Loaded {0} reports across all dates/types.",
+      "so": "Waxaa la soo geliyey {0} warbixin oo dhammaan taariikhaha iyo noocyada ah."
+    },
+    {
+      "en": "cities with all 7 daily values · {0} screen positive",
+      "so": "magaalo oo leh dhammaan qiimayaasha 7-da maalmood · {0} ayaa buuxiyey xadka qiimeynta"
+    },
+    {
+      "en": "{0} day ≥10 mm · {1} mm total",
+      "so": "{0} maalin ≥10 mm · wadarta {1} mm"
+    },
+    {
+      "en": "{0} days ≥10 mm · {1} mm total",
+      "so": "{0} maalmood ≥10 mm · wadarta {1} mm"
+    },
+    {
+      "en": "Compare the {0} monitored cities. Select a ranked city to explore its data.",
+      "so": "Isbarbar dhig {0}-ka magaalo ee lala socdo. Dooro magaalo kala sarreynta ku jirta si aad u eegto xogteeda."
+    },
+    {
+      "en": "Dew point {0} °C",
+      "so": "Heerkulka uumigu biyo isu beddelo {0} °C"
+    },
+    {
+      "en": "Daily high {0}°",
+      "so": "Heerkulka ugu sarreeya maalinta {0}°"
+    },
+    {
+      "en": "low {0}°",
+      "so": "ugu hooseeya {0}°"
+    },
+    {
+      "en": "gust {0} km/h",
+      "so": "dabayl kedis u xoogaysata {0} km/h"
+    },
+    {
+      "en": "source threshold reached: {0}",
+      "so": "xadka isha ee la gaaray: {0}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Today’s measured level {0} m",
+      "so": "Heerka biyaha ee maanta la cabbiray {0} m"
+    },
+    {
+      "en": "{0} · current day, coverage incomplete",
+      "so": "{0} · maalinta hadda, daboolitaanku ma dhammaystirna",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "Latest source product date: {0} · API checked {1} · {2}. Product date does not guarantee this location was observed.",
+      "so": "Taariikhda ugu dambaysay ee wax soo saarka isha: {0} · API-ga la hubiyey {1} · {2}. Taariikhda wax soo saarku ma dammaanad qaadayso in goobtan la kormeeray."
+    },
+    {
+      "en": "{0}: unavailable — {1}",
+      "so": "{0}: lama hayo — {1}",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0}. Last successful retrieval: {1}",
+      "so": "{0}. Markii ugu dambaysay ee xogta si guul leh loo helay: {1}",
+      "translate": [
+        0,
+        1
+      ]
+    }
+  ]
+}

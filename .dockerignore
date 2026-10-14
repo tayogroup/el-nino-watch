@@ -1,0 +1,14 @@
+**/data/
+**/node_modules/
+**/.git/
+**/.openai/
+.env
+.env.*
+outputs/
+work/package-stage/
+work/portable-release/
+work/basemap-source/
+work/*.test.mjs
+work/i18n-*.json
+*.log
+*.pid
