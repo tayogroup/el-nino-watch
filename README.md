@@ -1,4 +1,6 @@
-# Somalia El Nino Watch — complete source package
+# El Nino Watch
+
+Formerly packaged as *Somalia El Nino Watch*; the app itself still uses that name in its interface.
 
 Full application code, assets, translation and basemap rebuild inputs, test fixtures and regression tests. The current work/ directory layout is retained for reproducibility.
 

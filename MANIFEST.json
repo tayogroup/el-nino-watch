@@ -50,18 +50,18 @@
     },
     {
       "path": "package-lock.json",
-      "bytes": 270,
-      "sha256": "af18625f3ef011f1fe2435e94a1610ce54d219eea9985afdb9826780331c4b79"
+      "bytes": 240,
+      "sha256": "61aa49751f6056bde6e1e7cdca56bef5c2e5987aff33ed0203884c1a2c3b857a"
     },
     {
       "path": "package.json",
-      "bytes": 635,
-      "sha256": "f3c889de53d5681d4a32ec959d35efb52de4e9c2490aab5d31e51302e6608d09"
+      "bytes": 620,
+      "sha256": "a77e9d013b7a7f1507bd3ed0db81bdf03ad3ecc7b8ad75b1702b487371b5fa8c"
     },
     {
       "path": "README.md",
-      "bytes": 1111,
-      "sha256": "312517b0f15e310540e904682d7ed076c2c742dbbb48313aecbef20ba16fcd15"
+      "bytes": 1176,
+      "sha256": "2f7b56967cc91c9ac812ed5d7a20ad940f3167013a21ea8c7d5a42d96a0ec9dc"
     },
     {
       "path": "scripts/check-files.mjs",
