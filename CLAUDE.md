@@ -56,6 +56,11 @@ Setup and the one-instance rule are in `DEPLOYMENT.md` under "Live hosting".
 The root `DEPLOYMENT.md` has that section and `work/make-source-bundles.mjs`'s
 template does not; the portable ZIP bundles are host-neutral on purpose.
 
+Report backups: `backup.mjs` snapshots the volume to a private Bunny Storage
+zone when `BACKUP_STORAGE_ZONE`/`BACKUP_STORAGE_KEY` are set in the Bunny app's
+environment, and restores on start when `reports.json` is missing. Check
+`https://elninowatch.so/api/backup-status`. Setup in DEPLOYMENT.md.
+
 ## Git
 
 - Remotes: `origin` → https://github.com/tayogroup/el-nino-watch (public),

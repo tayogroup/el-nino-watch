@@ -9,7 +9,7 @@ const work=path.dirname(fileURLToPath(import.meta.url)),root=path.dirname(work);
 const app=path.join(work,'somalia-flood-watch'),out=path.join(root,'outputs');
 const staging=path.join(work,'portable-release');
 const releaseDate='2026-10-14';
-const runtime=['server.mjs','feeds.mjs','hazards.mjs','alerts-feed.mjs','observed-flood.mjs','copernicus.mjs','community.mjs','docker-entrypoint.mjs','Start-Live-App.ps1','README.md'];
+const runtime=['server.mjs','feeds.mjs','hazards.mjs','alerts-feed.mjs','observed-flood.mjs','copernicus.mjs','community.mjs','docker-entrypoint.mjs','backup.mjs','Start-Live-App.ps1','README.md'];
 const appChecks=['verify.mjs','verify-daily.mjs','verify-interaction.mjs','verify-map.mjs'];
 const write=async(base,file,value)=>{const target=path.join(base,file);await fs.mkdir(path.dirname(target),{recursive:true});await fs.writeFile(target,value);};
 const copy=async(source,base,file)=>{await fs.mkdir(path.dirname(path.join(base,file)),{recursive:true});await fs.copyFile(source,path.join(base,file));};
@@ -172,7 +172,7 @@ async function make(source){
  }
  const packageText=packageJson(source),packageInfo=JSON.parse(packageText);
  await write(folder,'package.json',packageText);await write(folder,'package-lock.json',JSON.stringify({name:packageInfo.name,version:packageInfo.version,lockfileVersion:3,requires:true,packages:{'':{name:packageInfo.name,version:packageInfo.version,engines:packageInfo.engines}}},null,2)+'\n');await write(folder,'.nvmrc','24\n');await write(folder,'.node-version','24\n');
- await write(folder,'.env.example','# Hosting example; npm start does not load this file automatically.\nHOST=0.0.0.0\nPORT=4173\n# Set an absolute writable persistent directory in your hosting environment.\n# COMMUNITY_DATA_DIR=/var/lib/el-nino-watch\n');
+ await write(folder,'.env.example','# Hosting example; npm start does not load this file automatically.\nHOST=0.0.0.0\nPORT=4173\n# Set an absolute writable persistent directory in your hosting environment.\n# COMMUNITY_DATA_DIR=/var/lib/el-nino-watch\n# Optional off-site backups of reports to a PRIVATE Bunny Storage zone (no pull zone attached).\n# BACKUP_STORAGE_ZONE=\n# BACKUP_STORAGE_KEY=\n# BACKUP_STORAGE_ENDPOINT=https://storage.bunnycdn.com\n# BACKUP_INTERVAL_HOURS=6\n# BACKUP_RETENTION_DAYS=14\n# BACKUP_RESTORE_IF_EMPTY=true\n');
  await write(folder,'.gitignore','node_modules/\n.env\n.env.*\n!.env.example\ndata/\nwork/somalia-flood-watch/data/\nwork/package-stage/\nwork/portable-release/\noutputs/\n*.log\n*.pid\n');
  await write(folder,'.dockerignore','**/data/\n**/node_modules/\n**/.git/\n**/.openai/\n.env\n.env.*\noutputs/\nwork/package-stage/\nwork/portable-release/\nwork/basemap-source/\nwork/*.test.mjs\nwork/i18n-*.json\n*.log\n*.pid\n');
  await write(folder,'Dockerfile',dockerfile(source));await write(folder,'compose.yaml',compose);await write(folder,'deploy/nginx-location.conf',nginx);

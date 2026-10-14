@@ -8,6 +8,7 @@ import {createCommunityHandler} from './community.mjs';
 import {loadOfficialAlerts, ALERT_SOURCES} from './alerts-feed.mjs';
 import {loadObservedFlood, loadRadarPoint, OBSERVED_SOURCE_URL} from './observed-flood.mjs';
 import {loadCopernicusCity} from './copernicus.mjs';
+import {backupFromEnv} from './backup.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'dist');
 const CITY_DATA = JSON.parse(await readFile(new URL('./dist/cities.json', import.meta.url), 'utf8'));
@@ -50,7 +51,7 @@ function reply(res, status, body, contentType = 'text/plain; charset=utf-8', hea
   res.end(head ? undefined : buffer);
 }
 
-export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data')} = {}) {
+export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null} = {}) {
   const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES});
   return http.createServer(async (req, res) => {
     try {
@@ -81,6 +82,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
         const data = await feed(url.pathname);
         return reply(res, data.available ? 200 : 503, JSON.stringify(data), 'application/json; charset=utf-8', req.method === 'HEAD');
       }
+      if (url.pathname === '/api/backup-status') return reply(res, 200, JSON.stringify(backup ? backup.status() : {enabled:false}), 'application/json; charset=utf-8', req.method === 'HEAD');
       if (url.pathname.startsWith('/api/')) return reply(res, 404, 'Unknown data endpoint.');
       const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);
       if (requested.includes('\0')) return reply(res, 400, 'Invalid path.');
@@ -110,5 +112,11 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('PORT must be an integer from 1 to 65535.');
   const host = process.env.HOST || '127.0.0.1';
   if (!['127.0.0.1','0.0.0.0'].includes(host)) throw new Error('HOST must be 127.0.0.1 or 0.0.0.0.');
-  createServer().listen(port, host, () => console.log(`El Nino Watch: http://127.0.0.1:${port}\nKeep this process running for the live data relays.`));
+  const dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data');
+  const backup = backupFromEnv({dataDir});
+  if (backup) await backup.restoreIfEmpty();
+  createServer({dataDir, backup}).listen(port, host, () => {
+    console.log(`El Nino Watch: http://127.0.0.1:${port}\nKeep this process running for the live data relays.`);
+    backup?.start();
+  });
 }

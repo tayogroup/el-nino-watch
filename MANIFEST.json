@@ -10,8 +10,8 @@
     },
     {
       "path": ".env.example",
-      "bytes": 212,
-      "sha256": "c089a4f4a710e36636ec15cbbcdd5757f7fe587379e2d2540248f19f4b3835b6"
+      "bytes": 492,
+      "sha256": "8daf4418b5977e8b4d0492ae48632ba54d05d572a376869ac3d13ab601dad23c"
     },
     {
       "path": ".gitignore",
@@ -40,8 +40,8 @@
     },
     {
       "path": "DEPLOYMENT.md",
-      "bytes": 6780,
-      "sha256": "055f08b9b7ed089579398bd1f1bb5b49c58e01dff15f9b00cc59dce325d10a57"
+      "bytes": 8645,
+      "sha256": "95efe2a7464055df655a27971dcde7f10338bbbd71a056a3de6dc01783182cf1"
     },
     {
       "path": "Dockerfile",
@@ -102,6 +102,11 @@
       "path": "work/alerts-ui.test.mjs",
       "bytes": 9157,
       "sha256": "eaa89227213ba98ff42ff5b48559eaccabc5f336884ca4059742d72aa6d1980e"
+    },
+    {
+      "path": "work/backup.test.mjs",
+      "bytes": 11424,
+      "sha256": "98f1f2d1a051c3e23e0cb17da42ccdb98631e87cbf730672cb2e77178d0336cf"
     },
     {
       "path": "work/basemap-source/countries.geojson",
@@ -250,8 +255,8 @@
     },
     {
       "path": "work/make-source-bundles.mjs",
-      "bytes": 20168,
-      "sha256": "06049048bb2326e802556c06518e5bf465bcdb88bd5a79e49d5e021cc7661aae"
+      "bytes": 20468,
+      "sha256": "df0fb1797863ba42e810b9cfcb7c420e87323f3bdcba0d0c675663214979700e"
     },
     {
       "path": "work/map-context.test.mjs",
@@ -327,6 +332,11 @@
       "path": "work/somalia-flood-watch/alerts-feed.mjs",
       "bytes": 14695,
       "sha256": "392c08ab6ac6e8f2671bccf8ebd8bec66abe0cda90d729b5e17d2e0825bafe99"
+    },
+    {
+      "path": "work/somalia-flood-watch/backup.mjs",
+      "bytes": 10569,
+      "sha256": "a1cc957da8974c2ede1703adcc276c8b1528906f40a0ce2ab07d447e32c9bdc7"
     },
     {
       "path": "work/somalia-flood-watch/community.mjs",
@@ -590,8 +600,8 @@
     },
     {
       "path": "work/somalia-flood-watch/server.mjs",
-      "bytes": 7720,
-      "sha256": "43a944488b1444252002e410757a43b735ba50c8b5e6959699cc07711087180e"
+      "bytes": 8193,
+      "sha256": "58d3ada2276cdc034a8a298426c0f099ca90afac12d3410e03d462261b698f87"
     },
     {
       "path": "work/somalia-flood-watch/Start-Live-App.ps1",

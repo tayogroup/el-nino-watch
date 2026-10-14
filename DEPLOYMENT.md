@@ -48,7 +48,17 @@ Then, for automatic rollouts, add in GitHub (Settings > Secrets and variables > 
 
 Domain, registered at Namecheap: add `elninowatch.so` and `www.elninowatch.so` as hostnames on the app's CDN endpoint pull zone, and in Namecheap Advanced DNS point `www` (CNAME) and the apex `@` (ALIAS) at the pull zone's `*.b-cdn.net` hostname. Enable SSL for both hostnames in Bunny once DNS resolves. Community writes compare the Origin with the Host header, so the pull zone must forward the visitor's Host to the container; if posting a report returns 403 "Community writes must come from this app", enable **Forward Host Header** on the pull zone.
 
-Bunny volumes have no automatic backups. Copy `reports.json` and `media/` out periodically.
+### Backups of the reports volume
+
+Bunny volumes have no backups of their own, so the server makes them (`work/somalia-flood-watch/backup.mjs`). When `BACKUP_STORAGE_ZONE` and `BACKUP_STORAGE_KEY` are set it copies the reports to a Bunny Storage zone:
+
+- **A snapshot of `reports.json`** in `el-nino-watch/snapshots/<time>/`, every 6 hours (`BACKUP_INTERVAL_HOURS`), only when the reports changed since the last one. The first run is a minute after start.
+- **Photos and videos** in `el-nino-watch/media/`, uploading only files the backup does not already hold.
+- **Retention:** snapshots older than 14 days (`BACKUP_RETENTION_DAYS`) are deleted, but the newest three are always kept; media that no kept snapshot refers to is then deleted too. A report its author deletes is therefore gone from the backups within 14 days.
+- **Restore:** when the server starts and `reports.json` does not exist (a new or lost volume), it restores the newest snapshot and its media first. Set `BACKUP_RESTORE_IF_EMPTY=false` to start empty instead. If the storage cannot be reached after three tries the app starts empty and logs it; the snapshots stay in storage.
+- **Status:** `GET /api/backup-status` reports whether backups are on and the last attempt, success, result and error. It never includes the zone name or key. Successes and failures are also in the app's logs.
+
+Setup: create a Storage zone (Delivery > Storage > Add Storage Zone, e.g. `el-nino-watch-backups`, Standard tier, main region Falkenstein) and **do not connect a pull zone to it**; the reports and photos must not be publicly reachable. Then in the Magic Containers app, Container settings > Environment variables, add `BACKUP_STORAGE_ZONE` (the zone name) and `BACKUP_STORAGE_KEY` (the zone's password from its FTP & API Access page). If the zone's main region is not Falkenstein, also set `BACKUP_STORAGE_ENDPOINT` to that region's storage endpoint, for example `https://uk.storage.bunnycdn.com`.
 
 ## Data and migration
 
