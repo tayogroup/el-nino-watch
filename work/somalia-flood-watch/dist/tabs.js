@@ -9,6 +9,8 @@
   const TABS = ['overview', 'weather', 'map', 'alerts', 'community', 'sources'];
   const doc = document, body = doc.body;
   const nav = doc.getElementById('site-tabs');
+  // The sticky card holding the city control and the tabs (the tabs alone if absent).
+  const bar = doc.getElementById('site-bar') || nav;
   if (!nav || !body) return;
   const links = [...nav.querySelectorAll('[data-site-tab-link]')];
   // A block may belong to several tabs (data-site-tab="map weather"); inside it,
@@ -69,11 +71,11 @@
     const header = doc.querySelector('.site-header');
     return header && getComputedStyle(header).position === 'sticky' ? header.offsetHeight : 0;
   }
-  function placeBar() { nav.style.setProperty('--site-tabs-top', headerOffset() + 'px'); }
+  function placeBar() { bar?.style.setProperty('--site-tabs-top', headerOffset() + 'px'); }
   // Bring the new tab's content into view: from far down the page, and also from
   // the top on phones, where the hero pushes the tabs below the bottom nav.
   function scrollToTabs() {
-    const rect = nav.getBoundingClientRect(), top = rect.top + window.scrollY - headerOffset();
+    const rect = bar.getBoundingClientRect(), top = rect.top + window.scrollY - headerOffset();
     // 'instant', not 'auto': the site sets html{scroll-behavior:smooth}, and a smooth
     // scroll is cancelled by the re-render that follows a bottom-nav tap.
     if (window.scrollY > top + 4 || rect.top > window.innerHeight * 0.5) window.scrollTo({top, behavior: 'instant'});

@@ -203,4 +203,26 @@ await test('invalid scenario and invalid planning date fall back to transparent 
   assert.ok(!plan.text.includes('NaN'));
 });
 
+await test('a hidden map defers city and overview moves until it is shown again', async () => {
+  // Leaflet's flyTo/fitBounds throw "Invalid LatLng (NaN, NaN)" on a 0x0 map; the
+  // section tabs hide the map, and that throw used to abort app.js selectCity.
+  const h = mapHarness(); await h.init();
+  const box = { clientWidth: 0, clientHeight: 0 };
+  h.map.getContainer = () => box; h.map.invalidateSize = () => h.map;
+  let flights = 0, fits = 0; const fly = h.map.flyTo, fit = h.map.fitBounds;
+  h.map.flyTo = function (...args) { flights++; return fly.apply(this, args); };
+  h.map.fitBounds = function (...args) { fits++; return fit.apply(this, args); };
+  const before = h.map.center;
+  h.api.focus(3); h.api.overview(); h.api.focus(6);
+  assert.equal(flights, 0, 'nothing may fly while the map is hidden');
+  assert.equal(fits, 0);
+  assert.equal(JSON.stringify(h.map.center), JSON.stringify(before));
+  box.clientWidth = 900; box.clientHeight = 560;
+  h.api.resize();
+  assert.deepEqual(Array.from(h.map.center), [cities[6][2], cities[6][3]], 'the last requested view is applied when shown');
+  assert.equal(h.map.zoom, 11);
+  h.api.focus(3);
+  assert.equal(flights, 1, 'a visible map flies as before');
+});
+
 console.log(`Verified ${calls.length} map and planning checks.`);
