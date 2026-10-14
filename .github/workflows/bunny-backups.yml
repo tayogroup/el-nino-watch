@@ -1,17 +1,17 @@
-# Inspect (default) or repair the report-backup settings on the Bunny app.
-# Run by hand: Actions > Bunny backups > Run workflow. The logs are public, so the
+# Inspect (default) or change the backup and stats-key settings on the Bunny app.
+# Run by hand: Actions > Bunny settings > Run workflow. The logs are public, so the
 # script prints names and yes/no facts only, never values.
-name: Bunny backups
+name: Bunny settings
 
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: inspect (read-only), apply (set the backup variables) or create-and-apply (create the private zone first)
+        description: inspect (read-only), apply / create-and-apply (backup variables), stats-key (new private stats key)
         required: true
         default: inspect
         type: choice
-        options: [inspect, apply, create-and-apply]
+        options: [inspect, apply, create-and-apply, stats-key]
       zone:
         description: Name of the private backup storage zone
         required: true

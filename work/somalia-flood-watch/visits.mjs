@@ -7,17 +7,19 @@
 // The page reports a view on load and when the tab or city changes
 // (dist/visits.js, POST /api/visit). Totals per day are public at
 // GET /api/visits and on /stats once the site has had PUBLISH_AFTER visits;
-// until then only that threshold is shown.
+// until then only that threshold is shown. The owner can see them earlier with the
+// STATS_KEY secret, sent in an X-Stats-Key header (never in the address).
 // Stored in <dataDir>/visits.json.
 import {readFile, writeFile, rename, unlink} from 'node:fs/promises';
 import path from 'node:path';
-import {createHash, randomBytes} from 'node:crypto';
+import {createHash, randomBytes, timingSafeEqual} from 'node:crypto';
 
 export const VISIT_TABS = ['overview', 'weather', 'map', 'alerts', 'community', 'sources', 'mayor'];
 const BOT = /bot|crawl|spider|slurp|curl|wget|python|httpclient|headless|lighthouse|monitor|preview|facebookexternalhit|bunny/i;
 const KEEP_DAYS = 400;
 const MAX_EVENTS_PER_VISITOR_DAY = 200;
 export const PUBLISH_AFTER = 3000;
+const MAX_KEY_FAILURES_PER_DAY = 20;
 // The audience is in East Africa, so a "day" is an East Africa Time day.
 const eatDay = ms => new Date(ms + 3 * 3600 * 1000).toISOString().slice(0, 10);
 const bump = (bucket, key) => { if (key) bucket[key] = (bucket[key] || 0) + 1; };
@@ -28,17 +30,20 @@ export function deviceOf(userAgent = '') {
   return 'desktop';
 }
 
-export function createVisits({dataDir, cities = [], now = () => Date.now(), log = console, publishAfter = PUBLISH_AFTER} = {}) {
+export function createVisits({dataDir, cities = [], now = () => Date.now(), log = console, publishAfter = PUBLISH_AFTER, statsKey = ''} = {}) {
   const file = path.join(path.resolve(dataDir), 'visits.json');
   const cityNames = new Set(cities.map(city => Array.isArray(city) ? city[0] : city.name));
-  let days = {}, dirty = false, salt = null, saltDay = null, seen = new Map(), saveTimer = null;
+  let days = {}, dirty = false, salt = null, saltDay = null, seen = new Map(), saveTimer = null, keyFailures = new Map();
+  // Too short a key would be guessable; such a value disables the private view.
+  const ownerKey = typeof statsKey === 'string' && statsKey.length >= 24 ? Buffer.from(statsKey) : null;
+  if (statsKey && !ownerKey) log.error('STATS_KEY is shorter than 24 characters; the private stats view is off.');
   const ready = readFile(file, 'utf8').then(text => {
     const saved = JSON.parse(text);
     if (saved && saved.version === 1 && saved.days && typeof saved.days === 'object') days = saved.days;
   }).catch(error => { if (error.code !== 'ENOENT') log.error(`Visit counts not loaded: ${error.message}`); });
 
   function connectionKey(req, day) {
-    if (saltDay !== day) { salt = randomBytes(32); saltDay = day; seen = new Map(); }
+    if (saltDay !== day) { salt = randomBytes(32); saltDay = day; seen = new Map(); keyFailures = new Map(); }
     const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
     const address = forwarded || req.headers['x-real-ip'] || req.socket?.remoteAddress || '';
     return createHash('sha256').update(salt).update(String(address)).update('\0').update(String(req.headers['user-agent'] || '')).digest('hex').slice(0, 32);
@@ -93,8 +98,8 @@ export function createVisits({dataDir, cities = [], now = () => Date.now(), log 
   const allVisits = () => Object.values(days).reduce((sum, d) => sum + (d.views || 0), 0);
   const published = () => allVisits() >= publishAfter;
 
-  function summary(dayCount) {
-    if (!published()) return {published: false, threshold: publishAfter, note: `Visitor statistics are published once the site has had ${publishAfter.toLocaleString('en')} visits.`};
+  function summary(dayCount, {owner = false} = {}) {
+    if (!published() && !owner) return {published: false, threshold: publishAfter, note: `Visitor statistics are published once the site has had ${publishAfter.toLocaleString('en')} visits.`};
     const keys = Object.keys(days).sort().slice(-dayCount);
     const total = {views: 0, tabs: {}, cities: {}, countries: {}, languages: {}, devices: {}};
     for (const key of keys) {
@@ -102,7 +107,7 @@ export function createVisits({dataDir, cities = [], now = () => Date.now(), log 
       total.views += d.views;
       for (const group of ['tabs', 'cities', 'countries', 'languages', 'devices']) for (const [name, n] of Object.entries(d[group] || {})) total[group][name] = (total[group][name] || 0) + n;
     }
-    return {published: true, threshold: publishAfter, allTimeVisits: allVisits(), generatedAt: new Date(now()).toISOString(), timezone: 'Africa/Mogadishu', days: keys.map(key => ({date: key, views: days[key].views})), totals: total,
+    return {published: published(), privateView: owner && !published(), threshold: publishAfter, allTimeVisits: allVisits(), generatedAt: new Date(now()).toISOString(), timezone: 'Africa/Mogadishu', days: keys.map(key => ({date: key, views: days[key].views})), totals: total,
       note: 'Anonymous counts of visits (page loads), not of people: one person visiting twice counts twice. No cookies; no addresses stored. Browsers asking not to be tracked are not counted.'};
   }
 
@@ -117,7 +122,16 @@ export function createVisits({dataDir, cities = [], now = () => Date.now(), log 
       if (!['GET', 'HEAD'].includes(req.method)) return send(405, {error: 'Only GET is supported.'}), true;
       await ready;
       const dayCount = Math.min(400, Math.max(1, Math.trunc(Number(url.searchParams.get('days')) || 30)));
-      return send(200, summary(dayCount)), true;
+      const offered = req.headers['x-stats-key'];
+      if (offered === undefined) return send(200, summary(dayCount)), true;
+      const key = connectionKey(req, eatDay(now())), failures = keyFailures.get(key) || 0;
+      if (failures >= MAX_KEY_FAILURES_PER_DAY) return send(429, {error: 'Too many attempts. Try again tomorrow.'}), true;
+      const given = Buffer.from(String(offered));
+      if (!ownerKey || given.length !== ownerKey.length || !timingSafeEqual(given, ownerKey)) {
+        keyFailures.set(key, failures + 1);
+        return send(403, {error: ownerKey ? 'Key not recognised.' : 'The private view is not set up.'}), true;
+      }
+      return send(200, summary(dayCount, {owner: true})), true;
     }
     if (req.method !== 'POST') return send(405, {error: 'Only POST is supported.'}), true;
     // Same-site beacons only: a foreign page cannot inflate the counts from a visitor's browser.

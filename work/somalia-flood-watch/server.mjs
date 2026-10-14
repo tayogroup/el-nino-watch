@@ -53,10 +53,10 @@ function reply(res, status, body, contentType = 'text/plain; charset=utf-8', hea
   res.end(head ? undefined : buffer);
 }
 
-export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null} = {}) {
+export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null, statsKey = process.env.STATS_KEY || ''} = {}) {
   // A report change asks for a backup within minutes rather than the next 6-hour run.
   const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES, onChange:() => backup?.soon?.()});
-  const visits = createVisits({dataDir, cities:CITY_DATA});
+  const visits = createVisits({dataDir, cities:CITY_DATA, statsKey});
   const forecasts = createForecastRelay({cities:CITY_DATA});
   const server = http.createServer(async (req, res) => {
     try {

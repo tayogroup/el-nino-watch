@@ -40,8 +40,8 @@
     },
     {
       "path": "DEPLOYMENT.md",
-      "bytes": 10131,
-      "sha256": "ef199fc8a59f1a9f560a8429be0bbb9d681d9d64885bf8f973672b12449bb0fa"
+      "bytes": 10548,
+      "sha256": "d9e96d8fcf34f45d233f6ab5c91d637c589b7263b3025e06f1d46bd284bd26e1"
     },
     {
       "path": "Dockerfile",
@@ -530,8 +530,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/stats.html",
-      "bytes": 8503,
-      "sha256": "d82a5ea8b12204573029705c584d3baea859ffbb583468c990d8e51c60278b20"
+      "bytes": 11582,
+      "sha256": "518fc7e3117ef90fa8e20a30aaea96ab26ad749c01b3895a778099876a6da0d8"
     },
     {
       "path": "work/somalia-flood-watch/dist/style.css",
@@ -650,8 +650,8 @@
     },
     {
       "path": "work/somalia-flood-watch/server.mjs",
-      "bytes": 9026,
-      "sha256": "f64088fe87df345584e53a9f5d5c9115d3921be909a1e252ae50860f61c18ad2"
+      "bytes": 9076,
+      "sha256": "c6690edca63c6825bdec23a600bf4a13cf14cd5bb37f34dcc9b775dea381bcaf"
     },
     {
       "path": "work/somalia-flood-watch/Start-Live-App.ps1",
@@ -680,8 +680,8 @@
     },
     {
       "path": "work/somalia-flood-watch/visits.mjs",
-      "bytes": 7984,
-      "sha256": "a030ffa0ce0ecc0ebb05c8f39e87a9b506c8fc456709d964c654786e0db6fdcb"
+      "bytes": 9258,
+      "sha256": "39816667a11e56b4a798c3d27fff239e69babc3cfdd9abe3e4c750f7ef92e712"
     },
     {
       "path": "work/swalim-stations.html",
@@ -705,8 +705,8 @@
     },
     {
       "path": "work/visits.test.mjs",
-      "bytes": 8126,
-      "sha256": "25d0bc2509a2f2ccb5e1b03e933f78b67e96234bdf586c84a19c37770b2d74ba"
+      "bytes": 10142,
+      "sha256": "aa6f38b01a5fbaf4346ca8408c0f2e71478e8335ab5e8db0724e79adb1d57d41"
     },
     {
       "path": "work/watchlist.test.mjs",

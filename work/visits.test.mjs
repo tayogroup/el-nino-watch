@@ -115,3 +115,29 @@ test('the page wiring: hidden footer link, scripts before app.js, /stats, and qu
     await rm(dataDir, {recursive: true, force: true});
   }
 });
+
+test('the owner sees the numbers early with the key, sent only as a header', async () => {
+  const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-visits-'));
+  const KEY = 'k'.repeat(32);
+  try {
+    const visits = createVisits({dataDir, cities, log: quiet, publishAfter: 3000, statsKey: KEY});
+    await call(visits, '/api/visit', request('POST', view()));
+    assert.equal((await call(visits, '/api/visits', request('GET'))).body.published, false, 'the public still sees nothing');
+    assert.equal((await call(visits, `/api/visits?key=${KEY}`, request('GET'))).body.privateView, undefined, 'a key in the address is ignored');
+    const owner = await call(visits, '/api/visits', request('GET', undefined, {'x-stats-key': KEY}));
+    assert.equal(owner.status, 200);
+    assert.equal(owner.body.privateView, true);
+    assert.equal(owner.body.published, false);
+    assert.equal(owner.body.totals.views, 1);
+    assert.equal((await call(visits, '/api/visits', request('GET', undefined, {'x-stats-key': 'k'.repeat(31) + 'x'}))).status, 403);
+    let refused = 0;
+    for (let i = 0; i < 25; i++) if ((await call(visits, '/api/visits', request('GET', undefined, {'x-stats-key': 'wrong'}, '10.7.7.7'))).status === 429) refused++;
+    assert.equal(refused, 5, 'twenty wrong keys a day per connection, then refused');
+    assert.equal((await call(visits, '/api/visits', request('GET', undefined, {'x-stats-key': KEY}, '10.7.7.7'))).status, 429, 'even the right key, once locked out');
+
+    const noKey = createVisits({dataDir, cities, log: quiet});
+    assert.equal((await call(noKey, '/api/visits', request('GET', undefined, {'x-stats-key': KEY}))).status, 403, 'no key configured: no private view');
+    const weak = createVisits({dataDir, cities, log: quiet, statsKey: 'short'});
+    assert.equal((await call(weak, '/api/visits', request('GET', undefined, {'x-stats-key': 'short'}))).status, 403, 'a guessable key is refused outright');
+  } finally { await rm(dataDir, {recursive: true, force: true}); }
+});

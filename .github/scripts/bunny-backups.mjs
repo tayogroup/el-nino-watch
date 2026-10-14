@@ -8,10 +8,23 @@
 //   node bunny-backups.mjs inspect   read-only report
 //   node bunny-backups.mjs apply     set BACKUP_STORAGE_ZONE/KEY on the container
 //   node bunny-backups.mjs create-and-apply   create the private zone if missing, then apply
+//   node bunny-backups.mjs stats-key          set a new random STATS_KEY (private /stats view);
+//                                             read it in Bunny: Container settings > Environment variables
 const [mode = 'inspect'] = process.argv.slice(2);
 const {BUNNYNET_API_KEY: key, BUNNY_APP_ID: appId, BUNNY_CONTAINER: containerName = 'el-nino-watch', BACKUP_ZONE: zoneName = 'el-nino-watch-backups'} = process.env;
 if (!key || !appId) { console.error('BUNNYNET_API_KEY and BUNNY_APP_ID are required.'); process.exit(2); }
 const mask = value => { if (value) console.log(`::add-mask::${value}`); };
+
+// Merge variables into the container (keeping the others), then read them back.
+async function setEnv(container, env, wanted) {
+  const shape = env[0] && 'key' in env[0] && !('name' in env[0]) ? 'key' : 'name';
+  const merged = env.filter(item => !Object.hasOwn(wanted, envName(item))).concat(Object.entries(wanted).map(([name, value]) => shape === 'key' ? {key: name, value} : {name, value}));
+  await api('PATCH', `/mc/apps/${appId}/containers/${container.id}`, {id: container.id, environmentVariables: merged});
+  const after = (await api('GET', `/mc/apps/${appId}`)).containerTemplates.find(item => item.id === container.id);
+  const ok = Object.entries(wanted).every(([name, value]) => envList(after).some(item => envName(item) === name && envValue(item) === value));
+  console.log(`Applied ${Object.keys(wanted).join(', ')}; read back: ${ok ? 'present' : 'NOT PRESENT'}.`);
+  return ok;
+}
 
 async function api(method, path, body) {
   const response = await fetch(`https://api.bunny.net${path}`, {
@@ -33,8 +46,9 @@ console.log(`App status: ${app.status ?? app.appStatus ?? 'unknown'}; containers
 if (!container) { console.error(`No container named ${containerName}.`); process.exit(1); }
 console.log(`Container fields: ${Object.keys(container).sort().join(', ')}`);
 const env = envList(container);
+for (const item of env) mask(envValue(item));
 console.log(`Environment variables on ${containerName}: ${env.length ? env.map(item => `${envName(item)}=${envValue(item) ? '<set>' : '<empty>'}`).join(', ') : 'none'}`);
-for (const wanted of ['BACKUP_STORAGE_ZONE', 'BACKUP_STORAGE_KEY']) {
+for (const wanted of ['BACKUP_STORAGE_ZONE', 'BACKUP_STORAGE_KEY', 'STATS_KEY']) {
   const near = env.map(envName).filter(name => name && name !== wanted && name.replace(/[^A-Z]/gi, '').toUpperCase() === wanted.replace(/_/g, ''));
   console.log(`${wanted}: ${env.some(item => envName(item) === wanted && envValue(item)) ? 'present' : 'MISSING'}${near.length ? ` (near-miss names: ${near.join(', ')})` : ''}`);
 }
@@ -56,6 +70,12 @@ console.log(`Storage zone ${zoneName}: ${zone ? `exists, region ${zone.Region}, 
 const candidates = zones.filter(item => item.Name !== zoneName && /nino|backup/i.test(item.Name));
 console.log(`Other zones that may be this app's: ${candidates.map(item => `${item.Name} (region ${item.Region}, pull zones ${(item.PullZones || []).length})`).join(', ') || 'none'}; other storage zones on the account: ${zones.length - candidates.length - (zone ? 1 : 0)}`);
 
+if (mode === 'stats-key') {
+  const {randomBytes} = await import('node:crypto');
+  const statsKey = randomBytes(24).toString('base64url');
+  mask(statsKey);
+  process.exit((await setEnv(container, env, {STATS_KEY: statsKey})) ? 0 : 1);
+}
 if (mode !== 'apply' && mode !== 'create-and-apply') process.exit(0);
 
 if (!zone) { console.error(`Create the storage zone ${zoneName} first.`); process.exit(1); }
@@ -63,10 +83,4 @@ if ((zone.PullZones || []).length) { console.error('Refusing: that storage zone 
 if (!zone.Password) { console.error('The API returned no password for the zone.'); process.exit(1); }
 const endpoint = zone.StorageHostname ? `https://${zone.StorageHostname}` : null;
 const wanted = {BACKUP_STORAGE_ZONE: zoneName, BACKUP_STORAGE_KEY: zone.Password, ...(endpoint && endpoint !== 'https://storage.bunnycdn.com' ? {BACKUP_STORAGE_ENDPOINT: endpoint} : {})};
-const shape = env[0] && 'key' in env[0] && !('name' in env[0]) ? 'key' : 'name';
-const merged = env.filter(item => !Object.hasOwn(wanted, envName(item))).concat(Object.entries(wanted).map(([name, value]) => shape === 'key' ? {key: name, value} : {name, value}));
-await api('PATCH', `/mc/apps/${appId}/containers/${container.id}`, {id: container.id, environmentVariables: merged});
-const after = (await api('GET', `/mc/apps/${appId}`)).containerTemplates.find(item => item.id === container.id);
-const ok = Object.keys(wanted).every(name => envList(after).some(item => envName(item) === name && envValue(item)));
-console.log(`Applied ${Object.keys(wanted).join(', ')}; read back: ${ok ? 'present' : 'NOT PRESENT'}.`);
-process.exit(ok ? 0 : 1);
+process.exit((await setEnv(container, env, wanted)) ? 0 : 1);
