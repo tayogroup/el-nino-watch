@@ -44,9 +44,13 @@ npm run bundle               # standalone HTML under outputs/ (gitignored)
 
 ## Deploy
 
-Hosted on Bunny Magic Containers at https://elninowatch.so (set up
-2026-10-14; check DEPLOYMENT.md before assuming it is live). Pushing to `main`
-deploys: `.github/workflows/deploy.yml` tests, publishes
+Live at https://elninowatch.so since 2026-10-14: Bunny Magic Containers app
+`el-nino-watch` (App ID `75COsnmX7wS5qyD`, Frankfurt, one instance, volume
+`reports` at `/app/data`), CDN endpoint `mc-01kg32atbu.b-cdn.net`. Namecheap
+DNS: `@` ALIAS and `www` CNAME to that `b-cdn.net` name (Bunny's free
+certificate checks for it; the `bunny.run` name serves but fails the check).
+Bunny forwards the visitor's Host, so community writes work without any
+pull-zone change. Pushing to `main` deploys: `.github/workflows/deploy.yml` tests, publishes
 `ghcr.io/tayogroup/el-nino-watch`, and rolls the Bunny app to that commit.
 Setup and the one-instance rule are in `DEPLOYMENT.md` under "Live hosting".
 The root `DEPLOYMENT.md` has that section and `work/make-source-bundles.mjs`'s
