@@ -1,0 +1,36 @@
+# Inspect (default) or repair the report-backup settings on the Bunny app.
+# Run by hand: Actions > Bunny backups > Run workflow. The logs are public, so the
+# script prints names and yes/no facts only, never values.
+name: Bunny backups
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: inspect (read-only) or apply (set the backup variables)
+        required: true
+        default: inspect
+        type: choice
+        options: [inspect, apply]
+      zone:
+        description: Name of the private backup storage zone
+        required: true
+        default: el-nino-watch-backups
+
+permissions:
+  contents: read
+
+jobs:
+  backups:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: node .github/scripts/bunny-backups.mjs "${{ inputs.mode }}"
+        env:
+          BUNNYNET_API_KEY: ${{ secrets.BUNNYNET_API_KEY }}
+          BUNNY_APP_ID: ${{ vars.BUNNY_APP_ID }}
+          BUNNY_CONTAINER: ${{ vars.BUNNY_CONTAINER || 'el-nino-watch' }}
+          BACKUP_ZONE: ${{ inputs.zone }}

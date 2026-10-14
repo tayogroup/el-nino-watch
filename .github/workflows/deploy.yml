@@ -8,6 +8,12 @@ name: Deploy
 on:
   push:
     branches: [main]
+    # Docs and the Bunny maintenance tooling do not change the app; skip the
+    # redeploy (and its brief outage) when a push touches only those.
+    paths-ignore:
+      - "**/*.md"
+      - ".github/scripts/**"
+      - ".github/workflows/bunny-backups.yml"
   workflow_dispatch:
 
 concurrency:
