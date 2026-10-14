@@ -1,6 +1,6 @@
 # El Nino Watch
 
-Formerly packaged as *Somalia El Nino Watch*; the app itself still uses that name in its interface.
+Formerly packaged as *Somalia El Nino Watch*.
 
 Full application code, assets, translation and basemap rebuild inputs, test fixtures and regression tests. The current work/ directory layout is retained for reproducibility.
 

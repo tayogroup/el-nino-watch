@@ -90,7 +90,7 @@ function readCsv(csv) {
 test('human daily briefing follows the selected language and keeps factual limitations', () => {
   const h = harness(), model = h.api.build(input(h));
   const english = h.api.briefingText(model);
-  assert.match(english, /^Somalia El Nino Watch — Galkayo daily planning briefing/m);
+  assert.match(english, /^El Nino Watch — Galkayo daily planning briefing/m);
   assert.match(english, /This is not a government dashboard\./);
   assert.match(english, /Local actions and review stages are saved on this device and are not sent to authorities\./);
   assert.match(english, /App thresholds, not flood probabilities\./);
@@ -99,7 +99,7 @@ test('human daily briefing follows the selected language and keeps factual limit
   h.language.setLanguage('so');
   const somali = h.api.briefingText(model);
   assert.notEqual(somali, english);
-  assert.match(somali, /^Somalia El Nino Watch — warbixinta kooban ee qorshaynta maalinlaha ah ee Galkayo/m);
+  assert.match(somali, /^El Nino Watch — warbixinta kooban ee qorshaynta maalinlaha ah ee Galkayo/m);
   assert.match(somali, /Ma aha bog (?:dowladeed|maamul oo dawladdu leedahay)\./);
   assert.match(somali, /qalabkan.*looma(?:na)? diro hay'adaha/i);
   assert.match(somali, /ma aha suurtagalnimada fatahaadda/i);

@@ -6,7 +6,7 @@ import {spawn} from 'node:child_process';
 import http from 'node:http';
 const root=path.resolve(process.argv[2]||'');
 assert.ok(root.includes(path.sep+'work'+path.sep+'release-validation-'),'Use an extracted release-validation scratch folder.');
-const variants=['Somalia-El-Nino-Watch-Hosting','Somalia-El-Nino-Watch-Source'];
+const variants=['El-Nino-Watch-Hosting','El-Nino-Watch-Source'];
 const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=','base64');
 const results=[];
 async function proxyRequest(url,options){
@@ -43,7 +43,7 @@ for(const name of variants){
  // Exercise the literal deployment CLI and HOST/PORT environment in a new process.
  const cliPort=new URL(origin).port,cliData=path.join(root,'cli-data-'+name),cli=spawn(process.execPath,[path.join(app,'server.mjs')],{cwd:folder,env:{...process.env,HOST:'0.0.0.0',PORT:cliPort,COMMUNITY_DATA_DIR:cliData},stdio:['ignore','pipe','pipe']});
  try{
-  await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('CLI startup timeout')),10000);cli.once('error',reject);cli.once('exit',code=>reject(Error('CLI exited: '+code)));cli.stdout.on('data',chunk=>{if(String(chunk).includes('Somalia El Nino Watch:')){clearTimeout(timer);resolve();}});});
+  await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('CLI startup timeout')),10000);cli.once('error',reject);cli.once('exit',code=>reject(Error('CLI exited: '+code)));cli.stdout.on('data',chunk=>{if(String(chunk).includes('El Nino Watch:')){clearTimeout(timer);resolve();}});});
   assert.equal((await fetch('http://127.0.0.1:'+cliPort+'/')).status,200);results.at(-1).cliStartup='HOST=0.0.0.0 and PORT honored';
  }finally{cli.kill();await new Promise(resolve=>{if(cli.exitCode!==null)resolve();else cli.once('exit',resolve);});}
 }

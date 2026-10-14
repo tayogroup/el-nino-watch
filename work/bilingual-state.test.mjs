@@ -51,7 +51,7 @@ function harness({stored,href='http://127.0.0.1:4173/?coverage=all#city=Galkayo&
   const select=new Element('select',{'data-scope':'all'});select.value='all';
   const option=new Element('option',{value:'all'}).append('All 30 cities');select.append(option);
   const protectedText=new Element('p',{'data-i18n-skip':'',lang:'und'}).append('Rainfall today');
-  const brand=new Element('b',{class:'brand-title'}).append('Somalia El Nino Watch');
+  const brand=new Element('b',{class:'brand-title'}).append('El Nino Watch');
   body.append(heading,unavailable,input,textarea,select,protectedText,brand);
   const listeners=new Map();
   const document={body,documentElement:html,title:'Rainfall today',readyState:loading?'loading':'complete',activeElement:input,querySelectorAll:selector=>selector==='[data-site-language]'?[en,so]:[],getElementById:id=>id==='language-status'?status:null,addEventListener:(name,fn)=>listeners.set(name,fn)};
@@ -102,7 +102,7 @@ test('official/source and user content remains original even if it exactly equal
   const action=new Element('div',{class:'mayor-action-title'}).append(new Element('strong').append('Rainfall today'));
   const owner=new Element('span',{class:'mayor-action-owner-value'}).append('Unknown');
   h.body.append(report,author,comment,action,owner);h.so.click();
-  assert.equal(h.protectedText.textContent,'Rainfall today');assert.equal(report.textContent,'Unknown');assert.equal(author.textContent,'Rainfall today');assert.equal(comment.textContent,'Flood map');assert.equal(action.textContent,'Rainfall today');assert.equal(owner.textContent,'Unknown');assert.equal(h.brand.textContent,'Somalia El Nino Watch');
+  assert.equal(h.protectedText.textContent,'Rainfall today');assert.equal(report.textContent,'Unknown');assert.equal(author.textContent,'Rainfall today');assert.equal(comment.textContent,'Flood map');assert.equal(action.textContent,'Rainfall today');assert.equal(owner.textContent,'Unknown');assert.equal(h.brand.textContent,'El Nino Watch');
   const anonymous=new Element('strong').append('Anonymous');h.body.append(anonymous);h.mutate();assert.notEqual(anonymous.textContent,'Anonymous');
 });
 test('media filename attributes are protected while preview controls translate',()=>{

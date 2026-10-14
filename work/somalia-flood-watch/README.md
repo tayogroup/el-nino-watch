@@ -1,4 +1,4 @@
-# Somalia El Nino Watch
+# El Nino Watch
 
 Extract the package and run `Start-Live-App.ps1` on Windows, or run `node server.mjs` from this directory. Open http://127.0.0.1:4173 and keep the server running. Node.js 22 or newer (Node.js 24 recommended) and internet access are required. No package installation or API keys are needed. The server listens only on your computer.
 
@@ -50,7 +50,7 @@ Community API: GET /api/community/reports?city=city-slug; POST /api/community/re
 
 ## Mobile, maps and location context
 
-The responsive header uses the Somalia El Nino Watch logo and title, with a collapsible menu and mobile bottom navigation. The footer credits Mandek Consulting, contact@mandekconsulting.com and elninowatch.so. Thirty cities cover coastal, urban, seasonal-channel and river settings. Added city centers were checked against Open-Meteo geocoding/GeoNames; centers are approximate points, not city boundaries or population-based rankings.
+The responsive header uses the El Nino Watch logo and title, with a collapsible menu and mobile bottom navigation. The footer credits Mandek Consulting, contact@mandekconsulting.com and elninowatch.so. Thirty cities cover coastal, urban, seasonal-channel and river settings. Added city centers were checked against Open-Meteo geocoding/GeoNames; centers are approximate points, not city boundaries or population-based rankings.
 
 The opt-in Esri World Imagery background provides real satellite/aerial context; imagery dates vary and it is not a live flood image. Failed imagery tiles restore the bundled reference map. Attribution remains on the map. Google Earth, Google satellite Maps and Street View links follow the selected city or map point. Street View can open a nearby panorama only where coverage exists. These external context views do not identify safe evacuation routes or current inundation. Date-specific Copernicus radar and NASA flood layers remain the actual observation products. Copy a city/day/hour/scenario link for comparison; download weather, plans or community data for field work.
 
@@ -58,7 +58,7 @@ Map URL documentation: https://developers.google.com/maps/documentation/urls/get
 
 ## Independent service and terrain inspection
 
-Somalia El Nino Watch is an independent, non-government information service. Information comes from public-domain and other publicly available sources, with source-specific licences and terms. Public availability does not transfer all copyright: Natural Earth is public domain; Open-Meteo data use CC BY 4.0; SWALIM metadata does not specify a general licence; contributed media keep their own rights. For emergencies and support, contact your local government offices and/or the relevant authority in your area. The notice appears above the dashboard and again in the footer.
+El Nino Watch is an independent, non-government information service. Information comes from public-domain and other publicly available sources, with source-specific licences and terms. Public availability does not transfer all copyright: Natural Earth is public domain; Open-Meteo data use CC BY 4.0; SWALIM metadata does not specify a general licence; contributed media keep their own rights. For emergencies and support, contact your local government offices and/or the relevant authority in your area. The notice appears above the dashboard and again in the footer.
 
 Rainfall screening counts cities with at least one forecast day of 10 mm or more across the 14-day window, using only complete forecasts. The watchlist has two groups of 15 cities, with search and selection preserved; groups stack on smaller screens. Screening badges retain their existing bands: Lower below 10 mm/day, Watch 10–24.9 mm/day, Elevated 25 mm/day or more. These thresholds are app screening rules, not official flood probabilities.
 

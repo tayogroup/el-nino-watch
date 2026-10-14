@@ -41,7 +41,7 @@ if (process.argv[2] === '--scenario') {
   const staticResponse = await request(server, '/');
   assert.equal(staticResponse.status, 200);
   assert.match(staticResponse.headers['Content-Type'], /^text\/html/);
-  assert.match(staticResponse.body, /Somalia El Nino Watch/);
+  assert.match(staticResponse.body, /El Nino Watch/);
   const communityResponse = await request(server, '/api/community/reports');
   assert.equal(communityResponse.status, Number(expectedStatus));
   if (Number(expectedStatus) === 503) {

@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
-const base=new URL('./somalia-flood-watch/',import.meta.url),out=new URL('../outputs/Somalia-El-Nino-Watch/',import.meta.url);
-const stage=new URL('./package-stage/Somalia-El-Nino-Watch/',import.meta.url);
+const base=new URL('./somalia-flood-watch/',import.meta.url),out=new URL('../outputs/El-Nino-Watch/',import.meta.url);
+const stage=new URL('./package-stage/El-Nino-Watch/',import.meta.url);
 await fs.mkdir(out,{recursive:true});
 await fs.cp(new URL('dist/',base),new URL('dist/',out),{recursive:true});
 for(const file of ['server.mjs','feeds.mjs','hazards.mjs','alerts-feed.mjs','observed-flood.mjs','copernicus.mjs','community.mjs','Start-Live-App.ps1','README.md'])await fs.copyFile(new URL(file,base),new URL(file,out));
@@ -18,5 +18,5 @@ for(const file of ['vendor/leaflet.js','planning.js','basemap-data.js','cities.j
  const content=(await fs.readFile(new URL('dist/'+file,base),'utf8')).replace(/<\/script/gi,'<\\/script');
  html=html.replace(`<script src="${file}"></script>`,()=>`<script>${content}</script>`);
 }
-await fs.writeFile(new URL('../outputs/Somalia-El-Nino-Watch.html',import.meta.url),html);
+await fs.writeFile(new URL('../outputs/El-Nino-Watch.html',import.meta.url),html);
 console.log('Updated runtime and portable HTML. Use the server package for all live relays.');

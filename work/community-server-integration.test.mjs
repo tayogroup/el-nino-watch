@@ -31,7 +31,7 @@ globalThis.fetch = async () => { upstreamRequests++; throw new Error('Intentiona
 try {
   await start();
   let response = await nativeFetch(origin + '/'); equal(response.status, 200);
-  const html = await response.text(); ok(html.includes('Somalia El Nino Watch'));
+  const html = await response.text(); ok(html.includes('El Nino Watch'));
   response = await nativeFetch(origin + '/cities.json'); equal(response.status, 200);
   const cities = await response.json(); equal(cities.length, 30); ok(cities.some(city => city[0] === 'Laasqoray'));
   response = await nativeFetch(origin + '/community.js'); equal(response.status, 200); ok(response.headers.get('content-type').startsWith('text/javascript'));

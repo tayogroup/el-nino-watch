@@ -39,7 +39,7 @@ function fragments(html) {
   return result;
 }
 
-const properNames=new Set([...cities.flatMap(city=>[city[0],city[1]]),'Somalia El Nino Watch','Mandek Consulting','Somalia National Meteorological Agency ↗','EL NIÑO / ENSO · NOAA','Galkayo','Mudug','Hobyo','Station Name','Copernicus radar','CEMS GFM','NASA composite','Noor Hassan','fixture-outage']);
+const properNames=new Set([...cities.flatMap(city=>[city[0],city[1]]),'El Nino Watch','Mandek Consulting','Somalia National Meteorological Agency ↗','EL NIÑO / ENSO · NOAA','Galkayo','Mudug','Hobyo','Station Name','Copernicus radar','CEMS GFM','NASA composite','Noor Hassan','fixture-outage']);
 const providerWords=['Copernicus CEMS Global Flood Monitoring','Copernicus Data Space','FAO SWALIM','CEMS GFM','Open-Meteo','GloFAS','SWALIM','GDACS','NOAA','SNMA','WMO','NASA','Sentinel-1','Sentinel-2','Google Earth','Google Maps','Google Street View','meteoblue','Copernicus','Mandek Consulting'];
 function requiresTranslation(text) {
   if(properNames.has(text)||/^(?:https?:|mailto:|blob:)/i.test(text)||/^[\w.+-]+@[\w.-]+$/.test(text)||/^elninowatch\.so(?:\s*↗)?$/.test(text))return false;

@@ -107,5 +107,5 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('PORT must be an integer from 1 to 65535.');
   const host = process.env.HOST || '127.0.0.1';
   if (!['127.0.0.1','0.0.0.0'].includes(host)) throw new Error('HOST must be 127.0.0.1 or 0.0.0.0.');
-  createServer().listen(port, host, () => console.log(`Somalia El Nino Watch: http://127.0.0.1:${port}\nKeep this process running for the live data relays.`));
+  createServer().listen(port, host, () => console.log(`El Nino Watch: http://127.0.0.1:${port}\nKeep this process running for the live data relays.`));
 }

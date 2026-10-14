@@ -95,7 +95,7 @@ function fragments(root){
 }
 function coverage(root,language,label){const missing=fragments(root).filter(item=>!ignored(item.text)&&normalize(language.translateText(item.text))===item.text).map(item=>`${item.kind}: ${item.text}`);assert.deepEqual([...new Set(missing)],[],label+' has untranslated generated UI');}
 function setup(){
-  const doc={body:new Element('body'),documentElement:new Element('html'),readyState:'loading',title:'Somalia El Nino Watch',addEventListener(){},querySelectorAll(selector){return this.body.querySelectorAll(selector);},getElementById(id){return this.body.id===id?this.body:this.body.querySelector('#'+id);}};
+  const doc={body:new Element('body'),documentElement:new Element('html'),readyState:'loading',title:'El Nino Watch',addEventListener(){},querySelectorAll(selector){return this.body.querySelectorAll(selector);},getElementById(id){return this.body.id===id?this.body:this.body.querySelector('#'+id);}};
   doc.body.innerHTML='<div id="community-root"></div><span id="language-status"></span>';
   const storage=new Map([['somalia-community-report-receipts-v1',JSON.stringify({'report-1':'saved-receipt-test'})]]),calls=[],confirms=[];
   let reports=[],fail=false;

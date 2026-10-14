@@ -1,4 +1,4 @@
-# Deploy Somalia El Nino Watch
+# Deploy El Nino Watch
 
 This package is a complete Node application, with its frontend, server modules, maps, English/Somali catalog, library assets and notices. No npm runtime dependencies, compilation step or API keys are required for the existing features. Use Node.js 24 LTS (Node 22 or newer is supported). Release snapshot: 2026-10-14, East Africa date.
 

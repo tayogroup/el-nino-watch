@@ -96,7 +96,7 @@ export function parseCopernicusScenes(payload, {city, mission, start, end, bbox}
 async function loadMission(city, mission, context, fetchImpl) {
   const collectionId = COLLECTIONS[mission];
   const response = await fetchImpl(API_URL, {method: 'POST', signal: AbortSignal.timeout(20000),
-    headers: {'Content-Type': 'application/json', Accept: 'application/geo+json, application/json', 'User-Agent': 'SomaliaElNinoWatch/1.0'},
+    headers: {'Content-Type': 'application/json', Accept: 'application/geo+json, application/json', 'User-Agent': 'ElNinoWatch/1.0'},
     body: JSON.stringify({collections: [collectionId], bbox: context.bbox, datetime: `${context.start}/${context.end}`, limit: 8, sortby: [{field: 'datetime', direction: 'desc'}]})});
   if (!response.ok) throw new Error(`Copernicus catalogue returned HTTP ${response.status}.`);
   const scenes = parseCopernicusScenes(await response.json(), {city, mission, ...context});

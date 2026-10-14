@@ -1,4 +1,4 @@
-/* Somalia El Nino Watch: responsive brand, navigation, maps and community. */
+/* El Nino Watch: responsive brand, navigation, maps and community. */
 :root{--ink:#153653;--muted:#586f89;--navy:#082448;--blue:#1473cf;--paper:#f0f5fb;--line:#dce6f0;--shadow:0 7px 26px rgba(11,44,76,.045)}
 body{font-size:14px;background:radial-gradient(ellipse at 10% 0,#e6f1fc 0,transparent 50%),var(--paper)}
 .key.community-report:before{background:#7e4daa}.community-map-marker{color:#7e4daa}

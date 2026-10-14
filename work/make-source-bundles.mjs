@@ -40,11 +40,11 @@ async function zip(folder,destination){
  return {files:entries.length,bytes:(await fs.stat(destination)).size,sha256:digest(await fs.readFile(destination))};
 }
 function packageJson(source){
- return JSON.stringify({name:'somalia-el-nino-watch'+(source?'-source':''),version:'1.0.0',private:true,type:'module',description:'English/Somali weather awareness, flood observations and community reporting for Somalia.',engines:{node:'>=22'},scripts:{start:'node '+(source?'work/somalia-flood-watch/':'')+'server.mjs',check:'node scripts/check-files.mjs',...(source?{'build:translations':'node work/build-somali-catalog.mjs','build:basemap':'node work/build-basemap.mjs',bundle:'node work/package-flood-app.mjs',test:'node scripts/run-tests.mjs',release:'node work/make-source-bundles.mjs'}:{})}},null,2)+'\n';
+ return JSON.stringify({name:'el-nino-watch'+(source?'-source':''),version:'1.0.0',private:true,type:'module',description:'English/Somali weather awareness, flood observations and community reporting for Somalia.',engines:{node:'>=22'},scripts:{start:'node '+(source?'work/somalia-flood-watch/':'')+'server.mjs',check:'node scripts/check-files.mjs',...(source?{'build:translations':'node work/build-somali-catalog.mjs','build:basemap':'node work/build-basemap.mjs',bundle:'node work/package-flood-app.mjs',test:'node scripts/run-tests.mjs',release:'node work/make-source-bundles.mjs'}:{})}},null,2)+'\n';
 }
 function deployment(source){
  const entry=(source?'work/somalia-flood-watch/':'')+'server.mjs';
- return `# Deploy Somalia El Nino Watch
+ return `# Deploy El Nino Watch
 
 This package is a complete Node application, with its frontend, server modules, maps, English/Somali catalog, library assets and notices. No npm runtime dependencies, compilation step or API keys are required for the existing features. Use Node.js 24 LTS (Node 22 or newer is supported). Release snapshot: ${releaseDate}, East Africa date.
 
@@ -154,7 +154,7 @@ location / {
 }
 `;
 async function make(source){
- const name='Somalia-El-Nino-Watch-'+(source?'Source':'Hosting'),folder=path.join(staging,name),appRelative=source?'work/somalia-flood-watch':'';
+ const name='El-Nino-Watch-'+(source?'Source':'Hosting'),folder=path.join(staging,name),appRelative=source?'work/somalia-flood-watch':'';
  await fs.mkdir(folder,{recursive:true});
  const appFolder=path.join(folder,appRelative);await fs.mkdir(appFolder,{recursive:true});
  await fs.cp(path.join(app,'dist'),path.join(appFolder,'dist'),{recursive:true});
@@ -172,14 +172,14 @@ async function make(source){
  }
  const packageText=packageJson(source),packageInfo=JSON.parse(packageText);
  await write(folder,'package.json',packageText);await write(folder,'package-lock.json',JSON.stringify({name:packageInfo.name,version:packageInfo.version,lockfileVersion:3,requires:true,packages:{'':{name:packageInfo.name,version:packageInfo.version,engines:packageInfo.engines}}},null,2)+'\n');await write(folder,'.nvmrc','24\n');await write(folder,'.node-version','24\n');
- await write(folder,'.env.example','# Hosting example; npm start does not load this file automatically.\nHOST=0.0.0.0\nPORT=4173\n# Set an absolute writable persistent directory in your hosting environment.\n# COMMUNITY_DATA_DIR=/var/lib/somalia-el-nino-watch\n');
+ await write(folder,'.env.example','# Hosting example; npm start does not load this file automatically.\nHOST=0.0.0.0\nPORT=4173\n# Set an absolute writable persistent directory in your hosting environment.\n# COMMUNITY_DATA_DIR=/var/lib/el-nino-watch\n');
  await write(folder,'.gitignore','node_modules/\n.env\n.env.*\n!.env.example\ndata/\nwork/somalia-flood-watch/data/\nwork/package-stage/\nwork/portable-release/\noutputs/\n*.log\n*.pid\n');
  await write(folder,'.dockerignore','**/data/\n**/node_modules/\n**/.git/\n**/.openai/\n.env\n.env.*\noutputs/\nwork/package-stage/\nwork/portable-release/\nwork/basemap-source/\nwork/*.test.mjs\nwork/i18n-*.json\n*.log\n*.pid\n');
  await write(folder,'Dockerfile',dockerfile(source));await write(folder,'compose.yaml',compose);await write(folder,'deploy/nginx-location.conf',nginx);
- await write(folder,'README.md',`# Somalia El Nino Watch — ${source?'complete source':'hosting'} package\n\n${source?'Full application code, assets, translation and basemap rebuild inputs, test fixtures and regression tests. The current work/ directory layout is retained for reproducibility.':'Complete deployable frontend and Node server, including English/Somali translations, offline reference geography and library assets.'}\n\nExtract this ZIP, install Node.js 24, open a terminal in this folder and run:\n\n    npm start\n\nOpen http://127.0.0.1:4173. No npm install or API keys are required.\n\nRead [DEPLOYMENT.md](DEPLOYMENT.md) for Node hosting, Docker, persistent report storage, migration, HTTPS proxy settings and validation. Read [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for resource attribution.\n\n${source?'App files: work/somalia-flood-watch/. Frontend files under dist/ are editable source. Run npm test for the checks; npm run build:translations and npm run build:basemap regenerate resources; npm run bundle regenerates the runtime/standalone HTML under outputs/.':'The source ZIP adds developer tools, regression tests and original resource inputs.'}\n\nCurrent private reports, uploads, browser state and credentials are excluded. Live data still require internet access. This is an independent, non-government app; for emergency support contact your local government or relevant authority.\n`);
+ await write(folder,'README.md',`# El Nino Watch — ${source?'complete source':'hosting'} package\n\n${source?'Full application code, assets, translation and basemap rebuild inputs, test fixtures and regression tests. The current work/ directory layout is retained for reproducibility.':'Complete deployable frontend and Node server, including English/Somali translations, offline reference geography and library assets.'}\n\nExtract this ZIP, install Node.js 24, open a terminal in this folder and run:\n\n    npm start\n\nOpen http://127.0.0.1:4173. No npm install or API keys are required.\n\nRead [DEPLOYMENT.md](DEPLOYMENT.md) for Node hosting, Docker, persistent report storage, migration, HTTPS proxy settings and validation. Read [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for resource attribution.\n\n${source?'App files: work/somalia-flood-watch/. Frontend files under dist/ are editable source. Run npm test for the checks; npm run build:translations and npm run build:basemap regenerate resources; npm run bundle regenerates the runtime/standalone HTML under outputs/.':'The source ZIP adds developer tools, regression tests and original resource inputs.'}\n\nCurrent private reports, uploads, browser state and credentials are excluded. Live data still require internet access. This is an independent, non-government app; for emergency support contact your local government or relevant authority.\n`);
  await write(folder,'DEPLOYMENT.md',deployment(source));await write(folder,'THIRD-PARTY-NOTICES.md',notices);await write(folder,'scripts/check-files.mjs',checkScript);
  const entry=(source?'work/somalia-flood-watch/':'')+'server.mjs';
- await write(folder,'Start-Live-App.ps1',`$ErrorActionPreference = 'Stop'\nSet-Location -LiteralPath $PSScriptRoot\nif (-not (Get-Command node -ErrorAction SilentlyContinue)) { throw 'Install Node.js 24, then retry.' }\nWrite-Host 'Somalia El Nino Watch: http://127.0.0.1:4173'\n& node (Join-Path $PSScriptRoot '${entry}')\n`);
+ await write(folder,'Start-Live-App.ps1',`$ErrorActionPreference = 'Stop'\nSet-Location -LiteralPath $PSScriptRoot\nif (-not (Get-Command node -ErrorAction SilentlyContinue)) { throw 'Install Node.js 24, then retry.' }\nWrite-Host 'El Nino Watch: http://127.0.0.1:4173'\n& node (Join-Path $PSScriptRoot '${entry}')\n`);
  await write(folder,'start.sh',`#!/bin/sh\nset -eu\ncd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"\nexec node '${entry}'\n`);
  const all=await files(folder);for(const file of all)if(/(?:^|\/)(?:data|node_modules|\.git|\.openai)\/|(?:\.log|\.pid)$|(?:^|\/)\.env$/.test(file))throw Error('Private/runtime file in bundle: '+file);
  const manifest={clientDate:releaseDate,package:name,runtime:'Node.js 22+; Node 24 recommended',files:await Promise.all(all.filter(file=>file!=='MANIFEST.json').map(async file=>{const bytes=await fs.readFile(path.join(folder,file));return{path:file,bytes:bytes.length,sha256:digest(bytes)};}))};
@@ -187,5 +187,5 @@ async function make(source){
  await fs.mkdir(out,{recursive:true});const archive=path.join(out,name+'.zip');const result=await zip(folder,archive);return {name,folder,archive,...result};
 }
 const results=[];for(const source of [false,true])results.push(await make(source));
-await fs.writeFile(path.join(out,'Somalia-El-Nino-Watch-SHA256.txt'),results.map(item=>item.sha256+'  '+path.basename(item.archive)).join('\n')+'\n');
+await fs.writeFile(path.join(out,'El-Nino-Watch-SHA256.txt'),results.map(item=>item.sha256+'  '+path.basename(item.archive)).join('\n')+'\n');
 console.log(JSON.stringify(results.map(({name,folder,archive,files,bytes,sha256})=>({name,folder,archive,files,bytes,sha256})),null,2));
