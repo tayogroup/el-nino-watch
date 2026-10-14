@@ -40,10 +40,13 @@ for (const wanted of ['BACKUP_STORAGE_ZONE', 'BACKUP_STORAGE_KEY']) {
 const volumes = container.volumeMounts || container.volumes || [];
 console.log(`Volume mounts: ${volumes.map(item => item.mountPath || item.path || JSON.stringify(Object.keys(item))).join(', ') || 'none listed on the container'}`);
 
-const zones = await api('GET', '/storagezone');
-const zone = (Array.isArray(zones) ? zones : zones?.Items || []).find(item => item.Name === zoneName && !item.Deleted);
-if (zone) mask(zone.Password);
+const zones = (await api('GET', '/storagezone')).filter?.(item => !item.Deleted) ?? [];
+for (const item of zones) mask(item.Password), mask(item.ReadOnlyPassword);
+const zone = zones.find(item => item.Name === zoneName);
 console.log(`Storage zone ${zoneName}: ${zone ? `exists, region ${zone.Region}, pull zones attached: ${(zone.PullZones || []).length}` : 'NOT FOUND'}`);
+// Only zones that look like this app's are named; the account's others are counted.
+const candidates = zones.filter(item => item.Name !== zoneName && /nino|backup/i.test(item.Name));
+console.log(`Other zones that may be this app's: ${candidates.map(item => `${item.Name} (region ${item.Region}, pull zones ${(item.PullZones || []).length})`).join(', ') || 'none'}; other storage zones on the account: ${zones.length - candidates.length - (zone ? 1 : 0)}`);
 
 if (mode !== 'apply') process.exit(0);
 
