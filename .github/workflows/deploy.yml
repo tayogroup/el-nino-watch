@@ -66,6 +66,9 @@ jobs:
     needs: image
     if: vars.BUNNY_APP_ID != ''
     runs-on: ubuntu-latest
+    # The "production" environment only runs from main (protected), so its copy of
+    # BUNNYNET_API_KEY is out of reach of a workflow pushed on another branch.
+    environment: production
     permissions:
       contents: read
     steps:

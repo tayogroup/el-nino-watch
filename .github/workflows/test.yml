@@ -1,0 +1,26 @@
+# Run the full test suite on every pull request, so a change is checked before it
+# is approved and merged (merging to main deploys; see deploy.yml). Uses no secrets:
+# pull requests from forks get none, and this workflow needs none.
+name: Test
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm run check
+      - run: npm test

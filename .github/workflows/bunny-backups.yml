@@ -23,6 +23,9 @@ permissions:
 jobs:
   backups:
     runs-on: ubuntu-latest
+    # Every run waits for the owner's approval (Settings > Environments > bunny-settings),
+    # and only runs from main: some modes change the live app's settings.
+    environment: bunny-settings
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

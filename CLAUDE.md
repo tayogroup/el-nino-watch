@@ -185,7 +185,14 @@ reads or changes the Bunny app's settings with the repo's secret API key. Modes:
 and any report missing from the live site); `apply`, `create-and-apply` and
 `stats-key` change live settings. Its logs are public: print names and counts,
 never values. Use it rather than the Bunny dashboard, whose edits once failed to
-save.
+save. Every run waits for the owner's approval (environment `bunny-settings`).
+
+GitHub protection (2026-10-15): `main` needs a pull request with the owner's
+approval (the owner, as admin, may push directly). `test.yml` runs
+`npm run check` and `npm test` on every pull request. The Bunny API key belongs
+only in the `production` and `bunny-settings` environments, which run from `main`
+alone, so a workflow pushed on another branch cannot read it; it must not be a
+repository-level secret.
 
 ## Git
 
