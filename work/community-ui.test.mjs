@@ -152,6 +152,18 @@ assert.equal(typedIds('rain', 'all', 'market'), '', 'Landmark type and report ty
 assert.equal(typedIds('all', 'all', 'all'), 'a,b,c,d', 'Reports without a landmark type stay under "All landmarks"');
 assert.equal(typedIds('all', 'all', 'school'), '');
 
+// Landmark-name search: part of the name, ignoring case, accents and extra spaces; combines with the rest.
+filterReports[0].landmark = 'Bakara  Market'; filterReports[1].landmark = 'Siinka Dheer'; filterReports[2].landmark = 'Garsoor Bakara Café';
+const namedIds = (query, landmarkValue = 'all', districtValue = 'all') => filterReports.filter(report => api.reportMatches(report, 'all', districtValue, landmarkValue, query)).map(report => report.id).join(',');
+assert.equal(namedIds('bakara'), 'a,c', 'Name search matches part of the name in any case');
+assert.equal(namedIds('  BAKARA market '), 'a', 'Extra spaces do not matter');
+assert.equal(namedIds('cafe'), 'c', 'Accents do not matter');
+assert.equal(namedIds('bakara', 'market', 'mogadishu|hodan'), 'a', 'Name search combines with landmark type and district');
+assert.equal(namedIds('dheer', 'market'), '', 'All filters must match');
+assert.equal(namedIds('zzz'), '');
+assert.equal(namedIds(''), 'a,b,c,d', 'An empty search keeps every report, including ones with no name');
+assert.equal(namedIds('   '), 'a,b,c,d');
+
 
 assert.equal(JSON.parse(api.buildExport([{ ...malicious, district: '', landmark: null }], 'geojson').content).features[0].properties.district, null, 'Blank is exported as unknown');
 
