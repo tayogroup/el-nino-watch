@@ -598,7 +598,21 @@
     "App rainfall screen (Open-Meteo)": "Baaritaanka roobka ee abka (Open-Meteo)",
     "Unverified community reports: counts show report activity, not flood severity or an official warning.": "Warbixinno bulsho oo aan la xaqiijin: tirooyinku waxay muujinayaan inta warbixin la soo diray, ma aha darnaanta fatahaadda ama digniin rasmi ah.",
     "Applies from": "Khuseeya laga bilaabo",
-    "Applies to": "Khuseeya ilaa"
+    "Applies to": "Khuseeya ilaa",
+    "El Niño news flash": "Wararka degdegga ah ee El Niño",
+    "Government": "Dawladda",
+    "UN": "Qaramada Midoobay",
+    "Humanitarian": "Samafal",
+    "Media": "Warbaahin",
+    "Previous news item": "Warka hore",
+    "Next news item": "Warka xiga",
+    "Pause news": "Jooji wararka",
+    "Play news": "Sii wad wararka",
+    "El Niño status · NOAA": "Xaaladda El Niño · NOAA",
+    "Rainfall forecast · ICPAC": "Saadaasha roobka · ICPAC",
+    "Headlines are shown as published by each organisation or outlet. Nothing here is an official warning.": "Cinwaannada waxaa loo soo bandhigay sida ay u daabaceen hay'ad kasta ama warbaahin kasta. Waxba halkan kuma jiraan digniin rasmi ah.",
+    "El Niño news": "Wararka El Niño",
+    "All news": "Dhammaan wararka"
   },
   "patterns": [
     {
@@ -999,6 +1013,14 @@
     {
       "en": "Copy this city link: {0}",
       "so": "Nuqul ka samee xiriirka magaaladan: {0}"
+    },
+    {
+      "en": "All news ({0})",
+      "so": "Dhammaan wararka ({0})"
+    },
+    {
+      "en": "{0} of 30 cities have a heavy-rainfall forecast for {1}",
+      "so": "{0} ka mid ah 30 magaalo ayaa leh saadaal roob culus {1}"
     }
   ]
 }

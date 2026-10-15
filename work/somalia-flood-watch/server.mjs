@@ -11,6 +11,7 @@ import {loadCopernicusCity} from './copernicus.mjs';
 import {backupFromEnv} from './backup.mjs';
 import {createForecastRelay} from './forecast-relay.mjs';
 import {createVisits} from './visits.mjs';
+import {loadNews, NEWS_SOURCES} from './news-feed.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'dist');
 const CITY_DATA = JSON.parse(await readFile(new URL('./dist/cities.json', import.meta.url), 'utf8'));
@@ -19,7 +20,7 @@ const CACHE_MS = 10 * 60 * 1000;
 const RETRY_MS = 60 * 1000;
 const cache = new Map();
 const pending = new Map();
-const feeds = Object.freeze({'/api/enso': {load: loadEnso, sourceUrl: SOURCES.enso}, '/api/stations': {load: loadStations, sourceUrl: SOURCES.stations}, '/api/alerts': {load: () => loadOfficialAlerts({cities: CITY_DATA}), sourceUrl: ALERT_SOURCES.icpac}, '/api/observed-flood': {load: loadObservedFlood, sourceUrl: OBSERVED_SOURCE_URL}});
+const feeds = Object.freeze({'/api/enso': {load: loadEnso, sourceUrl: SOURCES.enso}, '/api/stations': {load: loadStations, sourceUrl: SOURCES.stations}, '/api/alerts': {load: () => loadOfficialAlerts({cities: CITY_DATA}), sourceUrl: ALERT_SOURCES.icpac}, '/api/observed-flood': {load: loadObservedFlood, sourceUrl: OBSERVED_SOURCE_URL}, '/api/news': {load: async () => loadNews({app: {enso: await feed('/api/enso'), alerts: await feed('/api/alerts')}}), sourceUrl: NEWS_SOURCES.sodma.site}});
 const types = {'.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.mjs':'text/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.ico':'image/x-icon', '.woff2':'font/woff2', '.pdf':'application/pdf'};
 
 async function feed(name, loader = feeds[name]?.load, sourceUrl = feeds[name]?.sourceUrl) {

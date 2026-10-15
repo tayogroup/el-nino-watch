@@ -1,0 +1,137 @@
+// El Niño news flash for Somalia: the app's own flashes (NOAA's El Niño status, this week's ICPAC
+// heavy-rainfall forecast) followed by recent items from Somali and international organisations.
+//
+//   SoDMA        Somali Disaster Management Agency - the agency's own news feed (Somali).
+//   FAO SWALIM   FAO's Somalia water and land unit - only flood, rain and El Niño items.
+//   Google News  two searches: "El Niño" Somalia, and Somalia floods/El Niño naming UN and
+//                non-UN humanitarian organisations. Headlines link to the source via Google News.
+//   ReliefWeb    UN OCHA's humanitarian reports for Somalia - only once RELIEFWEB_APPNAME is set,
+//                because the API refuses an appname ReliefWeb has not approved.
+//
+// Headlines are shown as published; each item is labelled by who published it (government, UN,
+// humanitarian organisation or media). Nothing here is an official warning.
+const UA = 'Mozilla/5.0 (compatible; ElNinoWatch/1.0; +https://elninowatch.so)';
+const DAY = 86400000;
+const MAX_ITEMS = 30;
+
+const googleNews = query => `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
+const HUMANITARIAN_NAMES = ['WFP', 'UNICEF', 'OCHA', 'IOM', 'UNHCR', 'FAO', 'WHO', 'ICRC', 'IFRC', '"Red Crescent"', 'NRC', '"Save the Children"', '"Mercy Corps"', '"International Rescue Committee"', 'CARE', 'Oxfam', '"World Vision"'];
+export const NEWS_SOURCES = Object.freeze({
+  sodma: {name: 'SoDMA', url: 'https://sodma.gov.so/feed/', site: 'https://sodma.gov.so/', group: 'government', language: 'so', maxAgeDays: 30, limit: 6, keep: /\b(el ni[nñ]o|fatahaad|daad|roob|webi|digniin|abaar|aafo|flood|rain(s|fall)?\b|deyr)/i},
+  swalim: {name: 'FAO SWALIM', url: 'https://www.faoswalim.org/rss.xml', site: 'https://www.faoswalim.org/', group: 'un', language: 'en', maxAgeDays: 60, limit: 4, keep: /\b(el ni[nñ]o|flood|rain(s|fall)?\b|deyr|river|fatahaad|roob)/i},
+  googleElNino: {name: 'Google News', url: googleNews('"El Niño" Somalia when:30d'), site: 'https://news.google.com/', group: null, language: 'en', maxAgeDays: 30, limit: 10, keep: /somali|mogadishu|el ni[nñ]o/i},
+  googleHumanitarian: {name: 'Google News', url: googleNews(`Somalia (flood OR floods OR "El Niño" OR Deyr) (${HUMANITARIAN_NAMES.join(' OR ')}) when:30d`), site: 'https://news.google.com/', group: null, language: 'en', maxAgeDays: 30, limit: 10, keep: /somali|mogadishu/i}
+});
+export const RELIEFWEB_SITE = 'https://reliefweb.int/country/som';
+
+// Who published an item, from its source name: UN bodies, other humanitarian organisations,
+// governments, and everything else as media.
+const UN = /\b(united nations|un news|un media|ocha|unocha|world food programme|wfp|unicef|unhcr|iom|international organization for migration|fao|food and agriculture organization|who|world health organization|undp|unfpa|reliefweb|un somalia|swalim)\b/i;
+const HUMANITARIAN = /\b(icrc|icrcnewsroom|red cross|red crescent|ifrc|norwegian refugee council|nrc|save the children|international rescue committee|rescue\.org|mercy corps|care international|oxfam|world vision|concern worldwide|action against hunger|médecins sans frontières|msf|islamic relief|climate centre)\b/i;
+const GOVERNMENT = /\b(gov\.uk|government|ministry|sodma|disaster management agency|embassy)\b/i;
+export function classify(sourceName) {
+  const name = String(sourceName || '');
+  return UN.test(name) ? 'un' : HUMANITARIAN.test(name) ? 'humanitarian' : GOVERNMENT.test(name) ? 'government' : 'media';
+}
+
+const ENTITIES = {amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' '};
+export function plainText(value) {
+  return String(value ?? '')
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, code) => code[0] === '#' ? String.fromCodePoint(code[1].toLowerCase() === 'x' ? parseInt(code.slice(2), 16) : Number(code.slice(1))) : ENTITIES[code.toLowerCase()] ?? match)
+    // SoDMA writes headlines in "mathematical bold" letters; NFKC turns them back into plain text.
+    .normalize('NFKC')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+const httpsUrl = value => { try { const url = new URL(String(value || '').trim()); return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : null; } catch { return null; } };
+
+export function parseRss(xml) {
+  return [...String(xml).matchAll(/<item[\s>][\s\S]*?<\/item>/g)].map(([item]) => {
+    const field = tag => item.match(new RegExp(`<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)</${tag}>`, 'i'))?.[1] ?? '';
+    const sourceTag = item.match(/<source(?:\s+url="([^"]*)")?[^>]*>([\s\S]*?)<\/source>/i);
+    return {title: plainText(field('title')), link: httpsUrl(plainText(field('link'))), date: Date.parse(plainText(field('pubDate'))), sourceName: sourceTag ? plainText(sourceTag[2]) : '', sourceUrl: sourceTag ? httpsUrl(sourceTag[1]) : null};
+  });
+}
+
+// One source's recent, relevant items, ready to show.
+export function itemsFrom(key, entries, now = Date.now()) {
+  const source = NEWS_SOURCES[key];
+  // Page titles such as "Details | FAO in Somalia" are not headlines.
+  return entries.filter(entry => entry.title && !/^details\b/i.test(entry.title) && entry.link && Number.isFinite(entry.date) && entry.date <= now + DAY && now - entry.date <= source.maxAgeDays * DAY && (!source.keep || source.keep.test(entry.title)))
+    .map(entry => {
+      const publisher = entry.sourceName || source.name;
+      // Google News appends " - Publisher" to every headline.
+      const title = entry.sourceName && entry.title.endsWith(` - ${entry.sourceName}`) ? entry.title.slice(0, -(entry.sourceName.length + 3)).trim() : entry.title;
+      return {kind: 'news', feed: key, title, url: entry.link, publishedAt: new Date(entry.date).toISOString(), source: publisher, group: source.group || classify(publisher), language: source.language};
+    })
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+    .slice(0, source.limit);
+}
+
+// The same story often arrives from several outlets or both searches: keep the newest copy.
+const sameStory = title => title.toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60);
+export function merge(lists) {
+  const seen = new Set(), merged = [];
+  for (const item of lists.flat().sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))) {
+    const key = sameStory(item.title);
+    if (!key || seen.has(key)) continue;
+    seen.add(key); merged.push(item);
+  }
+  return merged.slice(0, MAX_ITEMS);
+}
+
+// The app's own flashes, from feeds the server already reads.
+export function appItems({enso, alerts} = {}) {
+  const items = [];
+  if (enso?.available && (enso.alertStatus || enso.synopsis)) {
+    items.push({kind: 'app', key: 'enso', label: 'El Niño status · NOAA', title: [enso.alertStatus, enso.synopsis].filter(Boolean).join(': '), url: enso.sourceUrl || null, publishedAt: enso.issuedAt || null, source: 'NOAA Climate Prediction Center', group: 'app', language: 'en'});
+  }
+  const icpac = (alerts?.sources || []).find(source => source.id === 'icpac');
+  const icpacAlerts = (alerts?.alerts || []).filter(alert => alert.sourceId === 'icpac' || alert.basis === 'regional-forecast');
+  if (alerts?.available && icpac?.available && icpac.forecast?.weekLabel) {
+    const cities = new Set(icpacAlerts.flatMap(alert => alert.scope?.cities || []));
+    items.push({kind: 'app', key: 'icpac', label: 'Rainfall forecast · ICPAC', title: `${cities.size} of 30 cities have a heavy-rainfall forecast for ${icpac.forecast.weekLabel}`, url: '#tab=alerts', publishedAt: icpac.fetchedAt || null, source: 'ICPAC', group: 'app', language: 'en'});
+  }
+  return items;
+}
+
+async function fetchText(url, fetchImpl) {
+  const response = await fetchImpl(url, {headers: {'User-Agent': UA, Accept: 'application/rss+xml, application/xml, text/xml, application/json;q=0.9'}, signal: AbortSignal.timeout(20000)});
+  const text = await response.text();
+  // FAO SWALIM answers its feed with HTTP 500 and a complete RSS body; accept a body that is a feed.
+  if (!response.ok && !/<rss[\s>]|<item[\s>]/i.test(text)) throw new Error(`HTTP ${response.status}`);
+  return text;
+}
+
+async function reliefWeb(appname, fetchImpl, now) {
+  const since = new Date(now - 30 * DAY).toISOString().slice(0, 10);
+  const body = {limit: 10, profile: 'list', preset: 'latest', fields: {include: ['title', 'url_alias', 'date.created', 'source.shortname', 'source.name']},
+    query: {value: '"El Nino" OR "El Niño" OR flood OR floods OR Deyr', operator: 'OR'},
+    filter: {operator: 'AND', conditions: [{field: 'primary_country.iso3', value: 'som'}, {field: 'date.created', value: {from: `${since}T00:00:00+00:00`}}]}};
+  const response = await fetchImpl(`https://api.reliefweb.int/v2/reports?appname=${encodeURIComponent(appname)}`, {method: 'POST', headers: {'User-Agent': UA, 'Content-Type': 'application/json', Accept: 'application/json'}, body: JSON.stringify(body), signal: AbortSignal.timeout(20000)});
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const data = await response.json();
+  return (data.data || []).map(({fields = {}}) => {
+    const publisher = fields.source?.[0]?.shortname || fields.source?.[0]?.name || 'ReliefWeb';
+    return {kind: 'news', feed: 'reliefweb', title: plainText(fields.title), url: httpsUrl(fields.url_alias), publishedAt: fields.date?.created ? new Date(fields.date.created).toISOString() : null, source: publisher, group: classify(publisher) === 'media' ? 'humanitarian' : classify(publisher), language: 'en'};
+  }).filter(item => item.title && item.url && item.publishedAt);
+}
+
+export async function loadNews({app = {}, fetchImpl = fetch, now = Date.now(), reliefWebAppname = process.env.RELIEFWEB_APPNAME || ''} = {}) {
+  const status = [], lists = [];
+  await Promise.all(Object.keys(NEWS_SOURCES).map(async key => {
+    try {
+      const items = itemsFrom(key, parseRss(await fetchText(NEWS_SOURCES[key].url, fetchImpl)), now);
+      lists.push(items); status.push({id: key, available: true, items: items.length});
+    } catch (error) { status.push({id: key, available: false, error: error.message}); }
+  }));
+  if (reliefWebAppname) {
+    try { const items = await reliefWeb(reliefWebAppname, fetchImpl, now); lists.push(items); status.push({id: 'reliefweb', available: true, items: items.length}); }
+    catch (error) { status.push({id: 'reliefweb', available: false, error: error.message}); }
+  } else status.push({id: 'reliefweb', available: false, error: 'Not enabled: RELIEFWEB_APPNAME is not set.'});
+  const news = merge(lists), flashes = appItems(app);
+  if (!news.length && !flashes.length) throw new Error('No news source answered.');
+  return {items: [...flashes, ...news], sources: status.sort((a, b) => a.id.localeCompare(b.id)), note: 'Headlines are shown as published by each organisation or outlet. Nothing here is an official warning.'};
+}
