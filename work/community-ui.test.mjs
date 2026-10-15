@@ -289,6 +289,20 @@ try {
   assert.equal(liveNode('community-upload-count').textContent.startsWith('1/4 files'), true);
   assert.equal(liveNode('community-location-status').textContent.includes('city changed'), true);
   liveNode('community-scope').events.change({ target: { value: 'all' } }); await liveApi.refresh();
+  // Clear all filters: offered once anything differs from how the page opens; returns every filter, Area included.
+  const allShown = locationChanges.at(-1).length;
+  liveNode('community-category').events.change({ target: { value: 'rain' } });
+  assert.equal(liveNode('community-clear-filters').disabled, false, 'Clear is offered while a filter is set');
+  liveNode('community-landmark-name').value = 'bakara'; liveNode('community-landmark-name').events.input({ target: liveNode('community-landmark-name') });
+  liveNode('community-clear-filters').events.click();
+  assert.equal(liveNode('community-scope').value, 'city'); assert.equal(liveNode('community-category').value, 'all');
+  assert.equal(liveNode('community-landmark-filter').value, 'all'); assert.equal(liveNode('community-district-filter').value, 'all'); assert.equal(liveNode('community-landmark-name').value, '');
+  await liveApi.refresh();
+  assert.equal(liveNode('community-clear-filters').disabled, true, 'Nothing left to clear');
+  await new Promise(resolve => setTimeout(resolve, 300));
+  assert.equal(liveNode('community-clear-filters').disabled, true, 'A search typed before clearing does not come back');
+  liveNode('community-scope').events.change({ target: { value: 'all' } }); await liveApi.refresh();
+  assert.equal(locationChanges.at(-1).length, allShown, 'Back to every report');
 
   const commentForm = new LiveNode('comment-form'), commentButton = new LiveNode('comment-submit'), commentStatus = new LiveNode('comment-status'), details = liveNode('details');
   commentForm.dataset.commentReport = report.id; details.open = true;
