@@ -14,8 +14,9 @@
   const translate = text => { try { return global.SiteLanguage?.translateText?.(text) ?? text; } catch { return text; } };
   const language = () => global.SiteLanguage?.getLanguage?.() === 'so' ? 'so' : 'en';
 
-  function row(lines, tab) {
-    return `<div class="share-row" role="group" aria-label="Share" data-share-lines="${esc(JSON.stringify(Array.isArray(lines) ? lines : []))}" data-share-tab="${esc(tab || '')}"><span class="share-label">Share</span><a class="share-button" data-share="x" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener"><span data-i18n-skip>X (Twitter)</span></a><a class="share-button" data-share="facebook" href="https://www.facebook.com/sharer/sharer.php" target="_blank" rel="noopener"><span data-i18n-skip>Facebook</span></a><button type="button" class="share-button" data-share="copy">Copy text</button>${deviceShare() ? '<button type="button" class="share-button" data-share="device">TikTok, WhatsApp &amp; more</button>' : ''}</div>`;
+  // short: the closing line to use when a post must be shortened for X (default: "Not an official warning.").
+  function row(lines, tab, short) {
+    return `<div class="share-row" role="group" aria-label="Share" data-share-lines="${esc(JSON.stringify(Array.isArray(lines) ? lines : []))}" data-share-tab="${esc(tab || '')}"${short ? ` data-share-short="${esc(JSON.stringify(short))}"` : ''}><span class="share-label">Share</span><a class="share-button" data-share="x" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener"><span data-i18n-skip>X (Twitter)</span></a><a class="share-button" data-share="facebook" href="https://www.facebook.com/sharer/sharer.php" target="_blank" rel="noopener"><span data-i18n-skip>Facebook</span></a><button type="button" class="share-button" data-share="copy">Copy text</button>${deviceShare() ? '<button type="button" class="share-button" data-share="device">TikTok, WhatsApp &amp; more</button>' : ''}</div>`;
   }
   // TikTok takes no text or link post from a web page, so it is reached through the phone's own
   // share menu, which lists the apps installed (TikTok, WhatsApp, Telegram...). Offered only where
@@ -35,9 +36,9 @@
   // Too long for X: first shorten the closing disclaimer to "Not an official warning.", then drop
   // lines from just above it (the lowest-ranked cities first), so the title and a disclaimer always
   // survive; cut the text only as a last resort.
-  function fit(text) {
+  function fit(text, shortLine) {
     const lines = String(text).split('\n');
-    const short = translate('Not an official warning.');
+    const short = shortLine || translate('Not an official warning.');
     if (lines.join('\n').length > X_TEXT_LIMIT && lines.length > 1) lines[lines.length - 1] = short;
     while (lines.join('\n').length > X_TEXT_LIMIT && lines.length > 2) lines.splice(lines.length - 2, 1);
     const kept = lines.join('\n');
@@ -46,7 +47,9 @@
   function read(rowElement) {
     let lines = [];
     try { lines = JSON.parse(rowElement.getAttribute('data-share-lines') || '[]'); } catch {}
-    return {text: textOf(lines), url: linkFor(rowElement.getAttribute('data-share-tab') || '')};
+    let short = null;
+    try { const part = JSON.parse(rowElement.getAttribute('data-share-short') || 'null'); if (part) short = textOf([[part]]); } catch {}
+    return {text: textOf(lines), url: linkFor(rowElement.getAttribute('data-share-tab') || ''), short};
   }
   // Messages are written in English, like the rest of the page, and translated on screen.
   function say(button, message) {
@@ -74,8 +77,8 @@
   function onClick(event) {
     const button = event.target?.closest?.('[data-share]'); if (!button) return;
     const rowElement = button.closest('.share-row'); if (!rowElement) return;
-    const {text, url} = read(rowElement), kind = button.getAttribute('data-share');
-    if (kind === 'x') button.setAttribute('href', 'https://twitter.com/intent/tweet?' + new URLSearchParams({text: fit(text), url}));
+    const {text, url, short} = read(rowElement), kind = button.getAttribute('data-share');
+    if (kind === 'x') button.setAttribute('href', 'https://twitter.com/intent/tweet?' + new URLSearchParams({text: fit(text, short), url}));
     else if (kind === 'facebook') button.setAttribute('href', 'https://www.facebook.com/sharer/sharer.php?' + new URLSearchParams({u: url}));
     else if (kind === 'copy') copy(text + '\n' + url, button);
     else if (kind === 'device' && deviceShare()) global.navigator.share({title: 'El Nino Watch', text, url}).catch(() => {});

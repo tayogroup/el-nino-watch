@@ -1,11 +1,15 @@
 // Keyless regional rainfall forecasts (ICPAC) and separately labelled GDACS event
-// monitoring. Neither is an official national warning.
+// monitoring. Neither is an official national warning; the official national flood forecast comes
+// from the Somali National Hydrological Services (MOEWR), in hydro-feed.mjs.
 // ICPAC Weekly Exceptional Rainfall: forecast weekly rainfall compared with the
 //   long-term observed rainfall for the same week; above the 90th, 95th and 99th
 //   percentiles is heavy, very heavy and exceptional (extremely heavy).
 //   https://eahazardswatch.icpac.net/  ·  https://www.icpac.net/weekly-forecast/
 // GDACS API: https://gdacs.org/Documents/2025/GDACS_API_quickstart_v1.pdf
+import {loadHydroAlerts, HYDRO_SOURCE} from './hydro-feed.mjs';
+
 export const ALERT_SOURCES = Object.freeze({
+  moewr: HYDRO_SOURCE.url,
   icpac: 'https://www.icpac.net/weekly-forecast/',
   icpacHazardsWatch: 'https://eahazardswatch.icpac.net/',
   icpacDatasets: 'https://eahazardswatch.icpac.net/api/datasets/',
@@ -211,12 +215,12 @@ async function loadGdacs(now, fetchImpl) {
 
 export async function loadOfficialAlerts({now = new Date(), fetchImpl = fetch, cities = []} = {}) {
   if (!Number.isFinite(new Date(now).getTime())) throw new Error('Invalid alert retrieval date.');
-  const results = await Promise.allSettled([loadIcpac(now, fetchImpl, cities), loadGdacs(now, fetchImpl)]);
+  const results = await Promise.allSettled([loadIcpac(now, fetchImpl, cities), loadGdacs(now, fetchImpl), loadHydroAlerts({now, fetchImpl, cities})]);
   const fetchedAt = new Date().toISOString();
   const sources = results.map((result, index) => {
-    const id = index === 0 ? 'icpac' : 'gdacs';
+    const id = ['icpac', 'gdacs', 'moewr'][index];
     const data = result.status === 'fulfilled' ? result.value : null;
-    return {id, name:index === 0 ? 'ICPAC weekly exceptional rainfall forecast' : 'Global Disaster Alert and Coordination System',
+    return {id, name:['ICPAC weekly exceptional rainfall forecast', 'Global Disaster Alert and Coordination System', 'Somali National Hydrological Services (MOEWR) national flood forecast'][index],
       sourceUrl:ALERT_SOURCES[id], available:!!data, fetchedAt:data ? fetchedAt : null,
       ...(data ? {...data, alerts:undefined} : {error:result.reason?.message || 'Source unavailable.'})};
   });

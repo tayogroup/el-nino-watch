@@ -2,6 +2,7 @@
 // heavy-rainfall forecast) followed by recent items from Somali and international organisations.
 //
 //   SoDMA        Somali Disaster Management Agency - the agency's own news feed (Somali).
+//   ICRC         the ICRC's own news feed (Somalia items) and a search of its sites.
 //   FAO SWALIM   FAO's Somalia water and land unit - only flood, rain and El Niño items.
 //   Google News  two searches: "El Niño" Somalia, and Somalia floods/El Niño naming UN and
 //                non-UN humanitarian organisations. Headlines link to the source via Google News.
@@ -19,6 +20,10 @@ const HUMANITARIAN_NAMES = ['WFP', 'UNICEF', 'OCHA', 'IOM', 'UNHCR', 'FAO', 'WHO
 export const NEWS_SOURCES = Object.freeze({
   sodma: {name: 'SoDMA', url: 'https://sodma.gov.so/feed/', site: 'https://sodma.gov.so/', group: 'government', language: 'so', maxAgeDays: 30, limit: 6, keep: /\b(el ni[nñ]o|fatahaad|daad|roob|webi|digniin|abaar|aafo|flood|rain(s|fall)?\b|deyr)/i},
   swalim: {name: 'FAO SWALIM', url: 'https://www.faoswalim.org/rss.xml', site: 'https://www.faoswalim.org/', group: 'un', language: 'en', maxAgeDays: 60, limit: 4, keep: /\b(el ni[nñ]o|flood|rain(s|fall)?\b|deyr|river|fatahaad|roob)/i},
+  // ICRC, at the owner's request (2026-10-15): its own worldwide news feed, Somalia items only (the
+  // feed holds about ten days), and a search of ICRC's sites and the Somali Red Crescent for older ones.
+  icrc: {name: 'ICRC', url: 'https://www.icrc.org/en/rss/news', site: 'https://www.icrc.org/', group: 'humanitarian', language: 'en', maxAgeDays: 60, limit: 4, keep: /somali|mogadishu/i},
+  googleIcrc: {name: 'Google News', url: googleNews('Somalia (site:icrc.org OR site:icrcnewsroom.org OR "Somali Red Crescent") when:60d'), site: 'https://news.google.com/', group: null, language: 'en', maxAgeDays: 60, limit: 4, keep: /somali|mogadishu/i},
   googleElNino: {name: 'Google News', url: googleNews('"El Niño" Somalia when:30d'), site: 'https://news.google.com/', group: null, language: 'en', maxAgeDays: 30, limit: 10, keep: /somali|mogadishu|el ni[nñ]o/i},
   googleHumanitarian: {name: 'Google News', url: googleNews(`Somalia (flood OR floods OR "El Niño" OR Deyr) (${HUMANITARIAN_NAMES.join(' OR ')}) when:30d`), site: 'https://news.google.com/', group: null, language: 'en', maxAgeDays: 30, limit: 10, keep: /somali|mogadishu/i}
 });
@@ -99,10 +104,11 @@ export function parseRss(xml) {
 // One source's recent, relevant items, ready to show.
 export function itemsFrom(key, entries, now = Date.now()) {
   const source = NEWS_SOURCES[key];
-  // Page titles such as "Details | FAO in Somalia" are not headlines.
-  return entries.filter(entry => entry.title && !/^details\b/i.test(entry.title) && entry.link && !excludedOutlet(entry.sourceUrl) && !isEventAnnouncement(entry.title) && Number.isFinite(entry.date) && entry.date <= now + DAY && now - entry.date <= source.maxAgeDays * DAY && (!source.keep || source.keep.test(entry.title)))
+  // Page titles such as "Details | FAO in Somalia" or "Frequently asked questions: ..." are not headlines.
+  return entries.filter(entry => entry.title && !/^(details|frequently asked questions|faq)\b/i.test(entry.title) && entry.link && !excludedOutlet(entry.sourceUrl) && !isEventAnnouncement(entry.title) && Number.isFinite(entry.date) && entry.date <= now + DAY && now - entry.date <= source.maxAgeDays * DAY && (!source.keep || source.keep.test(entry.title)))
     .map(entry => {
-      const publisher = entry.sourceName || source.name;
+      // ICRC's newsroom is ICRC.
+      const publisher = /^(www\.)?icrcnewsroom\.org$/i.test(entry.sourceName) ? 'ICRC' : entry.sourceName || source.name;
       // Google News appends " - Publisher" to every headline.
       const title = entry.sourceName && entry.title.endsWith(` - ${entry.sourceName}`) ? entry.title.slice(0, -(entry.sourceName.length + 3)).trim() : entry.title;
       return {kind: 'news', feed: key, title, url: entry.link, publishedAt: new Date(entry.date).toISOString(), source: publisher, group: source.group || classify(publisher), language: source.language};

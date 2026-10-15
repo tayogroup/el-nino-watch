@@ -75,6 +75,23 @@ test('meeting and event announcements are left out, in Somali and English; warni
   assert.ok(EXCLUDED_OUTLETS.every(([domain, reason]) => /^[a-z0-9.-]+\.[a-z]+$/.test(domain) && reason.length > 10), 'each exclusion has a reason');
 });
 
+test('ICRC is a source of its own: Somalia items from its worldwide feed, labelled humanitarian', () => {
+  const icrc = itemsFrom('icrc', parseRss(rss([
+    {title: 'Somalia: As El Niño floods loom, millions could face further hardship and hunger', date: day(2)},
+    {title: 'Donetsk: The quiet that conflict takes away', date: day(1)},
+    {title: 'Somali Red Crescent and ICRC train volunteers', date: day(3)},
+    {title: 'Somalia: water trucking reaches Gedo', date: day(70)}
+  ])), NOW);
+  assert.deepEqual(icrc.map(item => [item.title, item.source, item.group]), [['Somalia: As El Niño floods loom, millions could face further hardship and hunger', 'ICRC', 'humanitarian']], 'other countries, training events and items older than 60 days are left out');
+  assert.equal(NEWS_SOURCES.icrc.url, 'https://www.icrc.org/en/rss/news');
+  const viaSearch = itemsFrom('googleIcrc', parseRss(rss([
+    {title: 'Somalia: As El Niño floods loom - www.icrcnewsroom.org', date: day(2), source: 'www.icrcnewsroom.org'},
+    {title: 'Frequently asked questions: Our work in Somalia - ICRC', date: day(5), source: 'ICRC'}
+  ])), NOW);
+  assert.deepEqual(viaSearch.map(item => [item.title, item.source]), [['Somalia: As El Niño floods loom', 'ICRC']], "ICRC's newsroom is credited to ICRC; information pages are not news");
+  assert.match(decodeURIComponent(NEWS_SOURCES.googleIcrc.url), /site:icrc\.org OR site:icrcnewsroom\.org/);
+});
+
 test('the same story from two searches appears once, newest first, at most 30 items', () => {
   const a = {title: 'Somalia braces for El Niño floods', publishedAt: '2026-10-14T00:00:00.000Z'}, b = {title: 'Somalia braces for El Niño floods!', publishedAt: '2026-10-13T00:00:00.000Z'}, c = {title: 'Another story', publishedAt: '2026-10-15T00:00:00.000Z'};
   assert.deepEqual(merge([[a, c], [b]]).map(item => item.title), ['Another story', 'Somalia braces for El Niño floods']);

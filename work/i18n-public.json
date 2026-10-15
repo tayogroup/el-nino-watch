@@ -612,9 +612,63 @@
     "Rainfall forecast · ICPAC": "Saadaasha roobka · ICPAC",
     "Headlines are shown as published by each organisation or outlet. Nothing here is an official warning.": "Cinwaannada waxaa loo soo bandhigay sida ay u daabaceen hay'ad kasta ama warbaahin kasta. Waxba halkan kuma jiraan digniin rasmi ah.",
     "El Niño news": "Wararka El Niño",
-    "All news": "Dhammaan wararka"
+    "All news": "Dhammaan wararka",
+    "Official · National hydrological forecast (MOEWR)": "Rasmi · Saadaasha biyaha qaranka (MOEWR)",
+    "Official national flood forecast. Follow the instructions of MOEWR, SoDMA and local authorities, and act early where anticipatory action is activated.": "Saadaasha rasmiga ah ee fatahaadda qaranka. Raac tilmaamaha MOEWR, SoDMA iyo maamulka deegaanka, oo si hore u tallaabso meesha tallaabada hore loo hawlgeliyay.",
+    "Official national flood forecast (MOEWR).": "Saadaasha rasmiga ah ee fatahaadda qaranka (MOEWR).",
+    "Official forecast (MOEWR).": "Saadaal rasmi ah (MOEWR).",
+    "National flood forecasts (MOEWR)": "Saadaasha fatahaadda qaranka (MOEWR)",
+    "National flood forecast (MOEWR)": "Saadaasha fatahaadda qaranka (MOEWR)",
+    "High, severe or warning": "Sare, daran ama digniin",
+    "Moderate, elevated or national watch": "Dhexdhexaad, kordhay ama feejignaan qaran",
+    "Minor, rainfall watch or advisory": "Yar, la socodka roobka ama talo",
+    "Official": "Rasmi",
+    "Official national source: Somali National Hydrological Services (MOEWR)": "Il rasmi ah oo qaran: Adeegyada Biyaha Qaranka Soomaaliyeed (MOEWR)",
+    "The Ministry of Energy and Water Resources publishes the national flood forecast the app shows as official alerts. ICPAC's regional forecasts and GDACS event monitoring are not official warnings, and the app labels them that way.": "Wasaaradda Tamarta iyo Kheyraadka Biyaha ayaa daabacda saadaasha fatahaadda qaranka ee abku u muujiyo digniino rasmi ah. Saadaasha gobolka ee ICPAC iyo la socodka dhacdooyinka ee GDACS ma aha digniino rasmi ah, abkuna sidaas ayuu u calaamadiyaa.",
+    "3 sources": "3 ilood",
+    "The official national flood forecast: each region's daily flood level (advisory, watch or warning) for the active rainy season, with anticipatory-action pre-activation and activation. Shown as official alerts for the cities in each region.": "Saadaasha rasmiga ah ee fatahaadda qaranka: heerka fatahaadda maalinlaha ah ee gobol kasta (talo, feejignaan ama digniin) xilliga roobka ee socda, oo ay la socdaan diyaargarowga iyo hawlgelinta tallaabada hore. Waxaa loo muujiyaa digniino rasmi ah magaalooyinka gobol kasta."
   },
   "patterns": [
+    {
+      "en": "{0} region · national flood warning · anticipatory action activated",
+      "so": "Gobolka {0} · digniinta fatahaadda qaranka · tallaabada hore waa la hawlgeliyay"
+    },
+    {
+      "en": "{0} region · national flood warning",
+      "so": "Gobolka {0} · digniinta fatahaadda qaranka"
+    },
+    {
+      "en": "{0} region · national flood watch · anticipatory action pre-activation",
+      "so": "Gobolka {0} · feejignaanta fatahaadda qaranka · diyaargarowga tallaabada hore"
+    },
+    {
+      "en": "{0} region · national flood watch",
+      "so": "Gobolka {0} · feejignaanta fatahaadda qaranka"
+    },
+    {
+      "en": "{0} region · national flood advisory",
+      "so": "Gobolka {0} · talada fatahaadda qaranka"
+    },
+    {
+      "en": "{0} region: national flood warning for the {1} season. Forecast flooded share of the region: {2} tomorrow, {3} over days 1–3, {4} over days 2–5.",
+      "so": "Gobolka {0}: digniinta fatahaadda qaranka ee xilliga {1}. Qaybta gobolka ee la saadaalinayo inay fatahaad gasho: {2} berri, {3} maalmaha 1–3, {4} maalmaha 2–5."
+    },
+    {
+      "en": "{0} region: national flood watch for the {1} season. Forecast flooded share of the region: {2} tomorrow, {3} over days 1–3, {4} over days 2–5.",
+      "so": "Gobolka {0}: feejignaanta fatahaadda qaranka ee xilliga {1}. Qaybta gobolka ee la saadaalinayo inay fatahaad gasho: {2} berri, {3} maalmaha 1–3, {4} maalmaha 2–5."
+    },
+    {
+      "en": "{0} region: national flood advisory for the {1} season. Forecast flooded share of the region: {2} tomorrow, {3} over days 1–3, {4} over days 2–5.",
+      "so": "Gobolka {0}: talada fatahaadda qaranka ee xilliga {1}. Qaybta gobolka ee la saadaalinayo inay fatahaad gasho: {2} berri, {3} maalmaha 1–3, {4} maalmaha 2–5."
+    },
+    {
+      "en": "{0} · {1} region",
+      "so": "{0} · Gobolka {1}"
+    },
+    {
+      "en": "{0} region",
+      "so": "Gobolka {0}"
+    },
     {
       "en": "ICPAC forecast week: {0}",
       "so": "Toddobaadka saadaasha ICPAC: {0}"

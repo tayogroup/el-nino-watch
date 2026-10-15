@@ -4,9 +4,9 @@ Guidance for Claude Code when working in this repository.
 
 ## What this is
 
-El Nino Watch: English/Somali weather awareness, regional rainfall forecasts and
-alerts, satellite flood observations and community flood reporting for 30 Somali
-cities. A plain Node.js server (no npm dependencies) serving a static frontend.
+El Nino Watch: English/Somali weather awareness, the official national flood
+forecast (MOEWR), regional rainfall forecasts and alerts, satellite flood
+observations and community flood reporting for 30 Somali cities. A plain Node.js server (no npm dependencies) serving a static frontend.
 
 - `work/somalia-flood-watch/` — the app. `server.mjs` and the other `*.mjs`
   files are the server and its data relays; `dist/` is the frontend and is
@@ -58,9 +58,20 @@ messages.
 
 **Warnings and sources**
 - The Somalia National Meteorological Agency (SNMA) feed was removed and
-  replaced by ICPAC's weekly exceptional-rainfall forecast. **The app has no
-  official national warning source and says so.** Never describe ICPAC, GDACS
-  or anything else in the app as an "official" warning, in the UI, the meta
+  replaced by ICPAC's weekly exceptional-rainfall forecast (2026-10-15).
+- **The official national source is the Somali National Hydrological Services,
+  Ministry of Energy and Water Resources (MOEWR)**, published at
+  https://hydro.tekhub.so/ (owner, 2026-10-15: it is the Ministry's own service
+  and permission to use its data is held). `hydro-feed.mjs` reads each region's
+  daily flood level (advisory, watch, warning; an active anticipatory-action
+  pre-activation raises it to watch, activation to warning, as on the service's
+  page) for the active season (Gu March-June, Deyr otherwise) and makes alerts
+  for the monitored cities in each region. Middle Juba has no monitored city and
+  shows only in the all-cities view; Berbera (Sahil) follows Woqooyi Galbeed.
+  The data key is the public one the service's own page ships, found at run time
+  (or `SNHS_SUPABASE_KEY`); never commit it.
+- **Only MOEWR alerts are "official".** Never describe ICPAC, GDACS, the app's
+  rainfall screen or the news flash as official warnings, in the UI, the meta
   description, share text or the news flash.
 - The full list of outside services is the public page `/sources`
   (`dist/sources.html`), with a PDF (`dist/el-nino-watch-sources.pdf`).
@@ -102,9 +113,9 @@ messages.
 
 **Alerts tab filters**: Coverage, City (all-cities coverage only; a city also
 keeps Somalia-wide notices), Signal, Severity (four levels by `rank()`,
-labelled with the badge words: High or severe / Moderate or elevated / Minor or
-watch / Not stated), Source (ICPAC, GDACS, SWALIM gauges, the app's Open-Meteo
-screen) and an "Applies from / to" date range (an alert shows when the days it
+labelled with the badge words: High, severe or warning / Moderate, elevated or
+national watch / Minor, rainfall watch or advisory / Not stated), Source (MOEWR,
+ICPAC, GDACS, SWALIM gauges, the app's Open-Meteo screen) and an "Applies from / to" date range (an alert shows when the days it
 applies to touch the range). Browser notifications follow the selected filters.
 
 **Sharing**
@@ -116,15 +127,18 @@ applies to touch the range). Browser notifications follow the selected filters.
   Facebook (link only; Facebook cannot be prefilled), Copy text, and on phones
   "TikTok, WhatsApp & more" (the phone's share menu; TikTok has no web text or
   link post).
-- Every post ends with a "not an official warning" line, which must survive
-  X's length limit: `share.js` shortens it, then drops the lowest-ranked cities.
+- Every post ends with a "not an official warning" line, or for a MOEWR alert
+  "Official national flood forecast (MOEWR).", which must survive X's length
+  limit: `share.js` shortens it (to the row's own short form), then drops the
+  lowest-ranked cities.
   Alert posts carry no "retrieved" time and do not repeat the place.
 - Shared links show `dist/social-preview.png` (1200x630); its design is
   `work/social-preview.html`.
 
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
-  ICPAC heavy-rain city count), then items from SoDMA, FAO SWALIM, Google News
+  ICPAC heavy-rain city count), then items from SoDMA, FAO SWALIM, ICRC (its own
+  news feed, Somalia items, plus a search of its sites; owner's request), Google News
   ("El Niño" Somalia, and Somalia floods/El Niño naming UN and non-UN
   humanitarian organisations) and ReliefWeb once `RELIEFWEB_APPNAME` is set to
   an appname ReliefWeb has approved (requested at
