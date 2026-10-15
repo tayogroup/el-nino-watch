@@ -240,8 +240,8 @@
     },
     {
       "path": "work/floodhub-feed.test.mjs",
-      "bytes": 15562,
-      "sha256": "914eae7d15de3c2131c7c2aa30d30177874db3c5983e5d3c5126fbd849239bf0"
+      "bytes": 15988,
+      "sha256": "16eab19d2ad6b7c275af4c16329e00d62319e4f562e07a51fba01ad966053091"
     },
     {
       "path": "work/forecast-relay.test.mjs",
@@ -270,8 +270,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 87532,
-      "sha256": "c424e0d254cf266256122ba5695e4af32f880ab86df6c2c7ef3712a6381daffb"
+      "bytes": 87621,
+      "sha256": "1f685d17939167be9babfcbff541108c479ced758233f553e2a5d584d5599aed"
     },
     {
       "path": "work/i18n-weather.json",
@@ -550,8 +550,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 33491,
-      "sha256": "b08367ef83afa71968eb3c6b57d63a109c0fd1fb6e08f2c7d3d0b17c2890f1a8"
+      "bytes": 33618,
+      "sha256": "c583b9d9ac64ce996c0c71acdc8971534852d6d82aecf73c67981bb949edf6d8"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
@@ -655,8 +655,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 205461,
-      "sha256": "ec2bc3395b6fd22da06455224bec0f78acd01f0480cb934f425c777792084389"
+      "bytes": 205544,
+      "sha256": "a950867929a93db3a769732442dfd91c0f0210284234183a399b9990a6c603f9"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",

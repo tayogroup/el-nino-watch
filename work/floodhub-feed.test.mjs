@@ -171,3 +171,9 @@ test('Flood Hub titles, places and descriptions read in Somali', async () => {
   assert.equal(so(floodHubAlert(status('g1', 'ABOVE_NORMAL', {forecastTrend: 'NO_CHANGE', forecastChange: undefined}), null, beledweyne).description), 'Google Flood Hub wuxuu saadaalinayaa heerar webi oo ka sarreeya caadiga oo ka dhacda xarunta cabbirka webiga. Heerka webiga ee la saadaaliyay wuu degan yahay. Tani waa saadaal moodeel AI ah oo ka timid Google, ma aha digniin rasmi ah.');
   assert.equal(so('Google Flood Hub river forecast: 3 gauges with a flood signal are more than 25 km from a monitored city; see Google Flood Hub for them.'), 'Saadaasha webiga ee Google Flood Hub: 3 cabbir oo leh calaamad fatahaad ayaa in ka badan 25 km u jira magaalo la dabagalo; ka eeg Google Flood Hub.');
 });
+
+test('the Alerts tab links to Google Flood Hub over Somalia', async () => {
+  const index = await readFile(new URL('index.html', dist), 'utf8');
+  const start = index.indexOf('id="alerts-panel"'), panel = index.slice(start, index.indexOf('</section>', start));
+  assert.ok(panel.includes('<a href="https://sites.research.google/floods/l/5/48/6" target="_blank" rel="noopener">Google Flood Hub river forecasts ↗</a>'));
+});
