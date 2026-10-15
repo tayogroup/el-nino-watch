@@ -162,6 +162,18 @@
       remember(a.notificationKey);
     }
   }
+  // The post for an alert's Share row (share.js): the title; the place only when the title does not
+  // already begin with it; when it applies, without the app's own "retrieved" time; the source; and the
+  // disclaimer. GDACS event titles stay as published.
+  function shareLines(a) {
+    const title = String(a.title || ''), scope = String(a.scopeLabel || ''), lines = [];
+    lines.push([['model-event', 'event-monitoring'].includes(a.basis) ? title : {t: title}]);
+    if (scope && !title.startsWith(scope + ' ·') && title !== scope) lines.push([{t: scope}]);
+    const timing = String(a.timingLabel || '').replace(/ · retrieved .*$/, '');
+    lines.push([...(timing ? [{t: timing}, ' · '] : []), String(a.source || '')]);
+    lines.push([{t: 'Not an official warning.'}]);
+    return lines;
+  }
   function render(input = {}) {
     lastInput = input;
     const model = build(input), doc = root.document;
@@ -175,7 +187,7 @@
     const sourceSelect = doc?.getElementById?.('alerts-source');
     if (sourceSelect) { sourceSelect.value = model.sourceFilter; sourceSelect.onchange = event => input.onSource?.(event.target.value); }
     if (summary) summary.innerHTML = `<div class="alert-metrics"><span><b>${model.counts.regional}</b> ICPAC forecasts</span><span><b>${model.counts.events}</b> Source event signals</span><span><b>${model.counts.gauges}</b> River thresholds</span><span><b>${model.counts.screens}</b> App rainfall screens</span></div><p class="note">${esc(model.scopeLabel)} · next 3 forecast days: ${model.forecastDates[0]}–${model.forecastDates[2]} (including full today). Source signals and app screening are distinct.</p>`;
-    if (list) list.innerHTML = model.alerts.length ? model.alerts.map(a => `<article class="alert-card ${css(a.severity)}"><div class="alert-card-head"><span class="badge">${esc(a.badge)}</span><span class="badge">${esc(a.severity)}</span></div><h3${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.title)}</h3><p class="alert-scope">${esc(a.scopeLabel)}</p><p${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.description || 'Read the source notice for details.')}</p><small>${esc(a.timingLabel)} · ${esc(a.source)}</small><p class="alert-guidance">${esc(a.guidance)}</p>${a.sourceUrl ? `<a href="${esc(a.sourceUrl)}" target="_blank" rel="noopener">Read source ↗</a>` : ''}${root.SiteShare?.row ? root.SiteShare.row([[['model-event','event-monitoring'].includes(a.basis) ? String(a.title || '') : {t: String(a.title || '')}], [{t: String(a.scopeLabel || '')}], [{t: String(a.timingLabel || '')}, ' · ' + String(a.source || '')], [{t: 'Not an official warning.'}]], 'alerts') : ''}</article>`).join('') : `<div class="alert-card alert-info"><h3>No active signals returned for this view</h3><p>${model.messages.length ? 'Some feeds are unavailable or stale; check the status below.' : 'No matching source notice or app threshold is present in the fresh responses.'} This does not confirm that an area is safe or free from flooding.</p></div>`;
+    if (list) list.innerHTML = model.alerts.length ? model.alerts.map(a => `<article class="alert-card ${css(a.severity)}"><div class="alert-card-head"><span class="badge">${esc(a.badge)}</span><span class="badge">${esc(a.severity)}</span></div><h3${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.title)}</h3><p class="alert-scope">${esc(a.scopeLabel)}</p><p${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.description || 'Read the source notice for details.')}</p><small>${esc(a.timingLabel)} · ${esc(a.source)}</small><p class="alert-guidance">${esc(a.guidance)}</p>${a.sourceUrl ? `<a href="${esc(a.sourceUrl)}" target="_blank" rel="noopener">Read source ↗</a>` : ''}${root.SiteShare?.row ? root.SiteShare.row(shareLines(a), 'alerts') : ''}</article>`).join('') : `<div class="alert-card alert-info"><h3>No active signals returned for this view</h3><p>${model.messages.length ? 'Some feeds are unavailable or stale; check the status below.' : 'No matching source notice or app threshold is present in the fresh responses.'} This does not confirm that an area is safe or free from flooding.</p></div>`;
     notificationButton(button);
     notify(model);
     if (status) {
@@ -184,5 +196,5 @@
     }
     return model;
   }
-  root.FloodAlerts = { build, render };
+  root.FloodAlerts = { build, render, shareLines };
 })(typeof window === 'object' ? window : globalThis);

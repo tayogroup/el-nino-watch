@@ -496,6 +496,14 @@
   },
   "patterns": [
     {
+      "en": "Observed {0} (source gives date only)",
+      "so": "La cabbiray {0} (isha waxay bixisaa taariikh oo keliya)"
+    },
+    {
+      "en": "Forecast day {0}",
+      "so": "Maalinta saadaasha {0}"
+    },
+    {
       "en": "{0} · ICPAC forecast: {1}, {2}",
       "so": "{0} · Saadaasha ICPAC: {1}, {2}",
       "translate": [

@@ -5,19 +5,11 @@ import {spawnSync} from 'node:child_process';
 import {existsSync, statSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
+import {findBrowser} from './find-browser.mjs';
 
 const dist = path.join(path.dirname(fileURLToPath(import.meta.url)), 'somalia-flood-watch', 'dist');
 const page = path.join(dist, 'sources.html'), output = path.join(dist, 'el-nino-watch-sources.pdf');
-const candidates = [
-  process.env.CHROME_PATH,
-  'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
-  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-  '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-  '/usr/bin/microsoft-edge', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'
-].filter(Boolean);
-const browser = candidates.find(candidate => existsSync(candidate));
+const browser = findBrowser();
 if (!browser) { console.error('No Edge or Chrome found. Set CHROME_PATH to a Chromium-based browser.'); process.exitCode = 1; }
 else {
   const before = existsSync(output) ? statSync(output).mtimeMs : 0;

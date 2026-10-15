@@ -153,4 +153,18 @@ shareLines.forEach((lines, index) => {
   assert.equal(JSON.stringify(lines.at(-1)), JSON.stringify([{ t: 'Not an official warning.' }]));
 });
 assert.ok(sharedHtml.includes('data-share-tab="alerts"'));
+// Shorter posts: no "retrieved" time, and no place line when the title already begins with the place.
+const flatten = lines => lines.map(line => line.map(part => typeof part === 'string' ? part : part.t).join('')).join('\n');
+let placeLed = 0;
+for (const a of sharedModel.alerts) {
+  const lines = shareSandbox.window.FloodAlerts.shareLines(a), text = flatten(lines);
+  assert.doesNotMatch(text, /retrieved/, 'no retrieval time in a post');
+  assert.ok(text.includes(a.source), 'the source is named');
+  if (String(a.title).startsWith(a.scopeLabel + ' ·')) { placeLed++; assert.equal(lines.length, 3, 'the place is not repeated'); }
+}
+assert.ok(placeLed > 0, 'the test alerts include titles that begin with the place');
+const screen = shareSandbox.window.FloodAlerts.shareLines({ title: 'Galdogob · Elevated rainfall', scopeLabel: 'Galdogob', timingLabel: 'Forecast day 2026-10-17 · retrieved 15/10/2026, 12:43:03 EAT', source: 'Open-Meteo weather forecast', basis: 'app-screen' });
+assert.equal(flatten(screen), 'Galdogob · Elevated rainfall\nForecast day 2026-10-17 · Open-Meteo weather forecast\nNot an official warning.');
+const gauge = shareSandbox.window.FloodAlerts.shareLines({ title: 'Jowhar · river high-risk threshold reached', scopeLabel: 'Jowhar · Jowhar gauge', timingLabel: 'Observed 2026-10-15 (source gives date only) · retrieved 15/10/2026, 12:37:21 EAT', source: 'FAO SWALIM river observation', basis: 'observed-gauge' });
+assert.equal(flatten(gauge), 'Jowhar · river high-risk threshold reached\nJowhar · Jowhar gauge\nObserved 2026-10-15 (source gives date only) · FAO SWALIM river observation\nNot an official warning.', 'a place line that adds the gauge name stays');
 console.log('alerts.js: source identity, time validity, scope, screening, gauge freshness, escaping, callbacks and notification deduplication passed.');

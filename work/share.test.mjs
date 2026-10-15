@@ -88,3 +88,16 @@ test('the row escapes its text and keeps the service names out of translation', 
   assert.match(html, /<span data-i18n-skip>X \(Twitter\)<\/span>/);
   assert.match(html, /<span data-i18n-skip>Facebook<\/span>/);
 });
+
+test('shared links get a 1200x630 preview image that the site serves, on the app and the sources page', async () => {
+  const dist = new URL('./somalia-flood-watch/dist/', import.meta.url);
+  for (const name of ['index.html', 'sources.html']) {
+    const html = await readFile(new URL(name, dist), 'utf8');
+    assert.match(html, /<meta property="og:image" content="https:\/\/elninowatch\.so\/social-preview\.png">/, name);
+    assert.match(html, /<meta name="twitter:card" content="summary_large_image">/, name);
+    assert.match(html, /<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">/, name);
+  }
+  const png = await readFile(new URL('social-preview.png', dist));
+  assert.equal(png.subarray(1, 4).toString('latin1'), 'PNG');
+  assert.equal(png.readUInt32BE(16), 1200, 'width'); assert.equal(png.readUInt32BE(20), 630, 'height');
+});

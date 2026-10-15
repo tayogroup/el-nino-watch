@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>El Nino Watch social preview</title>
+<!-- Source of dist/social-preview.png, the image X and Facebook show for shared links (1200x630).
+     Rebuild it after changing this file: npm run build:social-image -->
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;color:#fff;background:#082448;position:relative}
+.glow{position:absolute;inset:0;background:radial-gradient(900px 520px at 88% 8%,rgba(44,151,235,.45),transparent 62%),radial-gradient(700px 420px at 0% 100%,rgba(18,103,198,.35),transparent 65%)}
+.waves{position:absolute;left:0;right:0;bottom:0;height:210px}
+.content{position:absolute;inset:0;padding:78px 84px;display:flex;flex-direction:column;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:30px}
+.brand svg{width:132px;height:132px;flex:none;filter:drop-shadow(0 14px 30px rgba(0,0,0,.35))}
+h1{font-size:92px;line-height:1;font-weight:800;letter-spacing:-1.5px}
+.kicker{margin-top:12px;font-size:22px;font-weight:700;letter-spacing:.2em;color:#a9d8ff}
+.lines{display:grid;gap:10px;max-width:1040px}
+.en{font-size:36px;font-weight:600;line-height:1.2;text-wrap:balance}
+.so{font-size:28px;font-weight:500;color:#b5eeff;text-wrap:balance}
+.foot{display:flex;align-items:center;justify-content:space-between;font-size:26px;font-weight:700}
+.url{padding:10px 22px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
+.chips{color:#cfe6ff;font-weight:600;font-size:22px;letter-spacing:.02em}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<svg class="waves" viewBox="0 0 1200 210" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 120c120-60 240 60 360 0s240 60 360 0 240 60 360 0 120-30 120-30V210H0Z" fill="rgba(44,151,235,.16)"/>
+  <path d="M0 160c120-50 240 50 360 0s240 50 360 0 240 50 360 0 120-25 120-25V210H0Z" fill="rgba(181,238,255,.10)"/>
+</svg>
+<div class="content">
+  <div class="brand">
+    <svg viewBox="0 0 52 52" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2c97eb"/><stop offset="1" stop-color="#1267c6"/></linearGradient></defs><rect width="52" height="52" rx="15" fill="url(#g)"/><path d="m26 8 2.9 6 6.6 1-4.8 4.6 1.2 6.6-5.9-3.1-5.9 3.1 1.2-6.6-4.8-4.6 6.6-1Z" fill="white"/><path d="M9 34c5-5 10 5 17 0s12 5 17 0M9 41c5-5 10 5 17 0s12 5 17 0" fill="none" stroke="#b5eeff" stroke-width="2.8" stroke-linecap="round"/></svg>
+    <div><h1>El Nino Watch</h1><p class="kicker">WEATHER &amp; FLOOD WATCH · SOMALIA</p></div>
+  </div>
+  <div class="lines">
+    <p class="en">Rain forecasts, flood watch and alerts for 30 Somali cities</p>
+    <p class="so">Saadaasha roobka, la socodka fatahaadda iyo digniinaha 30 magaalo oo Soomaaliya ah</p>
+  </div>
+  <div class="foot"><span class="url">elninowatch.so</span><span class="chips">English · Soomaali</span></div>
+</div>
+</body>
+</html>
