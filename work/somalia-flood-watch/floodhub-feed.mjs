@@ -69,7 +69,8 @@ export function floodHubAlert(status, gauge, city) {
   return {
     id: `floodhub:${status.gaugeId}:${new Date(issuedAt).toISOString()}`, sourceId: 'floodhub',
     title: `${city.name} · Google Flood Hub: river forecast at ${meta.word} level`,
-    source: 'Google Flood Hub', sourceUrl: Number.isFinite(lat) && Number.isFinite(lon) ? `${SITE}l/${lat.toFixed(4)}/${lon.toFixed(4)}/10` : SITE,
+    // The gauge's own Flood Hub page (its forecast chart and thresholds): /floods/l/<lat>/<lng>/<zoom>/g/<gaugeId>.
+    source: 'Google Flood Hub', sourceUrl: Number.isFinite(lat) && Number.isFinite(lon) ? `${SITE}l/${lat.toFixed(4)}/${lon.toFixed(4)}/12/g/${encodeURIComponent(String(status.gaugeId))}` : SITE,
     issuedAt: new Date(issuedAt).toISOString(), startsAt: new Date(startsAt).toISOString(), endsAt: new Date(endsAt).toISOString(),
     severity: meta.severity, severityText: `${meta.word} level`, status: 'active',
     scope: {country: 'Somalia', cities: [city.name], gauge: place, areaDescription: place},

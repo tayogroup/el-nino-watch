@@ -23,7 +23,11 @@ test('a gauge flood status becomes an alert for its city; no flooding and unknow
   assert.deepEqual(alert.scope.cities, ['Beledweyne']); assert.equal(alert.scope.gauge, 'Belet Weyne gauge (Shabelle)');
   assert.equal(alert.description, 'At the Belet Weyne gauge (Shabelle), Google Flood Hub forecasts the river at its Danger level. The forecast river level is rising. Forecast change from the last known level: +0.4 to +0.9 m. This is an AI model forecast from Google, not an official warning.');
   assert.equal(alert.endsAt, '2026-10-21T00:00:00.000Z');
-  assert.equal(alert.sourceUrl, 'https://sites.research.google/floods/l/4.7500/45.2100/10');
+  assert.equal(alert.sourceUrl, 'https://sites.research.google/floods/l/4.7500/45.2100/12/g/g1', 'the link opens the gauge\'s own page');
+  assert.equal(floodHubAlert(status('hybas_1121133480', 'SEVERE', {gaugeLocation: {latitude: 0.44375, longitude: 42.71875}}), null, beledweyne).sourceUrl,
+    'https://sites.research.google/floods/l/0.4437/42.7188/12/g/hybas_1121133480', 'a real Somali gauge (Webi Jubba near Jilib), checked in the browser');
+  assert.equal(floodHubAlert(status('a/b?c', 'SEVERE'), null, beledweyne).sourceUrl, 'https://sites.research.google/floods/l/4.7500/45.2100/12/g/a%2Fb%3Fc', 'an odd gauge ID cannot change the path');
+  assert.equal(floodHubAlert(status('g1', 'SEVERE', {gaugeLocation: {}}), null, beledweyne).sourceUrl, 'https://sites.research.google/floods/', 'no location: Flood Hub itself');
   assert.equal(floodHubAlert(status('g1', 'EXTREME'), null, beledweyne).title, 'Beledweyne · Google Flood Hub: river forecast at Extreme level');
   assert.equal(floodHubAlert(status('g1', 'EXTREME'), null, beledweyne).severityText, 'Extreme level');
   assert.equal(floodHubAlert(status('g1', 'ABOVE_NORMAL'), null, beledweyne).title, 'Beledweyne · Google Flood Hub: river forecast at Warning level', 'Flood Hub\'s word for ABOVE_NORMAL');
@@ -152,6 +156,7 @@ test('on the Alerts tab: Flood Hub badge, gauge place line, source filter offere
   assert.equal(option.hidden, false, 'the source option appears once the server has the key');
   assert.match(nodes['alerts-summary'].innerHTML, /<b>1<\/b> River forecasts \(Google Flood Hub\)/);
   assert.match(nodes['alerts-list'].innerHTML, /<span class="badge">Danger level<\/span>/);
+  assert.ok(nodes['alerts-list'].innerHTML.includes('<a href="https://sites.research.google/floods/l/4.7500/45.2100/12/g/bw" target="_blank" rel="noopener">Read source ↗</a>'), 'the card links to the gauge page');
   assert.equal(JSON.stringify(window.FloodAlerts.shareLines(card).at(-1)), JSON.stringify([{t: 'Not an official warning.'}]));
   window.FloodAlerts.render({...input, officialFeed: {...input.officialFeed, data: {alerts: [], sources: [{id: 'icpac', available: true, fetchedAt: now}]}}});
   assert.equal(option.hidden, true, 'hidden while the source is switched off');

@@ -240,8 +240,8 @@
     },
     {
       "path": "work/floodhub-feed.test.mjs",
-      "bytes": 17240,
-      "sha256": "7c4dae943447c34a85415323560327fd67b14a02b1640a70888cf8b1e309a788"
+      "bytes": 18189,
+      "sha256": "79392d8963fc540ef1dda0ea4432664f0a9f2f52679243f9dcb2f361f8257d23"
     },
     {
       "path": "work/forecast-relay.test.mjs",
@@ -725,8 +725,8 @@
     },
     {
       "path": "work/somalia-flood-watch/floodhub-feed.mjs",
-      "bytes": 9056,
-      "sha256": "9d989796b958e417dd854968004fdbc0130a44edc480245e48535ad5e893ada1"
+      "bytes": 9221,
+      "sha256": "f00d33ee5fd08a4527b382f63d30885b3e437e178e3b541606d68fa633d7eac7"
     },
     {
       "path": "work/somalia-flood-watch/forecast-relay.mjs",
