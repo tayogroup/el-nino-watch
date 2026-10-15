@@ -109,9 +109,11 @@
     const relevant = alerts.filter(a => scope === 'all' || !a.cityNames.length || a.cityNames.some(n => normalized(n) === normalized(selected)));
     const severity = Object.hasOwn(SEVERITY_LEVELS, input.severity) ? input.severity : 'all';
     const sourceFilter = SOURCE_KEYS.includes(input.source) ? input.source : 'all';
-    const visible = relevant.filter(a => (sourceFilter === 'all' || a.sourceKey === sourceFilter) && (type === 'all' || a.kind === type) && (severity === 'all' || severityLevel(a.severity) === SEVERITY_LEVELS[severity])).sort((a, b) => rank(b.severity) - rank(a.severity) || epoch(b.issuedAt) - epoch(a.issuedAt));
+    const cityOptions = scope === 'all' ? [...new Map(relevant.flatMap(a => a.cityNames).map(n => [normalized(n), n])).values()].sort((a, b) => a.localeCompare(b)) : [];
+    const cityFilter = cityOptions.find(n => normalized(n) === normalized(input.city)) || 'all';
+    const visible = relevant.filter(a => (cityFilter === 'all' || !a.cityNames.length || a.cityNames.some(n => normalized(n) === normalized(cityFilter))) && (sourceFilter === 'all' || a.sourceKey === sourceFilter) && (type === 'all' || a.kind === type) && (severity === 'all' || severityLevel(a.severity) === SEVERITY_LEVELS[severity])).sort((a, b) => rank(b.severity) - rank(a.severity) || epoch(b.issuedAt) - epoch(a.issuedAt));
     const count = basis => relevant.filter(a => a.basis === basis).length;
-    return { alerts: visible, allAlerts: relevant, selectedCity: selected, scope, type, severity, sourceFilter, now: new Date(now).toISOString(),
+    return { alerts: visible, allAlerts: relevant, selectedCity: selected, scope, type, severity, sourceFilter, cityFilter, cityOptions, now: new Date(now).toISOString(),
       forecastDates, weatherCoverage, messages: [...new Set(messages)],
       coverageNote: official?.data?.coverageNote || 'Forecast and event coverage may be incomplete. No returned signal does not establish safety.',
       sourceStatus: (official?.data?.sources || []).map(s => ({ name: s.name || s.id, publishedAt: s.publishedAt || s.lastBuildAt || null, rejectedExpired: Number.isInteger(s.rejectedExpired) ? s.rejectedExpired : 0 })),
@@ -184,6 +186,13 @@
     if (type) { type.value = model.type; type.onchange = event => input.onType?.(event.target.value); }
     const severity = doc?.getElementById?.('alerts-severity');
     if (severity) { severity.value = model.severity; severity.onchange = event => input.onSeverity?.(event.target.value); }
+    const citySelect = doc?.getElementById?.('alerts-city'), cityField = doc?.getElementById?.('alerts-city-field');
+    if (citySelect) {
+      const options = '<option value="all">All cities</option>' + model.cityOptions.map(n => `<option value="${esc(n)}" data-i18n-skip>${esc(n)}</option>`).join('');
+      if (citySelect.dataset?.options !== options) { citySelect.innerHTML = options; if (citySelect.dataset) citySelect.dataset.options = options; }
+      citySelect.value = model.cityFilter; citySelect.onchange = event => input.onCity?.(event.target.value);
+    }
+    if (cityField) cityField.hidden = !model.cityOptions.length;
     const sourceSelect = doc?.getElementById?.('alerts-source');
     if (sourceSelect) { sourceSelect.value = model.sourceFilter; sourceSelect.onchange = event => input.onSource?.(event.target.value); }
     if (summary) summary.innerHTML = `<div class="alert-metrics"><span><b>${model.counts.regional}</b> ICPAC forecasts</span><span><b>${model.counts.events}</b> Source event signals</span><span><b>${model.counts.gauges}</b> River thresholds</span><span><b>${model.counts.screens}</b> App rainfall screens</span></div><p class="note">${esc(model.scopeLabel)} · next 3 forecast days: ${model.forecastDates[0]}–${model.forecastDates[2]} (including full today). Source signals and app screening are distinct.</p>`;

@@ -115,6 +115,29 @@ assert.deepEqual(severityChoices, ['high']);
 assert.ok(nodes['alerts-status'].innerHTML.includes('· the selected filters ·'), 'notifications say they follow the filters');
 delete nodes['alerts-severity'];
 
+// City filter (All 30 cities coverage): the cities the alerts name; a city keeps its own alerts and Somalia-wide notices.
+const allCoverage = build({ ...input, scope: 'all' });
+assert.ok(allCoverage.cityOptions.length > 1, 'the test alerts name more than one city');
+assert.deepEqual([...allCoverage.cityOptions], [...allCoverage.cityOptions].sort((a, b) => a.localeCompare(b)), 'listed alphabetically');
+const firstCity = allCoverage.cityOptions[0], forCity = build({ ...input, scope: 'all', city: firstCity });
+assert.equal(forCity.cityFilter, firstCity);
+assert.ok(forCity.alerts.length > 0 && forCity.alerts.length < allCoverage.alerts.length, 'choosing a city narrows the list');
+assert.ok(forCity.alerts.every(a => !a.cityNames.length || a.cityNames.includes(firstCity)), 'only that city, or Somalia-wide notices');
+assert.equal(build({ ...input, scope: 'all', city: firstCity.toUpperCase() }).cityFilter, firstCity, 'matched regardless of case');
+assert.equal(build({ ...input, scope: 'all', city: 'Atlantis' }).cityFilter, 'all', 'an unknown city shows everything');
+const singleCity = build({ ...input, scope: 'city', city: firstCity });
+assert.equal(singleCity.cityOptions.length, 0); assert.equal(singleCity.cityFilter, 'all', 'no City filter in the selected-city coverage');
+const citySelectNode = { value: '', innerHTML: '', dataset: {}, onchange: null }, cityFieldNode = { hidden: true }, cityChoices = [];
+nodes['alerts-city'] = citySelectNode; nodes['alerts-city-field'] = cityFieldNode;
+render({ ...input, scope: 'all', city: firstCity, onCity: value => cityChoices.push(value) });
+assert.equal(cityFieldNode.hidden, false);
+assert.match(citySelectNode.innerHTML, new RegExp(`^<option value="all">All cities</option><option value="${firstCity}" data-i18n-skip>${firstCity}</option>`));
+assert.equal(citySelectNode.value, firstCity);
+citySelectNode.onchange({ target: { value: 'all' } }); assert.deepEqual(cityChoices, ['all']);
+render({ ...input, scope: 'city' });
+assert.equal(cityFieldNode.hidden, true, 'hidden in the selected-city coverage');
+delete nodes['alerts-city']; delete nodes['alerts-city-field'];
+
 // Source filter: every alert names one of four sources, and each choice shows only that source.
 const sourceKeys = ['icpac', 'gdacs', 'swalim', 'open-meteo'];
 assert.ok(everyAlert.every(a => sourceKeys.includes(a.sourceKey)), 'every alert has a known source');
