@@ -52,6 +52,8 @@ test('excluded outlets are left out by web address, with the reason recorded', (
   assert.ok(excludedOutlet('https://sonna.so/'), 'SONNA is left out');
   assert.ok(excludedOutlet('https://centralnews.co.za/'), 'Central News South Africa is left out');
   assert.ok(excludedOutlet('https://gazettengr.com/'), 'Peoples Gazette Nigeria is left out');
+  for (const url of ['https://www.dawan.africa/', 'https://somaliatoday.com/', 'https://www.newvision.co.ug/', 'https://www.telesurenglish.net/', 'https://www.middleeastmonitor.com/', 'https://www.devdiscourse.com/']) assert.ok(excludedOutlet(url), `${url} is left out`);
+  for (const url of ['https://www.hiiraan.com/', 'https://hornobserver.com/', 'https://shabellemedia.com/', 'https://www.garoweonline.com/', 'https://www.ftlsomalia.com/', 'https://www.bbc.co.uk/', 'https://www.africanews.com/', 'https://www.channelafrica.co.za/', 'https://floodlist.com/', 'https://reliefweb.int/', 'https://www.icrc.org/']) assert.equal(excludedOutlet(url), null, `${url} is kept`);
 });
 
 test('meeting and event announcements are left out, in Somali and English; warnings and news stay', () => {

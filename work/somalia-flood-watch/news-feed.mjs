@@ -38,7 +38,21 @@ export const EXCLUDED_OUTLETS = Object.freeze([
   ['myanmaritv.com', 'Myanmar television, off-topic'],
   ['sonna.so', "Somali National News Agency, left out at the owner's request"],
   ['centralnews.co.za', "Central News South Africa, left out at the owner's request"],
-  ['gazettengr.com', "Peoples Gazette Nigeria, left out at the owner's request"]
+  ['gazettengr.com', "Peoples Gazette Nigeria, left out at the owner's request"],
+  ['dawan.africa', "Dawan Africa, left out at the owner's request"],
+  // Reviewed in one pass, 2026-10-15, against every publisher the searches had returned: kept only
+  // outlets with their own reporting on Somalia or an established international or humanitarian record.
+  ['somaliatoday.com', 'rewrites other organisations\' releases, which appear first-hand'],
+  ['newvision.co.ug', 'Ugandan paper without its own Somalia reporting, republishes agency copy'],
+  ['telesurenglish.net', 'Latin American state broadcaster with no Somalia beat'],
+  ['middleeastmonitor.com', 'advocacy-leaning outlet with no Somalia beat'],
+  // Known aggregators and content farms, left out before they appear.
+  ['devdiscourse.com', 'aggregator and machine-written content'],
+  ['latestly.com', 'aggregator re-posting other outlets'],
+  ['headtopics.com', 'aggregator re-posting other outlets'],
+  ['newsbreak.com', 'aggregator re-posting other outlets'],
+  ['biztoc.com', 'aggregator re-posting other outlets'],
+  ['ground.news', 'aggregator re-posting other outlets']
 ]);
 // No meeting or event announcements (owner, 2026-10-15): the bar carries warnings, forecasts and
 // news about conditions, not who met whom. Matched on the headline, in Somali and English, from
