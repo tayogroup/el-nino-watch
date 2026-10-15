@@ -496,7 +496,15 @@
     "Weekly rainfall total (mm)": "Wadarta roobka toddobaadka (mm)",
     "Some ICPAC map tiles did not load.": "Qaar ka mid ah qaybaha khariidadda ICPAC lama soo rarin.",
     "Source: ICPAC East Africa Hazards Watch · regional model forecast, not an official warning.": "Isha: ICPAC East Africa Hazards Watch · saadaal moodeel gobol ah, ma aha digniin rasmi ah.",
-    "ICPAC weekly exceptional rainfall forecast": "Saadaasha toddobaadlaha ah ee roobka aan caadiga ahayn ee ICPAC"
+    "ICPAC weekly exceptional rainfall forecast": "Saadaasha toddobaadlaha ah ee roobka aan caadiga ahayn ee ICPAC",
+    "District (optional)": "Degmada (ikhtiyaari)",
+    "Landmark (optional)": "Meel caan ah (ikhtiyaari)",
+    "District or neighbourhood": "Degmo ama xaafad",
+    "e.g. near the market, school or mosque": "tusaale: u dhow suuqa, dugsiga ama masjidka",
+    "Use a district name of up to 80 characters.": "Isticmaal magac degmo oo aan ka badnayn 80 xaraf.",
+    "Use a landmark of up to 120 characters.": "Isticmaal meel caan ah oo aan ka badnayn 120 xaraf.",
+    "District": "Degmada",
+    "Landmark": "Meel caan ah"
   },
   "patterns": [
     {

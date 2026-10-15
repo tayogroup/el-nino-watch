@@ -66,7 +66,7 @@ function reportPayload(input, cities) {
     if (!['https:', 'http:'].includes(source.protocol) || source.username || source.password) fail(400, 'Source link must be a valid HTTP or HTTPS URL without login details.');
     sourceUrl = source.href;
   }
-  return {cityId, cityName:city.name, category:input.category, observedAt:new Date(observedAt).toISOString(), description:text(input.description, 'Description', 10, 3000), author:text(input.author, 'Display name', 1, 60, true) || 'Anonymous', latitude, longitude, deaths:count(input.deaths, 'Deaths'), injuries:count(input.injuries, 'Injuries'), damagedProperties:count(input.damagedProperties, 'Damaged properties'), sourceUrl};
+  return {cityId, cityName:city.name, district:text(input.district, 'District', 1, 80, true) || null, landmark:text(input.landmark, 'Landmark', 1, 120, true) || null, category:input.category, observedAt:new Date(observedAt).toISOString(), description:text(input.description, 'Description', 10, 3000), author:text(input.author, 'Display name', 1, 60, true) || 'Anonymous', latitude, longitude, deaths:count(input.deaths, 'Deaths'), injuries:count(input.injuries, 'Injuries'), damagedProperties:count(input.damagedProperties, 'Damaged properties'), sourceUrl};
 }
 
 async function readBody(req, max) {

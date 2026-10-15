@@ -90,6 +90,25 @@ const geojson = api.buildExport([malicious, { ...malicious, id: 'unknown-locatio
 const collection = JSON.parse(geojson.content);
 assert.equal(collection.features.length, 1, 'Do not invent coordinates for reports without them');
 assert.deepEqual(collection.features[0].geometry.coordinates, [45.31, 2.04]);
+// District and landmark: optional, length-limited, shown as the reporter wrote them, exported.
+const placed = api.validateDraft({ ...draft, district: '  Hodan ', landmark: 'Near Bakara market' }, cities, now);
+assert.equal(placed.valid, true);
+assert.equal(placed.payload.district, 'Hodan');
+assert.equal(placed.payload.landmark, 'Near Bakara market');
+assert.equal(api.validateDraft(draft, cities, now).payload.district, '', 'Both fields stay optional');
+assert.equal(api.validateDraft({ ...draft, district: 'x'.repeat(81) }, cities, now).valid, false);
+assert.equal(api.validateDraft({ ...draft, landmark: 'x'.repeat(121) }, cities, now).valid, false);
+assert.equal(api.validateDraft({ ...draft, landmark: 'bad\u0007bell' }, cities, now).valid, false);
+const placeHtml = api.renderReport({ ...malicious, district: '<b>Hodan</b>', landmark: 'Near "Bakara" market' });
+assert.equal(placeHtml.includes('&lt;b&gt;Hodan&lt;/b&gt;'), true, 'District is escaped');
+assert.match(placeHtml, /<b>District<\/b> <span data-i18n-skip lang="und">/, 'Reporter wording is not machine-translated');
+assert.match(placeHtml, /<b>Landmark<\/b> <span data-i18n-skip lang="und">Near &quot;Bakara&quot; market<\/span>/);
+assert.equal(api.renderReport(malicious).includes('community-card-place'), false, 'Older reports without a place show no empty line');
+const placeCsv = api.buildExport([{ ...malicious, district: 'Hodan', landmark: '=near market' }], 'csv').content.split('\r\n');
+assert.match(placeCsv[0], /^"id","cityId","district","landmark","category"/);
+assert.equal(placeCsv[1].includes('"Hodan","\'=near market"'), true, 'A landmark cannot become a spreadsheet formula');
+assert.equal(JSON.parse(api.buildExport([{ ...malicious, district: '', landmark: null }], 'geojson').content).features[0].properties.district, null, 'Blank is exported as unknown');
+
 assert.equal(collection.features[0].properties.deaths, null);
 assert.equal(collection.features[0].properties.injuries, 0);
 assert.equal(collection.features[0].properties.status, 'unverified');
