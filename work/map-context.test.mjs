@@ -8,6 +8,9 @@ get('report-map-location').onclick();assert.equal(positions.length,0,'A city cen
 await get('copy-city-link').onclick();const route=new URLSearchParams(new URL(copies[0]).hash.slice(1));assert.equal(route.get('city'),'Mogadishu');assert.equal(route.get('day'),'2026-10-18');assert.equal(route.get('hour'),'8');
 api.render({city,point:{lat:2.06123,lon:45.29123}});get('report-map-location').onclick();assert.equal(positions[0].latitude,2.06123);assert.equal(positions[0].longitude,45.29123);
 const links=api.links({city,point:{lat:2.06123,lon:45.29123}});assert.equal(new URL(links.street).searchParams.get('map_action'),'pano');assert.equal(new URL(links.street).searchParams.get('viewpoint'),'2.06123,45.29123');assert.ok(links.earth.endsWith('2.06123%2C45.29123'));
+assert.equal(links.floodHub,'https://sites.research.google/floods/l/2.0612/45.2912/10','Google Flood Hub opens at the selected map point');
+assert.equal(api.links({city,point:null}).floodHub,'https://sites.research.google/floods/l/2.0469/45.3182/10','or at the city');
+assert.ok(get('map-context-links').innerHTML.includes('<a class="context-link-floodhub" href="https://sites.research.google/floods/l/2.0612/45.2912/10" target="_blank" rel="noopener">≈ Google Flood Hub <span>River flood forecasts near here · not an official warning ↗</span></a>'),'the card is drawn for the selected point');
 assert.equal(navigation[0],'community');assert.equal(navigation[1],'community','Reporting still opens the mayor community tool');
 
 function imagery(observationDatetime,options={}){return new URL(api.buildCopernicusBrowserUrl({lat:6.7697,lon:47.4308,now,observationDatetime,...options}));}

@@ -641,7 +641,8 @@
     "This is an AI model forecast from Google, not an official warning.": "Tani waa saadaal moodeel AI ah oo ka timid Google, ma aha digniin rasmi ah.",
     "AI model forecast of the river at this gauge, not an official warning. Follow MOEWR, SoDMA and local authority advice, and check routes away from the river.": "Saadaal moodeel AI ah oo ku saabsan webiga ee cabbirkan, ma aha digniin rasmi ah. Raac talada MOEWR, SoDMA iyo maamulka deegaanka, oo hubi waddooyinka ka fog webiga.",
     "Google Flood Hub river forecasts are AI model forecasts at river gauges near the cities, not official warnings.": "Saadaalaha webiga ee Google Flood Hub waa saadaalo moodeel AI ah oo lagu sameeyay cabbirrada webiga ee u dhow magaalooyinka, ma aha digniino rasmi ah.",
-    "river gauge": "xarunta cabbirka webiga"
+    "river gauge": "xarunta cabbirka webiga",
+    "River flood forecasts near here · not an official warning ↗": "Saadaalaha fatahaadda webiga ee halkan u dhow · ma aha digniin rasmi ah ↗"
   },
   "patterns": [
     {
