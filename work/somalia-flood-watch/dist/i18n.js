@@ -89,6 +89,11 @@
    const wanted=translate(sourceTitle);if(doc.title!==wanted)doc.title=wanted;lastTitle=wanted;
   }
   for(const button of Array.from(doc.querySelectorAll?.('[data-site-language]')||[]))button.setAttribute('aria-pressed',String(button.dataset.siteLanguage===language));
+  // Links to the site's other pages carry the language: a visitor who arrived on ?lang=so without
+  // pressing SO has no saved choice, and would otherwise land on the next page in English.
+  for(const link of Array.from(doc.querySelectorAll?.('a[data-keep-language]')||[])){
+   try{const url=new URL(link.getAttribute('href'),global.location?.href||'http://localhost/');if(url.searchParams.get('lang')!==language){url.searchParams.set('lang',language);link.setAttribute('href',url.pathname+url.search+url.hash);}}catch{}
+  }
  }
  function readPreference(){
   try{const value=new URL(global.location?.href||'http://localhost/').searchParams.get('lang');if(languages.has(value))return value;}catch{}

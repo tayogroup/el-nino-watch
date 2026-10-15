@@ -22,9 +22,10 @@ test('the sources page lists every source URL the server reads from', () => {
 
 test('the app links the page and the PDF from the Sources tab and the footer', () => {
   const panel = index.slice(index.indexOf('id="source-panel"'), index.indexOf('</section>', index.indexOf('id="source-panel"')));
-  assert.match(panel, /<a href="\/sources">Full list of forecast and alert sources →<\/a>/);
+  assert.match(panel, /<a href="\/sources" data-keep-language>Full list of forecast and alert sources →<\/a>/);
   assert.match(panel, /<a href="\/el-nino-watch-sources\.pdf" download>Download PDF \(English\)<\/a>/);
-  assert.match(index, /<a href="\/sources">Forecast and alert sources<\/a><a href="\/stats" id="visitor-stats-link" hidden>/);
+  assert.match(index, /<a href="\/sources" data-keep-language>Forecast and alert sources<\/a><a href="\/stats" id="visitor-stats-link" hidden>/);
+  assert.match(page, /<a class="no-print" href="\/" data-keep-language>← Back to El Nino Watch<\/a>/);
 });
 
 test('every piece of page text has a Somali translation, apart from names and links kept as published', async () => {
@@ -60,4 +61,19 @@ test('/sources serves the page and the PDF is served as a PDF', async () => {
     await new Promise(resolve => server.close(resolve));
     await rm(dataDir, {recursive: true, force: true});
   }
+});
+
+test('links between the site\'s pages keep the language, including one chosen only by ?lang=so', async () => {
+  const links = ['/sources', '/?city=Mogadishu#tab=sources'].map(href => ({href, getAttribute(name) { return name === 'href' ? this.href : null; }, setAttribute(name, value) { if (name === 'href') this.href = value; }}));
+  const memory = new Map();
+  const document = {readyState: 'complete', title: 'Forecast and alert sources | El Nino Watch', body: {nodeType: 11, childNodes: []}, documentElement: {setAttribute() {}},
+    getElementById: () => null, querySelectorAll: selector => selector === 'a[data-keep-language]' ? links : []};
+  const window = {document, location: {href: 'https://elninowatch.so/?lang=so', protocol: 'https:'}, localStorage: {getItem: key => memory.get(key) ?? null, setItem: (key, value) => memory.set(key, value)}};
+  const context = vm.createContext({window, URL});
+  vm.runInContext(await readFile(new URL('translations-so.js', dist), 'utf8'), context);
+  vm.runInContext(await readFile(new URL('i18n.js', dist), 'utf8'), context);
+  assert.equal(memory.size, 0, 'no saved choice: the language came from the address only');
+  assert.deepEqual(links.map(link => link.href), ['/sources?lang=so', '/?city=Mogadishu&lang=so#tab=sources']);
+  window.SiteLanguage.setLanguage('en');
+  assert.deepEqual(links.map(link => link.href), ['/sources?lang=en', '/?city=Mogadishu&lang=en#tab=sources'], 'switching language updates the links');
 });

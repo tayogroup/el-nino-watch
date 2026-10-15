@@ -505,8 +505,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/i18n.js",
-      "bytes": 9204,
-      "sha256": "31af96e4b4c82373cad316ae476b3aedcc5e8bfccae909ba50e9d5d137cdec01"
+      "bytes": 9731,
+      "sha256": "9d0837f7ce37add1ac2cd59b96c683178d4a27b90c670397d6ba99ba91ef6667"
     },
     {
       "path": "work/somalia-flood-watch/dist/icpac-map.js",
@@ -515,8 +515,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 31150,
-      "sha256": "b88ab2f87163d5255a428c9cd0ddcc58284c5c389fdee3011ef20e471cc6f8cc"
+      "bytes": 31188,
+      "sha256": "70e4fe3280e95ee170907aae7c0cc7239cd09f6c23833a2177186b6b4b028a77"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
@@ -570,8 +570,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/sources.html",
-      "bytes": 18540,
-      "sha256": "979ea275b77f88c5934eeae9a8e35fd78f2223860d29864932a2e1b01a644e57"
+      "bytes": 18578,
+      "sha256": "f18d4c118ed455ad99aabd361c4ba849a038c28fa8b87f17c6863bb3bc40d7e0"
     },
     {
       "path": "work/somalia-flood-watch/dist/stats.html",
@@ -730,8 +730,8 @@
     },
     {
       "path": "work/sources-page.test.mjs",
-      "bytes": 3792,
-      "sha256": "75949735492496d868a8dc15029a3991139ffbe5e20f03d69a2e49990da9717c"
+      "bytes": 5411,
+      "sha256": "2b69f57b8d826c8317688831961dc139e7ff9ac21da33b70e30f1558e9512980"
     },
     {
       "path": "work/swalim-stations.html",
