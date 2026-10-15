@@ -12,6 +12,7 @@
     "check": "node scripts/check-files.mjs",
     "build:translations": "node work/build-somali-catalog.mjs",
     "build:basemap": "node work/build-basemap.mjs",
+    "build:sources-pdf": "node work/print-sources-pdf.mjs",
     "bundle": "node work/package-flood-app.mjs",
     "test": "node scripts/run-tests.mjs",
     "release": "node work/make-source-bundles.mjs"

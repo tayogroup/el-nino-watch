@@ -20,7 +20,7 @@ const RETRY_MS = 60 * 1000;
 const cache = new Map();
 const pending = new Map();
 const feeds = Object.freeze({'/api/enso': {load: loadEnso, sourceUrl: SOURCES.enso}, '/api/stations': {load: loadStations, sourceUrl: SOURCES.stations}, '/api/alerts': {load: () => loadOfficialAlerts({cities: CITY_DATA}), sourceUrl: ALERT_SOURCES.icpac}, '/api/observed-flood': {load: loadObservedFlood, sourceUrl: OBSERVED_SOURCE_URL}});
-const types = {'.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.mjs':'text/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.ico':'image/x-icon', '.woff2':'font/woff2'};
+const types = {'.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.mjs':'text/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.ico':'image/x-icon', '.woff2':'font/woff2', '.pdf':'application/pdf'};
 
 async function feed(name, loader = feeds[name]?.load, sourceUrl = feeds[name]?.sourceUrl) {
   const entry = cache.get(name);
@@ -91,7 +91,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
       if (await forecasts(req, res, url)) return;
       if (url.pathname === '/api/backup-status') return reply(res, 200, JSON.stringify(backup ? backup.status() : {enabled:false}), 'application/json; charset=utf-8', req.method === 'HEAD');
       if (url.pathname.startsWith('/api/')) return reply(res, 404, 'Unknown data endpoint.');
-      const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname === '/stats' ? '/stats.html' : url.pathname);
+      const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname === '/stats' ? '/stats.html' : url.pathname === '/sources' ? '/sources.html' : url.pathname);
       if (requested.includes('\0')) return reply(res, 400, 'Invalid path.');
       // A backslash is a separator on Windows but a filename character on Linux;
       // refuse it everywhere so traversal attempts get the same 403 on both.

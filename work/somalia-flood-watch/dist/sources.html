@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#082448">
+<title>Forecast and alert sources | El Nino Watch</title>
+<meta name="description" content="Every outside service El Nino Watch uses for rain and river forecasts, alerts and flood observations in Somalia, with what each is used for and its links.">
+<!-- The same list is offered as el-nino-watch-sources.pdf, printed from this page in English.
+     When a source changes here, print the PDF again: npm run build:sources-pdf -->
+<style>
+:root{--ink:#153653;--muted:#586f89;--navy:#082448;--blue:#1473cf;--paper:#f0f5fb;--line:#dce6f0;--card:#fff;--soft:#e6f0fb;--warn-bg:#fff5e0;--warn-ink:#7a4b00;--warn-line:#f0d39a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 'Segoe UI',system-ui,-apple-system,Arial,sans-serif}
+.site-bar{background:var(--navy);color:#fff;padding:14px max(16px,calc((100vw - 1000px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.site-bar a{color:#fff;text-decoration:none;font-weight:800;font-size:18px}
+.site-bar small{display:block;color:#a9c4e2;letter-spacing:.12em;font-size:11px;font-weight:700;margin-top:2px}
+.language-switch{display:flex;gap:4px}
+.language-switch button{font:inherit;font-size:12px;font-weight:800;min-width:40px;min-height:34px;border-radius:8px;border:1px solid #3a5f86;background:transparent;color:#d6e6f7;cursor:pointer}
+.language-switch button[aria-pressed="true"]{background:#fff;color:var(--navy);border-color:#fff}
+.language-switch button:focus-visible,a:focus-visible{outline:2px solid #64ddf4;outline-offset:2px}
+main{max-width:1000px;margin:0 auto;padding:28px 16px 56px;display:grid;gap:30px}
+.intro{display:grid;gap:10px}
+h1{font-size:clamp(26px,4.4vw,34px);line-height:1.15;margin:0;color:var(--navy);text-wrap:balance}
+.lede{margin:0;max-width:68ch;color:var(--muted);font-size:16px}
+.actions{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;font-size:14px}
+.actions a{color:var(--blue);font-weight:700}
+.actions .meta{color:var(--muted)}
+.notice{border:1px solid var(--warn-line);background:var(--warn-bg);color:var(--warn-ink);border-radius:10px;padding:14px 16px;max-width:76ch;display:grid;gap:4px}
+.notice strong,.notice p{margin:0}
+section{display:grid;gap:12px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--navy);padding-bottom:7px}
+h2{font-size:21px;margin:0;color:var(--navy)}
+.count{font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.section-note{margin:0;color:var(--muted);max-width:72ch}
+.rows{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.row{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:6px 24px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.name{font-weight:700;min-width:0}
+.org{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+.tag{display:inline-block;margin-left:6px;padding:0 8px;border-radius:999px;background:var(--soft);color:var(--blue);font-size:11px;font-weight:700;line-height:1.7;vertical-align:1px}
+.detail{min-width:0;display:grid;gap:8px}
+.use{margin:0}
+.links{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.links li{display:flex;gap:8px;align-items:baseline;min-width:0}
+.kind{flex:none;min-width:7.5em;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.links a{font:13px/1.5 Consolas,'Cascadia Mono',ui-monospace,monospace;color:var(--blue);overflow-wrap:anywhere;text-decoration:none;border-bottom:1px solid #c7dcf2}
+.links a:hover{border-bottom-color:var(--blue)}
+footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:13px;display:grid;gap:6px;max-width:76ch}
+footer p{margin:0}
+@media(max-width:640px){main{padding-top:22px;gap:24px}.row{grid-template-columns:minmax(0,1fr)}.kind{min-width:6.5em}}
+@media print{
+  @page{size:A4;margin:16mm 14mm}
+  body{background:#fff;font-size:11.5pt}
+  .site-bar{background:#fff;color:var(--navy);padding:0 0 8px;border-bottom:2px solid var(--navy)}
+  .site-bar a{color:var(--navy)}
+  .site-bar small{color:var(--muted)}
+  .language-switch,.no-print{display:none!important}
+  main{display:block;padding:14px 0 0;max-width:none}
+  /* Grid containers overlap when they break across pages in Chromium print, so print uses plain blocks. */
+  main>*+*{margin-top:18px}
+  section,.detail{display:block}
+  section>*+*,.detail>*+*{margin-top:8px}
+  .rows{border:0;border-radius:0}
+  .row{padding:10px 0;break-inside:avoid}
+  .section-head{break-after:avoid}
+  .links a{border-bottom:0;color:var(--ink)}
+  .kind{min-width:9em}
+}
+</style>
+</head>
+<body>
+<header class="site-bar">
+  <div><a href="/" data-i18n-skip>El Nino Watch</a><small data-i18n-skip>elninowatch.so</small></div>
+  <div class="language-switch" role="group" aria-label="Language / Luqad" data-i18n-skip>
+    <button type="button" id="language-en" data-site-language="en" lang="en" title="English" aria-label="English" aria-pressed="true">EN</button>
+    <button type="button" id="language-so" data-site-language="so" lang="so" title="Soomaali" aria-label="Soomaali" aria-pressed="false">SO</button>
+  </div>
+</header>
+<main>
+  <div class="intro">
+    <h1>Forecast and alert sources</h1>
+    <p class="lede">Every outside service El Nino Watch uses to forecast rain and river flow, to raise alerts, and to check those alerts against what has been observed in Somalia.</p>
+    <p class="lede">Each entry says what the app uses it for.</p>
+    <div class="actions">
+      <a class="no-print" href="/">← Back to El Nino Watch</a>
+      <a class="no-print" href="/el-nino-watch-sources.pdf" download>Download PDF (English)</a>
+      <span class="meta">Checked against the app on 15 October 2026.</span>
+    </div>
+  </div>
+
+  <div class="notice" role="note">
+    <strong>No official national warning source</strong>
+    <p>Since the Somalia National Meteorological Agency feed was removed, none of the sources below issues official warnings for Somalia. ICPAC publishes regional forecasts and GDACS monitors events; the app labels both that way.</p>
+  </div>
+
+  <section aria-labelledby="forecasts">
+    <div class="section-head"><h2 id="forecasts">Forecasts</h2><span class="count">5 sources</span></div>
+    <ul class="rows">
+      <li class="row">
+        <div class="name"><span data-i18n-skip>Open-Meteo Weather Forecast API</span><span class="org" data-i18n-skip>Open-Meteo</span></div>
+        <div class="detail">
+          <p class="use">Daily and hourly rainfall forecasts for all 30 cities. The app's server fetches them once and shares them with every visitor. These are computer model estimates, not station measurements.</p>
+          <ul class="links">
+            <li><span class="kind">About</span><a data-i18n-skip href="https://open-meteo.com/en/docs" target="_blank" rel="noopener">https://open-meteo.com/en/docs</a></li>
+            <li><span class="kind" data-i18n-skip>API</span><a data-i18n-skip href="https://api.open-meteo.com/v1/forecast" target="_blank" rel="noopener">https://api.open-meteo.com/v1/forecast</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>Open-Meteo Flood API</span><span class="org" data-i18n-skip>GloFAS river discharge, via Open-Meteo</span></div>
+        <div class="detail">
+          <p class="use">River discharge forecast for each city.</p>
+          <ul class="links">
+            <li><span class="kind">About</span><a data-i18n-skip href="https://open-meteo.com/en/docs/flood-api" target="_blank" rel="noopener">https://open-meteo.com/en/docs/flood-api</a></li>
+            <li><span class="kind" data-i18n-skip>API</span><a data-i18n-skip href="https://flood-api.open-meteo.com/v1/flood" target="_blank" rel="noopener">https://flood-api.open-meteo.com/v1/flood</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>ICPAC Weekly Exceptional Rainfall Forecast</span><span class="tag">Also alerts</span><span class="org" data-i18n-skip>IGAD Climate Prediction and Applications Centre</span></div>
+        <div class="detail">
+          <p class="use">Heavy, very heavy and extremely heavy rainfall forecasts for the week (above the 90th, 95th and 99th percentiles for that week of the year). Drives the Alerts tab and the rainfall layers on the flood map.</p>
+          <ul class="links">
+            <li><span class="kind">About</span><a data-i18n-skip href="https://www.icpac.net/weekly-forecast/" target="_blank" rel="noopener">https://www.icpac.net/weekly-forecast/</a></li>
+            <li><span class="kind">Portal</span><a data-i18n-skip href="https://eahazardswatch.icpac.net/" target="_blank" rel="noopener">https://eahazardswatch.icpac.net/</a></li>
+            <li><span class="kind">Data</span><a data-i18n-skip href="https://eahazardswatch.icpac.net/api/datasets/" target="_blank" rel="noopener">https://eahazardswatch.icpac.net/api/datasets/</a></li>
+            <li><span class="kind">Map layers</span><a data-i18n-skip href="https://eahazardswatch.icpac.net/mapserver/" target="_blank" rel="noopener">https://eahazardswatch.icpac.net/mapserver/</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>ENSO Diagnostic Discussion</span><span class="org" data-i18n-skip>NOAA Climate Prediction Center</span></div>
+        <div class="detail">
+          <p class="use">The current El Niño status and outlook.</p>
+          <ul class="links">
+            <li><span class="kind">About</span><a data-i18n-skip href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml" target="_blank" rel="noopener">https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>Weekly Niño sea-surface temperature index</span><span class="org" data-i18n-skip>NOAA Climate Prediction Center</span></div>
+        <div class="detail">
+          <p class="use">Weekly El Niño ocean temperatures.</p>
+          <ul class="links">
+            <li><span class="kind">Data</span><a data-i18n-skip href="https://www.cpc.ncep.noaa.gov/data/indices/wksst9120.for" target="_blank" rel="noopener">https://www.cpc.ncep.noaa.gov/data/indices/wksst9120.for</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+    <p class="section-note">The app also links to meteoblue's Galkayo forecast for comparison. It does not use meteoblue's data.</p>
+    <ul class="links">
+      <li><span class="kind">Compare</span><a data-i18n-skip href="https://www.meteoblue.com/en/weather/today/gaalkacyo_somalia_59611" target="_blank" rel="noopener">https://www.meteoblue.com/en/weather/today/gaalkacyo_somalia_59611</a></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="alerts">
+    <div class="section-head"><h2 id="alerts">Alerts and event monitoring</h2><span class="count">2 sources</span></div>
+    <ul class="rows">
+      <li class="row">
+        <div class="name"><span data-i18n-skip>GDACS</span><span class="org" data-i18n-skip>Global Disaster Alert and Coordination System</span></div>
+        <div class="detail">
+          <p class="use">Flood and other disaster events affecting Somalia, shown as event monitoring.</p>
+          <ul class="links">
+            <li><span class="kind">About</span><a data-i18n-skip href="https://www.gdacs.org/" target="_blank" rel="noopener">https://www.gdacs.org/</a></li>
+            <li><span class="kind" data-i18n-skip>API</span><a data-i18n-skip href="https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH" target="_blank" rel="noopener">https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH</a></li>
+            <li><span class="kind">Guide</span><a data-i18n-skip href="https://gdacs.org/Documents/2025/GDACS_API_quickstart_v1.pdf" target="_blank" rel="noopener">https://gdacs.org/Documents/2025/GDACS_API_quickstart_v1.pdf</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>ICPAC Weekly Exceptional Rainfall Forecast</span><span class="org">Listed under Forecasts</span></div>
+        <div class="detail">
+          <p class="use">Rainfall alerts for each city, from the forecast above.</p>
+          <ul class="links">
+            <li><span class="kind">Portal</span><a data-i18n-skip href="https://eahazardswatch.icpac.net/" target="_blank" rel="noopener">https://eahazardswatch.icpac.net/</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="observations">
+    <div class="section-head"><h2 id="observations">Observations that support the alerts</h2><span class="count">5 sources</span></div>
+    <p class="section-note">What has actually been measured or seen from satellites, used to check forecasts and alerts against conditions on the ground.</p>
+    <ul class="rows">
+      <li class="row">
+        <div class="name"><span data-i18n-skip>SWALIM river stations</span><span class="org" data-i18n-skip>FAO Somalia Water and Land Information Management</span></div>
+        <div class="detail">
+          <p class="use">Observed river levels on the Juba and Shabelle, compared with flood thresholds.</p>
+          <ul class="links">
+            <li><span class="kind">Stations</span><a data-i18n-skip href="https://snrfa.faoswalim.org/stations/" target="_blank" rel="noopener">https://snrfa.faoswalim.org/stations/</a></li>
+            <li><span class="kind" data-i18n-skip>FRRIMS</span><a data-i18n-skip href="https://frrims.faoswalim.org/" target="_blank" rel="noopener">https://frrims.faoswalim.org/</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>Global Flood Monitoring (GFM)</span><span class="org" data-i18n-skip>Copernicus Emergency Management Service</span></div>
+        <div class="detail">
+          <p class="use">Flood extent mapped from Sentinel-1 radar.</p>
+          <ul class="links">
+            <li><span class="kind">About</span><a data-i18n-skip href="https://extwiki.eodc.eu/GFM/PUM" target="_blank" rel="noopener">https://extwiki.eodc.eu/GFM/PUM</a></li>
+            <li><span class="kind">Map layers</span><a data-i18n-skip href="https://geoserver.gfm.eodc.eu/geoserver/gfm/wms" target="_blank" rel="noopener">https://geoserver.gfm.eodc.eu/geoserver/gfm/wms</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>Global Flood Product</span><span class="org" data-i18n-skip>NASA, served through NASA GIBS</span></div>
+        <div class="detail">
+          <p class="use">3-day flood map layers from the MODIS and VIIRS satellites.</p>
+          <ul class="links">
+            <li><span class="kind">About</span><a data-i18n-skip href="https://www.earthdata.nasa.gov/global-flood-product" target="_blank" rel="noopener">https://www.earthdata.nasa.gov/global-flood-product</a></li>
+            <li><span class="kind">Map layers</span><a data-i18n-skip href="https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml" target="_blank" rel="noopener">https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>Copernicus Data Space Ecosystem</span><span class="org" data-i18n-skip>Sentinel-1 and Sentinel-2 imagery</span></div>
+        <div class="detail">
+          <p class="use">The latest satellite pass over each city, with a link to view the image.</p>
+          <ul class="links">
+            <li><span class="kind">Browser</span><a data-i18n-skip href="https://browser.dataspace.copernicus.eu/" target="_blank" rel="noopener">https://browser.dataspace.copernicus.eu/</a></li>
+            <li><span class="kind">Catalogue</span><a data-i18n-skip href="https://stac.dataspace.copernicus.eu/v1/" target="_blank" rel="noopener">https://stac.dataspace.copernicus.eu/v1/</a></li>
+            <li><span class="kind">Guide</span><a data-i18n-skip href="https://documentation.dataspace.copernicus.eu/APIs/STAC.html" target="_blank" rel="noopener">https://documentation.dataspace.copernicus.eu/APIs/STAC.html</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>SWALIM flood maps</span><span class="org" data-i18n-skip>FAO SWALIM spatial data catalogue</span></div>
+        <div class="detail">
+          <p class="use">Reference layers: terrain flood susceptibility (30 m), past flood areas 2013–2023, Shabelle riverbank breakages (August 2026 assessment) and Juba riverbank breakages (March 2026 assessment).</p>
+          <ul class="links">
+            <li><span class="kind">Susceptibility</span><a data-i18n-skip href="https://spatial.faoswalim.org/catalogue/#/dataset/609" target="_blank" rel="noopener">https://spatial.faoswalim.org/catalogue/#/dataset/609</a></li>
+            <li><span class="kind">Past floods</span><a data-i18n-skip href="https://spatial.faoswalim.org/catalogue/#/dataset/295" target="_blank" rel="noopener">https://spatial.faoswalim.org/catalogue/#/dataset/295</a></li>
+            <li><span class="kind">Shabelle</span><a data-i18n-skip href="https://spatial.faoswalim.org/catalogue/#/dataset/607" target="_blank" rel="noopener">https://spatial.faoswalim.org/catalogue/#/dataset/607</a></li>
+            <li><span class="kind">Juba</span><a data-i18n-skip href="https://spatial.faoswalim.org/catalogue/#/dataset/481" target="_blank" rel="noopener">https://spatial.faoswalim.org/catalogue/#/dataset/481</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Not listed: the base map and elevation services (Natural Earth, Esri World Imagery, Open-Meteo Elevation and place-name search), which draw the map but do not forecast or alert.</p>
+    <p>Community reports in the app come from residents and are unverified.</p>
+  </footer>
+</main>
+<script src="translations-so.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
