@@ -525,7 +525,9 @@
     "All landmarks": "Dhammaan meelaha caanka ah",
     "Landmark name": "Magaca meesha",
     "Search, e.g. Bakara": "Raadi, tusaale: Bakaaraha",
-    "Clear all filters": "Tirtir dhammaan shaandhaynta"
+    "Clear all filters": "Tirtir dhammaan shaandhaynta",
+    "Observed from": "La arkay laga bilaabo",
+    "Observed to": "La arkay ilaa"
   },
   "patterns": [
     {

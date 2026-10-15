@@ -164,6 +164,20 @@ assert.equal(namedIds('zzz'), '');
 assert.equal(namedIds(''), 'a,b,c,d', 'An empty search keeps every report, including ones with no name');
 assert.equal(namedIds('   '), 'a,b,c,d');
 
+// Date range: whole days in East Africa Time, both ends included; combines with the other filters.
+filterReports[0].observedAt = '2026-10-13T20:59:00Z'; // 13 Oct, 23:59 EAT
+filterReports[1].observedAt = '2026-10-13T21:00:00Z'; // 14 Oct, 00:00 EAT
+filterReports[2].observedAt = '2026-10-15T08:00:00Z'; // 15 Oct EAT
+filterReports[3].observedAt = 'not a time';
+const datedIds = (from, to, query = '') => filterReports.filter(report => api.reportMatches(report, 'all', 'all', 'all', query, from, to)).map(report => report.id).join(',');
+assert.equal(datedIds('2026-10-13', '2026-10-13'), 'a', 'A one-day range is that EAT day, to its last minute');
+assert.equal(datedIds('2026-10-14', ''), 'b,c', 'From alone: that EAT day onwards, from midnight');
+assert.equal(datedIds('', '2026-10-14'), 'a,b', 'To alone: up to the end of that day');
+assert.equal(datedIds('2026-10-14', '2026-10-15', 'bakara'), 'c', 'Dates combine with the other filters');
+assert.equal(datedIds('', ''), 'a,b,c,d', 'No range keeps every report, even one with an unreadable time');
+assert.equal(datedIds('2026-10-01', '2026-10-31').includes('d'), false, 'With a range set, an unreadable time is left out');
+assert.equal(datedIds('13/10/2026', ''), 'a,b,c,d', 'A malformed day is ignored, not treated as a range');
+
 
 assert.equal(JSON.parse(api.buildExport([{ ...malicious, district: '', landmark: null }], 'geojson').content).features[0].properties.district, null, 'Blank is exported as unknown');
 
@@ -297,6 +311,13 @@ try {
   liveNode('community-clear-filters').events.click();
   assert.equal(liveNode('community-scope').value, 'city'); assert.equal(liveNode('community-category').value, 'all');
   assert.equal(liveNode('community-landmark-filter').value, 'all'); assert.equal(liveNode('community-district-filter').value, 'all'); assert.equal(liveNode('community-landmark-name').value, '');
+  // Dates: a range typed backwards is turned round; Clear empties it.
+  liveApi.setDateRange('from', '2026-10-20'); liveApi.setDateRange('to', '2026-10-10');
+  assert.equal(liveNode('community-date-from').value, '2026-10-10'); assert.equal(liveNode('community-date-to').value, '2026-10-20');
+  assert.equal(liveNode('community-date-to').min, '2026-10-10', 'To cannot be set before From');
+  assert.equal(liveNode('community-clear-filters').disabled, false, 'A date range can be cleared');
+  liveNode('community-clear-filters').events.click();
+  assert.equal(liveNode('community-date-from').value, ''); assert.equal(liveNode('community-date-to').value, ''); assert.equal(liveNode('community-date-to').min, '');
   await liveApi.refresh();
   assert.equal(liveNode('community-clear-filters').disabled, true, 'Nothing left to clear');
   await new Promise(resolve => setTimeout(resolve, 300));
