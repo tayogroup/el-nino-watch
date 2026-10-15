@@ -23,6 +23,7 @@
     return ({ extreme: 4, severe: 3, high: 3, moderate: 2, elevated: 2, minor: 1, watch: 1 })[String(severity || '').toLowerCase()] || 0;
   }
   const SEVERITY_LEVELS = { high: 3, medium: 2, low: 1, unknown: 0 };
+  const SOURCE_KEYS = ['icpac', 'gdacs', 'swalim', 'open-meteo'];
   const severityLevel = severity => Math.min(rank(severity), 3);
   function css(severity) { return rank(severity) >= 3 ? 'alert-high' : rank(severity) === 2 ? 'alert-warning' : rank(severity) === 1 ? 'alert-watch' : 'alert-info'; }
   function feedMessage(label, feed, now) {
@@ -49,7 +50,7 @@
         const source = sources.find(s => s.id === sourceId);
         if (source && (!source.available || source.error || !fresh({ data: true, fetchedAt: source.fetchedAt }, now))) continue;
         const names = Array.isArray(a.scope?.cities) ? a.scope.cities.filter(c => typeof c === 'string' && c.trim()) : [];
-        alerts.push({ ...a, id: String(a.id || `${sourceId}:${a.title}:${a.issuedAt}`), kind: 'source', cityNames: names,
+        alerts.push({ ...a, sourceKey: sourceId, id: String(a.id || `${sourceId}:${a.title}:${a.issuedAt}`), kind: 'source', cityNames: names,
           severity: String(a.severity || 'unknown').toLowerCase(), sourceUrl: url(a.sourceUrl),
           badge: a.basis === 'regional-forecast' ? 'Regional forecast · ICPAC' : a.basis === 'model-event' ? 'GDACS model-based signal' : 'GDACS event monitoring',
           scopeLabel: names.length ? names.join(', ') : `Somalia country-level · city extent unspecified${a.scope?.areaDescription ? ' · source area: ' + String(a.scope.areaDescription) : ''}`,
@@ -73,7 +74,7 @@
           const severity = rain >= 25 ? 'elevated' : 'watch';
           alerts.push({ id: `rain:${normalized(name)}:${date}`, kind: 'screen', basis: 'rainfall-screen', cityNames: [name],
             title: `${name} · ${severity === 'elevated' ? 'Elevated rainfall' : 'Rainfall watch'}`, severity,
-            source: 'Open-Meteo weather forecast', sourceUrl: 'https://open-meteo.com/en/docs', issuedAt: weather.lastSuccess,
+            source: 'Open-Meteo weather forecast', sourceKey: 'open-meteo', sourceUrl: 'https://open-meteo.com/en/docs', issuedAt: weather.lastSuccess,
             startsAt: date + 'T00:00:00+03:00', endsAt: date + 'T23:59:59+03:00',
             description: `${rain.toFixed(1)} mm forecast for ${date} (daily total). App screening thresholds: Watch ≥10 mm/day; Elevated ≥25 mm/day. These are screening rules, not flood probabilities or official warning thresholds.`,
             badge: 'App rainfall screening', scopeLabel: name, timingLabel: `Forecast day ${date} · retrieved ${time(weather.lastSuccess)}`,
@@ -97,7 +98,7 @@
         const threshold = thresholds.find(([, value]) => valid(value) && value > 0 && s.levelM >= value);
         if (!threshold) continue;
         alerts.push({ id: `gauge:${s.code}:${s.observedAt}`, kind: 'source', basis: 'observed-gauge', cityNames: [name], severity: threshold[2],
-          title: `${name} · river ${threshold[0]} threshold reached`, source: 'FAO SWALIM river observation', sourceUrl: url(s.sourceUrl), issuedAt: observedAt,
+          title: `${name} · river ${threshold[0]} threshold reached`, source: 'FAO SWALIM river observation', sourceKey: 'swalim', sourceUrl: url(s.sourceUrl), issuedAt: observedAt,
           badge: 'SWALIM observation · station threshold', scopeLabel: `${name} · ${s.name || s.code} gauge`,
           timingLabel: `Observed ${dateOnly ? s.observedAt + ' (source gives date only)' : time(observedAt)} · retrieved ${time(stations.lastSuccess)}`,
           description: `${s.name || s.code}: ${s.levelM.toFixed(2)} m; published ${threshold[0]} threshold ${threshold[1].toFixed(2)} m. A gauge threshold is a river risk indicator, not a measured flood footprint.`,
@@ -107,9 +108,10 @@
     }
     const relevant = alerts.filter(a => scope === 'all' || !a.cityNames.length || a.cityNames.some(n => normalized(n) === normalized(selected)));
     const severity = Object.hasOwn(SEVERITY_LEVELS, input.severity) ? input.severity : 'all';
-    const visible = relevant.filter(a => (type === 'all' || a.kind === type) && (severity === 'all' || severityLevel(a.severity) === SEVERITY_LEVELS[severity])).sort((a, b) => rank(b.severity) - rank(a.severity) || epoch(b.issuedAt) - epoch(a.issuedAt));
+    const sourceFilter = SOURCE_KEYS.includes(input.source) ? input.source : 'all';
+    const visible = relevant.filter(a => (sourceFilter === 'all' || a.sourceKey === sourceFilter) && (type === 'all' || a.kind === type) && (severity === 'all' || severityLevel(a.severity) === SEVERITY_LEVELS[severity])).sort((a, b) => rank(b.severity) - rank(a.severity) || epoch(b.issuedAt) - epoch(a.issuedAt));
     const count = basis => relevant.filter(a => a.basis === basis).length;
-    return { alerts: visible, allAlerts: relevant, selectedCity: selected, scope, type, severity, now: new Date(now).toISOString(),
+    return { alerts: visible, allAlerts: relevant, selectedCity: selected, scope, type, severity, sourceFilter, now: new Date(now).toISOString(),
       forecastDates, weatherCoverage, messages: [...new Set(messages)],
       coverageNote: official?.data?.coverageNote || 'Forecast and event coverage may be incomplete. No returned signal does not establish safety.',
       sourceStatus: (official?.data?.sources || []).map(s => ({ name: s.name || s.id, publishedAt: s.publishedAt || s.lastBuildAt || null, rejectedExpired: Number.isInteger(s.rejectedExpired) ? s.rejectedExpired : 0 })),
@@ -170,13 +172,15 @@
     if (type) { type.value = model.type; type.onchange = event => input.onType?.(event.target.value); }
     const severity = doc?.getElementById?.('alerts-severity');
     if (severity) { severity.value = model.severity; severity.onchange = event => input.onSeverity?.(event.target.value); }
+    const sourceSelect = doc?.getElementById?.('alerts-source');
+    if (sourceSelect) { sourceSelect.value = model.sourceFilter; sourceSelect.onchange = event => input.onSource?.(event.target.value); }
     if (summary) summary.innerHTML = `<div class="alert-metrics"><span><b>${model.counts.regional}</b> ICPAC forecasts</span><span><b>${model.counts.events}</b> Source event signals</span><span><b>${model.counts.gauges}</b> River thresholds</span><span><b>${model.counts.screens}</b> App rainfall screens</span></div><p class="note">${esc(model.scopeLabel)} · next 3 forecast days: ${model.forecastDates[0]}–${model.forecastDates[2]} (including full today). Source signals and app screening are distinct.</p>`;
     if (list) list.innerHTML = model.alerts.length ? model.alerts.map(a => `<article class="alert-card ${css(a.severity)}"><div class="alert-card-head"><span class="badge">${esc(a.badge)}</span><span class="badge">${esc(a.severity)}</span></div><h3${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.title)}</h3><p class="alert-scope">${esc(a.scopeLabel)}</p><p${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.description || 'Read the source notice for details.')}</p><small>${esc(a.timingLabel)} · ${esc(a.source)}</small><p class="alert-guidance">${esc(a.guidance)}</p>${a.sourceUrl ? `<a href="${esc(a.sourceUrl)}" target="_blank" rel="noopener">Read source ↗</a>` : ''}${root.SiteShare?.row ? root.SiteShare.row([[['model-event','event-monitoring'].includes(a.basis) ? String(a.title || '') : {t: String(a.title || '')}], [{t: String(a.scopeLabel || '')}], [{t: String(a.timingLabel || '')}, ' · ' + String(a.source || '')], [{t: 'Not an official warning.'}]], 'alerts') : ''}</article>`).join('') : `<div class="alert-card alert-info"><h3>No active signals returned for this view</h3><p>${model.messages.length ? 'Some feeds are unavailable or stale; check the status below.' : 'No matching source notice or app threshold is present in the fresh responses.'} This does not confirm that an area is safe or free from flooding.</p></div>`;
     notificationButton(button);
     notify(model);
     if (status) {
       const incomplete = model.weatherCoverage.filter(row => (model.scope === 'all' || normalized(row.city) === normalized(model.selectedCity)) && !row.complete);
-      status.innerHTML = `<p>${esc(model.coverageNote)}</p>${model.sourceStatus.map(s => `<p class="note">${esc(s.name)} · latest published notice / feed date: ${esc(time(s.publishedAt))}${s.rejectedExpired ? ' · ' + s.rejectedExpired + ' expired records excluded' : ''}. A new API retrieval is not a new warning.</p>`).join('')}${incomplete.length ? `<p class="feed-error">Rainfall screening incomplete for ${esc(incomplete.map(row => row.city).join(', '))}: missing values were not treated as zero.</p>` : ''}${model.messages.map(message => `<p class="feed-error">${esc(message)}</p>`).join('')}<p>Browser alerts ${notificationEnabled ? 'enabled' : 'off'} · only while this app is open · selected scope, type and severity · up to 3 notices per refresh. ${esc(notificationError)}</p>`;
+      status.innerHTML = `<p>${esc(model.coverageNote)}</p>${model.sourceStatus.map(s => `<p class="note">${esc(s.name)} · latest published notice / feed date: ${esc(time(s.publishedAt))}${s.rejectedExpired ? ' · ' + s.rejectedExpired + ' expired records excluded' : ''}. A new API retrieval is not a new warning.</p>`).join('')}${incomplete.length ? `<p class="feed-error">Rainfall screening incomplete for ${esc(incomplete.map(row => row.city).join(', '))}: missing values were not treated as zero.</p>` : ''}${model.messages.map(message => `<p class="feed-error">${esc(message)}</p>`).join('')}<p>Browser alerts ${notificationEnabled ? 'enabled' : 'off'} · only while this app is open · the selected filters · up to 3 notices per refresh. ${esc(notificationError)}</p>`;
     }
     return model;
   }

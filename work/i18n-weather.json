@@ -989,15 +989,15 @@
       "so": "Qiimeynta hordhaca ah ee roobka ma dhammaystirna {0}: qiimayaasha maqan looma qaadan eber."
     },
     {
-      "en": "Browser alerts {0} · only while this app is open · selected scope, type and severity · up to 3 notices per refresh. {1}",
-      "so": "Digniinaha biraawsarka {0} · oo keliya inta abkani furan yahay · baaxadda, nooca iyo darnaanta la doortay · ugu badnaan 3 ogeysiis cusboonaysiin kasta. {1}",
+      "en": "Browser alerts {0} · only while this app is open · the selected filters · up to 3 notices per refresh. {1}",
+      "so": "Digniinaha biraawsarka {0} · oo keliya inta abkani furan yahay · shaandhooyinka la doortay · ugu badnaan 3 ogeysiis cusboonaysiin kasta. {1}",
       "translate": [
         0
       ]
     },
     {
-      "en": "Browser alerts {0} · only while this app is open · selected scope, type and severity · up to 3 notices per refresh.",
-      "so": "Digniinaha biraawsarka {0} · oo keliya inta abkani furan yahay · baaxadda, nooca iyo darnaanta la doortay · ugu badnaan 3 ogeysiis cusboonaysiin kasta.",
+      "en": "Browser alerts {0} · only while this app is open · the selected filters · up to 3 notices per refresh.",
+      "so": "Digniinaha biraawsarka {0} · oo keliya inta abkani furan yahay · shaandhooyinka la doortay · ugu badnaan 3 ogeysiis cusboonaysiin kasta.",
       "translate": [
         0
       ]

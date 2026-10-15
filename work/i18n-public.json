@@ -590,7 +590,13 @@
     "Moderate or elevated": "Dhexdhexaad ama kordhay",
     "Minor or watch": "Yar ama la socod",
     "Not stated": "Lama sheegin",
-    "High or severe": "Sare ama daran"
+    "High or severe": "Sare ama daran",
+    "Source": "Isha",
+    "All sources": "Dhammaan ilaha",
+    "ICPAC regional forecast": "Saadaasha gobolka ee ICPAC",
+    "SWALIM river gauges": "Cabbirada webiyada ee SWALIM",
+    "App rainfall screen (Open-Meteo)": "Baaritaanka roobka ee abka (Open-Meteo)",
+    "Unverified community reports: counts show report activity, not flood severity or an official warning.": "Warbixinno bulsho oo aan la xaqiijin: tirooyinku waxay muujinayaan inta warbixin la soo diray, ma aha darnaanta fatahaadda ama digniin rasmi ah."
   },
   "patterns": [
     {

@@ -112,8 +112,30 @@ render({ ...input, severity: 'medium', onSeverity: value => severityChoices.push
 assert.equal(severityNode.value, 'medium', 'the dropdown shows the active level');
 severityNode.onchange({ target: { value: 'high' } });
 assert.deepEqual(severityChoices, ['high']);
-assert.ok(nodes['alerts-status'].innerHTML.includes('selected scope, type and severity'), 'notifications say they follow the severity too');
+assert.ok(nodes['alerts-status'].innerHTML.includes('· the selected filters ·'), 'notifications say they follow the filters');
 delete nodes['alerts-severity'];
+
+// Source filter: every alert names one of four sources, and each choice shows only that source.
+const sourceKeys = ['icpac', 'gdacs', 'swalim', 'open-meteo'];
+assert.ok(everyAlert.every(a => sourceKeys.includes(a.sourceKey)), 'every alert has a known source');
+assert.ok(new Set(everyAlert.map(a => a.sourceKey)).size > 1, 'the test alerts come from more than one source');
+let coveredBySource = 0;
+for (const key of sourceKeys) {
+  const shown = build({ ...input, source: key });
+  assert.equal(shown.sourceFilter, key);
+  assert.ok(shown.alerts.every(a => a.sourceKey === key), `only ${key}`);
+  coveredBySource += shown.alerts.length;
+}
+assert.equal(coveredBySource, everyAlert.length, 'the four sources together show every alert once');
+assert.equal(build({ ...input, source: 'constructor' }).sourceFilter, 'all');
+assert.ok(build({ ...input, source: 'swalim' }).alerts.every(a => a.source === 'FAO SWALIM river observation'));
+const sourceNode = { value: '', onchange: null }, sourceChoices = [];
+nodes['alerts-source'] = sourceNode;
+render({ ...input, source: 'icpac', onSource: value => sourceChoices.push(value) });
+assert.equal(sourceNode.value, 'icpac');
+sourceNode.onchange({ target: { value: 'gdacs' } });
+assert.deepEqual(sourceChoices, ['gdacs']);
+delete nodes['alerts-source'];
 
 // Share rows: with share.js loaded, every alert carries one; source event titles stay as published.
 const shareNodes = Object.fromEntries(Object.keys(nodes).map(id => [id, { innerHTML: '', textContent: '', value: '', disabled: false }]));

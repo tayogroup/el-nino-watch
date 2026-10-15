@@ -133,3 +133,20 @@ test('each non-empty forecast top-5 list carries a share row with its cities; an
   for(const text of shared)assert.ok(text.split('\n').filter(line=>/^\d\. /.test(line)).length<=5,'Five cities at most');
   assert.equal(texts(context.window.CityRankings.html(input({weatherRowsByCity:[]}))).length,0,'No list, no share row');
 });
+
+test('the Flooding today list shares its cities and report counts, with the unverified note; a truncated feed shares nothing',async()=>{
+  const share=await fs.readFile(new URL('./somalia-flood-watch/dist/share.js',import.meta.url),'utf8');
+  const document={getElementById:()=>null,addEventListener(){}};
+  const context=vm.createContext({window:{document},document,Date,console,URL,URLSearchParams});
+  vm.runInContext(share,context);vm.runInContext(source,context);
+  const decode=value=>value.replaceAll('&quot;','"').replaceAll('&#39;',"'").replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&');
+  const texts=html=>[...html.matchAll(/data-share-lines="([^"]+)"/g)].map(match=>context.window.SiteShare.textOf(JSON.parse(decode(match[1]))));
+  const reports=[report('m1','mogadishu'),report('m2','mogadishu'),report('b1','baidoa')];
+  const feed=truncated=>({communityFeed:{data:{reports,cityId:null,total:reports.length,truncated},scope:'all',cityId:null,lastSuccess:now}});
+  const shared=texts(context.window.CityRankings.html(input(feed(false))));
+  assert.equal(shared.length,4,'all four top-5 lists can be shared');
+  const flooding=shared.find(text=>text.startsWith('El Nino Watch · Flooding today · '));
+  assert.ok(flooding);assert.match(flooding,/\n1\. Mogadishu — 2 reports\n2\. Baidoa — 1 report\n/);
+  assert.match(flooding,/Unverified community reports: counts show report activity, not flood severity or an official warning\.$/);
+  assert.equal(texts(context.window.CityRankings.html(input(feed(true)))).some(text=>text.includes('Flooding today')),false,'a withheld ranking is not shared');
+});
