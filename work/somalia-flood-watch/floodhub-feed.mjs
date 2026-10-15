@@ -6,9 +6,10 @@
 // reads nothing from Google. It is sent in a header, never in a URL, so it cannot reach a log.
 //
 // Each gauge Google forecasts in Somalia has a latest flood status: extreme, severe, above normal,
-// no flooding or unknown. A gauge at above normal or higher within GAUGE_RADIUS_KM of a monitored
-// city becomes an alert for that city (the worst gauge per city). These are AI model forecasts at
-// river gauges, not official warnings; the official national forecast is MOEWR's (hydro-feed.mjs).
+// no flooding or unknown; Flood Hub's map calls the first three Extreme, Danger and Warning. A gauge
+// at Warning or higher within GAUGE_RADIUS_KM of a monitored city becomes an alert for that city (the
+// worst gauge per city). These are AI model forecasts at river gauges, not official warnings; the
+// official national forecast is MOEWR's (hydro-feed.mjs).
 const API = 'https://floodforecasting.googleapis.com/v1/';
 const SITE = 'https://sites.research.google/floods/';
 const DAY = 86400000;
@@ -16,12 +17,13 @@ const MAX_AGE_MS = 3 * DAY;
 export const GAUGE_RADIUS_KM = 25;
 export const FLOODHUB_SOURCE = Object.freeze({id: 'floodhub', name: 'Google Flood Hub river forecast', url: SITE, api: API});
 
-// Google's severities, highest first. Extreme and severe are both the app's top level; Google's
-// two words are kept on the card.
+// Google's severities, highest first, shown with the words Flood Hub's own map uses for the same three
+// gauge thresholds (owner, 2026-10-16): Extreme, Danger and Warning. Extreme and Danger are both the
+// app's top level. "level" keeps Flood Hub's Warning apart from MOEWR's national warning.
 const SEVERITIES = {
-  EXTREME: {severity: 'severe', label: 'Extreme', title: 'extreme flood forecast', forecast: 'extreme flooding', order: 3},
-  SEVERE: {severity: 'severe', label: 'Severe', title: 'severe flood forecast', forecast: 'severe flooding', order: 2},
-  ABOVE_NORMAL: {severity: 'minor', label: 'Above normal', title: 'above-normal river level', forecast: 'above-normal river levels', order: 1}
+  EXTREME: {severity: 'severe', word: 'Extreme', order: 3},
+  SEVERE: {severity: 'severe', word: 'Danger', order: 2},
+  ABOVE_NORMAL: {severity: 'minor', word: 'Warning', order: 1}
 };
 const TRENDS = {RISE: 'The forecast river level is rising.', FALL: 'The forecast river level is falling.', NO_CHANGE: 'The forecast river level is steady.'};
 
@@ -60,16 +62,16 @@ export function floodHubAlert(status, gauge, city) {
   const lat = status.gaugeLocation?.latitude, lon = status.gaugeLocation?.longitude;
   // Fixed sentence shapes, so the page can translate them (i18n-public.json). The gauge leads its
   // sentence: a pattern ending in a name would also match every sentence after it.
-  const sentences = [`At the ${place === 'River gauge' ? 'river gauge' : place}, Google Flood Hub forecasts ${meta.forecast}.`];
+  const sentences = [`At the ${place === 'River gauge' ? 'river gauge' : place}, Google Flood Hub forecasts the river at its ${meta.word} level.`];
   if (TRENDS[status.forecastTrend]) sentences.push(TRENDS[status.forecastTrend]);
   if (Number.isFinite(change?.lowerBound) && Number.isFinite(change?.upperBound)) sentences.push(`Forecast change from the last known level: ${metres(change.lowerBound)} to ${metres(change.upperBound)} m.`);
   sentences.push('This is an AI model forecast from Google, not an official warning.');
   return {
     id: `floodhub:${status.gaugeId}:${new Date(issuedAt).toISOString()}`, sourceId: 'floodhub',
-    title: `${city.name} · Google Flood Hub: ${meta.title}`,
+    title: `${city.name} · Google Flood Hub: river forecast at ${meta.word} level`,
     source: 'Google Flood Hub', sourceUrl: Number.isFinite(lat) && Number.isFinite(lon) ? `${SITE}l/${lat.toFixed(4)}/${lon.toFixed(4)}/10` : SITE,
     issuedAt: new Date(issuedAt).toISOString(), startsAt: new Date(startsAt).toISOString(), endsAt: new Date(endsAt).toISOString(),
-    severity: meta.severity, severityText: meta.label, status: 'active',
+    severity: meta.severity, severityText: `${meta.word} level`, status: 'active',
     scope: {country: 'Somalia', cities: [city.name], gauge: place, areaDescription: place},
     description: sentences.join(' '),
     basis: 'river-forecast', gaugeId: String(status.gaugeId), googleSeverity: status.severity, distanceKm: Math.round(city.km), qualityVerified: status.qualityVerified === true

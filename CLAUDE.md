@@ -72,9 +72,12 @@ messages.
   (or `SNHS_SUPABASE_KEY`); never commit it.
 - **Google Flood Hub** (owner, 2026-10-15) is a flood-forecasting source in
   Alerts, from Google's Flood Forecasting API (`floodhub-feed.mjs`), never by
-  scraping the Flood Hub site. A gauge at above normal, severe or extreme within
+  scraping the Flood Hub site. A gauge at Warning, Danger or Extreme level within
   25 km of a monitored city is an alert for that city (the worst gauge per
-  city), badged "River forecast · Google Flood Hub". The API needs Google's
+  city), badged "River forecast · Google Flood Hub". Cards use Flood Hub's own
+  level words (owner, 2026-10-16), not the API's ABOVE_NORMAL / SEVERE / EXTREME,
+  so they match what a reader sees on Flood Hub; "Warning level" is not MOEWR's
+  national warning and stays in the Minor severity group. The API needs Google's
   waitlist approval and an API key: `GOOGLE_FLOOD_API_KEY`, set through the
   Bunny settings workflow's `source-keys` mode (DEPLOYMENT.md). Until it is set
   the source is off: the server asks Google nothing and the Alerts tab hides its

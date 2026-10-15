@@ -627,13 +627,10 @@
     "4 sources": "4 ilood",
     "The official national flood forecast: each region's daily flood level (advisory, watch or warning) for the active rainy season, with anticipatory-action pre-activation and activation. Shown as official alerts for the cities in each region.": "Saadaasha rasmiga ah ee fatahaadda qaranka: heerka fatahaadda maalinlaha ah ee gobol kasta (talo, feejignaan ama digniin) xilliga roobka ee socda, oo ay la socdaan diyaargarowga iyo hawlgelinta tallaabada hore. Waxaa loo muujiyaa digniino rasmi ah magaalooyinka gobol kasta.",
     "The Ministry of Energy and Water Resources publishes the national flood forecast the app shows as official alerts. ICPAC's regional forecasts, Google Flood Hub's river forecasts and GDACS event monitoring are not official warnings, and the app labels them that way.": "Wasaaradda Tamarta iyo Kheyraadka Biyaha ayaa daabacda saadaasha fatahaadda qaranka ee abku u muujiyo digniino rasmi ah. Saadaasha gobolka ee ICPAC, saadaalaha webiga ee Google Flood Hub iyo la socodka dhacdooyinka ee GDACS ma aha digniino rasmi ah, abkuna sidaas ayuu u calaamadiyaa.",
-    "River flood forecasts at river gauges, from Google's AI model. A gauge forecast at above normal, severe or extreme within 25 km of a monitored city becomes an alert for that city. A model forecast, not an official warning. Used once Google approves the app's access to the API; the data is under the CC BY 4.0 licence.": "Saadaalaha fatahaadda webiga ee cabbirrada webiga, oo ka yimid moodeelka AI ee Google. Cabbir saadaashiisu tahay ka sarreeya caadiga, daran ama aad u daran, oo 25 km gudahood u jira magaalo la dabagalo, wuxuu noqdaa digniin magaaladaas. Waa saadaal moodeel, ma aha digniin rasmi ah. Waxaa la isticmaalayaa marka Google uu oggolaado gelitaanka abka ee API-ga; xogtu waxay ku hoos jirtaa shatiga CC BY 4.0.",
     "River forecast (Google Flood Hub)": "Saadaasha webiga (Google Flood Hub)",
     "River forecasts (Google Flood Hub)": "Saadaalaha webiga (Google Flood Hub)",
     "River forecast · Google Flood Hub": "Saadaasha webiga · Google Flood Hub",
     "Google Flood Hub river forecast": "Saadaasha webiga ee Google Flood Hub",
-    "Severe": "Daran",
-    "Above normal": "Ka sarreeya caadiga",
     "River gauge": "Xarunta cabbirka webiga",
     "The forecast river level is rising.": "Heerka webiga ee la saadaaliyay wuu kacayaa.",
     "The forecast river level is falling.": "Heerka webiga ee la saadaaliyay wuu dhacayaa.",
@@ -643,7 +640,11 @@
     "Google Flood Hub river forecasts are AI model forecasts at river gauges near the cities, not official warnings.": "Saadaalaha webiga ee Google Flood Hub waa saadaalo moodeel AI ah oo lagu sameeyay cabbirrada webiga ee u dhow magaalooyinka, ma aha digniino rasmi ah.",
     "river gauge": "xarunta cabbirka webiga",
     "River flood forecasts near here · not an official warning ↗": "Saadaalaha fatahaadda webiga ee halkan u dhow · ma aha digniin rasmi ah ↗",
-    "Google Flood Hub river forecasts ↗": "Saadaalaha webiga ee Google Flood Hub ↗"
+    "Google Flood Hub river forecasts ↗": "Saadaalaha webiga ee Google Flood Hub ↗",
+    "River flood forecasts at river gauges, from Google's AI model. A gauge forecast at Flood Hub's Warning, Danger or Extreme level within 25 km of a monitored city becomes an alert for that city. A model forecast, not an official warning. Used once Google approves the app's access to the API; the data is under the CC BY 4.0 licence.": "Saadaalaha fatahaadda webiga ee cabbirrada webiga, oo ka yimid moodeelka AI ee Google. Cabbir saadaashiisu gaarto heerka Digniinta, Khatarta ama Aad u daran ee Flood Hub, oo 25 km gudahood u jira magaalo la dabagalo, wuxuu noqdaa digniin magaaladaas. Waa saadaal moodeel, ma aha digniin rasmi ah. Waxaa la isticmaalayaa marka Google uu oggolaado gelitaanka abka ee API-ga; xogtu waxay ku hoos jirtaa shatiga CC BY 4.0.",
+    "Extreme level": "Heerka aad u daran",
+    "Danger level": "Heerka khatarta",
+    "Warning level": "Heerka digniinta"
   },
   "patterns": [
     {
@@ -1094,34 +1095,34 @@
       "so": "{0} ka mid ah 30 magaalo ayaa leh saadaal roob culus {1}"
     },
     {
-      "en": "{0} · Google Flood Hub: extreme flood forecast",
-      "so": "{0} · Google Flood Hub: saadaal fatahaad aad u daran"
+      "en": "{0} · Google Flood Hub: river forecast at Extreme level",
+      "so": "{0} · Google Flood Hub: saadaasha webiga, heerka aad u daran"
     },
     {
-      "en": "{0} · Google Flood Hub: severe flood forecast",
-      "so": "{0} · Google Flood Hub: saadaal fatahaad daran"
+      "en": "{0} · Google Flood Hub: river forecast at Danger level",
+      "so": "{0} · Google Flood Hub: saadaasha webiga, heerka khatarta"
     },
     {
-      "en": "{0} · Google Flood Hub: above-normal river level",
-      "so": "{0} · Google Flood Hub: heerka webiga oo ka sarreeya caadiga"
+      "en": "{0} · Google Flood Hub: river forecast at Warning level",
+      "so": "{0} · Google Flood Hub: saadaasha webiga, heerka digniinta"
     },
     {
-      "en": "At the {0}, Google Flood Hub forecasts extreme flooding.",
-      "so": "Google Flood Hub wuxuu saadaalinayaa fatahaad aad u daran oo ka dhacda {0}.",
+      "en": "At the {0}, Google Flood Hub forecasts the river at its Extreme level.",
+      "so": "Google Flood Hub wuxuu saadaalinayaa in webigu gaaro heerkiisa aad u daran ee {0}.",
       "translate": [
         0
       ]
     },
     {
-      "en": "At the {0}, Google Flood Hub forecasts severe flooding.",
-      "so": "Google Flood Hub wuxuu saadaalinayaa fatahaad daran oo ka dhacda {0}.",
+      "en": "At the {0}, Google Flood Hub forecasts the river at its Danger level.",
+      "so": "Google Flood Hub wuxuu saadaalinayaa in webigu gaaro heerkiisa khatarta ee {0}.",
       "translate": [
         0
       ]
     },
     {
-      "en": "At the {0}, Google Flood Hub forecasts above-normal river levels.",
-      "so": "Google Flood Hub wuxuu saadaalinayaa heerar webi oo ka sarreeya caadiga oo ka dhacda {0}.",
+      "en": "At the {0}, Google Flood Hub forecasts the river at its Warning level.",
+      "so": "Google Flood Hub wuxuu saadaalinayaa in webigu gaaro heerkiisa digniinta ee {0}.",
       "translate": [
         0
       ]

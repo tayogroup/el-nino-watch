@@ -17,18 +17,20 @@ const beledweyne = {name: 'Beledweyne', region: 'Hiraan', km: 2};
 
 test('a gauge flood status becomes an alert for its city; no flooding and unknown do not', () => {
   const alert = floodHubAlert(status('g1', 'SEVERE'), {siteName: 'Belet Weyne', river: 'Shabelle'}, beledweyne);
-  assert.equal(alert.title, 'Beledweyne · Google Flood Hub: severe flood forecast');
-  assert.equal(alert.severity, 'severe'); assert.equal(alert.severityText, 'Severe');
+  assert.equal(alert.title, 'Beledweyne · Google Flood Hub: river forecast at Danger level', 'Flood Hub\'s word for SEVERE');
+  assert.equal(alert.severity, 'severe'); assert.equal(alert.severityText, 'Danger level');
   assert.equal(alert.basis, 'river-forecast'); assert.equal(alert.sourceId, 'floodhub');
   assert.deepEqual(alert.scope.cities, ['Beledweyne']); assert.equal(alert.scope.gauge, 'Belet Weyne gauge (Shabelle)');
-  assert.equal(alert.description, 'At the Belet Weyne gauge (Shabelle), Google Flood Hub forecasts severe flooding. The forecast river level is rising. Forecast change from the last known level: +0.4 to +0.9 m. This is an AI model forecast from Google, not an official warning.');
+  assert.equal(alert.description, 'At the Belet Weyne gauge (Shabelle), Google Flood Hub forecasts the river at its Danger level. The forecast river level is rising. Forecast change from the last known level: +0.4 to +0.9 m. This is an AI model forecast from Google, not an official warning.');
   assert.equal(alert.endsAt, '2026-10-21T00:00:00.000Z');
   assert.equal(alert.sourceUrl, 'https://sites.research.google/floods/l/4.7500/45.2100/10');
-  assert.equal(floodHubAlert(status('g1', 'EXTREME'), null, beledweyne).title, 'Beledweyne · Google Flood Hub: extreme flood forecast');
-  assert.equal(floodHubAlert(status('g1', 'EXTREME'), null, beledweyne).severityText, 'Extreme');
+  assert.equal(floodHubAlert(status('g1', 'EXTREME'), null, beledweyne).title, 'Beledweyne · Google Flood Hub: river forecast at Extreme level');
+  assert.equal(floodHubAlert(status('g1', 'EXTREME'), null, beledweyne).severityText, 'Extreme level');
+  assert.equal(floodHubAlert(status('g1', 'ABOVE_NORMAL'), null, beledweyne).title, 'Beledweyne · Google Flood Hub: river forecast at Warning level', 'Flood Hub\'s word for ABOVE_NORMAL');
+  assert.equal(floodHubAlert(status('g1', 'ABOVE_NORMAL'), null, beledweyne).severityText, 'Warning level');
   assert.equal(floodHubAlert(status('g1', 'ABOVE_NORMAL'), null, beledweyne).severity, 'minor');
   assert.equal(floodHubAlert(status('g1', 'ABOVE_NORMAL', {forecastTrend: 'FORECAST_TREND_UNSPECIFIED', forecastChange: undefined}), null, beledweyne).description,
-    'At the river gauge, Google Flood Hub forecasts above-normal river levels. This is an AI model forecast from Google, not an official warning.');
+    'At the river gauge, Google Flood Hub forecasts the river at its Warning level. This is an AI model forecast from Google, not an official warning.');
   for (const severity of ['NO_FLOODING', 'UNKNOWN', 'SEVERITY_UNSPECIFIED']) assert.equal(floodHubAlert(status('g1', severity), null, beledweyne), null, severity);
   assert.equal(floodHubAlert(status('g1', 'SEVERE'), null, null), null, 'no city, no alert');
   assert.equal(floodHubAlert(status('g1', 'SEVERE', {issuedTime: 'soon'}), null, beledweyne), null, 'an unreadable date is rejected');
@@ -111,7 +113,7 @@ test('switched off without a key: no Google request and no Flood Hub source in t
   const loaded = await loadOfficialAlerts({now: NOW, fetchImpl: async (url, options) => String(url).startsWith(ALERT_SOURCES.floodhubApi) ? fetchImpl(url, options) : offline(url), cities, floodHubKey: KEY});
   const source = loaded.sources.find(item => item.id === 'floodhub');
   assert.equal(source.available, true); assert.equal(source.name, 'Google Flood Hub river forecast');
-  assert.deepEqual(loaded.alerts.map(alert => alert.title), ['Beledweyne · Google Flood Hub: severe flood forecast']);
+  assert.deepEqual(loaded.alerts.map(alert => alert.title), ['Beledweyne · Google Flood Hub: river forecast at Danger level']);
   assert.match(loaded.coverageNote, /Google Flood Hub river forecasts are AI model forecasts at river gauges near the cities, not official warnings\./);
 });
 
@@ -137,15 +139,19 @@ test('on the Alerts tab: Flood Hub badge, gauge place line, source filter offere
   const card = model.alerts[0];
   assert.equal(card.badge, 'River forecast · Google Flood Hub');
   assert.equal(card.scopeLabel, 'Beledweyne · Belet Weyne gauge (Shabelle)');
-  assert.equal(card.severityLabel, 'Severe'); assert.equal(card.official, false);
+  assert.equal(card.severityLabel, 'Danger level'); assert.equal(card.official, false);
   assert.equal(window.FloodAlerts.build({...input, source: 'floodhub'}).alerts.length, 1);
   assert.equal(window.FloodAlerts.build({...input, source: 'moewr'}).alerts.length, 0);
-  assert.equal(window.FloodAlerts.build({...input, severity: 'high'}).alerts.length, 1, 'severe is the top severity level');
+  assert.equal(window.FloodAlerts.build({...input, severity: 'high'}).alerts.length, 1, 'Danger is the top severity level');
+  const warning = {...floodHubAlert(status('bw', 'ABOVE_NORMAL'), null, beledweyne)};
+  const warningInput = {...input, officialFeed: {...input.officialFeed, data: {...input.officialFeed.data, alerts: [warning]}}};
+  assert.equal(window.FloodAlerts.build({...warningInput, severity: 'low'}).alerts.length, 1, 'Flood Hub\'s Warning level is in the Minor group, not with MOEWR\'s national warning');
+  assert.equal(window.FloodAlerts.build({...warningInput, severity: 'high'}).alerts.length, 0);
   assert.equal(window.FloodAlerts.build({...input, selectedCity: 0}).alerts.length, 0, 'not shown for another city');
   window.FloodAlerts.render(input);
   assert.equal(option.hidden, false, 'the source option appears once the server has the key');
   assert.match(nodes['alerts-summary'].innerHTML, /<b>1<\/b> River forecasts \(Google Flood Hub\)/);
-  assert.match(nodes['alerts-list'].innerHTML, /<span class="badge">Severe<\/span>/);
+  assert.match(nodes['alerts-list'].innerHTML, /<span class="badge">Danger level<\/span>/);
   assert.equal(JSON.stringify(window.FloodAlerts.shareLines(card).at(-1)), JSON.stringify([{t: 'Not an official warning.'}]));
   window.FloodAlerts.render({...input, officialFeed: {...input.officialFeed, data: {alerts: [], sources: [{id: 'icpac', available: true, fetchedAt: now}]}}});
   assert.equal(option.hidden, true, 'hidden while the source is switched off');
@@ -159,16 +165,18 @@ test('Flood Hub titles, places and descriptions read in Somali', async () => {
   vm.runInContext(await readFile(new URL('translations-so.js', dist), 'utf8'), context);
   vm.runInContext(await readFile(new URL('i18n.js', dist), 'utf8'), context);
   const so = text => window.SiteLanguage.translateText(text);
-  assert.equal(so('Beledweyne · Google Flood Hub: severe flood forecast'), 'Beledweyne · Google Flood Hub: saadaal fatahaad daran');
-  assert.equal(so('Luuq · Google Flood Hub: extreme flood forecast'), 'Luuq · Google Flood Hub: saadaal fatahaad aad u daran');
+  assert.equal(so('Beledweyne · Google Flood Hub: river forecast at Danger level'), 'Beledweyne · Google Flood Hub: saadaasha webiga, heerka khatarta');
+  assert.equal(so('Hudur · Google Flood Hub: river forecast at Warning level'), 'Hudur · Google Flood Hub: saadaasha webiga, heerka digniinta');
+  for (const [en, so_] of [['Extreme level', 'Heerka aad u daran'], ['Danger level', 'Heerka khatarta'], ['Warning level', 'Heerka digniinta']]) assert.equal(so(en), so_);
+  assert.equal(so('Luuq · Google Flood Hub: river forecast at Extreme level'), 'Luuq · Google Flood Hub: saadaasha webiga, heerka aad u daran');
   assert.equal(so('Beledweyne · Belet Weyne gauge (Shabelle)'), 'Beledweyne · xarunta cabbirka webiga Belet Weyne (Shabelle)', 'the city name stays whole');
   assert.equal(so('Luuq · Luuq gauge'), 'Luuq · xarunta cabbirka webiga Luuq');
   assert.equal(so('Luuq · Juba river gauge'), 'Luuq · xarunta cabbirka webiga Juba');
   assert.equal(so('Luuq · River gauge'), 'Luuq · xarunta cabbirka webiga');
   assert.equal(so('River forecast · Google Flood Hub'), 'Saadaasha webiga · Google Flood Hub');
   const description = floodHubAlert(status('g1', 'SEVERE'), {siteName: 'Belet Weyne', river: 'Shabelle'}, beledweyne).description;
-  assert.equal(so(description), 'Google Flood Hub wuxuu saadaalinayaa fatahaad daran oo ka dhacda xarunta cabbirka webiga Belet Weyne (Shabelle). Heerka webiga ee la saadaaliyay wuu kacayaa. Isbeddelka la saadaaliyay marka loo eego heerkii ugu dambeeyay ee la ogaa: +0.4 ilaa +0.9 m. Tani waa saadaal moodeel AI ah oo ka timid Google, ma aha digniin rasmi ah.');
-  assert.equal(so(floodHubAlert(status('g1', 'ABOVE_NORMAL', {forecastTrend: 'NO_CHANGE', forecastChange: undefined}), null, beledweyne).description), 'Google Flood Hub wuxuu saadaalinayaa heerar webi oo ka sarreeya caadiga oo ka dhacda xarunta cabbirka webiga. Heerka webiga ee la saadaaliyay wuu degan yahay. Tani waa saadaal moodeel AI ah oo ka timid Google, ma aha digniin rasmi ah.');
+  assert.equal(so(description), 'Google Flood Hub wuxuu saadaalinayaa in webigu gaaro heerkiisa khatarta ee xarunta cabbirka webiga Belet Weyne (Shabelle). Heerka webiga ee la saadaaliyay wuu kacayaa. Isbeddelka la saadaaliyay marka loo eego heerkii ugu dambeeyay ee la ogaa: +0.4 ilaa +0.9 m. Tani waa saadaal moodeel AI ah oo ka timid Google, ma aha digniin rasmi ah.');
+  assert.equal(so(floodHubAlert(status('g1', 'ABOVE_NORMAL', {forecastTrend: 'NO_CHANGE', forecastChange: undefined}), null, beledweyne).description), 'Google Flood Hub wuxuu saadaalinayaa in webigu gaaro heerkiisa digniinta ee xarunta cabbirka webiga. Heerka webiga ee la saadaaliyay wuu degan yahay. Tani waa saadaal moodeel AI ah oo ka timid Google, ma aha digniin rasmi ah.');
   assert.equal(so('Google Flood Hub river forecast: 3 gauges with a flood signal are more than 25 km from a monitored city; see Google Flood Hub for them.'), 'Saadaasha webiga ee Google Flood Hub: 3 cabbir oo leh calaamad fatahaad ayaa in ka badan 25 km u jira magaalo la dabagalo; ka eeg Google Flood Hub.');
 });
 
