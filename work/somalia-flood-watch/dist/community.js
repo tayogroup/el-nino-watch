@@ -210,11 +210,18 @@
     for (const report of Array.isArray(reports) ? reports : []) { counts.all++; if (CATEGORIES.has(report?.category)) counts[report.category]++; }
     return counts;
   }
+  // A report the map can pin: the same test map.js applies before drawing a marker.
+  const pinnable = report => finite(report?.latitude) && finite(report?.longitude) && report.latitude >= -2 && report.latitude <= 13 && report.longitude >= 40 && report.longitude <= 52;
   function renderTypeSummary() {
-    const box = byId('community-type-summary'); if (!box) return;
-    if (!records.length) { box.hidden = true; box.innerHTML = ''; return; }
-    const counts = typeCounts(records.filter(report => reportMatches(report, 'all', district, landmarkFilter, landmarkName, dateFrom, dateTo, cityFilter)));
-    const focused = globalThis.document?.activeElement?.closest?.('[data-type-chip]')?.getAttribute?.('data-type-chip');
+    const unfiltered = records.filter(report => reportMatches(report, 'all', district, landmarkFilter, landmarkName, dateFrom, dateTo, cityFilter));
+    renderTypeChips(byId('community-type-summary'), records.length ? typeCounts(unfiltered) : null);
+    const onMap = unfiltered.filter(pinnable);
+    renderTypeChips(byId('community-map-types'), onMap.length ? typeCounts(onMap) : null);
+  }
+  function renderTypeChips(box, counts) {
+    if (!box) return;
+    if (!counts) { box.hidden = true; box.innerHTML = ''; return; }
+    const active = globalThis.document?.activeElement, focused = box.contains?.(active) ? active?.closest?.('[data-type-chip]')?.getAttribute?.('data-type-chip') : null;
     box.hidden = false;
     box.innerHTML = TYPE_CHIPS.map(([key, name]) => `<button type="button" class="community-type-chip${category === key ? ' is-active' : ''}" data-type-chip="${key}" aria-pressed="${category === key}"><span>${name}</span> <b>${counts[key]}</b></button>`).join('');
     // Rebuilding the buttons would drop keyboard focus; put it back on the same type.
@@ -474,6 +481,7 @@
     byId('community-city-filter').addEventListener('change', event => { reportFocusSequence++; cityFilter = String(event.target.value || 'all'); renderFeed(); notifyChange(); });
     byId('community-district-filter').addEventListener('change', event => { reportFocusSequence++; district = String(event.target.value || 'all'); renderFeed(); notifyChange(); });
     byId('community-type-summary').addEventListener('click', chooseType);
+    byId('community-map-types')?.addEventListener?.('click', chooseType);
     byId('community-category').addEventListener('change', event => { reportFocusSequence++; category = CATEGORIES.has(event.target.value) ? event.target.value : 'all'; renderFeed(); notifyChange(); });
     byId('community-media-input').addEventListener('change', event => { acceptFiles(event.target.files); event.target.value = ''; });
     const dropzone = byId('community-dropzone');

@@ -575,7 +575,16 @@
     "Shabelle": "Shabeelle",
     "Juba": "Jubba",
     "All reports": "Dhammaan warbixinnada",
-    "Reports by type": "Warbixinnada sida noocooda"
+    "Reports by type": "Warbixinnada sida noocooda",
+    "Report pins by type": "Calaamadaha warbixinnada sida noocooda",
+    "Share": "La wadaag",
+    "Copy text": "Koobiyee qoraalka",
+    "Copied": "Waa la koobiyeeyay",
+    "Copy not available": "Koobiyeyntu ma shaqaynayso",
+    "Not an official warning.": "Ma aha digniin rasmi ah.",
+    "Forecast model estimates, not observed rainfall or an official warning.": "Qiyaasaha moodelka saadaasha, ma aha roob la cabbiray ama digniin rasmi ah.",
+    "Rainfall-based planning screen (≥10 mm/day), not a flood forecast or an official warning.": "Baaritaan qorsheyn oo ku salaysan roobka (≥10 mm maalintii), ma aha saadaal fatahaad ama digniin rasmi ah.",
+    "TikTok, WhatsApp & more": "TikTok, WhatsApp iyo kuwo kale"
   },
   "patterns": [
     {
@@ -599,8 +608,8 @@
       "so": "Bogga maamulka duqa magaalada | El Nino Watch"
     },
     {
-      "en": "El Nino Watch: live weather forecasts, official alerts, satellite flood observations and community reports for 30 Somali cities.",
-      "so": "El Nino Watch: saadaasha cimilada ee cusub, digniinaha rasmiga ah, xogta fatahaadda ee dayax-gacmeedka iyo warbixinnaha bulshada ee 30 magaalo oo Soomaaliya ah."
+      "en": "El Nino Watch: live weather forecasts, regional rainfall alerts, satellite flood observations and community reports for 30 Somali cities.",
+      "so": "El Nino Watch: saadaasha cimilada ee cusub, digniinaha roobka ee heer gobol, xogta fatahaadda ee dayax-gacmeedka iyo warbixinnaha bulshada ee 30 magaalo oo Soomaaliya ah."
     },
     {
       "en": "Lower rainfall · stale",

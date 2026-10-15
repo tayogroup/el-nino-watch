@@ -117,3 +117,19 @@ test('all source text and city names are escaped and rank binding validates inde
   let prevented=false;root.onclick({target:{closest:selector=>selector==='[data-ranking-map]'?{}:null},preventDefault(){prevented=true;}});assert.equal(maps.length,1);assert.equal(prevented,true);
   assert.equal(harness(false).api.render(supplied).kind,'city-rankings');
 });
+
+test('each non-empty forecast top-5 list carries a share row with its cities; an empty list carries none',async()=>{
+  const share=await fs.readFile(new URL('./somalia-flood-watch/dist/share.js',import.meta.url),'utf8');
+  const document={getElementById:()=>null,addEventListener(){}};
+  const context=vm.createContext({window:{document},document,Date,console,URL,URLSearchParams});
+  vm.runInContext(share,context);vm.runInContext(source,context);
+  const decode=value=>value.replaceAll('&quot;','"').replaceAll('&#39;',"'").replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&');
+  const texts=html=>[...html.matchAll(/data-share-lines="([^"]+)"/g)].map(match=>context.window.SiteShare.textOf(JSON.parse(decode(match[1]))));
+  const shared=texts(context.window.CityRankings.html(input()));
+  assert.equal(shared.length,3,'Rainfall today, Rainfall next 7 days and Flood watch');
+  assert.match(shared[0],/^El Nino Watch · Rainfall today · /);assert.match(shared[0],/\n1\. Galkayo — 20\.0 mm\n/);
+  assert.match(shared[1],/^El Nino Watch · Rainfall · next 7 days · /);
+  assert.match(shared[2],/^El Nino Watch · Flood watch · next 7 days · /);assert.match(shared[2],/mm\/day/);assert.match(shared[2],/not a flood forecast or an official warning\.$/);
+  for(const text of shared)assert.ok(text.split('\n').filter(line=>/^\d\. /.test(line)).length<=5,'Five cities at most');
+  assert.equal(texts(context.window.CityRankings.html(input({weatherRowsByCity:[]}))).length,0,'No list, no share row');
+});

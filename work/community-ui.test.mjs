@@ -354,6 +354,16 @@ try {
   assert.equal(liveNode('community-category').value, 'flood', 'A click between chips changes nothing');
   summary.events.click(chip('all'));
   assert.equal(liveNode('community-category').value, 'all'); assert.equal(locationChanges.at(-1).length, shownNow.length);
+  // The map's row counts only reports with a pin (the rainfall report has no location) and sets the same filter.
+  const mapTypes = liveNode('community-map-types'), pinned = shownNow.filter(report => Number.isFinite(report.latitude) && Number.isFinite(report.longitude));
+  assert.ok(pinned.length > 0 && pinned.length < shownNow.length, 'the test has pinned and unpinned reports');
+  assert.equal(mapTypes.hidden, false);
+  assert.match(mapTypes.innerHTML, new RegExp(`data-type-chip="all" aria-pressed="true"><span>All reports</span> <b>${pinned.length}</b>`));
+  assert.match(mapTypes.innerHTML, /data-type-chip="rain" aria-pressed="false"><span>Rainfall<\/span> <b>0<\/b>/);
+  mapTypes.events.click(chip('flood'));
+  assert.equal(liveNode('community-category').value, 'flood', 'A map chip sets the shared Report type filter');
+  assert.match(summary.innerHTML, /data-type-chip="flood" aria-pressed="true">/, 'The feed row follows the map row');
+  mapTypes.events.click(chip('all'));
   const rainRemoved = await fetch(origin + '/api/community/reports/' + rainPosted.report.id, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ receipt: rainPosted.receiptToken }) });
   assert.equal(rainRemoved.status, 200);
   await liveApi.refresh();

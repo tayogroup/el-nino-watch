@@ -91,4 +91,20 @@ assert.ok(nodes['alerts-status'].innerHTML.includes('new API retrieval is not a 
 const noDom = { window: {}, Date, URL };
 vm.runInNewContext(fs.readFileSync(new URL('./somalia-flood-watch/dist/alerts.js', import.meta.url), 'utf8'), noDom);
 assert.equal(noDom.window.FloodAlerts.build(input).alerts.length, 4, 'Pure build works without a document or browser APIs');
+// Share rows: with share.js loaded, every alert carries one; source event titles stay as published.
+const shareNodes = Object.fromEntries(Object.keys(nodes).map(id => [id, { innerHTML: '', textContent: '', value: '', disabled: false }]));
+const shareSandbox = { window: { document: { getElementById: id => shareNodes[id], addEventListener() {} }, Notification: Notifications, localStorage: { getItem() { return null; }, setItem() {} } }, Date, URL, URLSearchParams };
+vm.runInNewContext(fs.readFileSync(new URL('./somalia-flood-watch/dist/share.js', import.meta.url), 'utf8'), shareSandbox);
+vm.runInNewContext(fs.readFileSync(new URL('./somalia-flood-watch/dist/alerts.js', import.meta.url), 'utf8'), shareSandbox);
+shareSandbox.window.FloodAlerts.render(input);
+const sharedHtml = shareNodes['alerts-list'].innerHTML, sharedModel = shareSandbox.window.FloodAlerts.build(input);
+const decodeShare = value => value.replaceAll('&quot;', '"').replaceAll('&#39;', "'").replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&');
+const shareLines = [...sharedHtml.matchAll(/data-share-lines="([^"]+)"/g)].map(match => JSON.parse(decodeShare(match[1])));
+assert.ok(sharedModel.alerts.length > 0); assert.equal(shareLines.length, sharedModel.alerts.length, 'One share row per alert');
+shareLines.forEach((lines, index) => {
+  const alert = sharedModel.alerts[index], asPublished = ['model-event', 'event-monitoring'].includes(alert.basis);
+  assert.equal(JSON.stringify(lines[0][0]), JSON.stringify(asPublished ? alert.title : { t: alert.title }), 'Source event titles are not translated');
+  assert.equal(JSON.stringify(lines.at(-1)), JSON.stringify([{ t: 'Not an official warning.' }]));
+});
+assert.ok(sharedHtml.includes('data-share-tab="alerts"'));
 console.log('alerts.js: source identity, time validity, scope, screening, gauge freshness, escaping, callbacks and notification deduplication passed.');
