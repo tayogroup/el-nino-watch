@@ -128,6 +128,21 @@ assert.equal(api.renderReport({ ...malicious, landmarkType: '<b>x</b>' }).includ
 assert.equal(JSON.parse(api.buildExport([{ ...malicious, landmarkType: 'nonsense' }], 'geojson').content).features[0].properties.landmarkType, null, 'Unknown types export as unknown');
 assert.equal(JSON.parse(api.buildExport([{ ...malicious, landmarkType: 'port' }], 'geojson').content).features[0].properties.landmarkType, 'port');
 
+// District filter: Mogadishu offers all 20; elsewhere only districts that were reported; case-insensitive.
+const filterReports = [{ id: 'a', cityId: 'mogadishu', category: 'flood', district: 'Hodan' }, { id: 'b', cityId: 'mogadishu', category: 'rain', district: 'hodan ' }, { id: 'c', cityId: 'galkayo', category: 'flood', district: 'Garsoor' }, { id: 'd', cityId: 'galkayo', category: 'flood' }];
+const mogadishuChoices = api.districtFilterOptions(filterReports, 'mogadishu');
+assert.equal(mogadishuChoices.length, 20, 'Mogadishu lists its 20 districts even before reports arrive');
+assert.equal(JSON.stringify(mogadishuChoices.find(([key]) => key === 'mogadishu|hodan')), JSON.stringify(['mogadishu|hodan', 'Hodan']));
+assert.equal(JSON.stringify(api.districtFilterOptions(filterReports, 'galkayo')), JSON.stringify([['galkayo|garsoor', 'Garsoor']]), 'Other cities list what was reported');
+// (The city list is not loaded yet here, so city names fall back to their ids; the page always has the list.)
+assert.equal(JSON.stringify(api.districtFilterOptions(filterReports, null)).toLowerCase(), JSON.stringify([['galkayo|garsoor', 'Garsoor · Galkayo'], ['mogadishu|hodan', 'Hodan · Mogadishu']]).toLowerCase(), 'All cities: each district named with its city');
+assert.equal(api.districtFilterOptions([], 'galkayo').length, 0, 'Nothing to choose: the filter hides');
+const ids = (categoryValue, districtValue) => filterReports.filter(report => api.reportMatches(report, categoryValue, districtValue)).map(report => report.id).join(',');
+assert.equal(ids('all', 'mogadishu|hodan'), 'a,b', 'District matching ignores case and spaces');
+assert.equal(ids('flood', 'mogadishu|hodan'), 'a', 'District and report type combine');
+assert.equal(ids('all', 'galkayo|hodan'), '', 'The same name in another city is a different district');
+assert.equal(ids('all', 'all'), 'a,b,c,d');
+
 
 assert.equal(JSON.parse(api.buildExport([{ ...malicious, district: '', landmark: null }], 'geojson').content).features[0].properties.district, null, 'Blank is exported as unknown');
 

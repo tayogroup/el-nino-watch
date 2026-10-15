@@ -46,3 +46,6 @@ main{max-width:1510px;padding:30px 30px 0}h1{letter-spacing:-2px}h2{font-size:24
 
 /* Community report place: district and landmark, as the reporter wrote them. */
 .community-card-place{display:flex;flex-wrap:wrap;gap:4px 14px;margin:4px 0 0;font-size:13px;color:var(--muted,#586f89)}.community-card-place b{font-weight:700;color:var(--ink,#153653);margin-right:2px}
+/* The district filter is hidden until there is a district to choose. */
+.community-filter-controls>label[hidden]{display:none}
+@media(max-width:600px){.community-filter-controls>#community-district-filter-field{grid-column:1/-1}}

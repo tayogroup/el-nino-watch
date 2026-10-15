@@ -13,12 +13,27 @@
   // Landmark types; keep in step with LANDMARK_TYPES in community.mjs.
   const LANDMARK_TYPES = new Map([["market","Market"],["school","School"],["mosque","Mosque"],["health","Hospital or clinic"],["bridge","Bridge"],["water","River or stream"],["road","Main road or junction"],["camp","IDP camp"],["airport","Airport"],["port","Port"],["other","Other"]]);
   const landmarkLabel = type => LANDMARK_TYPES.get(type) || '';
+  // District filter. A key is "cityId|district" (lower case), so free-text districts match regardless of case
+  // and the same name in two cities stays two choices.
+  const districtKey = report => typeof report?.district === 'string' && report.district.trim() ? `${report.cityId}|${report.district.trim().toLowerCase()}` : '';
+  function districtFilterOptions(reports, viewCityId) {
+    const options = new Map();
+    if (viewCityId === 'mogadishu') for (const [name, former] of MOGADISHU_DISTRICTS) options.set(`mogadishu|${name.toLowerCase()}`, former ? `${name} (${former})` : name);
+    for (const report of Array.isArray(reports) ? reports : []) {
+      const key = districtKey(report);
+      if (!key || options.has(key) || (viewCityId && report.cityId !== viewCityId)) continue;
+      options.set(key, viewCityId ? report.district.trim() : `${report.district.trim()} · ${getCityName(report.cityId)}`);
+    }
+    return [...options].sort((a, b) => a[1].localeCompare(b[1]));
+  }
+  const reportMatches = (report, categoryValue = 'all', districtValue = 'all') => (categoryValue === 'all' || report.category === categoryValue) && (districtValue === 'all' || districtKey(report) === districtValue);
   const finite = value => typeof value === 'number' && Number.isFinite(value);
   const byId = id => document.getElementById(id);
   const label = value => ({ flood: 'Flooding', rain: 'Rainfall', damage: 'Flood impact' }[value] || 'Community report');
   const eatInput = (date = new Date()) => new Date(date.getTime() + 3 * 3600000).toISOString().slice(0, 16);
   const timeLabel = value => Number.isFinite(Date.parse(value)) ? new Date(value).toLocaleString('en-GB', { timeZone: 'Africa/Mogadishu', dateStyle: 'medium', timeStyle: 'short' }) + ' EAT' : 'Date not supplied';
   let root = null, cities = [], selected = 0, scope = 'city', category = 'all', records = [], loading = false;
+  let district = 'all';
   let feedAvailable = false, feedError = null, feedFetchedAt = null, feedTotal = 0;
   let onLocation = null, onChange = null, pendingFiles = [], previewUrls = [], requestSequence = 0, submitBusy = false;
   let reportFocusSequence = 0;
@@ -87,8 +102,8 @@
   function getCityName(id) { const city = cities.find(city => cityId(city) === id); return city ? (Array.isArray(city) ? city[0] : city.name) : String(id || 'City unspecified').replace(/-/g, ' '); }
   function readReceipt(id) { return typeof receipts[id] === 'string' && receipts[id].length > 5 ? receipts[id] : null; }
   function notifyChange() {
-    const visible = category === 'all' ? records : records.filter(report => report.category === category);
-    try { onChange?.(visible, { available: feedAvailable, loading, error: feedError, fetchedAt: feedFetchedAt, total: feedTotal, scope, category, cityId: scope === 'city' ? cityId(cities[selected]) : null }); } catch {}
+    const visible = records.filter(report => reportMatches(report, category, district));
+    try { onChange?.(visible, { available: feedAvailable, loading, error: feedError, fetchedAt: feedFetchedAt, total: feedTotal, scope, category, district, cityId: scope === 'city' ? cityId(cities[selected]) : null }); } catch {}
   }
   function storeReceipt(id, token) {
     if (!id || typeof token !== 'string') return false;
@@ -123,10 +138,25 @@
     const node = byId('community-status'); if (!node) return;
     node.textContent = message; node.className = 'community-status ' + (type ? 'community-status-' + type : '');
   }
+  let districtSignature = '';
+  function renderDistrictFilter() {
+    const select = byId('community-district-filter'), field = byId('community-district-filter-field');
+    if (!select) return;
+    const options = districtFilterOptions(records, scope === 'city' ? cityId(cities[selected]) : null);
+    if (district !== 'all' && !options.some(([key]) => key === district)) district = 'all';
+    const signature = JSON.stringify(options);
+    if (signature !== districtSignature) {
+      districtSignature = signature;
+      select.innerHTML = '<option value="all">All districts</option>' + options.map(([key, name]) => `<option value="${esc(key)}" data-i18n-skip lang="und">${esc(name)}</option>`).join('');
+    }
+    select.value = district;
+    if (field) field.hidden = options.length === 0;
+  }
   function renderFeed() {
     const list = byId('community-feed-list'); if (!list) return;
     captureCommentDrafts();
-    const filtered = category === 'all' ? records : records.filter(report => report.category === category);
+    renderDistrictFilter();
+    const filtered = records.filter(report => reportMatches(report, category, district));
     for (const id of ['community-export-csv', 'community-export-geojson']) { const button = byId(id); if (button) button.disabled = filtered.length === 0; }
     byId('community-feed-title').textContent = scope === 'city' ? `${getCityName(cityId(cities[selected]))} community reports` : 'Reports across Somalia';
     byId('community-feed-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'report' : 'reports'} shown`;
@@ -153,7 +183,7 @@
     return { type: 'text/csv;charset=utf-8', extension: 'csv', count: safe.length, content: [keys.map(cell).join(','), ...safe.map(report => keys.map(key => cell(report[key])).join(','))].join('\r\n') };
   }
   function exportReports(format) {
-    const filtered = category === 'all' ? records : records.filter(report => report.category === category), output = buildExport(filtered, format);
+    const filtered = records.filter(report => reportMatches(report, category, district)), output = buildExport(filtered, format);
     if (!output.count) { status(format === 'geojson' ? 'No reports with coordinates are available in the current filters.' : 'No reports are available in the current filters.'); return; }
     const url = URL.createObjectURL(new Blob([output.content], { type: output.type })), anchor = document.createElement('a');
     anchor.href = url; anchor.download = `somalia-community-reports-${scope === 'city' ? cityId(cities[selected]) : 'all'}-${new Date().toISOString().slice(0, 10)}.${output.extension}`; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
@@ -281,7 +311,7 @@
     selected = index;
     const input = byId('community-report-city');
     if (input) { if (input.value && input.value !== requestedCityId) clearCoordinates(); input.value = requestedCityId; }
-    scope = 'city'; category = 'all';
+    scope = 'city'; category = 'all'; district = 'all';
     const scopeInput = byId('community-scope'), categoryInput = byId('community-category');
     if (scopeInput) scopeInput.value = 'city';
     if (categoryInput) categoryInput.value = 'all';
@@ -337,7 +367,7 @@
     onLocation = typeof options.onLocation === 'function' ? options.onLocation : null;
     onChange = typeof options.onChange === 'function' ? options.onChange : null;
     selected = Number.isInteger(options.selectedCity) && cities[options.selectedCity] ? options.selectedCity : 0;
-    root.innerHTML = `<div class="community-intro"><p>Share what you see on the ground. Photos, videos and local context can help people understand conditions.</p><p class="community-note">Community reports are public and unverified. For immediate danger, contact local emergency services or authorities directly.</p></div><div class="community-layout"><form id="community-report-form" class="community-compose"><div class="community-compose-heading"><span class="eyebrow">LOCAL OBSERVATIONS</span><h3>Report flooding or rain</h3></div><div class="community-field-grid"><label class="community-field">City<select id="community-report-city" name="cityId" required>${cities.map(city => `<option value="${esc(cityId(city))}">${esc(Array.isArray(city) ? city[0] : city.name)}</option>`).join('')}</select></label><label id="community-district-field" class="community-field">District (optional)${districtControl(cityId(cities[selected]))}</label><label class="community-field">Landmark (optional)<select name="landmarkType"><option value="">Choose a landmark</option>${[...LANDMARK_TYPES].map(([id, name]) => `<option value="${esc(id)}">${esc(name)}</option>`).join('')}</select></label><label class="community-field">Landmark name (optional)<input name="landmark" maxlength="120" placeholder="e.g. Bakara"></label><label class="community-field">What happened?<select name="category" required><option value="flood">Flooding</option><option value="rain">Rainfall</option><option value="damage">Flood impact / damage</option></select></label><label class="community-field">Observed date & time · EAT<input name="observedAt" type="datetime-local" required value="${eatInput()}"></label><label class="community-field">Name or alias (optional)<input name="author" maxlength="60" autocomplete="nickname" placeholder="Anonymous"></label></div><label class="community-field">Describe your observation<textarea name="description" rows="4" minlength="10" maxlength="3000" required placeholder="Describe water levels, rain, affected roads or damage. Include a nearby landmark if useful."></textarea></label><div class="community-impact-section"><h4>Reported impact (optional)</h4><p class="community-note">Leave a count blank if unknown. Enter 0 only if you know there were none. Avoid names or identifying details of victims.</p><div class="community-counts"><label class="community-field">Deaths<input name="deaths" type="number" min="0" max="100000" step="1" inputmode="numeric" placeholder="Unknown"></label><label class="community-field">Injuries<input name="injuries" type="number" min="0" max="100000" step="1" inputmode="numeric" placeholder="Unknown"></label><label class="community-field">Properties damaged<input name="damagedProperties" type="number" min="0" max="100000" step="1" inputmode="numeric" placeholder="Unknown"></label></div></div><details class="community-location"><summary>⌖ Add exact location (optional)</summary><div class="community-location-actions"><button type="button" id="community-use-location" class="button-quiet">Use my device location</button><span id="community-location-status" role="status"></span></div><div class="community-field-grid"><label class="community-field">Latitude<input name="latitude" type="number" step="any" min="-2" max="13" inputmode="decimal" placeholder="e.g. 2.0469"></label><label class="community-field">Longitude<input name="longitude" type="number" step="any" min="40" max="52" inputmode="decimal" placeholder="e.g. 45.3182"></label></div><p class="community-note">Device location is used only when you tap the button. Coordinates you submit will be public; choose a safe location to share.</p></details><label class="community-field">Supporting link (optional)<input name="sourceUrl" type="url" maxlength="1000" placeholder="https://..."></label><div id="community-dropzone" class="community-dropzone"><span aria-hidden="true">▧</span><label class="community-upload-label" for="community-media-input">Add photos or videos</label><p>Choose files or drag them here</p><input id="community-media-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" multiple><p id="community-upload-count" class="community-note">Up to 4 files · 50 MB combined</p><p class="community-note">JPG, PNG, WebP, GIF, MP4 or WebM. Media is shared as uploaded and may contain location metadata.</p></div><p id="community-upload-error" class="community-status community-status-error" role="alert"></p><div id="community-previews" class="community-media community-previews"></div><label class="community-consent"><input type="checkbox" name="publicConsent" required><span>I have permission to share this media and understand that this report will be public and unverified.</span></label><div class="community-form-actions"><button id="community-submit" type="submit">Publish report</button><p id="community-form-status" class="community-status" role="status" aria-live="polite"></p></div></form><section class="community-feed" aria-label="Community reports"><div class="community-toolbar"><div><span class="eyebrow">COMMUNITY FEED</span><h3 id="community-feed-title"></h3><p id="community-feed-count" class="community-note"></p></div><button id="community-refresh" type="button" class="button-quiet" aria-label="Refresh community reports">↻ Refresh</button></div><div class="community-filter-controls"><label>Area<select id="community-scope"><option value="city">Selected city</option><option value="all">All cities</option></select></label><label>Report type<select id="community-category"><option value="all">All observations</option><option value="flood">Flooding</option><option value="rain">Rainfall</option><option value="damage">Flood impact</option></select></label></div><p id="community-status" class="community-status" role="status" aria-live="polite"></p><div id="community-feed-list"></div></section></div>`;
+    root.innerHTML = `<div class="community-intro"><p>Share what you see on the ground. Photos, videos and local context can help people understand conditions.</p><p class="community-note">Community reports are public and unverified. For immediate danger, contact local emergency services or authorities directly.</p></div><div class="community-layout"><form id="community-report-form" class="community-compose"><div class="community-compose-heading"><span class="eyebrow">LOCAL OBSERVATIONS</span><h3>Report flooding or rain</h3></div><div class="community-field-grid"><label class="community-field">City<select id="community-report-city" name="cityId" required>${cities.map(city => `<option value="${esc(cityId(city))}">${esc(Array.isArray(city) ? city[0] : city.name)}</option>`).join('')}</select></label><label id="community-district-field" class="community-field">District (optional)${districtControl(cityId(cities[selected]))}</label><label class="community-field">Landmark (optional)<select name="landmarkType"><option value="">Choose a landmark</option>${[...LANDMARK_TYPES].map(([id, name]) => `<option value="${esc(id)}">${esc(name)}</option>`).join('')}</select></label><label class="community-field">Landmark name (optional)<input name="landmark" maxlength="120" placeholder="e.g. Bakara"></label><label class="community-field">What happened?<select name="category" required><option value="flood">Flooding</option><option value="rain">Rainfall</option><option value="damage">Flood impact / damage</option></select></label><label class="community-field">Observed date & time · EAT<input name="observedAt" type="datetime-local" required value="${eatInput()}"></label><label class="community-field">Name or alias (optional)<input name="author" maxlength="60" autocomplete="nickname" placeholder="Anonymous"></label></div><label class="community-field">Describe your observation<textarea name="description" rows="4" minlength="10" maxlength="3000" required placeholder="Describe water levels, rain, affected roads or damage. Include a nearby landmark if useful."></textarea></label><div class="community-impact-section"><h4>Reported impact (optional)</h4><p class="community-note">Leave a count blank if unknown. Enter 0 only if you know there were none. Avoid names or identifying details of victims.</p><div class="community-counts"><label class="community-field">Deaths<input name="deaths" type="number" min="0" max="100000" step="1" inputmode="numeric" placeholder="Unknown"></label><label class="community-field">Injuries<input name="injuries" type="number" min="0" max="100000" step="1" inputmode="numeric" placeholder="Unknown"></label><label class="community-field">Properties damaged<input name="damagedProperties" type="number" min="0" max="100000" step="1" inputmode="numeric" placeholder="Unknown"></label></div></div><details class="community-location"><summary>⌖ Add exact location (optional)</summary><div class="community-location-actions"><button type="button" id="community-use-location" class="button-quiet">Use my device location</button><span id="community-location-status" role="status"></span></div><div class="community-field-grid"><label class="community-field">Latitude<input name="latitude" type="number" step="any" min="-2" max="13" inputmode="decimal" placeholder="e.g. 2.0469"></label><label class="community-field">Longitude<input name="longitude" type="number" step="any" min="40" max="52" inputmode="decimal" placeholder="e.g. 45.3182"></label></div><p class="community-note">Device location is used only when you tap the button. Coordinates you submit will be public; choose a safe location to share.</p></details><label class="community-field">Supporting link (optional)<input name="sourceUrl" type="url" maxlength="1000" placeholder="https://..."></label><div id="community-dropzone" class="community-dropzone"><span aria-hidden="true">▧</span><label class="community-upload-label" for="community-media-input">Add photos or videos</label><p>Choose files or drag them here</p><input id="community-media-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" multiple><p id="community-upload-count" class="community-note">Up to 4 files · 50 MB combined</p><p class="community-note">JPG, PNG, WebP, GIF, MP4 or WebM. Media is shared as uploaded and may contain location metadata.</p></div><p id="community-upload-error" class="community-status community-status-error" role="alert"></p><div id="community-previews" class="community-media community-previews"></div><label class="community-consent"><input type="checkbox" name="publicConsent" required><span>I have permission to share this media and understand that this report will be public and unverified.</span></label><div class="community-form-actions"><button id="community-submit" type="submit">Publish report</button><p id="community-form-status" class="community-status" role="status" aria-live="polite"></p></div></form><section class="community-feed" aria-label="Community reports"><div class="community-toolbar"><div><span class="eyebrow">COMMUNITY FEED</span><h3 id="community-feed-title"></h3><p id="community-feed-count" class="community-note"></p></div><button id="community-refresh" type="button" class="button-quiet" aria-label="Refresh community reports">↻ Refresh</button></div><div class="community-filter-controls"><label>Area<select id="community-scope"><option value="city">Selected city</option><option value="all">All cities</option></select></label><label>Report type<select id="community-category"><option value="all">All observations</option><option value="flood">Flooding</option><option value="rain">Rainfall</option><option value="damage">Flood impact</option></select></label><label id="community-district-filter-field" hidden>District<select id="community-district-filter"><option value="all">All districts</option></select></label></div><p id="community-status" class="community-status" role="status" aria-live="polite"></p><div id="community-feed-list"></div></section></div>`;
     byId('community-report-city').value = cityId(cities[selected]);
     byId('community-report-form').addEventListener('submit', submitReport);
     byId('community-report-city').addEventListener('change', () => { clearCoordinates(); syncDistrict(); });
@@ -346,7 +376,8 @@
     byId('community-refresh').addEventListener('click', refresh);
     byId('community-export-csv').addEventListener('click', () => exportReports('csv'));
     byId('community-export-geojson').addEventListener('click', () => exportReports('geojson'));
-    byId('community-scope').addEventListener('change', event => { reportFocusSequence++; scope = event.target.value === 'all' ? 'all' : 'city'; records = []; feedAvailable = false; notifyChange(); refresh(); });
+    byId('community-scope').addEventListener('change', event => { reportFocusSequence++; scope = event.target.value === 'all' ? 'all' : 'city'; district = 'all'; records = []; feedAvailable = false; notifyChange(); refresh(); });
+    byId('community-district-filter').addEventListener('change', event => { reportFocusSequence++; district = String(event.target.value || 'all'); renderFeed(); notifyChange(); });
     byId('community-category').addEventListener('change', event => { reportFocusSequence++; category = CATEGORIES.has(event.target.value) ? event.target.value : 'all'; renderFeed(); notifyChange(); });
     byId('community-media-input').addEventListener('change', event => { acceptFiles(event.target.files); event.target.value = ''; });
     const dropzone = byId('community-dropzone');
@@ -374,7 +405,7 @@
     window.addEventListener('pageshow', () => { if (pendingFiles.length) renderPreviews(); });
     renderFeed(); refresh();
   }
-  window.CommunityReports = { MOGADISHU_DISTRICTS, LANDMARK_TYPES, init, selectCity, showCity, showReport, setLocation, refresh, validateDraft, validateFiles, renderReport, buildExport };
+  window.CommunityReports = { MOGADISHU_DISTRICTS, LANDMARK_TYPES, districtFilterOptions, reportMatches, init, selectCity, showCity, showReport, setLocation, refresh, validateDraft, validateFiles, renderReport, buildExport };
 })();
 
 
