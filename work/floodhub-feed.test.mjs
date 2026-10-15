@@ -156,7 +156,10 @@ test('on the Alerts tab: Flood Hub badge, gauge place line, source filter offere
   assert.equal(option.hidden, false, 'the source option appears once the server has the key');
   assert.match(nodes['alerts-summary'].innerHTML, /<b>1<\/b> River forecasts \(Google Flood Hub\)/);
   assert.match(nodes['alerts-list'].innerHTML, /<span class="badge">Danger level<\/span>/);
-  assert.ok(nodes['alerts-list'].innerHTML.includes('<a href="https://sites.research.google/floods/l/4.7500/45.2100/12/g/bw" target="_blank" rel="noopener">Read source ↗</a>'), 'the card links to the gauge page');
+  assert.ok(nodes['alerts-list'].innerHTML.includes('<a href="https://sites.research.google/floods/l/4.7500/45.2100/12/g/bw" target="_blank" rel="noopener">Open gauge on Flood Hub ↗</a>'), 'the card links to the gauge page, and says so');
+  window.FloodAlerts.render({...input, officialFeed: {...input.officialFeed, data: {...input.officialFeed.data, alerts: [{...alert, sourceUrl: 'https://sites.research.google/floods/'}]}}});
+  assert.ok(nodes['alerts-list'].innerHTML.includes('<a href="https://sites.research.google/floods/" target="_blank" rel="noopener">Read source ↗</a>'), 'no gauge page, no gauge label');
+  window.FloodAlerts.render(input);
   assert.equal(JSON.stringify(window.FloodAlerts.shareLines(card).at(-1)), JSON.stringify([{t: 'Not an official warning.'}]));
   window.FloodAlerts.render({...input, officialFeed: {...input.officialFeed, data: {alerts: [], sources: [{id: 'icpac', available: true, fetchedAt: now}]}}});
   assert.equal(option.hidden, true, 'hidden while the source is switched off');
@@ -172,7 +175,7 @@ test('Flood Hub titles, places and descriptions read in Somali', async () => {
   const so = text => window.SiteLanguage.translateText(text);
   assert.equal(so('Beledweyne · Google Flood Hub: river forecast at Danger level'), 'Beledweyne · Google Flood Hub: saadaasha webiga, heerka khatarta');
   assert.equal(so('Hudur · Google Flood Hub: river forecast at Warning level'), 'Hudur · Google Flood Hub: saadaasha webiga, heerka digniinta');
-  for (const [en, so_] of [['Extreme level', 'Heerka aad u daran'], ['Danger level', 'Heerka khatarta'], ['Warning level', 'Heerka digniinta']]) assert.equal(so(en), so_);
+  for (const [en, so_] of [['Extreme level', 'Heerka aad u daran'], ['Danger level', 'Heerka khatarta'], ['Warning level', 'Heerka digniinta'], ['Open gauge on Flood Hub ↗', 'Ka fur xarunta cabbirka webiga Flood Hub ↗']]) assert.equal(so(en), so_);
   assert.equal(so('Luuq · Google Flood Hub: river forecast at Extreme level'), 'Luuq · Google Flood Hub: saadaasha webiga, heerka aad u daran');
   assert.equal(so('Beledweyne · Belet Weyne gauge (Shabelle)'), 'Beledweyne · xarunta cabbirka webiga Belet Weyne (Shabelle)', 'the city name stays whole');
   assert.equal(so('Luuq · Luuq gauge'), 'Luuq · xarunta cabbirka webiga Luuq');

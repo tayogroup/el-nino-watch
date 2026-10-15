@@ -644,7 +644,8 @@
     "River flood forecasts at river gauges, from Google's AI model. A gauge forecast at Flood Hub's Warning, Danger or Extreme level within 25 km of a monitored city becomes an alert for that city. A model forecast, not an official warning. Used once Google approves the app's access to the API; the data is under the CC BY 4.0 licence.": "Saadaalaha fatahaadda webiga ee cabbirrada webiga, oo ka yimid moodeelka AI ee Google. Cabbir saadaashiisu gaarto heerka Digniinta, Khatarta ama Aad u daran ee Flood Hub, oo 25 km gudahood u jira magaalo la dabagalo, wuxuu noqdaa digniin magaaladaas. Waa saadaal moodeel, ma aha digniin rasmi ah. Waxaa la isticmaalayaa marka Google uu oggolaado gelitaanka abka ee API-ga; xogtu waxay ku hoos jirtaa shatiga CC BY 4.0.",
     "Extreme level": "Heerka aad u daran",
     "Danger level": "Heerka khatarta",
-    "Warning level": "Heerka digniinta"
+    "Warning level": "Heerka digniinta",
+    "Open gauge on Flood Hub ↗": "Ka fur xarunta cabbirka webiga Flood Hub ↗"
   },
   "patterns": [
     {
