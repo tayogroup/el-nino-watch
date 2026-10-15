@@ -65,3 +65,6 @@ body.site-tabs-ready:not(.mayor-view) #alerts-list:focus-visible{outline:3px sol
 @media (max-width:760px){.site-bar{margin:0 -4px 16px;border-radius:14px;padding:6px;gap:6px}.site-city{padding-left:10px}.site-city select{font-size:15px;min-height:38px}.site-tab{flex:0 0 auto;min-height:44px;padding:9px 13px;font-size:13px;gap:7px}.site-tab svg{width:18px;height:18px}}
 @media (prefers-reduced-motion:reduce){.site-tab-enter{animation:none}.site-tab{transition:none}}
 @media print{.site-bar{display:none}body.site-tabs-ready:not(.mayor-view) main > .site-tab-hidden,body.site-tabs-ready:not(.mayor-view) main [data-site-tab-part].site-tab-part-hidden{display:revert}}
+/* Narrow phones: the city bar fits the screen. The "Set as my city" label may wrap to two short lines
+   (Somali "Ka dhig magaaladayda" is long), and the city box keeps room for the longest city name, "Buur Hakaba" (8.5em), while the button gives way. */
+@media (max-width:420px){.site-city{min-width:0;max-width:100%;gap:6px;padding-left:8px}.site-city select{min-width:8.5em;padding-left:4px;padding-right:4px}.home-city-button{flex:0 1 auto;min-width:0;white-space:normal;line-height:1.15;text-align:center;padding:5px 9px;font-size:12px}}
