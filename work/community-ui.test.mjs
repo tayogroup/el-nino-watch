@@ -5,6 +5,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createCommunityHandler } from './somalia-flood-watch/community.mjs';
+import { MOGADISHU_DISTRICTS } from './somalia-flood-watch/community.mjs';
 
 const nodes = new Map();
 class Node {
@@ -107,6 +108,13 @@ assert.equal(api.renderReport(malicious).includes('community-card-place'), false
 const placeCsv = api.buildExport([{ ...malicious, district: 'Hodan', landmark: '=near market' }], 'csv').content.split('\r\n');
 assert.match(placeCsv[0], /^"id","cityId","district","landmark","category"/);
 assert.equal(placeCsv[1].includes('"Hodan","\'=near market"'), true, 'A landmark cannot become a spreadsheet formula');
+// Mogadishu's district is a choice from Banadir's 20 districts; the page and the server hold the same list.
+assert.deepEqual([...api.MOGADISHU_DISTRICTS.map(([name]) => name)],[...MOGADISHU_DISTRICTS], 'Page and server district lists match');
+assert.equal(MOGADISHU_DISTRICTS.length, 20);
+assert.equal(api.validateDraft({ ...draft, district: 'Nowhere' }, cities, now).valid, false, 'Mogadishu needs a listed district');
+assert.equal(api.validateDraft({ ...draft, district: 'Warta Nabada' }, cities, now).valid, true);
+assert.equal(api.validateDraft({ ...draft, cityId: 'galkayo', district: 'Garsoor' }, cities, now).valid, true, 'Other cities keep free text');
+
 assert.equal(JSON.parse(api.buildExport([{ ...malicious, district: '', landmark: null }], 'geojson').content).features[0].properties.district, null, 'Blank is exported as unknown');
 
 assert.equal(collection.features[0].properties.deaths, null);

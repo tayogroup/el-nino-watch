@@ -69,6 +69,10 @@ try {
   const placed = result.body.report, placedReceipt = result.body.receiptToken;
   result = await request('/api/community/reports?city=mogadishu'); ok(result.body.reports.some(report => report.id === placed.id && report.district === 'Hodan' && report.landmark === 'Near Bakara market'));
   result = await request(`/api/community/reports/${placed.id}`, {method:'DELETE', headers:{Origin:origin, 'Content-Type':'application/json'}, body:JSON.stringify({receipt:placedReceipt})}); equal(result.response.status, 200);
+  // Mogadishu: a district from the list or none. Other cities: free text.
+  result = await post({...base, district:'Nowhere'}); equal(result.response.status, 400);
+  result = await post({...base, cityId:'jowhar', district:'Hantiwadaag'}); equal(result.response.status, 201); equal(result.body.report.district, 'Hantiwadaag');
+  result = await request(`/api/community/reports/${result.body.report.id}`, {method:'DELETE', headers:{Origin:origin, 'Content-Type':'application/json'}, body:JSON.stringify({receipt:result.body.receiptToken})}); equal(result.response.status, 200);
   result = await post({...base, sourceUrl:'javascript:alert(1)'}); equal(result.response.status, 400);
   result = await post(base, [{bytes:Buffer.from('<script>bad</script>'), type:'image/png'}]); equal(result.response.status, 415);
   result = await post(base, [{bytes:Buffer.from('<svg/>'), type:'image/svg+xml'}]); equal(result.response.status, 415);

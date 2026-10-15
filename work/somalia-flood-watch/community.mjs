@@ -47,6 +47,9 @@ function validObservationTime(value) {
   return calendar.getUTCFullYear() === +year && calendar.getUTCMonth() === +month - 1 && calendar.getUTCDate() === +day && +hour <= 23 && +minute <= 59 && +second <= 59 && +zoneHour <= 23 && +zoneMinute <= 59 && Number.isFinite(Date.parse(value));
 }
 
+// Banadir's 20 districts; a Mogadishu report names one of these or none. Keep in step with dist/community.js.
+export const MOGADISHU_DISTRICTS = Object.freeze(["Abdiaziz","Bondhere","Darusalam","Daynile","Dharkenley","Garasbaley","Gubadley","Hamar Jajab","Hamar Weyne","Heliwaa","Hodan","Howlwadaag","Kaaraan","Kaxda","Shangaani","Shibis","Waberi","Wadajir","Warta Nabada","Yaqshid"]);
+
 function reportPayload(input, cities) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) fail(400, 'Report payload must be an object.');
   const cityId = text(input.cityId, 'City', 1, 80);
@@ -58,6 +61,8 @@ function reportPayload(input, cities) {
   const latitude = coordinate(input.latitude, 'Latitude', -2, 13);
   const longitude = coordinate(input.longitude, 'Longitude', 40, 52);
   if ((latitude === null) !== (longitude === null)) fail(400, 'Provide both latitude and longitude, or leave both unknown.');
+  const district = text(input.district, 'District', 1, 80, true) || null;
+  if (district && cityId === 'mogadishu' && !MOGADISHU_DISTRICTS.includes(district)) fail(400, 'Choose a Mogadishu district from the list.');
   let sourceUrl = null;
   if (input.sourceUrl) {
     const raw = text(input.sourceUrl, 'Source link', 1, 1000);
@@ -66,7 +71,7 @@ function reportPayload(input, cities) {
     if (!['https:', 'http:'].includes(source.protocol) || source.username || source.password) fail(400, 'Source link must be a valid HTTP or HTTPS URL without login details.');
     sourceUrl = source.href;
   }
-  return {cityId, cityName:city.name, district:text(input.district, 'District', 1, 80, true) || null, landmark:text(input.landmark, 'Landmark', 1, 120, true) || null, category:input.category, observedAt:new Date(observedAt).toISOString(), description:text(input.description, 'Description', 10, 3000), author:text(input.author, 'Display name', 1, 60, true) || 'Anonymous', latitude, longitude, deaths:count(input.deaths, 'Deaths'), injuries:count(input.injuries, 'Injuries'), damagedProperties:count(input.damagedProperties, 'Damaged properties'), sourceUrl};
+  return {cityId, cityName:city.name, district, landmark:text(input.landmark, 'Landmark', 1, 120, true) || null, category:input.category, observedAt:new Date(observedAt).toISOString(), description:text(input.description, 'Description', 10, 3000), author:text(input.author, 'Display name', 1, 60, true) || 'Anonymous', latitude, longitude, deaths:count(input.deaths, 'Deaths'), injuries:count(input.injuries, 'Injuries'), damagedProperties:count(input.damagedProperties, 'Damaged properties'), sourceUrl};
 }
 
 async function readBody(req, max) {

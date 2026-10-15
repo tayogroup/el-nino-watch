@@ -504,7 +504,9 @@
     "Use a district name of up to 80 characters.": "Isticmaal magac degmo oo aan ka badnayn 80 xaraf.",
     "Use a landmark of up to 120 characters.": "Isticmaal meel caan ah oo aan ka badnayn 120 xaraf.",
     "District": "Degmada",
-    "Landmark": "Meel caan ah"
+    "Landmark": "Meel caan ah",
+    "Choose a district": "Dooro degmo",
+    "Choose a Mogadishu district from the list.": "Liiska ka dooro degmo ka mid ah Muqdisho."
   },
   "patterns": [
     {
