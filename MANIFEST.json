@@ -185,8 +185,8 @@
     },
     {
       "path": "work/community-ui.test.mjs",
-      "bytes": 32027,
-      "sha256": "d42b8386adb681669e6d9e39404bd7b4114c71792a51f149512038685a600317"
+      "bytes": 32656,
+      "sha256": "541ac2daf6f64539886728b74ac7e01d039212fc03e2b56d2becf1a16fb70730"
     },
     {
       "path": "work/copernicus-catalog.test.mjs",
@@ -425,8 +425,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/community.js",
-      "bytes": 52281,
-      "sha256": "f94939b505fddc9b30b44f43cd6c0db834174e43c5e7f3798d297c79498c78f8"
+      "bytes": 52713,
+      "sha256": "d30217dc54a3dfb2d9caea990cfacac4b30b7813d84ca468895dad6d38bb1137"
     },
     {
       "path": "work/somalia-flood-watch/dist/copernicus.css",

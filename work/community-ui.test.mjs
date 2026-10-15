@@ -302,6 +302,12 @@ try {
   assert.equal(elements.author.value, 'Draft alias');
   assert.equal(liveNode('community-upload-count').textContent.startsWith('1/4 files'), true);
   assert.equal(liveNode('community-location-status').textContent.includes('city changed'), true);
+  // Area names the selected city rather than saying "Selected city", and follows a change of city.
+  // (The page was built while Mogadishu was selected; Galkayo was chosen since.)
+  assert.match(liveNode('community-root').innerHTML, /<option value="city" id="community-scope-city" data-i18n-skip>Mogadishu<\/option><option value="all">All cities<\/option>/);
+  assert.equal(liveNode('community-scope-city').textContent, 'Galkayo');
+  liveApi.selectCity(2); assert.equal(liveNode('community-scope-city').textContent, 'Beledweyne');
+  liveApi.selectCity(1); assert.equal(liveNode('community-scope-city').textContent, 'Galkayo');
   liveNode('community-scope').events.change({ target: { value: 'all' } }); await liveApi.refresh();
   // Clear all filters: offered once anything differs from how the page opens; returns every filter, Area included.
   const allShown = locationChanges.at(-1).length;
