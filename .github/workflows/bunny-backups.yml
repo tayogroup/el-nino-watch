@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: inspect (read-only), apply / create-and-apply (backup variables), stats-key (new private stats key)
+        description: inspect (read-only), snapshots (read-only report backups), apply / create-and-apply (backup variables), stats-key (new private stats key)
         required: true
         default: inspect
         type: choice
-        options: [inspect, apply, create-and-apply, stats-key]
+        options: [inspect, snapshots, apply, create-and-apply, stats-key]
       zone:
         description: Name of the private backup storage zone
         required: true

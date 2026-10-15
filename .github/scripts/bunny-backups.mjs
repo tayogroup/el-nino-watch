@@ -6,6 +6,7 @@
 // facts only. Never print a variable's value, a password or another zone's name.
 //
 //   node bunny-backups.mjs inspect   read-only report
+//   node bunny-backups.mjs snapshots read-only: report backups, and any report missing from the live site
 //   node bunny-backups.mjs apply     set BACKUP_STORAGE_ZONE/KEY on the container
 //   node bunny-backups.mjs create-and-apply   create the private zone if missing, then apply
 //   node bunny-backups.mjs stats-key          set a new random STATS_KEY (private /stats view);
@@ -75,6 +76,38 @@ if (mode === 'stats-key') {
   const statsKey = randomBytes(24).toString('base64url');
   mask(statsKey);
   process.exit((await setEnv(container, env, {STATS_KEY: statsKey})) ? 0 : 1);
+}
+// snapshots (read-only): every report backup with the reports it holds, and any report a backup
+// holds that the live site no longer has. Prints only what the site already shows publicly - a
+// shortened report ID, city, type and times - never descriptions, names or media.
+if (mode === 'snapshots') {
+  if (!zone?.Password) { console.error(`No password available for ${zoneName}.`); process.exit(1); }
+  const storage = `https://${zone.StorageHostname || 'storage.bunnycdn.com'}/${encodeURIComponent(zoneName)}/el-nino-watch`;
+  const read = async rel => {
+    const response = await fetch(`${storage}/${rel}`, {headers: {AccessKey: zone.Password, Accept: 'application/json'}});
+    if (!response.ok) throw new Error(`Backup storage GET ${rel.split('/')[0]} returned HTTP ${response.status}`);
+    return response.json();
+  };
+  const brief = report => `${String(report.id).slice(0, 8)} ${report.cityId} ${report.category} observed ${report.observedAt} received ${report.receivedAt}`;
+  const names = (await read('snapshots/')).filter(item => item.IsDirectory).map(item => item.ObjectName).sort();
+  console.log(`Snapshots: ${names.length}`);
+  const seen = new Map();
+  for (const name of names) {
+    const reports = (await read(`snapshots/${name}/reports.json`)).reports || [];
+    console.log(`\n${name}: ${reports.length} report(s)`);
+    for (const report of reports) {
+      console.log(`  ${brief(report)}`);
+      const entry = seen.get(report.id) || {report, first: name};
+      entry.last = name; seen.set(report.id, entry);
+    }
+  }
+  const live = await (await fetch('https://elninowatch.so/api/community/reports?limit=500', {headers: {Accept: 'application/json'}})).json();
+  const liveIds = new Set((live.reports || []).map(report => report.id));
+  console.log(`\nLive site now: ${liveIds.size} report(s); reports in any backup: ${seen.size}`);
+  const gone = [...seen.values()].filter(entry => !liveIds.has(entry.report.id));
+  console.log(gone.length ? `In a backup but no longer on the live site: ${gone.length}` : 'Every report in the backups is still on the live site.');
+  for (const entry of gone) console.log(`  ${brief(entry.report)} - in snapshots ${entry.first} to ${entry.last}`);
+  process.exit(0);
 }
 if (mode !== 'apply' && mode !== 'create-and-apply') process.exit(0);
 
