@@ -24,6 +24,18 @@
   }
   const SEVERITY_LEVELS = { high: 3, medium: 2, low: 1, unknown: 0 };
   const SOURCE_KEYS = ['icpac', 'gdacs', 'swalim', 'open-meteo'];
+  // Date range: whole days in East Africa Time. An alert applies from its start (or, without one, its
+  // issue or observation time) to its expiry: an ICPAC or GDACS validity period, the app screen's
+  // forecast day, a river gauge's observation. It is shown when that period touches the range.
+  const DAY_MS = 86400000;
+  const validDay = value => /^\d{4}-\d{2}-\d{2}$/.test(String(value || '')) && Number.isFinite(Date.parse(value + 'T00:00:00+03:00')) ? value : '';
+  function appliesBetween(a, fromDay, toDay) {
+    if (!fromDay && !toDay) return true;
+    const start = Number.isFinite(epoch(a.startsAt)) ? epoch(a.startsAt) : epoch(a.issuedAt);
+    if (!Number.isFinite(start)) return false;
+    const end = Number.isFinite(epoch(a.endsAt)) ? epoch(a.endsAt) : start;
+    return (!fromDay || end >= Date.parse(fromDay + 'T00:00:00+03:00')) && (!toDay || start < Date.parse(toDay + 'T00:00:00+03:00') + DAY_MS);
+  }
   const severityLevel = severity => Math.min(rank(severity), 3);
   function css(severity) { return rank(severity) >= 3 ? 'alert-high' : rank(severity) === 2 ? 'alert-warning' : rank(severity) === 1 ? 'alert-watch' : 'alert-info'; }
   function feedMessage(label, feed, now) {
@@ -111,9 +123,11 @@
     const sourceFilter = SOURCE_KEYS.includes(input.source) ? input.source : 'all';
     const cityOptions = scope === 'all' ? [...new Map(relevant.flatMap(a => a.cityNames).map(n => [normalized(n), n])).values()].sort((a, b) => a.localeCompare(b)) : [];
     const cityFilter = cityOptions.find(n => normalized(n) === normalized(input.city)) || 'all';
-    const visible = relevant.filter(a => (cityFilter === 'all' || !a.cityNames.length || a.cityNames.some(n => normalized(n) === normalized(cityFilter))) && (sourceFilter === 'all' || a.sourceKey === sourceFilter) && (type === 'all' || a.kind === type) && (severity === 'all' || severityLevel(a.severity) === SEVERITY_LEVELS[severity])).sort((a, b) => rank(b.severity) - rank(a.severity) || epoch(b.issuedAt) - epoch(a.issuedAt));
+    let dateFrom = validDay(input.from), dateTo = validDay(input.to);
+    if (dateFrom && dateTo && dateFrom > dateTo) [dateFrom, dateTo] = [dateTo, dateFrom];
+    const visible = relevant.filter(a => appliesBetween(a, dateFrom, dateTo) && (cityFilter === 'all' || !a.cityNames.length || a.cityNames.some(n => normalized(n) === normalized(cityFilter))) && (sourceFilter === 'all' || a.sourceKey === sourceFilter) && (type === 'all' || a.kind === type) && (severity === 'all' || severityLevel(a.severity) === SEVERITY_LEVELS[severity])).sort((a, b) => rank(b.severity) - rank(a.severity) || epoch(b.issuedAt) - epoch(a.issuedAt));
     const count = basis => relevant.filter(a => a.basis === basis).length;
-    return { alerts: visible, allAlerts: relevant, selectedCity: selected, scope, type, severity, sourceFilter, cityFilter, cityOptions, now: new Date(now).toISOString(),
+    return { alerts: visible, allAlerts: relevant, selectedCity: selected, scope, type, severity, sourceFilter, cityFilter, cityOptions, dateFrom, dateTo, now: new Date(now).toISOString(),
       forecastDates, weatherCoverage, messages: [...new Set(messages)],
       coverageNote: official?.data?.coverageNote || 'Forecast and event coverage may be incomplete. No returned signal does not establish safety.',
       sourceStatus: (official?.data?.sources || []).map(s => ({ name: s.name || s.id, publishedAt: s.publishedAt || s.lastBuildAt || null, rejectedExpired: Number.isInteger(s.rejectedExpired) ? s.rejectedExpired : 0 })),
@@ -193,6 +207,13 @@
       citySelect.value = model.cityFilter; citySelect.onchange = event => input.onCity?.(event.target.value);
     }
     if (cityField) cityField.hidden = !model.cityOptions.length;
+    const fromInput = doc?.getElementById?.('alerts-from'), toInput = doc?.getElementById?.('alerts-to');
+    if (fromInput && toInput) {
+      fromInput.value = model.dateFrom; toInput.value = model.dateTo;
+      fromInput.max = model.dateTo; toInput.min = model.dateFrom;
+      const changed = () => input.onDates?.(validDay(fromInput.value), validDay(toInput.value));
+      fromInput.onchange = changed; toInput.onchange = changed;
+    }
     const sourceSelect = doc?.getElementById?.('alerts-source');
     if (sourceSelect) { sourceSelect.value = model.sourceFilter; sourceSelect.onchange = event => input.onSource?.(event.target.value); }
     if (summary) summary.innerHTML = `<div class="alert-metrics"><span><b>${model.counts.regional}</b> ICPAC forecasts</span><span><b>${model.counts.events}</b> Source event signals</span><span><b>${model.counts.gauges}</b> River thresholds</span><span><b>${model.counts.screens}</b> App rainfall screens</span></div><p class="note">${esc(model.scopeLabel)} · next 3 forecast days: ${model.forecastDates[0]}–${model.forecastDates[2]} (including full today). Source signals and app screening are distinct.</p>`;
@@ -205,5 +226,5 @@
     }
     return model;
   }
-  root.FloodAlerts = { build, render, shareLines };
+  root.FloodAlerts = { build, render, shareLines, appliesBetween };
 })(typeof window === 'object' ? window : globalThis);

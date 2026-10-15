@@ -138,6 +138,36 @@ render({ ...input, scope: 'city' });
 assert.equal(cityFieldNode.hidden, true, 'hidden in the selected-city coverage');
 delete nodes['alerts-city']; delete nodes['alerts-city-field'];
 
+// Date range: an alert shows when the days it applies to touch the range (East Africa Time, whole days).
+const applies = sandbox.window.FloodAlerts.appliesBetween;
+const screenDay = { startsAt: '2026-10-17T00:00:00+03:00', endsAt: '2026-10-17T23:59:59+03:00', issuedAt: '2026-10-15T09:00:00Z' };
+assert.equal(applies(screenDay, '2026-10-17', '2026-10-17'), true, 'a forecast day matches its own day');
+assert.equal(applies(screenDay, '2026-10-18', ''), false); assert.equal(applies(screenDay, '', '2026-10-16'), false, 'not the day it was retrieved');
+const icpacWeek = { issuedAt: '2026-10-13T05:00:00Z', endsAt: '2026-10-20T20:59:59Z' };
+assert.equal(applies(icpacWeek, '2026-10-15', '2026-10-15'), true, 'a day inside a validity week');
+assert.equal(applies(icpacWeek, '2026-10-21', ''), false); assert.equal(applies(icpacWeek, '', '2026-10-12'), false);
+assert.equal(applies(icpacWeek, '2026-10-20', '2026-10-25'), true, 'the last valid day counts');
+const gaugeDay = { issuedAt: '2026-10-15T00:00:00+03:00' };
+assert.equal(applies(gaugeDay, '2026-10-15', '2026-10-15'), true); assert.equal(applies(gaugeDay, '2026-10-16', ''), false);
+const lateEvening = { issuedAt: '2026-10-15T20:30:00Z' }; // 23:30 EAT on the 15th
+assert.equal(applies(lateEvening, '2026-10-15', '2026-10-15'), true, 'days are East Africa Time');
+assert.equal(applies(lateEvening, '2026-10-16', ''), false);
+assert.equal(applies({}, '2026-10-15', ''), false, 'with a range set, an alert without a time is left out');
+assert.equal(applies({}, '', ''), true, 'no range: every alert');
+const ranged = build({ ...input, from: '2026-10-20', to: '2026-10-10' });
+assert.equal(ranged.dateFrom, '2026-10-10'); assert.equal(ranged.dateTo, '2026-10-20', 'a backwards range is turned round');
+assert.equal(build({ ...input, from: '13/10/2026' }).dateFrom, '', 'a malformed day is ignored');
+const futureOnly = build({ ...input, from: '2027-01-01' });
+assert.equal(futureOnly.alerts.length, 0, 'nothing applies in a range after every alert');
+assert.equal(build({ ...input, from: '2026-10-13', to: '2026-10-16' }).alerts.length, build(input).alerts.length, 'a range covering every alert hides none');
+const fromNode = { value: '', onchange: null }, toNode = { value: '', onchange: null }, dateChoices = [];
+nodes['alerts-from'] = fromNode; nodes['alerts-to'] = toNode;
+render({ ...input, from: '2026-10-14', to: '2026-10-15', onDates: (from, to) => dateChoices.push([from, to]) });
+assert.equal(fromNode.value, '2026-10-14'); assert.equal(toNode.value, '2026-10-15'); assert.equal(toNode.min, '2026-10-14'); assert.equal(fromNode.max, '2026-10-15');
+toNode.value = '2026-10-16'; toNode.onchange();
+assert.deepEqual(dateChoices, [['2026-10-14', '2026-10-16']]);
+delete nodes['alerts-from']; delete nodes['alerts-to'];
+
 // Source filter: every alert names one of four sources, and each choice shows only that source.
 const sourceKeys = ['icpac', 'gdacs', 'swalim', 'open-meteo'];
 assert.ok(everyAlert.every(a => sourceKeys.includes(a.sourceKey)), 'every alert has a known source');
