@@ -50,6 +50,7 @@ test('excluded outlets are left out by web address, with the reason recorded', (
   assert.equal(excludedOutlet('https://news.genocidewatch.com/')?.[1], 'advocacy group, not a news outlet', 'subdomains too');
   assert.equal(excludedOutlet('https://notyahoo.com/'), null, 'only the outlet itself, not look-alike names');
   assert.ok(excludedOutlet('https://sonna.so/'), 'SONNA is left out');
+  assert.ok(excludedOutlet('https://centralnews.co.za/'), 'Central News South Africa is left out');
 });
 
 test('meeting and event announcements are left out, in Somali and English; warnings and news stay', () => {

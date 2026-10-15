@@ -36,7 +36,8 @@ export const EXCLUDED_OUTLETS = Object.freeze([
   ['examinerlive.co.uk', 'UK local news (Yorkshire Live), off-topic'],
   ['winnmediaskn.com', 'Caribbean local radio, off-topic'],
   ['myanmaritv.com', 'Myanmar television, off-topic'],
-  ['sonna.so', "Somali National News Agency, left out at the owner's request"]
+  ['sonna.so', "Somali National News Agency, left out at the owner's request"],
+  ['centralnews.co.za', "Central News South Africa, left out at the owner's request"]
 ]);
 // No meeting or event announcements (owner, 2026-10-15): the bar carries warnings, forecasts and
 // news about conditions, not who met whom. Matched on the headline, in Somali and English, from
