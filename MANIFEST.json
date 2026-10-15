@@ -55,8 +55,8 @@
     },
     {
       "path": "package.json",
-      "bytes": 742,
-      "sha256": "21f258b5c10988e63ae2db01c23d6345fb441827e57eeeef9444fc265cbe45a0"
+      "bytes": 794,
+      "sha256": "ae82b74471fd406411670bbd0bc621701f5be5f0c26d5a776d13ab5e6605d248"
     },
     {
       "path": "README.md",
@@ -72,6 +72,11 @@
       "path": "scripts/run-tests.mjs",
       "bytes": 879,
       "sha256": "db019e3f3d5cbec183e9ee88912d5bc89b548dbfecce694da6fd65913522bfd1"
+    },
+    {
+      "path": "scripts/update-manifest.mjs",
+      "bytes": 4289,
+      "sha256": "c52c81c9420112962ebcaca752065f0c57d0a2401e2cb8ab44946295e4405eab"
     },
     {
       "path": "Start-Live-App.ps1",
@@ -807,6 +812,11 @@
       "path": "work/terrain-focus.test.mjs",
       "bytes": 7474,
       "sha256": "9522be8ec8b79c67d4d96eb5fec08683043df27f894d2b1226bcf7ab8f4b5b17"
+    },
+    {
+      "path": "work/update-manifest.test.mjs",
+      "bytes": 5778,
+      "sha256": "4d3629715dbc99d4c86d9fbee5052172c09aced842063d98a9dfde138887fea7"
     },
     {
       "path": "work/verify-observed-flood.mjs",

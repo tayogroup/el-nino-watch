@@ -21,6 +21,8 @@ observations and community flood reporting for 30 Somali cities. A plain Node.js
 npm start                    # http://127.0.0.1:4173 (PORT/HOST env vars override)
 npm test                     # source checks + all regression tests
 npm run check                # every file in MANIFEST.json matches its SHA-256
+npm run manifest             # re-pin every listed file you changed (and name each one)
+npm run manifest -- <paths>  # also add new files, or drop ones you deleted
 npm run build:translations   # regenerate dist/translations-so.js from work/i18n-*.json
 npm run build:basemap        # regenerate dist/basemap-data.js
 npm run build:sources-pdf    # print dist/sources.html to dist/el-nino-watch-sources.pdf (Edge/Chrome)
@@ -31,9 +33,11 @@ npm run bundle               # standalone HTML under outputs/ (gitignored)
 ## Rules
 
 - **`MANIFEST.json` pins the size and SHA-256 of every packaged file.** After
-  editing a listed file, update its entry or `npm run check` fails. A new file
-  needs a new entry. `.gitattributes` is `* -text` so line endings are never
-  converted; keep it.
+  editing files, run `npm run manifest` (or `npm run check` fails); a new or
+  deleted file must be named: `npm run manifest -- <path>`. Read what it prints:
+  a file you did not mean to change shows up there. `.gitattributes` is
+  `* -text` so git never converts line endings; keep it, and keep files LF in
+  your editor too, or every file you save changes its hash.
 - **`dist/translations-so.js` is generated** from `work/i18n-*.json`. Edit the
   JSON and run `npm run build:translations`. It also writes
   `work/i18n-catalog-conflicts.json`, a report that is not committed.

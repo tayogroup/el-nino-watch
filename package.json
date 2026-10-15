@@ -10,6 +10,7 @@
   "scripts": {
     "start": "node work/somalia-flood-watch/server.mjs",
     "check": "node scripts/check-files.mjs",
+    "manifest": "node scripts/update-manifest.mjs",
     "build:translations": "node work/build-somali-catalog.mjs",
     "build:basemap": "node work/build-basemap.mjs",
     "build:sources-pdf": "node work/print-sources-pdf.mjs",
