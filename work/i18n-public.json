@@ -584,7 +584,13 @@
     "Not an official warning.": "Ma aha digniin rasmi ah.",
     "Forecast model estimates, not observed rainfall or an official warning.": "Qiyaasaha moodelka saadaasha, ma aha roob la cabbiray ama digniin rasmi ah.",
     "Rainfall-based planning screen (≥10 mm/day), not a flood forecast or an official warning.": "Baaritaan qorsheyn oo ku salaysan roobka (≥10 mm maalintii), ma aha saadaal fatahaad ama digniin rasmi ah.",
-    "TikTok, WhatsApp & more": "TikTok, WhatsApp iyo kuwo kale"
+    "TikTok, WhatsApp & more": "TikTok, WhatsApp iyo kuwo kale",
+    "Severity": "Darnaanta",
+    "All severities": "Dhammaan heerarka darnaanta",
+    "Moderate or elevated": "Dhexdhexaad ama kordhay",
+    "Minor or watch": "Yar ama la socod",
+    "Not stated": "Lama sheegin",
+    "High or severe": "Sare ama daran"
   },
   "patterns": [
     {

@@ -91,6 +91,30 @@ assert.ok(nodes['alerts-status'].innerHTML.includes('new API retrieval is not a 
 const noDom = { window: {}, Date, URL };
 vm.runInNewContext(fs.readFileSync(new URL('./somalia-flood-watch/dist/alerts.js', import.meta.url), 'utf8'), noDom);
 assert.equal(noDom.window.FloodAlerts.build(input).alerts.length, 4, 'Pure build works without a document or browser APIs');
+// Severity filter: four levels across the sources' different words; together they cover every alert.
+const levelOf = severity => ({ extreme: 'high', severe: 'high', high: 'high', moderate: 'medium', elevated: 'medium', minor: 'low', watch: 'low' })[severity] || 'unknown';
+const everyAlert = build(input).alerts;
+assert.equal(build(input).severity, 'all');
+let coveredBySeverity = 0;
+for (const level of ['high', 'medium', 'low', 'unknown']) {
+  const shown = build({ ...input, severity: level });
+  assert.equal(shown.severity, level);
+  assert.ok(shown.alerts.every(a => levelOf(a.severity) === level), `only ${level} alerts`);
+  coveredBySeverity += shown.alerts.length;
+}
+assert.equal(coveredBySeverity, everyAlert.length, 'the four levels together show every alert once');
+assert.ok(new Set(everyAlert.map(a => levelOf(a.severity))).size > 1, 'the test alerts span more than one level');
+assert.equal(build({ ...input, severity: '__proto__' }).severity, 'all', 'an unknown value shows everything');
+assert.equal(build({ ...input, severity: 'high', type: 'screen' }).alerts.every(a => a.kind === 'screen' && levelOf(a.severity) === 'high'), true, 'severity and signal combine');
+const severityNode = { value: '', onchange: null }, severityChoices = [];
+nodes['alerts-severity'] = severityNode;
+render({ ...input, severity: 'medium', onSeverity: value => severityChoices.push(value) });
+assert.equal(severityNode.value, 'medium', 'the dropdown shows the active level');
+severityNode.onchange({ target: { value: 'high' } });
+assert.deepEqual(severityChoices, ['high']);
+assert.ok(nodes['alerts-status'].innerHTML.includes('selected scope, type and severity'), 'notifications say they follow the severity too');
+delete nodes['alerts-severity'];
+
 // Share rows: with share.js loaded, every alert carries one; source event titles stay as published.
 const shareNodes = Object.fromEntries(Object.keys(nodes).map(id => [id, { innerHTML: '', textContent: '', value: '', disabled: false }]));
 const shareSandbox = { window: { document: { getElementById: id => shareNodes[id], addEventListener() {} }, Notification: Notifications, localStorage: { getItem() { return null; }, setItem() {} } }, Date, URL, URLSearchParams };
