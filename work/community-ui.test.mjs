@@ -173,6 +173,10 @@ assert.equal(cityIds('all'), 'a,b,c,d');
 assert.equal(api.cityFilterOptions(filterReports).map(([id]) => id).join(','), 'galkayo,mogadishu', 'Each reported city once');
 assert.equal(api.cityFilterOptions([]).length, 0, 'No reports: the filter hides');
 
+// Report-type summary counts.
+assert.equal(JSON.stringify(api.typeCounts(filterReports)), JSON.stringify({all: 4, flood: 3, rain: 1, damage: 0}));
+assert.equal(JSON.stringify(api.typeCounts([{category: 'wildfire'}, null])), JSON.stringify({all: 2, flood: 0, rain: 0, damage: 0}), 'An unknown type counts only in All');
+
 // Date range: whole days in East Africa Time, both ends included; combines with the other filters.
 filterReports[0].observedAt = '2026-10-13T20:59:00Z'; // 13 Oct, 23:59 EAT
 filterReports[1].observedAt = '2026-10-13T21:00:00Z'; // 14 Oct, 00:00 EAT
@@ -327,6 +331,32 @@ try {
   assert.ok(locationChanges.at(-1).length > 0 && locationChanges.at(-1).every(report => report.cityId === loadedCities[0]), 'Only the chosen city is shown and pinned');
   assert.equal(liveNode('community-clear-filters').disabled, false);
   liveNode('community-city-filter').events.change({ target: { value: 'all' } });
+  // Type summary: counts per type that also set the Report type filter.
+  // One rainfall report alongside the floods, so the type counts differ from the total.
+  const rainForm = new FormData();
+  rainForm.set('payload', JSON.stringify({ cityId: 'galkayo', category: 'rain', observedAt: new Date(Date.now() - 60000).toISOString(), description: 'Synthetic rainfall report for the type summary test.', deaths: null, injuries: null, damagedProperties: null }));
+  const rainPosted = await (await fetch(origin + '/api/community/reports', { method: 'POST', body: rainForm })).json();
+  assert.ok(rainPosted.report?.id, 'the rainfall report was saved');
+  await liveApi.refresh();
+  const summary = liveNode('community-type-summary'), shownNow = locationChanges.at(-1);
+  assert.ok(shownNow.some(report => report.category === 'rain') && shownNow.some(report => report.category === 'flood'));
+  assert.equal(summary.hidden, false);
+  assert.match(summary.innerHTML, new RegExp(`data-type-chip="all" aria-pressed="true"><span>All reports</span> <b>${shownNow.length}</b>`));
+  const floods = shownNow.filter(report => report.category === 'flood').length;
+  assert.match(summary.innerHTML, new RegExp(`data-type-chip="flood" aria-pressed="false"><span>Flooding</span> <b>${floods}</b>`));
+  const chip = key => ({ target: { closest: () => ({ getAttribute: () => key }) } });
+  summary.events.click(chip('flood'));
+  assert.equal(liveNode('community-category').value, 'flood', 'The dropdown follows the chosen chip');
+  assert.equal(locationChanges.at(-1).length, floods); assert.ok(locationChanges.at(-1).every(report => report.category === 'flood'));
+  assert.match(summary.innerHTML, /data-type-chip="flood" aria-pressed="true">/);
+  assert.match(summary.innerHTML, new RegExp(`data-type-chip="all" aria-pressed="false"><span>All reports</span> <b>${shownNow.length}</b>`), 'Counts ignore the type filter itself');
+  summary.events.click({ target: { closest: () => null } });
+  assert.equal(liveNode('community-category').value, 'flood', 'A click between chips changes nothing');
+  summary.events.click(chip('all'));
+  assert.equal(liveNode('community-category').value, 'all'); assert.equal(locationChanges.at(-1).length, shownNow.length);
+  const rainRemoved = await fetch(origin + '/api/community/reports/' + rainPosted.report.id, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ receipt: rainPosted.receiptToken }) });
+  assert.equal(rainRemoved.status, 200);
+  await liveApi.refresh();
   // Clear all filters: offered once anything differs from how the page opens; returns every filter, Area included.
   const allShown = locationChanges.at(-1).length;
   liveNode('community-category').events.change({ target: { value: 'rain' } });
