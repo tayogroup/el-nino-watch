@@ -624,9 +624,24 @@
     "Minor, rainfall watch or advisory": "Yar, la socodka roobka ama talo",
     "Official": "Rasmi",
     "Official national source: Somali National Hydrological Services (MOEWR)": "Il rasmi ah oo qaran: Adeegyada Biyaha Qaranka Soomaaliyeed (MOEWR)",
-    "The Ministry of Energy and Water Resources publishes the national flood forecast the app shows as official alerts. ICPAC's regional forecasts and GDACS event monitoring are not official warnings, and the app labels them that way.": "Wasaaradda Tamarta iyo Kheyraadka Biyaha ayaa daabacda saadaasha fatahaadda qaranka ee abku u muujiyo digniino rasmi ah. Saadaasha gobolka ee ICPAC iyo la socodka dhacdooyinka ee GDACS ma aha digniino rasmi ah, abkuna sidaas ayuu u calaamadiyaa.",
-    "3 sources": "3 ilood",
-    "The official national flood forecast: each region's daily flood level (advisory, watch or warning) for the active rainy season, with anticipatory-action pre-activation and activation. Shown as official alerts for the cities in each region.": "Saadaasha rasmiga ah ee fatahaadda qaranka: heerka fatahaadda maalinlaha ah ee gobol kasta (talo, feejignaan ama digniin) xilliga roobka ee socda, oo ay la socdaan diyaargarowga iyo hawlgelinta tallaabada hore. Waxaa loo muujiyaa digniino rasmi ah magaalooyinka gobol kasta."
+    "4 sources": "4 ilood",
+    "The official national flood forecast: each region's daily flood level (advisory, watch or warning) for the active rainy season, with anticipatory-action pre-activation and activation. Shown as official alerts for the cities in each region.": "Saadaasha rasmiga ah ee fatahaadda qaranka: heerka fatahaadda maalinlaha ah ee gobol kasta (talo, feejignaan ama digniin) xilliga roobka ee socda, oo ay la socdaan diyaargarowga iyo hawlgelinta tallaabada hore. Waxaa loo muujiyaa digniino rasmi ah magaalooyinka gobol kasta.",
+    "The Ministry of Energy and Water Resources publishes the national flood forecast the app shows as official alerts. ICPAC's regional forecasts, Google Flood Hub's river forecasts and GDACS event monitoring are not official warnings, and the app labels them that way.": "Wasaaradda Tamarta iyo Kheyraadka Biyaha ayaa daabacda saadaasha fatahaadda qaranka ee abku u muujiyo digniino rasmi ah. Saadaasha gobolka ee ICPAC, saadaalaha webiga ee Google Flood Hub iyo la socodka dhacdooyinka ee GDACS ma aha digniino rasmi ah, abkuna sidaas ayuu u calaamadiyaa.",
+    "River flood forecasts at river gauges, from Google's AI model. A gauge forecast at above normal, severe or extreme within 25 km of a monitored city becomes an alert for that city. A model forecast, not an official warning. Used once Google approves the app's access to the API; the data is under the CC BY 4.0 licence.": "Saadaalaha fatahaadda webiga ee cabbirrada webiga, oo ka yimid moodeelka AI ee Google. Cabbir saadaashiisu tahay ka sarreeya caadiga, daran ama aad u daran, oo 25 km gudahood u jira magaalo la dabagalo, wuxuu noqdaa digniin magaaladaas. Waa saadaal moodeel, ma aha digniin rasmi ah. Waxaa la isticmaalayaa marka Google uu oggolaado gelitaanka abka ee API-ga; xogtu waxay ku hoos jirtaa shatiga CC BY 4.0.",
+    "River forecast (Google Flood Hub)": "Saadaasha webiga (Google Flood Hub)",
+    "River forecasts (Google Flood Hub)": "Saadaalaha webiga (Google Flood Hub)",
+    "River forecast · Google Flood Hub": "Saadaasha webiga · Google Flood Hub",
+    "Google Flood Hub river forecast": "Saadaasha webiga ee Google Flood Hub",
+    "Severe": "Daran",
+    "Above normal": "Ka sarreeya caadiga",
+    "River gauge": "Xarunta cabbirka webiga",
+    "The forecast river level is rising.": "Heerka webiga ee la saadaaliyay wuu kacayaa.",
+    "The forecast river level is falling.": "Heerka webiga ee la saadaaliyay wuu dhacayaa.",
+    "The forecast river level is steady.": "Heerka webiga ee la saadaaliyay wuu degan yahay.",
+    "This is an AI model forecast from Google, not an official warning.": "Tani waa saadaal moodeel AI ah oo ka timid Google, ma aha digniin rasmi ah.",
+    "AI model forecast of the river at this gauge, not an official warning. Follow MOEWR, SoDMA and local authority advice, and check routes away from the river.": "Saadaal moodeel AI ah oo ku saabsan webiga ee cabbirkan, ma aha digniin rasmi ah. Raac talada MOEWR, SoDMA iyo maamulka deegaanka, oo hubi waddooyinka ka fog webiga.",
+    "Google Flood Hub river forecasts are AI model forecasts at river gauges near the cities, not official warnings.": "Saadaalaha webiga ee Google Flood Hub waa saadaalo moodeel AI ah oo lagu sameeyay cabbirrada webiga ee u dhow magaalooyinka, ma aha digniino rasmi ah.",
+    "river gauge": "xarunta cabbirka webiga"
   },
   "patterns": [
     {
@@ -1075,6 +1090,71 @@
     {
       "en": "{0} of 30 cities have a heavy-rainfall forecast for {1}",
       "so": "{0} ka mid ah 30 magaalo ayaa leh saadaal roob culus {1}"
+    },
+    {
+      "en": "{0} · Google Flood Hub: extreme flood forecast",
+      "so": "{0} · Google Flood Hub: saadaal fatahaad aad u daran"
+    },
+    {
+      "en": "{0} · Google Flood Hub: severe flood forecast",
+      "so": "{0} · Google Flood Hub: saadaal fatahaad daran"
+    },
+    {
+      "en": "{0} · Google Flood Hub: above-normal river level",
+      "so": "{0} · Google Flood Hub: heerka webiga oo ka sarreeya caadiga"
+    },
+    {
+      "en": "At the {0}, Google Flood Hub forecasts extreme flooding.",
+      "so": "Google Flood Hub wuxuu saadaalinayaa fatahaad aad u daran oo ka dhacda {0}.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "At the {0}, Google Flood Hub forecasts severe flooding.",
+      "so": "Google Flood Hub wuxuu saadaalinayaa fatahaad daran oo ka dhacda {0}.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "At the {0}, Google Flood Hub forecasts above-normal river levels.",
+      "so": "Google Flood Hub wuxuu saadaalinayaa heerar webi oo ka sarreeya caadiga oo ka dhacda {0}.",
+      "translate": [
+        0
+      ]
+    },
+    {
+      "en": "{0} · {1} gauge ({2})",
+      "so": "{0} · xarunta cabbirka webiga {1} ({2})"
+    },
+    {
+      "en": "{0} · {1} river gauge",
+      "so": "{0} · xarunta cabbirka webiga {1}"
+    },
+    {
+      "en": "{0} · River gauge",
+      "so": "{0} · xarunta cabbirka webiga"
+    },
+    {
+      "en": "{0} river gauge",
+      "so": "xarunta cabbirka webiga {0}"
+    },
+    {
+      "en": "{0} gauge ({1})",
+      "so": "xarunta cabbirka webiga {0} ({1})"
+    },
+    {
+      "en": "{0} gauge",
+      "so": "xarunta cabbirka webiga {0}"
+    },
+    {
+      "en": "Forecast change from the last known level: {0} to {1} m.",
+      "so": "Isbeddelka la saadaaliyay marka loo eego heerkii ugu dambeeyay ee la ogaa: {0} ilaa {1} m."
+    },
+    {
+      "en": "Google Flood Hub river forecast: {0} gauges with a flood signal are more than 25 km from a monitored city; see Google Flood Hub for them.",
+      "so": "Saadaasha webiga ee Google Flood Hub: {0} cabbir oo leh calaamad fatahaad ayaa in ka badan 25 km u jira magaalo la dabagalo; ka eeg Google Flood Hub."
     }
   ]
 }

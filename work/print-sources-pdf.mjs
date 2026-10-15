@@ -5,7 +5,7 @@ import {spawnSync} from 'node:child_process';
 import {existsSync, statSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
-import {findBrowser} from './find-browser.mjs';
+import {findBrowser, waitForWrite, withProfile} from './find-browser.mjs';
 
 const dist = path.join(path.dirname(fileURLToPath(import.meta.url)), 'somalia-flood-watch', 'dist');
 const page = path.join(dist, 'sources.html'), output = path.join(dist, 'el-nino-watch-sources.pdf');
@@ -14,7 +14,7 @@ if (!browser) { console.error('No Edge or Chrome found. Set CHROME_PATH to a Chr
 else {
   const before = existsSync(output) ? statSync(output).mtimeMs : 0;
   const url = pathToFileURL(page).href + '?lang=en';
-  const result = spawnSync(browser, ['--headless=new', '--disable-gpu', '--no-first-run', '--no-pdf-header-footer', '--virtual-time-budget=5000', `--print-to-pdf=${output}`, url], {encoding: 'utf8', timeout: 120000});
+  const result = withProfile(profile => { const run = spawnSync(browser, [profile, '--headless=new', '--disable-gpu', '--no-first-run', '--no-pdf-header-footer', '--virtual-time-budget=5000', `--print-to-pdf=${output}`, url], {encoding: 'utf8', timeout: 120000}); waitForWrite(output, before); return run; });
   if (!existsSync(output) || statSync(output).mtimeMs === before) {
     console.error(`The PDF was not written.\n${result.stderr || result.error?.message || ''}`);
     process.exitCode = 1;

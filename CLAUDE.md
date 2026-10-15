@@ -70,8 +70,18 @@ messages.
   shows only in the all-cities view; Berbera (Sahil) follows Woqooyi Galbeed.
   The data key is the public one the service's own page ships, found at run time
   (or `SNHS_SUPABASE_KEY`); never commit it.
-- **Only MOEWR alerts are "official".** Never describe ICPAC, GDACS, the app's
-  rainfall screen or the news flash as official warnings, in the UI, the meta
+- **Google Flood Hub** (owner, 2026-10-15) is a flood-forecasting source in
+  Alerts, from Google's Flood Forecasting API (`floodhub-feed.mjs`), never by
+  scraping the Flood Hub site. A gauge at above normal, severe or extreme within
+  25 km of a monitored city is an alert for that city (the worst gauge per
+  city), badged "River forecast · Google Flood Hub". The API needs Google's
+  waitlist approval and an API key: `GOOGLE_FLOOD_API_KEY`, set through the
+  Bunny settings workflow's `source-keys` mode (DEPLOYMENT.md). Until it is set
+  the source is off: the server asks Google nothing and the Alerts tab hides its
+  Source option and count. The key goes in a header, never a URL; never commit
+  or print it. Data under CC BY 4.0.
+- **Only MOEWR alerts are "official".** Never describe ICPAC, Google Flood Hub,
+  GDACS, the app's rainfall screen or the news flash as official warnings, in the UI, the meta
   description, share text or the news flash.
 - The full list of outside services is the public page `/sources`
   (`dist/sources.html`), with a PDF (`dist/el-nino-watch-sources.pdf`).
@@ -115,7 +125,8 @@ messages.
 keeps Somalia-wide notices), Signal, Severity (four levels by `rank()`,
 labelled with the badge words: High, severe or warning / Moderate, elevated or
 national watch / Minor, rainfall watch or advisory / Not stated), Source (MOEWR,
-ICPAC, GDACS, SWALIM gauges, the app's Open-Meteo screen) and an "Applies from / to" date range (an alert shows when the days it
+Google Flood Hub once its key is set, ICPAC, GDACS, SWALIM gauges, the app's
+Open-Meteo screen) and an "Applies from / to" date range (an alert shows when the days it
 applies to touch the range). Browser notifications follow the selected filters.
 
 **Sharing**
@@ -161,7 +172,8 @@ applies to touch the range). Browser notifications follow the selected filters.
 cookieless. The public `/stats` page stays hidden until 3,000 visits; the owner
 sees it earlier with the private `STATS_KEY`.
 
-**Open items**: ReliefWeb appname (owner to request); Somali review; optionally
+**Open items**: ReliefWeb appname (owner to request); Google Flood Forecasting
+API access (owner to request, then set the key); Somali review; optionally
 limit the Google News searches to an approved list of outlets.
 
 ## Deploy

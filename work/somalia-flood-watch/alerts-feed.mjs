@@ -7,9 +7,12 @@
 //   https://eahazardswatch.icpac.net/  ·  https://www.icpac.net/weekly-forecast/
 // GDACS API: https://gdacs.org/Documents/2025/GDACS_API_quickstart_v1.pdf
 import {loadHydroAlerts, HYDRO_SOURCE} from './hydro-feed.mjs';
+import {loadFloodHubAlerts, FLOODHUB_SOURCE} from './floodhub-feed.mjs';
 
 export const ALERT_SOURCES = Object.freeze({
   moewr: HYDRO_SOURCE.url,
+  floodhub: FLOODHUB_SOURCE.url,
+  floodhubApi: FLOODHUB_SOURCE.api,
   icpac: 'https://www.icpac.net/weekly-forecast/',
   icpacHazardsWatch: 'https://eahazardswatch.icpac.net/',
   icpacDatasets: 'https://eahazardswatch.icpac.net/api/datasets/',
@@ -213,15 +216,21 @@ async function loadGdacs(now, fetchImpl) {
   return result;
 }
 
-export async function loadOfficialAlerts({now = new Date(), fetchImpl = fetch, cities = []} = {}) {
+export async function loadOfficialAlerts({now = new Date(), fetchImpl = fetch, cities = [], floodHubKey = process.env.GOOGLE_FLOOD_API_KEY || ''} = {}) {
   if (!Number.isFinite(new Date(now).getTime())) throw new Error('Invalid alert retrieval date.');
-  const results = await Promise.allSettled([loadIcpac(now, fetchImpl, cities), loadGdacs(now, fetchImpl), loadHydroAlerts({now, fetchImpl, cities})]);
+  const loaders = [
+    {id: 'icpac', name: 'ICPAC weekly exceptional rainfall forecast', load: () => loadIcpac(now, fetchImpl, cities)},
+    {id: 'gdacs', name: 'Global Disaster Alert and Coordination System', load: () => loadGdacs(now, fetchImpl)},
+    {id: 'moewr', name: 'Somali National Hydrological Services (MOEWR) national flood forecast', load: () => loadHydroAlerts({now, fetchImpl, cities})},
+    // Only once the owner has set a key Google approved; until then the source is not part of the feed.
+    ...(floodHubKey ? [{id: 'floodhub', name: FLOODHUB_SOURCE.name, load: () => loadFloodHubAlerts({now, fetchImpl, cities, apiKey: floodHubKey})}] : [])
+  ];
+  const results = await Promise.allSettled(loaders.map(loader => loader.load()));
   const fetchedAt = new Date().toISOString();
   const sources = results.map((result, index) => {
-    const id = ['icpac', 'gdacs', 'moewr'][index];
+    const {id, name} = loaders[index];
     const data = result.status === 'fulfilled' ? result.value : null;
-    return {id, name:['ICPAC weekly exceptional rainfall forecast', 'Global Disaster Alert and Coordination System', 'Somali National Hydrological Services (MOEWR) national flood forecast'][index],
-      sourceUrl:ALERT_SOURCES[id], available:!!data, fetchedAt:data ? fetchedAt : null,
+    return {id, name, sourceUrl:ALERT_SOURCES[id], available:!!data, fetchedAt:data ? fetchedAt : null,
       ...(data ? {...data, alerts:undefined} : {error:result.reason?.message || 'Source unavailable.'})};
   });
   // Do not convert total source failure into a successfully retrieved empty feed.
@@ -230,6 +239,6 @@ export async function loadOfficialAlerts({now = new Date(), fetchImpl = fetch, c
   const regionalForecastAvailable = sources[0].available && !sources[0].partial;
   const eventFeedAvailable = sources[1].available && !sources[1].partial;
   const icpac = sources[0];
-  const coverageNote = `ICPAC's weekly regional forecast is checked at each monitored city: heavy, very heavy and extremely heavy rainfall mean above the 90th, 95th and 99th percentile for that week of the year. It is a model forecast, not an official warning. GDACS is separate country-level flood event monitoring and may include model signals. ${icpac.available ? `${icpac.returnedCount} of ${cities.length} cities checked for ${icpac.forecast.weekLabel}.` : 'The ICPAC forecast is unavailable.'} ${!regionalForecastAvailable || !eventFeedAvailable ? 'Some source coverage is incomplete. ' : ''}An empty active list does not mean there is no flood risk. Retrieval time is distinct from the forecast issue date.`;
+  const coverageNote = `ICPAC's weekly regional forecast is checked at each monitored city: heavy, very heavy and extremely heavy rainfall mean above the 90th, 95th and 99th percentile for that week of the year. It is a model forecast, not an official warning. GDACS is separate country-level flood event monitoring and may include model signals. ${loaders.some(loader => loader.id === 'floodhub') ? 'Google Flood Hub river forecasts are AI model forecasts at river gauges near the cities, not official warnings. ' : ''}${icpac.available ? `${icpac.returnedCount} of ${cities.length} cities checked for ${icpac.forecast.weekLabel}.` : 'The ICPAC forecast is unavailable.'} ${!regionalForecastAvailable || !eventFeedAvailable ? 'Some source coverage is incomplete. ' : ''}An empty active list does not mean there is no flood risk. Retrieval time is distinct from the forecast issue date.`;
   return {alerts, fetchedAt, sources, regionalForecastAvailable, eventFeedAvailable, sourceUrl:ALERT_SOURCES.icpac, coverageNote};
 }

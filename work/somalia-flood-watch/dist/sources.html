@@ -51,7 +51,7 @@ footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font
 footer p{margin:0}
 @media(max-width:640px){main{padding-top:22px;gap:24px}.row{grid-template-columns:minmax(0,1fr)}.kind{min-width:6.5em}}
 @media print{
-  @page{size:A4;margin:16mm 14mm}
+  @page{size:A4;margin:13mm 14mm}
   body{background:#fff;font-size:11.5pt}
   .site-bar{background:#fff;color:var(--navy);padding:0 0 8px;border-bottom:2px solid var(--navy)}
   .site-bar a{color:var(--navy)}
@@ -92,7 +92,7 @@ footer p{margin:0}
 
   <div class="notice" role="note">
     <strong>Official national source: Somali National Hydrological Services (MOEWR)</strong>
-    <p>The Ministry of Energy and Water Resources publishes the national flood forecast the app shows as official alerts. ICPAC's regional forecasts and GDACS event monitoring are not official warnings, and the app labels them that way.</p>
+    <p>The Ministry of Energy and Water Resources publishes the national flood forecast the app shows as official alerts. ICPAC's regional forecasts, Google Flood Hub's river forecasts and GDACS event monitoring are not official warnings, and the app labels them that way.</p>
   </div>
 
   <section aria-labelledby="forecasts">
@@ -156,7 +156,7 @@ footer p{margin:0}
   </section>
 
   <section aria-labelledby="alerts">
-    <div class="section-head"><h2 id="alerts">Alerts and event monitoring</h2><span class="count">3 sources</span></div>
+    <div class="section-head"><h2 id="alerts">Alerts and event monitoring</h2><span class="count">4 sources</span></div>
     <ul class="rows">
       <li class="row">
         <div class="name"><span data-i18n-skip>Somali National Hydrological Services</span><span class="tag">Official</span><span class="org" data-i18n-skip>Ministry of Energy and Water Resources (MOEWR)</span></div>
@@ -164,6 +164,17 @@ footer p{margin:0}
           <p class="use">The official national flood forecast: each region's daily flood level (advisory, watch or warning) for the active rainy season, with anticipatory-action pre-activation and activation. Shown as official alerts for the cities in each region.</p>
           <ul class="links">
             <li><span class="kind">Portal</span><a data-i18n-skip href="https://hydro.tekhub.so/" target="_blank" rel="noopener">https://hydro.tekhub.so/</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="row">
+        <div class="name"><span data-i18n-skip>Google Flood Hub</span><span class="org" data-i18n-skip>Google Research · Flood Forecasting API</span></div>
+        <div class="detail">
+          <p class="use">River flood forecasts at river gauges, from Google's AI model. A gauge forecast at above normal, severe or extreme within 25 km of a monitored city becomes an alert for that city. A model forecast, not an official warning. Used once Google approves the app's access to the API; the data is under the CC BY 4.0 licence.</p>
+          <ul class="links">
+            <li><span class="kind">Portal</span><a data-i18n-skip href="https://sites.research.google/floods/" target="_blank" rel="noopener">https://sites.research.google/floods/</a></li>
+            <li><span class="kind" data-i18n-skip>API</span><a data-i18n-skip href="https://floodforecasting.googleapis.com/v1/" target="_blank" rel="noopener">https://floodforecasting.googleapis.com/v1/</a></li>
+            <li><span class="kind">Guide</span><a data-i18n-skip href="https://developers.google.com/flood-forecasting" target="_blank" rel="noopener">https://developers.google.com/flood-forecasting</a></li>
           </ul>
         </div>
       </li>

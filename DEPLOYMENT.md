@@ -65,6 +65,15 @@ The server counts visits itself (`visits.mjs`): every page load is one visit, pl
 
 Setup: create a Storage zone (Delivery > Storage > Add Storage Zone, e.g. `el-nino-watch-backups`, Standard tier, main region Falkenstein) and **do not connect a pull zone to it**; the reports and photos must not be publicly reachable. Then in the Magic Containers app, Container settings > Environment variables, add `BACKUP_STORAGE_ZONE` (the zone name) and `BACKUP_STORAGE_KEY` (the zone's password from its FTP & API Access page). If the zone's main region is not Falkenstein, also set `BACKUP_STORAGE_ENDPOINT` to that region's storage endpoint, for example `https://uk.storage.bunnycdn.com`.
 
+### Data-source keys (Google Flood Hub, ReliefWeb)
+
+Two optional sources need a key of their own, and each is switched off until it is set on the container:
+
+- `GOOGLE_FLOOD_API_KEY`: Google Flood Hub river forecasts in Alerts. Join the waitlist at https://developers.google.com/flood-forecasting; once Google approves it, reply with a Google Cloud project ID, enable the Flood Forecasting API in that project and create an API key there (restrict it to that API).
+- `RELIEFWEB_APPNAME`: ReliefWeb items in the news flash, an appname ReliefWeb has approved (https://apidoc.reliefweb.int/parameters#appname).
+
+To set them, add each as a secret of the `bunny-settings` environment (GitHub: Settings > Environments > bunny-settings > Add environment secret), then run **Actions > Bunny settings** with mode `source-keys` and approve the run. It copies the ones that are set onto the container and prints their names only.
+
 ## Data and migration
 
 The ZIP deliberately contains no existing reports, uploads, deletion receipt hashes, credentials, logs, .git state or local hosting identity. A fresh deployment starts with an empty report board. To move actual shared records separately, stop writes/the old server, back up its complete data directory (reports.json and media/ together), restore it on the new server, set COMMUNITY_DATA_DIR to that location, and give the Node process read/write access. Keep backups private and outside dist.

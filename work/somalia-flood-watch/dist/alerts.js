@@ -23,7 +23,7 @@
     return ({ extreme: 4, severe: 3, high: 3, moderate: 2, elevated: 2, minor: 1, watch: 1 })[String(severity || '').toLowerCase()] || 0;
   }
   const SEVERITY_LEVELS = { high: 3, medium: 2, low: 1, unknown: 0 };
-  const SOURCE_KEYS = ['moewr', 'icpac', 'gdacs', 'swalim', 'open-meteo'];
+  const SOURCE_KEYS = ['moewr', 'floodhub', 'icpac', 'gdacs', 'swalim', 'open-meteo'];
   // Date range: whole days in East Africa Time. An alert applies from its start (or, without one, its
   // issue or observation time) to its expiry: an ICPAC or GDACS validity period, the app screen's
   // forecast day, a river gauge's observation. It is shown when that period touches the range.
@@ -56,19 +56,19 @@
       for (const a of official.data?.alerts || []) {
         const issued = epoch(a.issuedAt), end = epoch(a.endsAt), start = epoch(a.startsAt);
         if (a.status !== 'active' || !Number.isFinite(issued) || issued > now || !Number.isFinite(end) || end <= now) continue;
-        if (!['regional-forecast', 'model-event', 'event-monitoring', 'national-hydrological-forecast'].includes(a.basis)) continue;
+        if (!['regional-forecast', 'model-event', 'event-monitoring', 'national-hydrological-forecast', 'river-forecast'].includes(a.basis)) continue;
         if (a.scope?.country && normalized(a.scope.country) !== 'somalia') continue;
         const sourceId = a.sourceId || (a.basis === 'regional-forecast' ? 'icpac' : 'gdacs');
         const source = sources.find(s => s.id === sourceId);
         if (source && (!source.available || source.error || !fresh({ data: true, fetchedAt: source.fetchedAt }, now))) continue;
         const names = Array.isArray(a.scope?.cities) ? a.scope.cities.filter(c => typeof c === 'string' && c.trim()) : [];
-        const national = a.basis === 'national-hydrological-forecast';
-        alerts.push({ ...a, sourceKey: sourceId, id: String(a.id || `${sourceId}:${a.title}:${a.issuedAt}`), kind: 'source', cityNames: names, regionOnly: national && !names.length, official: national, severityLabel: national ? String(a.severityText || '') : '',
+        const national = a.basis === 'national-hydrological-forecast', river = a.basis === 'river-forecast';
+        alerts.push({ ...a, sourceKey: sourceId, id: String(a.id || `${sourceId}:${a.title}:${a.issuedAt}`), kind: 'source', cityNames: names, regionOnly: (national || river) && !names.length, official: national, severityLabel: national || river ? String(a.severityText || '') : '',
           severity: String(a.severity || 'unknown').toLowerCase(), sourceUrl: url(a.sourceUrl),
-          badge: national ? 'Official · National hydrological forecast (MOEWR)' : a.basis === 'regional-forecast' ? 'Regional forecast · ICPAC' : a.basis === 'model-event' ? 'GDACS model-based signal' : 'GDACS event monitoring',
-          scopeLabel: national && a.scope?.region ? `${names.length ? names.join(', ') + ' · ' : ''}${a.scope.region} region` : names.length ? names.join(', ') : `Somalia country-level · city extent unspecified${a.scope?.areaDescription ? ' · source area: ' + String(a.scope.areaDescription) : ''}`,
+          badge: national ? 'Official · National hydrological forecast (MOEWR)' : river ? 'River forecast · Google Flood Hub' : a.basis === 'regional-forecast' ? 'Regional forecast · ICPAC' : a.basis === 'model-event' ? 'GDACS model-based signal' : 'GDACS event monitoring',
+          scopeLabel: river && a.scope?.gauge ? `${names.length ? names.join(', ') + ' · ' : ''}${a.scope.gauge}` : national && a.scope?.region ? `${names.length ? names.join(', ') + ' · ' : ''}${a.scope.region} region` : names.length ? names.join(', ') : `Somalia country-level · city extent unspecified${a.scope?.areaDescription ? ' · source area: ' + String(a.scope.areaDescription) : ''}`,
           timingLabel: `${Number.isFinite(start) && start > now ? 'Starts ' + time(a.startsAt) + ' · ' : ''}Issued ${time(a.issuedAt)} · expires ${time(a.endsAt)}`,
-          guidance: national ? 'Official national flood forecast. Follow the instructions of MOEWR, SoDMA and local authorities, and act early where anticipatory action is activated.' : a.basis === 'regional-forecast' ? 'Regional model forecast for this week, not an official warning. Check local conditions and follow local authority advice.' : 'Review the linked source. This signal does not establish which city or neighbourhood is flooded.',
+          guidance: national ? 'Official national flood forecast. Follow the instructions of MOEWR, SoDMA and local authorities, and act early where anticipatory action is activated.' : river ? 'AI model forecast of the river at this gauge, not an official warning. Follow MOEWR, SoDMA and local authority advice, and check routes away from the river.' : a.basis === 'regional-forecast' ? 'Regional model forecast for this week, not an official warning. Check local conditions and follow local authority advice.' : 'Review the linked source. This signal does not establish which city or neighbourhood is flooded.',
           notificationKey: `${a.id || a.title}:${a.basis}:${a.severity || 'unknown'}` });
       }
       for (const s of official.data?.sources || []) {
@@ -132,8 +132,9 @@
       forecastDates, weatherCoverage, messages: [...new Set(messages)],
       coverageNote: official?.data?.coverageNote || 'Forecast and event coverage may be incomplete. No returned signal does not establish safety.',
       sourceStatus: (official?.data?.sources || []).map(s => ({ name: s.name || s.id, publishedAt: s.publishedAt || s.lastBuildAt || null, rejectedExpired: Number.isInteger(s.rejectedExpired) ? s.rejectedExpired : 0 })),
-      counts: { national: count('national-hydrological-forecast'), regional: count('regional-forecast'), events: count('event-monitoring') + count('model-event'), gauges: count('observed-gauge'), screens: count('rainfall-screen') },
+      counts: { national: count('national-hydrological-forecast'), rivers: count('river-forecast'), regional: count('regional-forecast'), events: count('event-monitoring') + count('model-event'), gauges: count('observed-gauge'), screens: count('rainfall-screen') },
       fresh: { weather: weatherFresh, stations: stationFresh, official: officialFresh },
+      floodHubEnabled: (official?.data?.sources || []).some(s => s.id === 'floodhub'),
       scopeLabel: scope === 'all' ? `${cities.length} cities + Somalia-wide notices` : `${selected || 'Selected city'} + Somalia-wide notices` };
   }
 
@@ -217,7 +218,10 @@
     }
     const sourceSelect = doc?.getElementById?.('alerts-source');
     if (sourceSelect) { sourceSelect.value = model.sourceFilter; sourceSelect.onchange = event => input.onSource?.(event.target.value); }
-    if (summary) summary.innerHTML = `<div class="alert-metrics"><span><b>${model.counts.national}</b> National flood forecasts (MOEWR)</span><span><b>${model.counts.regional}</b> ICPAC forecasts</span><span><b>${model.counts.events}</b> Source event signals</span><span><b>${model.counts.gauges}</b> River thresholds</span><span><b>${model.counts.screens}</b> App rainfall screens</span></div><p class="note">${esc(model.scopeLabel)} · next 3 forecast days: ${model.forecastDates[0]}–${model.forecastDates[2]} (including full today). Source signals and app screening are distinct.</p>`;
+    // Google Flood Hub is offered only once the server has its key (floodhub-feed.mjs).
+    const floodHubOption = sourceSelect?.querySelector?.('option[value="floodhub"]');
+    if (floodHubOption) floodHubOption.hidden = !model.floodHubEnabled;
+    if (summary) summary.innerHTML = `<div class="alert-metrics"><span><b>${model.counts.national}</b> National flood forecasts (MOEWR)</span>${model.floodHubEnabled ? `<span><b>${model.counts.rivers}</b> River forecasts (Google Flood Hub)</span>` : ''}<span><b>${model.counts.regional}</b> ICPAC forecasts</span><span><b>${model.counts.events}</b> Source event signals</span><span><b>${model.counts.gauges}</b> River thresholds</span><span><b>${model.counts.screens}</b> App rainfall screens</span></div><p class="note">${esc(model.scopeLabel)} · next 3 forecast days: ${model.forecastDates[0]}–${model.forecastDates[2]} (including full today). Source signals and app screening are distinct.</p>`;
     if (list) list.innerHTML = model.alerts.length ? model.alerts.map(a => `<article class="alert-card ${css(a.severity)}"><div class="alert-card-head"><span class="badge">${esc(a.badge)}</span><span class="badge">${esc(a.severityLabel || a.severity)}</span></div><h3${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.title)}</h3><p class="alert-scope">${esc(a.scopeLabel)}</p><p${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.description || 'Read the source notice for details.')}</p><small>${esc(a.timingLabel)} · ${esc(a.source)}</small><p class="alert-guidance">${esc(a.guidance)}</p>${a.sourceUrl ? `<a href="${esc(a.sourceUrl)}" target="_blank" rel="noopener">Read source ↗</a>` : ''}${root.SiteShare?.row ? root.SiteShare.row(shareLines(a), 'alerts', a.official ? {t: 'Official forecast (MOEWR).'} : undefined) : ''}</article>`).join('') : `<div class="alert-card alert-info"><h3>No active signals returned for this view</h3><p>${model.messages.length ? 'Some feeds are unavailable or stale; check the status below.' : 'No matching source notice or app threshold is present in the fresh responses.'} This does not confirm that an area is safe or free from flooding.</p></div>`;
     notificationButton(button);
     notify(model);

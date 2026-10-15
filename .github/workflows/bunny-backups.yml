@@ -1,4 +1,4 @@
-# Inspect (default) or change the backup and stats-key settings on the Bunny app.
+# Inspect (default) or change the backup, stats-key and data-source key settings on the Bunny app.
 # Run by hand: Actions > Bunny settings > Run workflow. The logs are public, so the
 # script prints names and yes/no facts only, never values.
 name: Bunny settings
@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: inspect (read-only), snapshots (read-only report backups), apply / create-and-apply (backup variables), stats-key (new private stats key)
+        description: inspect (read-only), snapshots (read-only report backups), apply / create-and-apply (backup variables), stats-key (new private stats key), source-keys (Google Flood Hub key / ReliefWeb appname from this environment's secrets)
         required: true
         default: inspect
         type: choice
-        options: [inspect, snapshots, apply, create-and-apply, stats-key]
+        options: [inspect, snapshots, apply, create-and-apply, stats-key, source-keys]
       zone:
         description: Name of the private backup storage zone
         required: true
@@ -37,3 +37,5 @@ jobs:
           BUNNY_APP_ID: ${{ vars.BUNNY_APP_ID }}
           BUNNY_CONTAINER: ${{ vars.BUNNY_CONTAINER || 'el-nino-watch' }}
           BACKUP_ZONE: ${{ inputs.zone }}
+          GOOGLE_FLOOD_API_KEY: ${{ secrets.GOOGLE_FLOOD_API_KEY }}
+          RELIEFWEB_APPNAME: ${{ secrets.RELIEFWEB_APPNAME }}

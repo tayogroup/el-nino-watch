@@ -5,7 +5,7 @@ import {spawnSync} from 'node:child_process';
 import {existsSync, statSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
-import {findBrowser} from './find-browser.mjs';
+import {findBrowser, waitForWrite, withProfile} from './find-browser.mjs';
 
 const work = path.dirname(fileURLToPath(import.meta.url));
 const page = path.join(work, 'social-preview.html');
@@ -14,7 +14,7 @@ const browser = findBrowser();
 if (!browser) { console.error('No Edge or Chrome found. Set CHROME_PATH to a Chromium-based browser.'); process.exitCode = 1; }
 else {
   const before = existsSync(output) ? statSync(output).mtimeMs : 0;
-  const result = spawnSync(browser, ['--headless=new', '--disable-gpu', '--no-first-run', '--hide-scrollbars', '--force-device-scale-factor=1', '--window-size=1200,630', '--virtual-time-budget=3000', `--screenshot=${output}`, pathToFileURL(page).href], {encoding: 'utf8', timeout: 120000});
+  const result = withProfile(profile => { const run = spawnSync(browser, [profile, '--headless=new', '--disable-gpu', '--no-first-run', '--hide-scrollbars', '--force-device-scale-factor=1', '--window-size=1200,630', '--virtual-time-budget=3000', `--screenshot=${output}`, pathToFileURL(page).href], {encoding: 'utf8', timeout: 120000}); waitForWrite(output, before); return run; });
   if (!existsSync(output) || statSync(output).mtimeMs === before) {
     console.error(`The image was not written.\n${result.stderr || result.error?.message || ''}`);
     process.exitCode = 1;
