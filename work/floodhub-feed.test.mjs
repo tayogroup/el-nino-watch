@@ -193,3 +193,10 @@ test('the Alerts tab links to Google Flood Hub over Somalia', async () => {
   const start = index.indexOf('id="alerts-panel"'), panel = index.slice(start, index.indexOf('</section>', start));
   assert.ok(panel.includes('<a href="https://sites.research.google/floods/l/5/48/6" target="_blank" rel="noopener">Google Flood Hub river forecasts ↗</a>'));
 });
+
+test('the Sources tab links to Google Flood Hub over Somalia', async () => {
+  const index = await readFile(new URL('index.html', dist), 'utf8');
+  const start = index.indexOf('id="method-panel"'), panel = index.slice(start, index.indexOf('</section>', start));
+  assert.ok(start > 0 && panel.includes('data-site-tab="sources"'), 'the method section is on the Sources tab');
+  assert.ok(panel.includes('<a href="https://sites.research.google/floods/l/5/48/6" target="_blank" rel="noopener">River forecasts: Google Flood Hub ↗</a>'));
+});
