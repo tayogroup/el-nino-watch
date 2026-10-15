@@ -70,6 +70,19 @@ try {
   result = await request('/api/community/reports?city=mogadishu'); ok(result.body.reports.some(report => report.id === placed.id && report.district === 'Hodan' && report.landmark === 'Near Bakara market'));
   result = await request(`/api/community/reports/${placed.id}`, {method:'DELETE', headers:{Origin:origin, 'Content-Type':'application/json'}, body:JSON.stringify({receipt:placedReceipt})}); equal(result.response.status, 200);
   // Mogadishu: a district from the list or none. Other cities: free text.
+  // Date range: applied by the server before the newest-N cut, in whole East Africa Time days.
+  const lateDay = await post({...base, observedAt:'2026-10-13T20:59:00Z'}), nextDay = await post({...base, observedAt:'2026-10-13T21:00:00Z'});
+  equal(lateDay.response.status, 201); equal(nextDay.response.status, 201);
+  const lateId = lateDay.body.report.id, nextId = nextDay.body.report.id;
+  result = await request('/api/community/reports?city=mogadishu&from=2026-10-14&to=2026-10-14'); equal(result.response.status, 200);
+  ok(result.body.reports.some(report => report.id === nextId)); ok(!result.body.reports.some(report => report.id === lateId)); equal(result.body.from, '2026-10-14'); equal(result.body.to, '2026-10-14');
+  result = await request('/api/community/reports?to=2026-10-13'); ok(result.body.reports.some(report => report.id === lateId)); ok(!result.body.reports.some(report => report.id === nextId));
+  result = await request('/api/community/reports?limit=1'); ok(!result.body.reports.some(report => report.id === lateId));
+  result = await request('/api/community/reports?limit=1&from=2026-10-13&to=2026-10-13'); equal(result.body.reports.length, 1); equal(result.body.reports[0].id, lateId);
+  result = await request('/api/community/reports?from=2026-02-30'); equal(result.response.status, 400);
+  result = await request('/api/community/reports?from=13%2F10%2F2026'); equal(result.response.status, 400);
+  result = await request('/api/community/reports?from=2026-10-14&to=2026-10-13'); equal(result.response.status, 400);
+  for (const made of [lateDay, nextDay]) { result = await request(`/api/community/reports/${made.body.report.id}`, {method:'DELETE', headers:{Origin:origin, 'Content-Type':'application/json'}, body:JSON.stringify({receipt:made.body.receiptToken})}); equal(result.response.status, 200); }
   result = await post({...base, district:'Nowhere'}); equal(result.response.status, 400);
   // Landmark type: from the list or none.
   result = await post({...base, landmarkType:'castle'}); equal(result.response.status, 400);

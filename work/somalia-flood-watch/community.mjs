@@ -163,6 +163,23 @@ function validMagic(bytes, type) {
   return false;
 }
 
+// A calendar day (YYYY-MM-DD) bounding the feed's date range; days are read in East Africa Time (UTC+3).
+function dayParam(value, name) {
+  if (value === null || value === '') return null;
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  const day = match ? new Date(Date.UTC(+match[1], +match[2] - 1, +match[3])) : null;
+  if (!day || day.getUTCFullYear() !== +match[1] || day.getUTCMonth() !== +match[2] - 1 || day.getUTCDate() !== +match[3]) fail(400, `Use the ${name} date as YYYY-MM-DD.`);
+  return value;
+}
+
+function observedBetween(fromDay, toDay) {
+  const start = fromDay ? Date.parse(`${fromDay}T00:00:00+03:00`) : null;
+  const end = toDay ? Date.parse(`${toDay}T00:00:00+03:00`) + 86400000 : null;
+  if (start === null && end === null) return () => true;
+  // With a range set, a report whose observation time cannot be read is left out rather than guessed.
+  return report => { const observed = Date.parse(report.observedAt); return Number.isFinite(observed) && (start === null || observed >= start) && (end === null || observed < end); };
+}
+
 function publicReport(report) {
   const {receiptHash, ...result} = report;
   return result;
@@ -259,8 +276,11 @@ export function createCommunityHandler({dataDir, cities, onChange} = {}) {
         const limitValue = url.searchParams.get('limit');
         const maximum = limitValue === null ? 200 : Number(limitValue);
         if (!Number.isInteger(maximum) || maximum < 1 || maximum > 500) fail(400, 'Limit must be from 1 to 500.');
-        const matching = records.filter(report => !cityId || report.cityId === cityId).sort((a,b) => b.receivedAt.localeCompare(a.receivedAt));
-        reply(res, 200, {reports:matching.slice(0, maximum).map(publicReport), total:matching.length, truncated:matching.length > maximum, cityId:cityId || null, fetchedAt:new Date().toISOString(), status:'unverified', coverageNote:'Community reports are unverified and may overlap. Reported impact counts must not be added into verified totals.'}, req.method === 'HEAD');
+        const fromDay = dayParam(url.searchParams.get('from'), 'from'), toDay = dayParam(url.searchParams.get('to'), 'to');
+        if (fromDay && toDay && fromDay > toDay) fail(400, 'The from date must not be after the to date.');
+        const inRange = observedBetween(fromDay, toDay);
+        const matching = records.filter(report => (!cityId || report.cityId === cityId) && inRange(report)).sort((a,b) => b.receivedAt.localeCompare(a.receivedAt));
+        reply(res, 200, {reports:matching.slice(0, maximum).map(publicReport), total:matching.length, truncated:matching.length > maximum, cityId:cityId || null, from:fromDay, to:toDay, fetchedAt:new Date().toISOString(), status:'unverified', coverageNote:'Community reports are unverified and may overlap. Reported impact counts must not be added into verified totals.'}, req.method === 'HEAD');
         return true;
       }
       if (!['POST','DELETE'].includes(req.method)) fail(405, 'Unsupported community request method.');

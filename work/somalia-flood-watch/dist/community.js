@@ -172,18 +172,18 @@
     if (which === 'from') dateFrom = day; else dateTo = day;
     // A range typed backwards is turned round rather than showing nothing.
     if (dateFrom && dateTo && dateFrom > dateTo) { [dateFrom, dateTo] = [dateTo, dateFrom]; const from = byId('community-date-from'), to = byId('community-date-to'); if (from) from.value = dateFrom; if (to) to.value = dateTo; }
-    syncDateLimits(); renderFeed(); notifyChange();
+    syncDateLimits(); renderFeed(); notifyChange(); refresh();
   }
   function syncClearFilters() { const button = byId('community-clear-filters'); if (button) button.disabled = filtersAtDefault(); }
   function clearFilters() {
     reportFocusSequence++; clearTimeout(landmarkNameTimer);
-    const scopeChanged = scope !== 'city';
+    const scopeChanged = scope !== 'city', datesChanged = Boolean(dateFrom || dateTo);
     scope = 'city'; category = 'all'; district = 'all'; landmarkFilter = 'all'; landmarkName = ''; dateFrom = ''; dateTo = '';
     for (const [id, value] of [['community-scope', 'city'], ['community-category', 'all'], ['community-landmark-filter', 'all'], ['community-district-filter', 'all'], ['community-landmark-name', ''], ['community-date-from', ''], ['community-date-to', '']]) { const input = byId(id); if (input) input.value = value; }
     // The button is about to be disabled, so keep keyboard focus in the filters.
     syncDateLimits();
     byId('community-scope')?.focus?.();
-    if (scopeChanged) { records = []; feedAvailable = false; notifyChange(); refresh(); } else { renderFeed(); notifyChange(); }
+    if (scopeChanged) { records = []; feedAvailable = false; notifyChange(); refresh(); } else { renderFeed(); notifyChange(); if (datesChanged) refresh(); }
   }
   function renderFeed() {
     const list = byId('community-feed-list'); if (!list) return;
@@ -227,7 +227,8 @@
     if (!root) return;
     const sequence = ++requestSequence; loading = true; feedAvailable = false; feedError = null; notifyChange();
     const button = byId('community-refresh'); if (button) button.disabled = true;
-    const requestUrl = '/api/community/reports' + (scope === 'city' ? '?city=' + encodeURIComponent(cityId(cities[selected])) : '');
+    const query = [scope === 'city' ? 'city=' + encodeURIComponent(cityId(cities[selected])) : '', dateFrom ? 'from=' + dateFrom : '', dateTo ? 'to=' + dateTo : ''].filter(Boolean).join('&');
+    const requestUrl = '/api/community/reports' + (query ? '?' + query : '');
     if (!records.length) renderFeed();
     status('Connecting to community reports…');
     try {
@@ -237,7 +238,7 @@
       if (sequence !== requestSequence) return;
       records = reports.filter(report => report && typeof report.id === 'string' && typeof report.description === 'string');
       feedAvailable = true; feedFetchedAt = data.fetchedAt || new Date().toISOString(); feedTotal = Number.isInteger(data.total) ? data.total : records.length;
-      status(`Report service connected · refreshed ${timeLabel(feedFetchedAt)}. Reports are unverified.${data.truncated ? ` Showing the newest ${records.length} of ${feedTotal} reports; filters apply to these loaded reports.` : ''}`, 'connected');
+      status(`Report service connected · refreshed ${timeLabel(feedFetchedAt)}. Reports are unverified.${data.truncated ? (dateFrom || dateTo ? ` Showing the newest ${records.length} of ${feedTotal} reports in this date range; other filters apply to these loaded reports.` : ` Showing the newest ${records.length} of ${feedTotal} reports; filters apply to these loaded reports.`) : ''}`, 'connected');
     } catch (error) {
       if (sequence !== requestSequence) return;
       records = []; feedAvailable = false; feedError = error.message;

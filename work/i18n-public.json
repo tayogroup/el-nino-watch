@@ -525,7 +525,7 @@
     "All landmarks": "Dhammaan meelaha caanka ah",
     "Landmark name": "Magaca meesha",
     "Search, e.g. Bakara": "Raadi, tusaale: Bakaaraha",
-    "Clear all filters": "Tirtir dhammaan shaandhaynta",
+    "Clear all filters": "Tirtir dhammaan shaandhooyinka",
     "Observed from": "La arkay laga bilaabo",
     "Observed to": "La arkay ilaa"
   },
@@ -787,6 +787,10 @@
     {
       "en": "{0} unverified reports exported. Unknown impact counts remain blank or null.",
       "so": "{0} warbixinno aan la xaqiijin ayaa la soo dejiyay. Tirada waxyeellada ee aan la hayn waxay ahaanaysaa bannaan ama null."
+    },
+    {
+      "en": "Report service connected · refreshed {0}. Reports are unverified. Showing the newest {1} of {2} reports in this date range; other filters apply to these loaded reports.",
+      "so": "Adeegga warbixinnuhu waa xiriirsan yahay · la cusboonaysiiyay {0}. Warbixinnaha lama xaqiijin. Waxaa la muujinayaa {1} warbixinood ee ugu dambeeyay oo ka mid ah {2} ee muddadan; shaandhooyinka kale waxay khuseeyaan warbixinnadan la soo qaaday."
     },
     {
       "en": "Report service connected · refreshed {0}. Reports are unverified. Showing the newest {1} of {2} reports; filters apply to these loaded reports.",

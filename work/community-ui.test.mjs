@@ -315,11 +315,13 @@ try {
   liveApi.setDateRange('from', '2026-10-20'); liveApi.setDateRange('to', '2026-10-10');
   assert.equal(liveNode('community-date-from').value, '2026-10-10'); assert.equal(liveNode('community-date-to').value, '2026-10-20');
   assert.equal(liveNode('community-date-to').min, '2026-10-10', 'To cannot be set before From');
+  assert.equal(requests.some(request => String(request.url).includes('from=2026-10-10&to=2026-10-20')), true, 'The date range is sent to the server');
   assert.equal(liveNode('community-clear-filters').disabled, false, 'A date range can be cleared');
   liveNode('community-clear-filters').events.click();
   assert.equal(liveNode('community-date-from').value, ''); assert.equal(liveNode('community-date-to').value, ''); assert.equal(liveNode('community-date-to').min, '');
   await liveApi.refresh();
   assert.equal(liveNode('community-clear-filters').disabled, true, 'Nothing left to clear');
+  assert.equal(String(requests.filter(request => !request.options?.method).at(-1).url).includes('from='), false, 'After Clear the server is asked without a range');
   await new Promise(resolve => setTimeout(resolve, 300));
   assert.equal(liveNode('community-clear-filters').disabled, true, 'A search typed before clearing does not come back');
   liveNode('community-scope').events.change({ target: { value: 'all' } }); await liveApi.refresh();
