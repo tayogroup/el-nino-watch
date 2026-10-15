@@ -160,8 +160,8 @@
     },
     {
       "path": "work/community-api.test.mjs",
-      "bytes": 11234,
-      "sha256": "400603a96ff83a9a64f5ff548b4ac219de602ac4d552f61c74ff2951d7a39700"
+      "bytes": 12290,
+      "sha256": "677f9468fe3d28e6dd6ba4e29837de28053d6818f45dae9fdad1793bcc596fb8"
     },
     {
       "path": "work/community-app-integration.test.mjs",
@@ -185,8 +185,8 @@
     },
     {
       "path": "work/community-ui.test.mjs",
-      "bytes": 22896,
-      "sha256": "cd237a83b943be0175c94520a34bc4aeadb22674bd2f5917dd6aed7416146d98"
+      "bytes": 24510,
+      "sha256": "faa2d23bc91dd2ed1f4e355f617540efd2058f22bdf154ce0299a4519ed454ef"
     },
     {
       "path": "work/copernicus-catalog.test.mjs",
@@ -255,8 +255,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 68855,
-      "sha256": "259b083e3036d9a2d1b312445c31ad24b35758b7794e45be53a8e68f64b53d79"
+      "bytes": 69363,
+      "sha256": "318d09ae4b345a6b71424027de22127168cd50693cfd606bb896526fd9666f12"
     },
     {
       "path": "work/i18n-weather.json",
@@ -380,8 +380,8 @@
     },
     {
       "path": "work/somalia-flood-watch/community.mjs",
-      "bytes": 20935,
-      "sha256": "0d7839429edaf84141f0adfc8e6d6027415380d3b29ca2b8f42654de67c199b9"
+      "bytes": 21471,
+      "sha256": "2cf89722b03e6afb5f97a3ae5725a9c4ad81328373630a616e9bad4f820a5da3"
     },
     {
       "path": "work/somalia-flood-watch/copernicus.mjs",
@@ -420,8 +420,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/community.js",
-      "bytes": 42948,
-      "sha256": "04fc12814addff5fcf034d8ad185671f2e7e487aa97049b4a0b5fc1f5fdf1503"
+      "bytes": 44163,
+      "sha256": "c1e2cb550c1a34f144895d56946533f1a5b0da88d4df6cad5f354d5b5e0f1fd3"
     },
     {
       "path": "work/somalia-flood-watch/dist/copernicus.css",
@@ -590,8 +590,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 188056,
-      "sha256": "feed0d77512956cb6d6b31531a7d1ae6b2105037338ffcc4aca23598f91816a1"
+      "bytes": 188480,
+      "sha256": "cf740d6e8dc90dd892cc76029d16be2dd5020879e8510618ef10e0faa808ec98"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",

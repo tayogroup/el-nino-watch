@@ -5,7 +5,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createCommunityHandler } from './somalia-flood-watch/community.mjs';
-import { MOGADISHU_DISTRICTS } from './somalia-flood-watch/community.mjs';
+import { MOGADISHU_DISTRICTS, LANDMARK_TYPES } from './somalia-flood-watch/community.mjs';
 
 const nodes = new Map();
 class Node {
@@ -105,15 +105,29 @@ assert.equal(placeHtml.includes('&lt;b&gt;Hodan&lt;/b&gt;'), true, 'District is 
 assert.match(placeHtml, /<b>District<\/b> <span data-i18n-skip lang="und">/, 'Reporter wording is not machine-translated');
 assert.match(placeHtml, /<b>Landmark<\/b> <span data-i18n-skip lang="und">Near &quot;Bakara&quot; market<\/span>/);
 assert.equal(api.renderReport(malicious).includes('community-card-place'), false, 'Older reports without a place show no empty line');
-const placeCsv = api.buildExport([{ ...malicious, district: 'Hodan', landmark: '=near market' }], 'csv').content.split('\r\n');
-assert.match(placeCsv[0], /^"id","cityId","district","landmark","category"/);
-assert.equal(placeCsv[1].includes('"Hodan","\'=near market"'), true, 'A landmark cannot become a spreadsheet formula');
+const placeCsv = api.buildExport([{ ...malicious, district: 'Hodan', landmarkType: 'market', landmark: '=near market' }], 'csv').content.split('\r\n');
+assert.match(placeCsv[0], /^"id","cityId","district","landmarkType","landmark","category"/);
+assert.equal(placeCsv[1].includes('"Hodan","market","\'=near market"'), true, 'A landmark cannot become a spreadsheet formula');
 // Mogadishu's district is a choice from Banadir's 20 districts; the page and the server hold the same list.
 assert.deepEqual([...api.MOGADISHU_DISTRICTS.map(([name]) => name)],[...MOGADISHU_DISTRICTS], 'Page and server district lists match');
 assert.equal(MOGADISHU_DISTRICTS.length, 20);
 assert.equal(api.validateDraft({ ...draft, district: 'Nowhere' }, cities, now).valid, false, 'Mogadishu needs a listed district');
 assert.equal(api.validateDraft({ ...draft, district: 'Warta Nabada' }, cities, now).valid, true);
 assert.equal(api.validateDraft({ ...draft, cityId: 'galkayo', district: 'Garsoor' }, cities, now).valid, true, 'Other cities keep free text');
+
+// Landmark: a type from the list (optional), plus an optional name as written.
+assert.deepEqual([...api.LANDMARK_TYPES.keys()], [...LANDMARK_TYPES], 'Page and server landmark types match');
+assert.equal(api.validateDraft({ ...draft, landmarkType: 'market', landmark: 'Bakara' }, cities, now).valid, true);
+assert.equal(api.validateDraft({ ...draft, landmarkType: 'castle' }, cities, now).valid, false, 'Unknown landmark type is refused');
+assert.equal(api.validateDraft({ ...draft, landmarkType: 'constructor' }, cities, now).valid, false);
+assert.equal(api.validateDraft(draft, cities, now).payload.landmarkType, '', 'Landmark type stays optional');
+const typed = api.renderReport({ ...malicious, landmarkType: 'market', landmark: 'Bakara' });
+assert.match(typed, /<b>Landmark<\/b> <span>Market<\/span> · <span data-i18n-skip lang="und">Bakara<\/span>/, 'Type is translatable, the name is not');
+assert.match(api.renderReport({ ...malicious, landmarkType: 'health' }), /<b>Landmark<\/b> <span>Hospital or clinic<\/span><\/span>/, 'A type alone is shown');
+assert.equal(api.renderReport({ ...malicious, landmarkType: '<b>x</b>' }).includes('community-card-place'), false, 'An unknown stored type shows nothing');
+assert.equal(JSON.parse(api.buildExport([{ ...malicious, landmarkType: 'nonsense' }], 'geojson').content).features[0].properties.landmarkType, null, 'Unknown types export as unknown');
+assert.equal(JSON.parse(api.buildExport([{ ...malicious, landmarkType: 'port' }], 'geojson').content).features[0].properties.landmarkType, 'port');
+
 
 assert.equal(JSON.parse(api.buildExport([{ ...malicious, district: '', landmark: null }], 'geojson').content).features[0].properties.district, null, 'Blank is exported as unknown');
 
