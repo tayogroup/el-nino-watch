@@ -521,7 +521,8 @@
     "e.g. Bakara": "tusaale: Bakaaraha",
     "Choose a landmark type from the list.": "Liiska ka dooro nooca meesha caanka ah.",
     "Use a landmark name of up to 120 characters.": "Isticmaal magac meel oo aan ka badnayn 120 xaraf.",
-    "All districts": "Dhammaan degmooyinka"
+    "All districts": "Dhammaan degmooyinka",
+    "All landmarks": "Dhammaan meelaha caanka ah"
   },
   "patterns": [
     {

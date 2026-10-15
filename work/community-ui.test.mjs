@@ -143,6 +143,15 @@ assert.equal(ids('flood', 'mogadishu|hodan'), 'a', 'District and report type com
 assert.equal(ids('all', 'galkayo|hodan'), '', 'The same name in another city is a different district');
 assert.equal(ids('all', 'all'), 'a,b,c,d');
 
+// Landmark-type filter: combines with report type and district; reports with no type only match "all".
+filterReports[0].landmarkType = 'market'; filterReports[1].landmarkType = 'bridge'; filterReports[2].landmarkType = 'market';
+const typedIds = (categoryValue, districtValue, landmarkValue) => filterReports.filter(report => api.reportMatches(report, categoryValue, districtValue, landmarkValue)).map(report => report.id).join(',');
+assert.equal(typedIds('all', 'all', 'market'), 'a,c', 'Landmark type filters across cities');
+assert.equal(typedIds('all', 'mogadishu|hodan', 'bridge'), 'b', 'Landmark type and district combine');
+assert.equal(typedIds('rain', 'all', 'market'), '', 'Landmark type and report type combine');
+assert.equal(typedIds('all', 'all', 'all'), 'a,b,c,d', 'Reports without a landmark type stay under "All landmarks"');
+assert.equal(typedIds('all', 'all', 'school'), '');
+
 
 assert.equal(JSON.parse(api.buildExport([{ ...malicious, district: '', landmark: null }], 'geojson').content).features[0].properties.district, null, 'Blank is exported as unknown');
 
