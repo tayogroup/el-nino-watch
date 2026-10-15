@@ -164,6 +164,15 @@ assert.equal(namedIds('zzz'), '');
 assert.equal(namedIds(''), 'a,b,c,d', 'An empty search keeps every report, including ones with no name');
 assert.equal(namedIds('   '), 'a,b,c,d');
 
+// City filter (All cities view): one city among the loaded reports; combines with the rest.
+const cityIds = (cityValue, districtValue = 'all') => filterReports.filter(report => api.reportMatches(report, 'all', districtValue, 'all', '', '', '', cityValue)).map(report => report.id).join(',');
+assert.equal(cityIds('galkayo'), 'c,d', 'Only the chosen city');
+assert.equal(cityIds('mogadishu', 'mogadishu|hodan'), 'a,b', 'City and district combine');
+assert.equal(cityIds('galkayo', 'mogadishu|hodan'), '', 'A district from another city matches nothing');
+assert.equal(cityIds('all'), 'a,b,c,d');
+assert.equal(api.cityFilterOptions(filterReports).map(([id]) => id).join(','), 'galkayo,mogadishu', 'Each reported city once');
+assert.equal(api.cityFilterOptions([]).length, 0, 'No reports: the filter hides');
+
 // Date range: whole days in East Africa Time, both ends included; combines with the other filters.
 filterReports[0].observedAt = '2026-10-13T20:59:00Z'; // 13 Oct, 23:59 EAT
 filterReports[1].observedAt = '2026-10-13T21:00:00Z'; // 14 Oct, 00:00 EAT
@@ -302,6 +311,7 @@ try {
   assert.equal(elements.author.value, 'Draft alias');
   assert.equal(liveNode('community-upload-count').textContent.startsWith('1/4 files'), true);
   assert.equal(liveNode('community-location-status').textContent.includes('city changed'), true);
+  assert.equal(liveNode('community-city-filter-field').hidden, true, 'No City filter in a single city\'s view');
   // Area names the selected city rather than saying "Selected city", and follows a change of city.
   // (The page was built while Mogadishu was selected; Galkayo was chosen since.)
   assert.match(liveNode('community-root').innerHTML, /<option value="city" id="community-scope-city" data-i18n-skip>Mogadishu<\/option><option value="all">All cities<\/option>/);
@@ -309,6 +319,14 @@ try {
   liveApi.selectCity(2); assert.equal(liveNode('community-scope-city').textContent, 'Beledweyne');
   liveApi.selectCity(1); assert.equal(liveNode('community-scope-city').textContent, 'Galkayo');
   liveNode('community-scope').events.change({ target: { value: 'all' } }); await liveApi.refresh();
+  // City filter: shown in the All cities view, listing the cities with loaded reports; the map follows it.
+  const loadedCities = [...new Set(locationChanges.at(-1).map(report => report.cityId))];
+  assert.ok(loadedCities.length > 0, 'the All cities view loaded reports');
+  assert.equal(liveNode('community-city-filter-field').hidden, false);
+  liveNode('community-city-filter').events.change({ target: { value: loadedCities[0] } });
+  assert.ok(locationChanges.at(-1).length > 0 && locationChanges.at(-1).every(report => report.cityId === loadedCities[0]), 'Only the chosen city is shown and pinned');
+  assert.equal(liveNode('community-clear-filters').disabled, false);
+  liveNode('community-city-filter').events.change({ target: { value: 'all' } });
   // Clear all filters: offered once anything differs from how the page opens; returns every filter, Area included.
   const allShown = locationChanges.at(-1).length;
   liveNode('community-category').events.change({ target: { value: 'rain' } });
