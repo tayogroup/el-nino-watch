@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-import {parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES} from './somalia-flood-watch/news-feed.mjs';
+import {parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES, EXCLUDED_OUTLETS, excludedOutlet, isEventAnnouncement} from './somalia-flood-watch/news-feed.mjs';
 
 const NOW = Date.parse('2026-10-15T12:00:00Z');
 const day = n => new Date(NOW - n * 86400000).toUTCString();
@@ -35,7 +35,40 @@ test('each source keeps recent, relevant items, labelled by who published them',
   assert.equal(classify('www.icrcnewsroom.org'), 'humanitarian');
   assert.equal(classify('Red Cross Red Crescent Climate Centre'), 'humanitarian');
   assert.equal(classify('OCHA'), 'un'); assert.equal(classify('Horn Observer'), 'media');
+  assert.equal(classify('Gavi, the Vaccine Alliance'), 'humanitarian');
   assert.ok(itemsFrom('swalim', parseRss(rss([{title: 'Strong El Niño raises Deyr flood risk', date: day(31)}, {title: 'Land use training', date: day(2)}])), NOW).every(item => /El Niño/.test(item.title)), 'SWALIM: flood, rain and El Niño items only, up to 60 days');
+});
+
+test('excluded outlets are left out by web address, with the reason recorded', () => {
+  const feed = `<rss><channel>${[
+    ['Super El Niño may push Somalis into hunger', 'Genocide Watch', 'https://www.genocidewatch.com'],
+    ['Somalia El Niño explained', 'Wansom AI', 'https://www.wansom.ai'],
+    ['Somalia braces for El Niño floods', 'Yahoo', 'https://www.yahoo.com'],
+    ['Somalia braces for El Niño floods (original)', 'Horn Observer', 'https://hornobserver.com']
+  ].map(([title, name, url]) => `<item><title>${title} - ${name}</title><link>https://news.google.com/x</link><pubDate>${day(1)}</pubDate><source url="${url}">${name}</source></item>`).join('')}</channel></rss>`;
+  assert.deepEqual(itemsFrom('googleElNino', parseRss(feed), NOW).map(item => item.source), ['Horn Observer']);
+  assert.equal(excludedOutlet('https://news.genocidewatch.com/')?.[1], 'advocacy group, not a news outlet', 'subdomains too');
+  assert.equal(excludedOutlet('https://notyahoo.com/'), null, 'only the outlet itself, not look-alike names');
+  assert.ok(excludedOutlet('https://sonna.so/'), 'SONNA is left out');
+});
+
+test('meeting and event announcements are left out, in Somali and English; warnings and news stay', () => {
+  const titles = [
+    "Guddoomiyaha Hay'adda SoDMA oo UN OCHA Kala Hadlay Diyaar-garowga Super El Niño iyo Saameynta Fatahaadaha.",
+    'Guddoomiyaha SoDMA oo Muqdisho ku Soo Xiray Meertada 3-aad ee Shirweynaha U Adkaysiga Aafooyinka',
+    'SoDMA oo Afmadow ka Samaysay Wacyigelin ku Saabsan Diyaar-garowga iyo Khataraha El Niño.',
+    "Hay'adda SoDMA oo Muqdisho ku soo xiray shir ku saabsan u-diyaargarowga El Niño 2026.",
+    'Somali Red Crescent Society, ICRC train 72 responders ahead of expected El Niño floods',
+    'OCHA convenes El Niño preparedness meeting in Mogadishu',
+    'WAR-BIXINTA TODDOBAADLAHA EE DIGNIINAHA KHARTA FATAHAADAHA.',
+    'Two Boats for 30 Villages: OCHA Warns Doolow Underprepared for El Niño Floods',
+    'UK announces £5 million to help Somali communities prepare for El Niño flooding',
+    'Strong El Niño raises risk of severe Deyr flooding in Somalia'
+  ];
+  assert.deepEqual(titles.filter(title => !isEventAnnouncement(title)), titles.slice(6));
+  const sodma = itemsFrom('sodma', parseRss(rss(titles.slice(0, 4).concat(titles[6]).map(title => ({title, date: day(1)})))), NOW);
+  assert.deepEqual(sodma.map(item => item.title), [titles[6]], "SoDMA's weekly flood-warning bulletin stays; its meetings and events go");
+  assert.ok(EXCLUDED_OUTLETS.every(([domain, reason]) => /^[a-z0-9.-]+\.[a-z]+$/.test(domain) && reason.length > 10), 'each exclusion has a reason');
 });
 
 test('the same story from two searches appears once, newest first, at most 30 items', () => {

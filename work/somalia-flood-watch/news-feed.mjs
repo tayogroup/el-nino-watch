@@ -24,10 +24,35 @@ export const NEWS_SOURCES = Object.freeze({
 });
 export const RELIEFWEB_SITE = 'https://reliefweb.int/country/som';
 
+// Outlets left out of the Google News searches, by web address, with the reason. Owner's request,
+// 2026-10-15: no advocacy groups presented as news, AI-written content sites, aggregators that only
+// re-post other outlets' stories, or outlets with no Somalia beat that a keyword search pulls in.
+export const EXCLUDED_OUTLETS = Object.freeze([
+  ['genocidewatch.com', 'advocacy group, not a news outlet'],
+  ['wansom.ai', 'AI-written content site'],
+  ['yahoo.com', 'aggregator re-posting other outlets'],
+  ['msn.com', 'aggregator re-posting other outlets'],
+  ['nuffoodsspectrum.asia', 'food-industry trade publication, off-topic'],
+  ['examinerlive.co.uk', 'UK local news (Yorkshire Live), off-topic'],
+  ['winnmediaskn.com', 'Caribbean local radio, off-topic'],
+  ['myanmaritv.com', 'Myanmar television, off-topic'],
+  ['sonna.so', "Somali National News Agency, left out at the owner's request"]
+]);
+// No meeting or event announcements (owner, 2026-10-15): the bar carries warnings, forecasts and
+// news about conditions, not who met whom. Matched on the headline, in Somali and English, from
+// the start of a word so Somali endings still match ("shirweynaha", "tababarka").
+const EVENT_WORDS = /\b(shir|kulan|kala hadl|la kulm|qaabil|booqa|tababar|aqoon[- ]?isweydaarsi|wacyigelin|meertad|munaasabad|xaflad|daahfur|furitaan|meeting|meets\b|met with|conference|summit|workshop|training|trains?\b|trained\b|forum|symposium|webinar|seminar|roundtable|round-table|consultation|ceremony|visit|delegation|courtesy call|panel discussion)/i;
+export const isEventAnnouncement = title => EVENT_WORDS.test(String(title || ''));
+export function excludedOutlet(sourceUrl) {
+  let host = '';
+  try { host = new URL(sourceUrl).hostname.toLowerCase(); } catch { return null; }
+  return EXCLUDED_OUTLETS.find(([domain]) => host === domain || host.endsWith('.' + domain)) || null;
+}
+
 // Who published an item, from its source name: UN bodies, other humanitarian organisations,
 // governments, and everything else as media.
 const UN = /\b(united nations|un news|un media|ocha|unocha|world food programme|wfp|unicef|unhcr|iom|international organization for migration|fao|food and agriculture organization|who|world health organization|undp|unfpa|reliefweb|un somalia|swalim)\b/i;
-const HUMANITARIAN = /\b(icrc|icrcnewsroom|red cross|red crescent|ifrc|norwegian refugee council|nrc|save the children|international rescue committee|rescue\.org|mercy corps|care international|oxfam|world vision|concern worldwide|action against hunger|médecins sans frontières|msf|islamic relief|climate centre)\b/i;
+const HUMANITARIAN = /\b(icrc|icrcnewsroom|red cross|red crescent|ifrc|norwegian refugee council|nrc|save the children|international rescue committee|rescue\.org|mercy corps|care international|oxfam|world vision|concern worldwide|action against hunger|médecins sans frontières|msf|islamic relief|climate centre|gavi)\b/i;
 const GOVERNMENT = /\b(gov\.uk|government|ministry|sodma|disaster management agency|embassy)\b/i;
 export function classify(sourceName) {
   const name = String(sourceName || '');
@@ -59,7 +84,7 @@ export function parseRss(xml) {
 export function itemsFrom(key, entries, now = Date.now()) {
   const source = NEWS_SOURCES[key];
   // Page titles such as "Details | FAO in Somalia" are not headlines.
-  return entries.filter(entry => entry.title && !/^details\b/i.test(entry.title) && entry.link && Number.isFinite(entry.date) && entry.date <= now + DAY && now - entry.date <= source.maxAgeDays * DAY && (!source.keep || source.keep.test(entry.title)))
+  return entries.filter(entry => entry.title && !/^details\b/i.test(entry.title) && entry.link && !excludedOutlet(entry.sourceUrl) && !isEventAnnouncement(entry.title) && Number.isFinite(entry.date) && entry.date <= now + DAY && now - entry.date <= source.maxAgeDays * DAY && (!source.keep || source.keep.test(entry.title)))
     .map(entry => {
       const publisher = entry.sourceName || source.name;
       // Google News appends " - Publisher" to every headline.
@@ -116,7 +141,7 @@ async function reliefWeb(appname, fetchImpl, now) {
   return (data.data || []).map(({fields = {}}) => {
     const publisher = fields.source?.[0]?.shortname || fields.source?.[0]?.name || 'ReliefWeb';
     return {kind: 'news', feed: 'reliefweb', title: plainText(fields.title), url: httpsUrl(fields.url_alias), publishedAt: fields.date?.created ? new Date(fields.date.created).toISOString() : null, source: publisher, group: classify(publisher) === 'media' ? 'humanitarian' : classify(publisher), language: 'en'};
-  }).filter(item => item.title && item.url && item.publishedAt);
+  }).filter(item => item.title && item.url && item.publishedAt && !isEventAnnouncement(item.title));
 }
 
 export async function loadNews({app = {}, fetchImpl = fetch, now = Date.now(), reliefWebAppname = process.env.RELIEFWEB_APPNAME || ''} = {}) {
