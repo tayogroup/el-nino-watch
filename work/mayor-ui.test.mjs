@@ -84,6 +84,13 @@ test('real local store supports action CRUD, persistent per-city drafts, review 
   h.dispatch('click',target({'data-edit-action':id}));assert.equal(h.elements.get('mayor-action-title').value,'Check shelter access');
   h.dispatch('input',target({'data-action-field':'title'},'Confirm shelter access'));h.dispatch('submit',target({id:'mayor-action-form'}));assert.equal(h.store.list('galkayo')[0].title,'Confirm shelter access');
   h.dispatch('change',target({'data-review-report':'public-report-1'},'checked'));assert.equal(h.store.reviewStatus('galkayo','public-report-1'),'checked');assert.equal(h.store.reviewStatus('mogadishu','public-report-1'),'unreviewed');assert.match(h.rootElement.innerHTML,/does not verify a report or change its public status/);
+  // Review-stage filter: shows the reports at the chosen local stage; a city change starts again from All stages.
+  assert.match(h.rootElement.innerHTML,/<select data-review-filter><option value="all" selected>All stages<\/option>/);
+  h.dispatch('change',target({'data-review-filter':''},'checked'));assert.match(h.rootElement.innerHTML,/Report public-report-1/);assert.match(h.rootElement.innerHTML,/<option value="checked" selected>/);
+  h.dispatch('change',target({'data-review-filter':''},'unreviewed'));assert.doesNotMatch(h.rootElement.innerHTML,/Report public-report-1/);assert.match(h.rootElement.innerHTML,/No reports at this review stage\./);
+  h.dispatch('change',target({'data-review-filter':''},'__proto__'));assert.match(h.rootElement.innerHTML,/Report public-report-1/,'An unknown stage shows every report');
+  h.dispatch('change',target({'data-review-filter':''},'escalated'));assert.doesNotMatch(h.rootElement.innerHTML,/Report public-report-1/);
+  h.api.render({...data,selectedCity:0});h.api.render(data);assert.match(h.rootElement.innerHTML,/Report public-report-1/,'Changing city clears the stage filter');assert.equal(h.store.reviewStatus('galkayo','public-report-1'),'checked','Filtering never changes a review stage');
   h.dispatch('click',target({'data-report-map':'public-report-1'}));assert.deepEqual(h.sections.pop(),{id:'map',point:{latitude:6.77,longitude:47.43,reportId:'public-report-1'}});
   h.dispatch('click',target({'data-open-report':'public-report-1'}));assert.equal(h.sections.pop().id,'community');
   h.dispatch('change',target({'data-mayor-city':''},'0'));assert.deepEqual(h.selections,[0]);

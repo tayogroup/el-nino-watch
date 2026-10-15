@@ -350,7 +350,10 @@
     "level unknown": "heerka biyaha lama hayo",
     "Matched gauge: none": "Saldhig cabbir oo lala xiriiriyey: ma jiro",
     "unavailable or stale; retained reports are last known": "lama heli karo ama waa duug; warbixinnada la hayo waa kuwii ugu dambeeyey ee la helay",
-    "Weekly regional model forecast · not an official warning": "Saadaal moodeel gobol oo toddobaadle ah · ma aha digniin rasmi ah"
+    "Weekly regional model forecast · not an official warning": "Saadaal moodeel gobol oo toddobaadle ah · ma aha digniin rasmi ah",
+    "Review stage": "Marxaladda dib-u-eegista",
+    "All stages": "Dhammaan marxaladaha",
+    "No reports at this review stage.": "Ma jiraan warbixinno marxaladdan dib-u-eegista ah."
   },
   "patterns": [
     {
