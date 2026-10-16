@@ -61,3 +61,12 @@ test('the health alert has a Share row, and its post fits X whole in English and
     if (lang === 'so') assert.doesNotMatch(text, /\b(the|and|with)\b/, 'the Somali post has no English left');
   }
 });
+
+test('the site footer links to the health alert, in Somali too', async () => {
+  const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
+  assert.ok(footer.includes('<a href="#health-alert">Public health alert</a>'));
+  const tabs = await readFile(new URL('tabs.js', dist), 'utf8');
+  assert.match(tabs, /if \(mayor\(\)\) return openInMayor\(event\);/, 'the city manager view opens the Alerts tool for it');
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['Public health alert'], 'Digniinta caafimaadka bulshada');
+});

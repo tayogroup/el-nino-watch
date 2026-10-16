@@ -122,8 +122,25 @@
   // In-page anchors (hero buttons, skip link) to a block on another tab open that
   // tab instead of the browser jumping to a hidden element. Links app.js wires
   // ([data-manager-tool], [data-dashboard-view]) are left to app.js.
+  // In the city manager view, a link to a section inside one of its tools (the footer's and the news
+  // flash's link to the health alert) opens that tool and scrolls there, rather than changing the
+  // address, which would leave the view.
+  const TOOL_PANELS = {alerts: 'alerts-panel', map: 'map-panel', weather: 'daily-panel', community: 'community-panel'};
+  function openInMayor(event) {
+    const link = event.target.closest?.('a[href^="#"]');
+    if (!link || link.dataset.managerTool || link.dataset.dashboardView) return;
+    const id = decodeURIComponent(link.getAttribute('href').slice(1));
+    const target = id && /^[\w-]+$/.test(id) ? doc.getElementById(id) : null;
+    const tool = target && Object.keys(TOOL_PANELS).find(key => target.closest('#' + TOOL_PANELS[key]));
+    if (!tool || !window.MayorNavigation?.open) return;
+    event.preventDefault();
+    event.stopPropagation();
+    window.MayorNavigation.open(tool);
+    nextFrame(() => target.scrollIntoView({behavior: 'smooth', block: 'start'}));
+  }
   doc.addEventListener('click', event => {
-    if (mayor() || event.defaultPrevented) return;
+    if (event.defaultPrevented) return;
+    if (mayor()) return openInMayor(event);
     const link = event.target.closest?.('a[href^="#"]');
     if (!link || link.closest('#site-tabs') || link.dataset.managerTool || link.dataset.dashboardView) return;
     const id = decodeURIComponent(link.getAttribute('href').slice(1));
