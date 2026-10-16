@@ -217,9 +217,24 @@ test('the film has a Share row whose link opens the film itself, in English and 
   }
 });
 
+test('the waterborne-diseases film: its prevention scenes are the approved cholera scenes word for word, so their clips can be reused', async () => {
+  const film = new URL('./film/', import.meta.url);
+  for (const [id, base] of [['waterborne-diseases', 'cholera-prevention'], ['waterborne-diseases-so', 'cholera-prevention-so']]) {
+    const sb = JSON.parse(await readFile(new URL(id + '.json', film), 'utf8')), approved = JSON.parse(await readFile(new URL(base + '.json', film), 'utf8'));
+    for (const scene of ['boil', 'handwash', 'latrine', 'food']) assert.deepEqual(sb.scenes.find(s => s.id === scene), approved.scenes.find(s => s.id === scene), `${id} ${scene}`);
+    // New scenes take new ids, so the cholera film's own title, spread, ORS and closing clips are never picked up.
+    for (const scene of sb.scenes) assert.ok(['boil', 'handwash', 'latrine', 'food'].includes(scene.id) || !approved.scenes.some(s => s.id === scene.id), `${id}: ${scene.id} would reuse a cholera clip`);
+    assert.equal(sb.voice.voice, approved.voice.voice, 'the same voice as the approved film');
+    assert.match(sb.voice.approved, /^PENDING|^owner, /, 'voicing waits for the owner');
+    for (const source of sb.sources.filter(x => /^WHO/.test(x))) assert.match(source, /https:\/\/www\.who\.int\//, source);
+  }
+  const html = await readFile(new URL('film.html', film), 'utf8');
+  assert.ok(html.includes("const at = s.at || [.02, .1, .44, .66];"), 'the cholera film keeps its ORS timings');
+});
+
 test('the site footer links to the cholera film, in Somali too', async () => {
   const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
-  assert.ok(footer.includes('<a href="#health-alert">Public health alert</a><a href="#health-film">Cholera film</a>'));
+  assert.ok(footer.includes('<a href="#diseases-panel">Diseases</a><a href="#health-alert">Public health alert</a><a href="#health-film">Cholera film</a>'), 'the Diseases tab, then its two sections');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['Cholera film'], 'Filimka daacuunka');
 });

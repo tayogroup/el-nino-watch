@@ -48,6 +48,15 @@
   .vaccine { font: 650 26px "Segoe UI", Arial; color: var(--ink); display: flex; gap: 14px; align-items: center; }
   .vaccine i { width: 44px; height: 44px; border-radius: 14px; background: var(--blue); color: #fff; display: grid; place-items: center; font-style: normal; font-weight: 800; }
   .source { font: 600 18px "Segoe UI", Arial; color: var(--muted); margin-top: 18px; }
+  .diseases h2 { margin-bottom: 30px; }
+  .cards4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .cards4 > div { background: #fff; border: 3px solid #dfe9f4; border-radius: 26px; padding: 20px 16px 22px; display: grid; justify-items: center; align-content: start; gap: 10px; text-align: center; box-shadow: 0 14px 40px rgba(8,36,72,.08); }
+  .cards4 > div.on { border-color: var(--blue); box-shadow: 0 18px 46px rgba(20,115,207,.22); }
+  .cards4 > div.done { border-color: #bfe0c8; }
+  .cards4 svg { width: 120px; height: 120px; }
+  .cards4 b { font: 800 27px/1.15 "Segoe UI", Arial; color: var(--navy); }
+  .cards4 span { font: 650 21px/1.3 "Segoe UI", Arial; color: var(--ink); }
+  .cards4 em { font: 800 16px/1.2 "Segoe UI", Arial; font-style: normal; background: var(--danger); color: #fff; border-radius: 999px; padding: 7px 14px; }
   #cap { position: absolute; left: 90px; right: 90px; bottom: 34px; text-align: center; }
   #cap span { display: inline; font: 600 26px/1.5 "Segoe UI", Arial; color: #fff; background: rgba(8,36,72,.9); padding: 6px 14px; border-radius: 10px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
   #bar { position: absolute; left: 0; bottom: 0; height: 6px; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
@@ -235,13 +244,15 @@
     </svg></div>`;
   };
 
+  // A storyboard may time the four steps to its own narration (s.at); the cholera film uses the defaults.
   V.ors = (s, p, t) => {
-    const pour = seg(p, .1, .3), stir = seg(p, .3, .44), sip = enter(p, .44, .06), clinic = enter(p, .66, .08);
+    const at = s.at || [.02, .1, .44, .66];
+    const pour = seg(p, .1, .3), stir = seg(p, .3, .44), sip = enter(p, at[2], .06), clinic = enter(p, at[3], .08);
     const tilt = -ease(seg(p, .06, .14)) * 70 * (1 - seg(p, .28, .32));
     const powder = pour > 0 && pour < 1 ? Array.from({length: 14}, (_, i) => { const k = (t * 1.5 + rand(i)) % 1; return `<circle cx="${f(250 + rand(i + 3) * 30)}" cy="${f(150 + k * 120)}" r="3" fill="#fff" stroke="#d7dde3"/>`; }).join('') : '';
     const spoon = stir > 0 && stir < 1 ? `<rect x="${f(245 + Math.sin(t * 8) * 26)}" y="150" width="10" height="150" rx="5" fill="#9aa9b8" transform="rotate(${f(Math.sin(t * 8) * 8)} 250 290)"/>` : '';
     const pulse = 1 + Math.sin(t * 5) * .06 * clinic;
-    return `<div class="demo"><div class="ors-left">${steps(s, p, [.02, .1, .44, .66])}<div class="signs" ${st(enter(p, .74, .05), 14)}><b>${esc(W('Go at once if'))}</b>${s.signs.map(x => `<span>• ${esc(x)}</span>`).join('')}</div></div><svg viewBox="0 0 640 480">
+    return `<div class="demo"><div class="ors-left">${steps(s, p, at)}<div class="signs" ${st(enter(p, at[3] + .08, .05), 14)}><b>${esc(W('Go at once if'))}</b>${s.signs.map(x => `<span>• ${esc(x)}</span>`).join('')}</div></div><svg viewBox="0 0 640 480">
       <rect x="0" y="410" width="640" height="70" fill="#e7dcc8"/>
       <g opacity="${f(1 - clinic)}">
         <g transform="translate(300 110) rotate(${f(tilt)})"><rect x="-44" y="-56" width="88" height="112" rx="10" fill="#fff" stroke="#1473cf" stroke-width="4"/><text x="0" y="-8" text-anchor="middle" font-size="30" font-weight="800" fill="#1473cf">ORS</text><text x="0" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="var(--muted)">${esc(W("1 packet"))}</text></g>
@@ -256,6 +267,27 @@
         <rect x="290" y="300" width="60" height="110" rx="6" fill="#7b8a99"/><g transform="translate(320 230)"><rect x="-14" y="-40" width="28" height="80" rx="6" fill="var(--danger)"/><rect x="-40" y="-14" width="80" height="28" rx="6" fill="var(--danger)"/></g>
         <text x="320" y="455" text-anchor="middle" font-size="22" font-weight="800" fill="var(--navy)">${esc(W("Health facility"))}</text></g>
     </svg></div>`;
+  };
+
+  // Four diseases, one card each, lit in turn as the narration names them (s.at); the last card gets a
+  // warning badge (s.badge) at s.badgeAt. Each icon moves a little: falling drops, a rising thermometer,
+  // an eye turning yellow.
+  V.diseases = (s, p, t) => {
+    let active = -1;
+    s.at.forEach((a, i) => { if (p >= a) active = i; });
+    const k = i => ease(seg(p, s.at[i], s.at[i] + .12));
+    const fall = (x, i, fill) => { const y = 34 + ((t * .7 + rand(i)) % 1) * 46; return drop(x, y, .55, fill).replace('<path', `<path opacity="${f(Math.sin(((t * .7 + rand(i)) % 1) * Math.PI))}"`); };
+    const icons = [
+      `${drop(60, 78, 1.2)}${fall(28, 1)}${fall(92, 2)}${germ(60, 86, 8, 1)}`,
+      `${drop(42, 80, 1)}${drop(80, 80, 1, 'var(--danger)')}${fall(60, 3, 'var(--danger)')}`,
+      `<rect x="50" y="14" width="20" height="74" rx="10" fill="#fff" stroke="var(--muted)" stroke-width="4"/><circle cx="60" cy="94" r="17" fill="var(--danger)"/>
+        <rect x="55" y="${f(80 - k(2) * 58)}" width="10" height="${f(10 + k(2) * 58)}" rx="5" fill="var(--danger)"/>${[30, 46, 62].map(y => `<path d="M74 ${y}h10" stroke="var(--muted)" stroke-width="3"/>`).join('')}`,
+      `<path d="M10 60Q60 14 110 60Q60 106 10 60Z" fill="#fff" stroke="var(--ink)" stroke-width="4"/>
+        <path d="M10 60Q60 14 110 60Q60 106 10 60Z" fill="#f2d14b" opacity="${f(k(3))}"/><circle cx="60" cy="60" r="20" fill="#6b4a2e"/><circle cx="60" cy="60" r="9" fill="#1b1b1b"/><circle cx="66" cy="53" r="4" fill="#fff"/>`
+    ];
+    const badge = enter(p, s.badgeAt, .05);
+    return `<div class="diseases"><h2 ${st(enter(p, 0, .06))}>${esc(s.heading)}</h2><div class="cards4">${s.cards.map((c, i) =>
+      `<div class="${i === active ? 'on' : i < active ? 'done' : ''}" ${st(Math.max(.25, enter(p, s.at[i] - .02, .05)), 18)}><svg viewBox="0 0 120 120">${icons[i]}</svg><b>${esc(c.name)}</b><span>${esc(c.sign)}</span>${i === 3 && s.badge ? `<em style="opacity:${badge.toFixed(3)}">${esc(s.badge)}</em>` : ''}</div>`).join('')}</div></div>`;
   };
 
   V.close = (s, p, t) => {

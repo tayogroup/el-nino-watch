@@ -425,8 +425,8 @@
     },
     {
       "path": "work/film/film.html",
-      "bytes": 30010,
-      "sha256": "90c51e0c727cb11fc2d443b3c3d475c3206beca616e39873a3c12c6e0045ed91"
+      "bytes": 33052,
+      "sha256": "1df647050d7e1fc1af184f06da70398932143df36d53499011e0633f06ae7767"
     },
     {
       "path": "work/film/narrate-film.cjs",
@@ -437,6 +437,16 @@
       "path": "work/film/render-film.cjs",
       "bytes": 9871,
       "sha256": "749b3a8361741e4820318c8a409b2dc88f9a9563f511810a2bba245a8c8d9327"
+    },
+    {
+      "path": "work/film/waterborne-diseases-so.json",
+      "bytes": 9137,
+      "sha256": "a24939d717fe1a26d4a8c59d24a3b9cbfd5c83fe4a86b028b2e07512e1b23c4a"
+    },
+    {
+      "path": "work/film/waterborne-diseases.json",
+      "bytes": 7166,
+      "sha256": "e9203a0ec44a3f5af29dd215db398e611e105a77be05888a540101d8a3426cd1"
     },
     {
       "path": "work/find-browser.mjs",
@@ -465,8 +475,8 @@
     },
     {
       "path": "work/health-alert.test.mjs",
-      "bytes": 21047,
-      "sha256": "a4ace33176f7da8ce3d9d48f321d934c84e712c371bdd0c8adf3225eb8248739"
+      "bytes": 22617,
+      "sha256": "501184b4fe609413972dd47eca0cb5a5976ec66fe7d67c1b83cb96df8889bf37"
     },
     {
       "path": "work/home-city.test.mjs",
@@ -820,8 +830,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 43408,
-      "sha256": "a3d667d636823945131088c0432e82f3c6536ce97aa5c4703a3a650a2c7967d7"
+      "bytes": 43446,
+      "sha256": "fa695ad29306b6108ec9938eb5fc4adc1d42ac1d5e87aee293c3bbef289b0c7a"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
