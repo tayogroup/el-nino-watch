@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-import {HEALTH_FLASH, parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES, EXCLUDED_OUTLETS, excludedOutlet, isEventAnnouncement} from './somalia-flood-watch/news-feed.mjs';
+import {HEALTH_FLASH, FILM_FLASH, parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES, EXCLUDED_OUTLETS, excludedOutlet, isEventAnnouncement} from './somalia-flood-watch/news-feed.mjs';
 
 const NOW = Date.parse('2026-10-15T12:00:00Z');
 const day = n => new Date(NOW - n * 86400000).toUTCString();
@@ -121,7 +121,7 @@ test('loading: each source on its own, SWALIM\'s HTTP 500 feed accepted, ReliefW
     return {ok: !url.startsWith(NEWS_SOURCES.swalim.url), status: url.startsWith(NEWS_SOURCES.swalim.url) ? 500 : 200, text: async () => text, json: async () => JSON.parse(text)};
   };
   const without = await loadNews({fetchImpl, now: NOW, reliefWebAppname: ''});
-  assert.deepEqual(without.items.map(item => item.title), [HEALTH_FLASH.title, 'Digniinta fatahaadaha', 'El Niño flood warning'], 'the health flash leads the headlines');
+  assert.deepEqual(without.items.map(item => item.title), [HEALTH_FLASH.title, FILM_FLASH.title, 'Digniinta fatahaadaha', 'El Niño flood warning'], 'the health flash and the film lead the headlines');
   assert.equal(without.sources.find(source => source.id === 'googleElNino').available, false, 'a failing source is reported, not fatal');
   assert.match(without.sources.find(source => source.id === 'reliefweb').error, /RELIEFWEB_APPNAME/);
   assert.equal(requests.some(request => request.url.includes('reliefweb')), false, 'no ReliefWeb call without an appname');
@@ -170,4 +170,19 @@ test('the health flash: a standing item that opens the health alert, translated,
     assert.deepEqual(opened, mayorView ? ['alerts'] : [], mayorView ? 'the city manager view opens the Alerts tool first' : 'the public page leaves the tab to tabs.js');
   }
   assert.equal(globalThis.NewsFlash, undefined);
+});
+
+test('the film flash: a standing item that opens the cholera film, in Somali too', async () => {
+  assert.deepEqual({...FILM_FLASH}, {kind: 'app', key: 'film', label: 'Film · Cholera', title: 'Watch: how to protect your family from cholera', url: '#health-film', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
+  const index = await readFile(new URL('./somalia-flood-watch/dist/index.html', import.meta.url), 'utf8');
+  assert.ok(index.includes('<video id="health-film"'), 'the film it points to exists');
+  const document = {readyState: 'complete', getElementById: () => null, addEventListener() {}};
+  const window = {document, location: {protocol: 'http:'}, setInterval() {}, setTimeout() {}, clearTimeout() {}, matchMedia: () => ({matches: false}), fetch: async () => ({ok: false})};
+  vm.runInContext(await readFile(new URL('./somalia-flood-watch/dist/news-flash.js', import.meta.url), 'utf8'), vm.createContext({window, URL}));
+  const html = window.NewsFlash.itemHtml(FILM_FLASH);
+  assert.match(html, /<a class="news-flash-link" href="#health-film">/, 'an in-page link, not a new tab');
+  assert.match(html, /<span class="news-flash-title">Watch: how to protect/, 'the title is translatable');
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages[FILM_FLASH.label], 'Filim · Daacuun');
+  assert.equal(catalog.messages[FILM_FLASH.title], 'Daawo: sida qoyskaaga looga ilaaliyo daacuunka');
 });

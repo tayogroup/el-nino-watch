@@ -81,10 +81,15 @@ test('the cholera film sits in the health alert, with English and Somali caption
   assert.ok(section.includes('<track kind="captions" src="film/cholera-prevention.vtt" srclang="en" label="English" default>'));
   assert.ok(section.includes('<track kind="captions" src="film/cholera-prevention.so.vtt" srclang="so" label="Soomaali">'));
   assert.ok(section.indexOf('id="health-film"') < section.indexOf('How flooding raises the risk'), 'near the top of the section');
-  for (const name of ['cholera-prevention.mp4', 'cholera-prevention.jpg', 'cholera-prevention.vtt', 'cholera-prevention.so.vtt']) assert.ok((await stat(new URL('film/' + name, dist))).size > 1000, name);
+  for (const name of ['cholera-prevention.mp4', 'cholera-prevention.jpg', 'cholera-prevention.vtt', 'cholera-prevention.so.vtt', 'cholera-prevention-so.mp4', 'cholera-prevention-so.jpg', 'cholera-prevention-so.vtt']) assert.ok((await stat(new URL('film/' + name, dist))).size > 1000, name);
   const en = await readFile(new URL('film/cholera-prevention.vtt', dist), 'utf8'), so = await readFile(new URL('film/cholera-prevention.so.vtt', dist), 'utf8');
   for (const vtt of [en, so]) { assert.match(vtt, /^WEBVTT\n\n1\n\d\d:\d\d:\d\d\.\d{3} --> /); assert.doesNotMatch(vtt, /O R S/, 'captions show ORS, not the spelled-out narration'); }
   assert.match(so, /Daacuun|daacuun/); assert.match(en, /cholera/i);
+  // The Somali film's own captions, word-timed from its narration, in the owner's corrected wording.
+  const somaliFilm = await readFile(new URL('film/cholera-prevention-so.vtt', dist), 'utf8');
+  assert.match(somaliFilm, /^WEBVTT\n\n1\n/); assert.doesNotMatch(somaliFilm, /O R S/);
+  assert.match(somaliFilm, /barkadaha/); assert.match(so, /barkadaha/, 'the scene-timed Somali captions follow the corrected script too');
+  assert.doesNotMatch(somaliFilm + so, /kiniiniga ORS|kinniiniga|dhakhar kuu qoro/, 'ORS is daawada ORS, started at once (owner, 2026-10-16)');
   const last = text => text.trim().split('\n').filter(line => line.includes(' --> ')).at(-1).split(' --> ')[1];
   assert.ok(Math.abs(Date.parse('1970-01-01T' + last(en) + 'Z') - Date.parse('1970-01-01T' + last(so) + 'Z')) < 2000, 'both tracks end with the film');
 });
@@ -118,19 +123,85 @@ test('film files are sent in byte ranges, as Safari and iPhones need', async () 
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); await rm(dataDir, {recursive: true, force: true}); }
 });
 
-test('the film shows captions in the page language, and leaves a viewer\'s own choice alone', async () => {
+test('the film plays in the page language: the Somali film for Somali readers, with its own captions', async () => {
   for (const lang of ['en', 'so']) {
-    const tracks = [{language: 'en', mode: 'disabled'}, {language: 'so', mode: 'disabled'}];
+    // A stand-in for the video: its caption tracks follow whatever <track> elements it holds.
+    const video = {
+      innerHTML: '', poster: 'film/cholera-prevention.jpg', loads: 0,
+      setAttribute(name, value) { this[name] = value; }, load() { this.loads++; },
+      tracks: [{language: 'en', mode: 'disabled'}, {language: 'so', mode: 'disabled'}],
+      get textTracks() { return this.innerHTML ? [...this.innerHTML.matchAll(/srclang="(\w+)"/g)].map(([, language], i) => (this.tracks[i] = this.tracks[i]?.language === language ? this.tracks[i] : {language, mode: 'disabled'})) : this.tracks; }
+    };
     const listeners = [];
-    const document = {getElementById: id => id === 'health-film' ? {textTracks: tracks} : null, addEventListener: (type, fn) => listeners.push(fn)};
+    const document = {getElementById: id => id === 'health-film' ? video : null, addEventListener: (type, fn) => listeners.push(fn)};
     const window = {document, SiteLanguage: {getLanguage: () => lang}, setTimeout: fn => fn(), localStorage: {getItem: () => null, setItem() {}}};
     vm.runInContext(await readFile(new URL('alerts.js', dist), 'utf8'), vm.createContext({window, URL, URLSearchParams, Date}));
-    assert.deepEqual(tracks.map(track => track.mode), lang === 'so' ? ['disabled', 'showing'] : ['showing', 'disabled'], lang);
-    tracks[0].mode = 'disabled'; tracks[1].mode = 'disabled';
+    if (lang === 'so') {
+      assert.ok(video.innerHTML.startsWith('<source src="film/cholera-prevention-so.mp4" type="video/mp4">'), 'the Somali film');
+      assert.ok(video.innerHTML.includes('<track kind="captions" src="film/cholera-prevention-so.vtt" srclang="so" label="Soomaali" default>'));
+      assert.equal(video.poster, 'film/cholera-prevention-so.jpg'); assert.equal(video.loads, 1);
+      assert.deepEqual(video.textTracks.map(track => track.mode), ['showing']);
+    } else {
+      assert.equal(video.innerHTML, '', 'English readers keep the film index.html loads'); assert.equal(video.loads, 0);
+      assert.deepEqual(video.textTracks.map(track => track.mode), ['showing', 'disabled']);
+    }
+    video.textTracks.forEach(track => { track.mode = 'disabled'; });
     window.FloodAlerts.filmCaptions();
-    assert.deepEqual(tracks.map(track => track.mode), ['disabled', 'disabled'], 'a redraw in the same language keeps the viewer\'s choice');
+    assert.ok(video.textTracks.every(track => track.mode === 'disabled'), 'a redraw in the same language keeps the viewer\'s choice');
     window.SiteLanguage.getLanguage = () => (lang === 'so' ? 'en' : 'so');
     listeners.forEach(fn => fn({target: {closest: selector => selector === '[data-site-language]' ? {} : null}}));
-    assert.deepEqual(tracks.map(track => track.mode), lang === 'so' ? ['showing', 'disabled'] : ['disabled', 'showing'], 'switching language switches the captions');
+    if (lang === 'so') {
+      assert.ok(video.innerHTML.startsWith('<source src="film/cholera-prevention.mp4"'), 'back to the English film');
+      assert.equal(video.poster, 'film/cholera-prevention.jpg');
+      assert.deepEqual(video.textTracks.map(track => track.language + ':' + track.mode), ['en:showing', 'so:disabled']);
+    } else {
+      assert.ok(video.innerHTML.startsWith('<source src="film/cholera-prevention-so.mp4"'), 'switching to Somali loads the Somali film');
+      assert.deepEqual(video.textTracks.map(track => track.language + ':' + track.mode), ['so:showing']);
+    }
   }
+});
+
+test('the film has a Share row whose link opens the film itself, in English and Somali', async () => {
+  assert.ok(index.includes('<div id="film-share"></div></figure>'), 'the row sits under the film');
+  for (const lang of ['en', 'so']) {
+    const nodes = {'film-share': {innerHTML: ''}};
+    const document = {readyState: 'complete', title: '', body: {nodeType: 11, childNodes: []}, documentElement: {setAttribute() {}}, getElementById: id => nodes[id] || null, querySelectorAll: () => [], addEventListener() {}};
+    const window = {document, location: {href: `https://elninowatch.so/?lang=${lang}`, protocol: 'https:'}, localStorage: {getItem: () => null, setItem() {}}, navigator: {}, setTimeout: fn => fn()};
+    const context = vm.createContext({window, URL, URLSearchParams, Date});
+    for (const file of ['translations-so.js', 'i18n.js', 'share.js', 'alerts.js']) vm.runInContext(await readFile(new URL(file, dist), 'utf8'), context);
+    const row = nodes['film-share'].innerHTML;
+    assert.match(row, /^<div class="share-row"/); assert.match(row, /data-share-tab="#health-film"/);
+    assert.equal(window.SiteShare.linkFor('#health-film'), lang === 'so' ? 'https://elninowatch.so/?lang=so#health-film' : 'https://elninowatch.so/#health-film');
+    const text = window.SiteShare.textOf(window.FloodAlerts.filmShareLines);
+    assert.equal(text.split('\n').length, 3);
+    assert.equal(window.SiteShare.fit(text), text, `${lang}: nothing is cut or dropped for X`);
+    if (lang === 'so') { assert.match(text, /^Daawo: sida qoyskaaga/); assert.doesNotMatch(text, /\b(the|and|with|film)\b/); }
+  }
+});
+
+test('the site footer links to the cholera film, in Somali too', async () => {
+  const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
+  assert.ok(footer.includes('<a href="#health-alert">Public health alert</a><a href="#health-film">Cholera film</a>'));
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['Cholera film'], 'Filimka daacuunka');
+});
+
+test('the map tab calls out the cholera film, in Somali too', async () => {
+  const start = index.indexOf('id="map-panel"'), panel = index.slice(start, index.indexOf('<div class="map-controls">', start) + 30);
+  assert.ok(panel.includes('<p class="film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>'), 'near the top of the map panel');
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['Flood water can carry cholera.'], 'Biyaha fatahaaddu waxay qaadi karaan daacuun.');
+  assert.equal(catalog.messages['Watch the film: how to protect your family ▶'], 'Daawo filimka: sida qoyskaaga loo ilaaliyo ▶');
+});
+
+test('the weather tab calls out the cholera film too', () => {
+  const start = index.indexOf('id="daily-panel"'), panel = index.slice(start, index.indexOf('id="daily-status"', start));
+  assert.ok(panel.includes('<p class="film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>'), 'under the weather panel heading');
+});
+
+test('every tab calls out the cholera film', () => {
+  const callout = '<p class="film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>';
+  const panelOf = id => { const start = index.indexOf(`id="${id}"`); return index.slice(start, index.indexOf('</section>', start)); };
+  for (const id of ['city-rankings-panel', 'map-panel', 'daily-panel', 'community-panel', 'source-panel']) assert.ok(panelOf(id).includes(callout), id);
+  assert.equal(index.split(callout).length - 1, 5, 'once on each tab');
 });

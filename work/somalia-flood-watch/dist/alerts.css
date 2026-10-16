@@ -73,3 +73,5 @@
 @media(max-width:560px){.health-alert .health-table,.health-alert .health-table tbody{display:block;width:100%}}
 .health-alert .health-table th,.health-alert .health-table td{white-space:normal}@media(max-width:560px){.health-alert .health-table tbody th{width:auto}}
 .health-film{margin:4px 0 0;display:grid;gap:6px;max-width:760px}.health-film video{display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:12px;background:#082448}.health-film figcaption{font-size:12px;color:#5f6b7a}
+/* In-page links (news flash, footer) stop below the sticky header and city bar, not under them. */
+#health-alert,#health-film{scroll-margin-top:250px}

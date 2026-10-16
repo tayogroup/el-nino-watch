@@ -114,3 +114,6 @@ button:not(:disabled):active{filter:brightness(.95)}
 .community-empty{border:1px dashed var(--color-border-strong);background:var(--color-surface-sunken);border-radius:var(--radius-md);color:var(--color-text-muted)}
 /* Polish: news bar controls are full touch targets on phones. */
 @media(pointer:coarse){.news-flash-controls button{min-width:40px;min-height:40px}}
+
+/* The cholera film, called out on every tab (links to #health-film in the Alerts tab). */
+.film-callout{margin:0 0 14px;padding:10px 14px;border:1px solid #e6c98a;border-left:5px solid #b7791f;border-radius:10px;background:#fffaf0;color:#5b3a06;font-size:14px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}.film-callout a{color:#8a5a00;font-weight:700}

@@ -535,7 +535,6 @@
     "← Back to El Nino Watch": "← Ku noqo El Nino Watch",
     "Every outside service El Nino Watch uses to forecast rain and river flow, to raise alerts, and to check those alerts against what has been observed in Somalia.": "Adeeg kasta oo dibadda ah oo El Nino Watch u isticmaalo saadaasha roobka iyo qulqulka webiyada, bixinta digniinaha, iyo hubinta digniinahaas iyadoo lala barbardhigayo waxa dhab ahaan laga arkay Soomaaliya.",
     "Each entry says what the app uses it for.": "Il kasta waxaa lagu sheegay waxa abku u isticmaalo.",
-    "Checked against the app on 15 October 2026.": "Waxaa lagu hubiyay abka 15 Oktoobar 2026.",
     "No official national warning source": "Ma jiro il digniin rasmi ah oo heer qaran ah",
     "Since the Somalia National Meteorological Agency feed was removed, none of the sources below issues official warnings for Somalia. ICPAC publishes regional forecasts and GDACS monitors events; the app labels both that way.": "Tan iyo markii xogta Hay'adda Saadaasha Hawada Qaranka Soomaaliya laga saaray, ilaha hoose midkoodna ma bixiyo digniino rasmi ah oo Soomaaliya ah. ICPAC waxay daabacdaa saadaal heer gobol ah, GDACS-na waxay la socotaa dhacdooyinka; abku labadaba sidaas ayuu u calaamadiyaa.",
     "Forecasts": "Saadaal",
@@ -725,7 +724,24 @@
     "Public health · WHO guidance": "Caafimaadka bulshada · talada WHO",
     "Flooding raises the risk of cholera, malaria and dengue: what to do": "Fatahaaddu waxay kordhisaa khatarta daacuunka, duumada iyo dengue: waxa la sameeyo",
     "Public health alert": "Digniinta caafimaadka bulshada",
-    "Film: Cholera, protect your family (2 min 24 s). Narrated in English, with captions in English and Somali.": "Filim: Daacuun, ilaali qoyskaaga (2 daqiiqo iyo 24 ilbiriqsi). Codku waa Ingiriisi, qoraalladuna waa Ingiriisi iyo Soomaali."
+    "Film: Cholera, protect your family (2 min 24 s). Narrated in English, with captions in English and Somali.": "Filim: Ka hortagga daacuunka (3 daqiiqo iyo 14 ilbiriqsi). Cod iyo qoraallo Soomaali ah.",
+    "Film · Cholera": "Filim · Daacuun",
+    "Watch: how to protect your family from cholera": "Daawo: sida qoyskaaga looga ilaaliyo daacuunka",
+    "A short film on safe water, handwashing, latrines, safe food and ORS.": "Filim gaaban oo ku saabsan biyo nadiif ah, dhaqidda gacmaha, musqulaha, cunto nadiif ah iyo ORS.",
+    "Cholera film": "Filimka daacuunka",
+    "Public health guidance": "Hagaha caafimaadka bulshada",
+    "6 sources": "6 ilood",
+    "The public health alert at the bottom of the Alerts tab and the cholera film are based on these World Health Organization documents. They are guidance, not outbreak reports.": "Digniinta caafimaadka bulshada ee ku taal qaybta Digniinaha hoosteeda iyo filimka daacuunka waxay ku salaysan yihiin dukumentiyadan Ururka Caafimaadka Adduunka. Waa talo, ma aha warbixinno faafitaan.",
+    "Film": "Filim",
+    "El Nino Watch film · English and Somali": "Filimka El Nino Watch · Ingiriisi iyo Soomaali",
+    "A narrated film on preventing cholera: safe water, handwashing, latrines, safe food and ORS. It plays in the reader's language and is based on the WHO cholera fact sheet and WHO's floods guidance below.": "Filim cod leh oo ku saabsan ka hortagga daacuunka: biyo nadiif ah, dhaqidda gacmaha, musqulaha, cunto nadiif ah iyo ORS. Wuxuu ku daaramaa luqadda akhristaha, wuxuuna ku salaysan yahay warqadda xaqiiqooyinka daacuunka ee WHO iyo hagaha fatahaadaha ee WHO ee hoose.",
+    "Appeal": "Baaq",
+    "Q&A": "Su'aalo iyo jawaabo",
+    "Page": "Bog",
+    "Fact sheet": "Warqad xaqiiqo",
+    "Checked against the app on 16 October 2026.": "Waxaa lagu hubiyay abka 16 Oktoobar 2026.",
+    "Flood water can carry cholera.": "Biyaha fatahaaddu waxay qaadi karaan daacuun.",
+    "Watch the film: how to protect your family ▶": "Daawo filimka: sida qoyskaaga loo ilaaliyo ▶"
   },
   "patterns": [
     {

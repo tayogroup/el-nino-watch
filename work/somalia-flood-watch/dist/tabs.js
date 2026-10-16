@@ -35,6 +35,8 @@
   function writeHash() {
     if (!window.history?.replaceState || mayor()) return;
     const p = hashParams();
+    // A shared section anchor (#health-film) is not state to carry to another tab.
+    for (const [key, value] of [...p]) if (!value && /^[\w-]+$/.test(key) && doc.getElementById(key)) p.delete(key);
     if (current === 'overview') p.delete('tab'); else p.set('tab', current);
     const next = p.toString();
     window.history.replaceState(null, '', next ? '#' + next : location.pathname + location.search);
@@ -188,6 +190,30 @@
   current = fromHash();
   body.classList.add('site-tabs-ready');
   apply(false);
+
+  // A shared link to a section (#health-film, from the film's Share row) opens its tab and brings the
+  // section into view. Content above it (the alert list) arrives seconds later and pushes it down, so it is
+  // kept in view as the page fills, until the reader scrolls, taps or types, or 15 seconds pass.
+  const linkedId = /^#[\w-]+$/.test(location.hash) ? location.hash.slice(1) : '';
+  const linked = linkedId && !mayor() ? doc.getElementById(linkedId) : null;
+  const linkedTab = linked && tabOf(linked);
+  if (linkedTab) {
+    show(linkedTab, {scroll: false});
+    // Keep the address as the shared link (show() wrote #tab=...), so a reload or a copy lands here again.
+    window.history?.replaceState?.(null, '', location.pathname + location.search + '#' + linkedId);
+    let follow = true;
+    const stop = () => { follow = false; };
+    for (const type of ['wheel', 'touchstart', 'keydown', 'mousedown']) window.addEventListener(type, stop, {once: true, passive: true});
+    setTimeout(stop, 15000);
+    const bring = () => { if (follow) linked.scrollIntoView({block: 'start', behavior: 'instant'}); };
+    nextFrame(bring);
+    const panel = linked.closest('main > [data-site-tab]');
+    if (panel && window.MutationObserver) {
+      const watcher = new MutationObserver(() => { if (follow) bring(); else watcher.disconnect(); });
+      watcher.observe(panel, {childList: true, subtree: true});
+      setTimeout(() => watcher.disconnect(), 15000);
+    }
+  }
 
   window.SiteTabs = Object.freeze({
     show,

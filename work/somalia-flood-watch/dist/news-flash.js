@@ -20,7 +20,7 @@
   function itemHtml(item, inList = false) {
     const url = safeUrl(item.url), external = url && !url.startsWith('#');
     const group = `<span class="news-flash-badge news-flash-${esc(item.group)}"${item.group === 'app' ? ' data-i18n-skip' : ''}>${esc(GROUPS[item.group] || 'Media')}</span>`;
-    const translated = item.kind === 'app' && ['icpac', 'health'].includes(item.key);
+    const translated = item.kind === 'app' && ['icpac', 'health', 'film'].includes(item.key);
     const title = `<span class="news-flash-title"${translated ? '' : ` data-i18n-skip lang="${esc(item.language === 'so' ? 'so' : item.language === 'en' ? 'en' : 'und')}"`}>${esc(item.title)}</span>`;
     const label = item.label ? `<span class="news-flash-label-text">${esc(item.label)}</span> ` : '';
     const meta = `<span class="news-flash-meta"><span data-i18n-skip>${esc(item.source)}</span>${dayLabel(item.publishedAt) ? ` · <span data-i18n-skip>${esc(dayLabel(item.publishedAt))}</span>` : ''}</span>`;

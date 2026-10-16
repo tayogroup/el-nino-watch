@@ -134,6 +134,9 @@ export function merge(lists) {
 // It is added after the outage check in loadNews, so it never hides that no news source answered.
 export const HEALTH_FLASH = Object.freeze({kind: 'app', key: 'health', label: 'Public health · WHO guidance', title: 'Flooding raises the risk of cholera, malaria and dengue: what to do', url: '#health-alert', publishedAt: null, source: 'WHO', group: 'app', language: 'en'});
 
+// And to the cholera film in that alert (owner, 2026-10-16), which plays in the reader's language.
+export const FILM_FLASH = Object.freeze({kind: 'app', key: 'film', label: 'Film · Cholera', title: 'Watch: how to protect your family from cholera', url: '#health-film', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
+
 export function appItems({enso, alerts} = {}) {
   const items = [];
   if (enso?.available && (enso.alertStatus || enso.synopsis)) {
@@ -184,5 +187,5 @@ export async function loadNews({app = {}, fetchImpl = fetch, now = Date.now(), r
   } else status.push({id: 'reliefweb', available: false, error: 'Not enabled: RELIEFWEB_APPNAME is not set.'});
   const news = merge(lists), flashes = appItems(app);
   if (!news.length && !flashes.length) throw new Error('No news source answered.');
-  return {items: [...flashes, HEALTH_FLASH, ...news], sources: status.sort((a, b) => a.id.localeCompare(b.id)), note: 'Headlines are shown as published by each organisation or outlet. Nothing here is an official warning.'};
+  return {items: [...flashes, HEALTH_FLASH, FILM_FLASH, ...news], sources: status.sort((a, b) => a.id.localeCompare(b.id)), note: 'Headlines are shown as published by each organisation or outlet. Nothing here is an official warning.'};
 }

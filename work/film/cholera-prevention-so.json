@@ -2,9 +2,22 @@
   "id": "cholera-prevention-so",
   "title": "Daacuun: ilaali qoyskaaga",
   "tag": "Caafimaadka bulshada · Daacuun",
-  "brand": {"name": "El Nino Watch"},
-  "voice": {"provider": "azure", "voice": "so-SO-UbaxNeural", "voice_name": "Ubax", "rate": "0%", "approved": "NOT YET: Somali script awaiting the owner's review"},
-  "captionReplace": [["O R S", "ORS"]],
+  "brand": {
+    "name": "El Nino Watch"
+  },
+  "voice": {
+    "provider": "azure",
+    "voice": "so-SO-UbaxNeural",
+    "voice_name": "Ubax",
+    "rate": "0%",
+    "approved": "owner, 2026-10-16: Somali script corrected by the owner (second version); ORS to start at once, named daawada ORS; typos fixed with the owner's agreement"
+  },
+  "captionReplace": [
+    [
+      "O R S",
+      "ORS"
+    ]
+  ],
   "translationOf": "cholera-prevention",
   "sources": [
     "WHO cholera fact sheet (29 September 2026): https://www.who.int/news-room/fact-sheets/detail/cholera",
@@ -20,24 +33,24 @@
     "Tablet: as the": "Kiniin: sida",
     "packet says": "baakadda ku qoran",
     "Clean, with a lid": "Nadiif, dabool leh",
-    "Never dip hands in": "Gacan ha ku dhex galin",
+    "Never dip hands in": "Gacan ha dhex galin",
     "SOAP": "SAABUUN",
     "Palms": "Calaacalaha",
-    "Backs": "Dhabarka gacmaha",
+    "Backs": "Gadaasha gacmaha",
     "Between the fingers": "Faraha dhexdooda",
     "Under the nails": "Ciddiyaha hoostooda",
-    "Let them dry in the air": "Hawo ha ku engegaan",
+    "Let them dry in the air": "Hawada ha ku engegaan",
     "WHEN TO WASH": "GOORMA LA DHAQAA",
     "Far from the well": "Ka fog ceelka",
-    "Not open ground": "Dhul bannaan maaha",
+    "Not open ground": "Dhul bannaan aheyn",
     "Children's faeces too": "Saxarada carruurta sidoo kale",
     "Then wash hands": "Kadib gacmaha dhaq",
-    "Cook well, eat hot": "Kari, kulul ku cun",
+    "Cook well, eat hot": "Kari, kuleyl ku cun",
     "Wash and peel": "Dhaq oo diir",
     "Keep food covered": "Cuntada dabool",
     "1 packet": "1 baakad",
     "Safe water": "Biyo nadiif ah",
-    "Small sips, often": "Qurub yar, marar badan",
+    "Small sips, often": "In yar, marar badan",
     "Health facility": "Xarun caafimaad",
     "Go at once if": "Isla markiiba tag haddii"
   },
@@ -46,61 +59,115 @@
   "height": 720,
   "scenes": [
     {
-      "id": "title", "visual": "title",
-      "heading": "Daacuun: ilaali qoyskaaga", "sub": "Biyo nadiif ah · gacmo nadiif ah · ORS degdeg ah",
-      "narration": "Fatahaaddu waxay daacuunka gaarsiin kartaa ceelasha iyo haamaha biyaha. Daacuunku wuxuu ku faafaa biyo iyo cunto wasakh ah, wuxuuna dili karaa dhowr saacadood gudahood. Laakiin waa laga hortagi karaa, waana la daaweyn karaa. Waa kan sida aad u ilaalin karto qoyskaaga."
+      "id": "title",
+      "visual": "title",
+      "heading": "Ka hortagga daacuunka: Qoyskaaga ilaali",
+      "sub": "Biyo nadiif ah · gacmo nadiif ah · qaadashada daawada ORS si degdeg ah",
+      "narration": "Fatahaadda biyaha roobabka ama wabiyada waxay daacuunka gaarsiin karaan ceelasha, barkadaha, baliyada iyo haamaha biyaha. Daacuunku wuxuu ku faafaa biyo iyo cunto wasakh ah, wuxuuna qofka dili karaa dhowr saacadood gudahood. Laakiin waa laga hortagi karaa, waana la daaweyn karaa. Daacuunka waxaad uga taxadari kartaa ugana ilaalin kartaa naftaada, qoyskaaga iyo ehelkaagaba sida soo socota."
     },
     {
-      "id": "spread", "visual": "spread",
+      "id": "spread",
+      "visual": "spread",
       "heading": "Sida daacuunku u faafo",
-      "steps": ["Jeermisku wuxuu ku nool yahay saxarada", "Fatahaaddu waxay u qaaddaa biyaha iyo cuntada", "Shuban biyo ah oo degdeg ah iyo matag"],
-      "narration": "Jeermiska daacuunku wuxuu ku nool yahay saxarada dadka uu ku dhacay. Marka biyaha fatahaadda ama musqulaha buuxsamay ay gaaraan ceelasha, haamaha iyo cuntada, jeermisku wuu galaa. Inta badan dadka liqa waxay yeeshaan xanuun fudud ama midna, laakiin weli way faafin karaan. Qaar baa aad u xanuunsada, oo waxaa ku dhaca shuban biyo ah oo degdeg ah iyo matag."
+      "steps": [
+        "Jeermiska daacuunku wuxuu ku nool yahay saxarada",
+        "Fatahaaddu waxay jeermiskaas gaarsiisaa biyaha iyo cuntada",
+        "Ka dibna shuban biyo ah oo degdeg ah iyo matag ayaa qofka ku dhici kara"
+      ],
+      "narration": "Jeermiska daacuunku wuxuu ku nool yahay saxarada dadka uu ku dhacay. Marka biyaha fatahaadda ama musqulaha buuxsamay ay gaaraan ceelasha, barkadaha, baliyada, haamaha iyo cuntada, jeermisku wuu galayaa. Inta badan dadka caba biyahaas waxaa ku dhaca xanuun fudud ama kuma dhaco, laakiin weli way faafin karaan. Dadka qaar baa aad u xanuunsada, oo waxaa ku dhaca shuban biyo ah oo degdeg ah iyo matag."
     },
     {
-      "id": "boil", "visual": "boil",
-      "heading": "1. Biyaha nadiifi",
-      "steps": ["Karkari ilaa ay si xoog leh u karkaraan", "Ha qaboobaan iyagoo daboolan", "Shidaal ma haysid? Isticmaal kiniinno"],
-      "narration": "Marka hore, biyaha la cabbo ka dhig kuwo nadiif ah. Biyaha karkari ilaa ay si xoog leh u karkaraan, oo ay ka soo baxaan xumbo waaweyn, kadibna ha qaboobaan iyagoo daboolan. Haddii aadan karkarin karin, isticmaal kiniinnada nadiifinta biyaha sida baakadda ku qoran. Biyo nadiif ah u isticmaal cabbitaanka, karinta, cadayga iyo cuntada ilmaha."
+      "id": "boil",
+      "visual": "boil",
+      "heading": "1. Biyaha ka dhig nadiifi",
+      "steps": [
+        "Karkari ilaa ay si xoog leh u karkaraan",
+        "Ha qaboobaan iyagoo daboolan",
+        "Haddii aadan karkarin karin, isticmaal kiniiniga biyaha nadiifiya"
+      ],
+      "narration": "Marka hore, biyaha la cabbo ka dhig kuwo nadiif ah. Biyaha karkari ilaa ay si xoog leh u karkaraan, oo ay ka soo baxdo xumbo waaweyn, kadibna ha qaboobaan iyagoo daboolan. Haddii aadan karkarin karin, isticmaal kiniinnada nadiifinta biyaha adoo u isticmaalaya sida baakadda ku qoran. Biyo nadiif ah u isticmaal cabbitaanka, karinta, cadayga iyo cuntada ilmaha."
     },
     {
-      "id": "store", "visual": "store",
+      "id": "store",
+      "visual": "store",
       "heading": "Si nadiif ah u kaydi",
-      "steps": ["Weel nadiif ah oo dabool leh", "Ka shub, ama ka isticmaal tuubada", "Gacan iyo koob ha ku dhex galin"],
-      "narration": "Biyaha nadiifka ah ku kaydi weel nadiif ah oo dabool leh. Ka shub, ama ka isticmaal tuubada. Weligaa gacantaada, ama koob wasakh ah, ha ku dhex galin biyaha kaydsan."
+      "steps": [
+        "Weel nadiif ah oo dabool leh",
+        "Ka shub, ama ka isticmaal tuubada",
+        "Gacan iyo koob ha dhex galin"
+      ],
+      "narration": "Biyaha nadiifka ah ku kaydi weel nadiif ah oo dabool leh. Ka shub, ama ka isticmaal tuubada. Weligaa gacantaada, ama koob wasakh ah, ha dhex galin biyaha kaydsan."
     },
     {
-      "id": "handwash", "visual": "handwash",
+      "id": "handwash",
+      "visual": "handwash",
       "heading": "2. Gacmaha ku dhaq saabuun",
-      "steps": ["Qoy", "Saabuun mari", "Meel kasta xoq", "Biyo ku maydh", "Hawo ku engeji"],
-      "times": ["Musqusha ka dib", "Ilmo nadiifinta ka dib", "Karinta ka hor", "Cunista ama quudinta ka hor"],
+      "steps": [
+        "Qoy gacmaha",
+        "Saabuun mari",
+        "Meel kasta xoq",
+        "Biyo ku maydh",
+        "Hawo ku engeji"
+      ],
+      "times": [
+        "Musqusha ka dib",
+        "Ilmo nadiifinta ka dib",
+        "Cunto karinta ka hor",
+        "Cunto cunista ama quudinta ka hor"
+      ],
       "narration": "Marka labaad, gacmaha ku dhaq saabuun iyo biyo nadiif ah. Gacmaha qoy, oo saabuun mari. Xoq meel kasta: calaacalaha, dhabarka gacmaha, faraha dhexdooda iyo ciddiyaha hoostooda. Biyo ku maydh, oo ha ku engegaan hawada. Samee marka aad musqusha ka soo baxdo, marka aad ilmo nadiifiso, ka hor karinta, iyo ka hor cunista ama quudinta ilmaha."
     },
     {
-      "id": "latrine", "visual": "latrine",
+      "id": "latrine",
+      "visual": "latrine",
       "heading": "3. Saxarada ka fogee biyaha",
-      "steps": ["Mar walba isticmaal musqul", "Musqulaha ka fogee ceelasha", "Saxarada carruurta sidoo kale"],
+      "steps": [
+        "Mar walba isticmaal musqul",
+        "Musqulaha ka fogee ceelasha",
+        "Saxarada carruurta sidoo kale fogee"
+      ],
       "narration": "Marka saddexaad, saxarada ka fogee biyaha. Mar walba isticmaal musqul, weligaa dhul bannaan ha isticmaalin, musqulahana ka fogee ceelasha. Saxarada carruurta sidoo kale ku rid musqusha, kadibna gacmaha dhaq."
     },
     {
-      "id": "food", "visual": "food",
+      "id": "food",
+      "visual": "food",
       "heading": "4. Cuntada nadiifi",
-      "steps": ["Si fiican u kari, kulul ku cun", "Midhaha dhaq oo diir", "Cuntada dabool"],
-      "narration": "Marka afraad, cuntada ka dhig mid nadiif ah. Cuntada si fiican u kari, oo cun iyadoo kulul. Midhaha ku dhaq biyo nadiif ah oo diir, cuntadana dabool."
+      "steps": [
+        "Si fiican u kari, ayadoo kulul cun",
+        "Khudaarta dhaq oo diir",
+        "Cuntada dabool"
+      ],
+      "narration": "Marka afraad, cuntada ka dhig mid nadiif ah. Cuntada si fiican u kari, oo cun iyadoo kulul. Khudaarta ku dhaq biyo nadiif ah oo diir, cuntadana dabool."
     },
     {
-      "id": "ors", "visual": "ors",
-      "heading": "Shuban biyo ah? Degdeg",
-      "steps": ["Isla markiiba bilow ORS", "U qas sida baakadda ku qoran", "Sii qurub yar yar, marar badan", "Si degdeg ah u tag xarun caafimaad"],
-      "signs": ["Aad u daciif ama hurdo badan", "Ma cabbi karo", "Ilmo yar"],
-      "narration": "Haddii qof qabo shuban biyo ah, si degdeg ah u dhaqaaq. Isla markiiba bilow O R S. Hal baakad ku qas biyo nadiif ah sida baakadda ku qoran, oo sii qurub yar yar marar badan. Si degdeg ah u tag xarun caafimaad, gaar ahaan haddii qofku aad u daciif yahay, uusan cabbi karin, ama uu yahay ilmo yar. Dadka badankoodu waxay ku bogsadaan O R S degdeg ah."
+      "id": "ors",
+      "visual": "ors",
+      "heading": "Shuban biyo ah? Si degdeg ah",
+      "steps": [
+        "Isla markiiba bilow daawada ORS",
+        "U qas sida baakadda ku qoran",
+        "U sii si yar yar, marar badan",
+        "Si degdeg ah u tag xarun caafimaad"
+      ],
+      "signs": [
+        "Aad u daciif u yahay ama hurdo badan ku aragtid",
+        "Uusan cabbi karin",
+        "Uu yahay ilmo yar"
+      ],
+      "narration": "Haddii qof qabo shuban biyo ah, si degdeg ah talaabo u qaad. Isla markiiba bilow inaad siisid daawada O R S. Hal baakad ku qas biyo nadiif ah sida baakadda ku qoran, oo ha u qaato si yar yar marar badan. Si degdeg ah u tag xarun caafimaad, gaar ahaan haddii qofku aad uu daciif u yahay, uusan cabbi karin, ama uu yahay ilmo yar. Dadka badankoodu waxay ku bogsadaan daawada O R S oo degdeg loo siiyo."
     },
     {
-      "id": "close", "visual": "close",
+      "id": "close",
+      "visual": "close",
       "heading": "Biyo nadiif ah. Gacmo nadiif ah. ORS degdeg ah.",
-      "items": ["Biyo nadiif ah", "Gacmo nadiif ah", "ORS degdeg ah"],
-      "vaccine": "Tallaalka daacuunka ee afka: qaado meesha shaqaalaha caafimaadku ku bixiyaan",
-      "source": "Isha: Ururka Caafimaadka Adduunka (WHO)",
-      "narration": "Meesha shaqaalaha caafimaadku ku bixiyaan tallaalka daacuunka ee afka laga qaato, qaado, oo sii wad karkarinta biyaha iyo dhaqidda gacmaha. Biyo nadiif ah, gacmo nadiif ah, O R S degdeg ah. La wadaag qoyskaaga."
+      "items": [
+        "Biyo nadiif ah",
+        "Gacmo nadiif ah",
+        "ORS degdeg ah"
+      ],
+      "vaccine": "Tag meesha tallaalka daacuunka ee afka lagu bixiyo",
+      "source": "Xigasho: Ururka Caafimaadka Adduunka (WHO)",
+      "narration": "Waxaad tagtaa meesha shaqaalaha caafimaadku ku bixiyaan tallaalka daacuunka ee afka laga qaato, qaado, oo sii wad karkarinta biyaha iyo dhaqidda gacmaha. Biyo nadiif ah, gacmo nadiif ah, O R S degdeg ah. La wadaag qoyskaaga."
     }
   ]
 }
