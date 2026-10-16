@@ -185,3 +185,11 @@ test('the site footer links to the cholera film, in Somali too', async () => {
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['Cholera film'], 'Filimka daacuunka');
 });
+
+test('the map tab calls out the cholera film, in Somali too', async () => {
+  const start = index.indexOf('id="map-panel"'), panel = index.slice(start, index.indexOf('<div class="map-controls">', start) + 30);
+  assert.ok(panel.includes('<p class="map-film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>'), 'near the top of the map panel');
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['Flood water can carry cholera.'], 'Biyaha fatahaaddu waxay qaadi karaan daacuun.');
+  assert.equal(catalog.messages['Watch the film: how to protect your family ▶'], 'Daawo filimka: sida qoyskaaga loo ilaaliyo ▶');
+});
