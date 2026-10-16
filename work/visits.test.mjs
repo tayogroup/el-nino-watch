@@ -38,7 +38,7 @@ test('every visit is counted, with its tab, city, language, device and country',
     await call(visits, '/api/visit', request('POST', {type: 'city', city: 'Somewhere Else'}));
     const {body} = await call(visits, '/api/visits?days=7', request('GET'));
     assert.equal(body.published, true);
-    assert.deepEqual(body.days, [{date: '2026-10-15', views: 4}], 'a visit at 01:30 East Africa time belongs to that East African day');
+    assert.deepEqual(body.days, [{date: '2026-10-15', views: 4, plays: 0}], 'a visit at 01:30 East Africa time belongs to that East African day; no bulletin was played');
     assert.equal(body.totals.views, 4, 'the same visitor four times is four visits');
     assert.equal(body.allTimeVisits, 4);
     assert.deepEqual(body.totals.tabs, {overview: 3, weather: 1, alerts: 1});

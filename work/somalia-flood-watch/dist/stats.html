@@ -65,6 +65,7 @@ a.back{color:var(--blue);font-weight:700}
   const root = document.getElementById('root');
   const fmt = n => Number(n || 0).toLocaleString('en');
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+  const BULLETIN_NAMES = {morning: 'Morning, 06:30', midday: 'Midday, 12:30', evening: 'Evening, 18:30'};
   const TAB_NAMES = {overview: '30 cities', weather: 'Weather', map: 'Flood map', alerts: 'Alerts', diseases: 'Diseases', community: 'Reports', sources: 'Sources', mayor: 'Mayor dashboard'};
   const DEVICE_NAMES = {mobile: 'Phone', tablet: 'Tablet', desktop: 'Computer'};
   const LANGUAGE_NAMES = {en: 'English', so: 'Somali'};
@@ -107,9 +108,9 @@ a.back{color:var(--blue);font-weight:700}
     // Once public, nobody needs the key; while private, the banner offers a way out.
     document.getElementById('owner').hidden = !!ownerKey || !!data.published;
     root.innerHTML = `${data.privateView ? `<div class="private"><span>Private view: these numbers are not public until the site has had ${fmt(data.threshold)} visits.</span><button type="button" class="linkish" id="forget">Close private view</button></div>` : ''}<div class="controls" role="group" aria-label="Period">${[7, 30, 90, 365].map(n => `<button type="button" data-days="${n}" aria-pressed="${n === days}">${n} days</button>`).join('')}</div>
-      <div class="kpis"><div class="card kpi"><label>Visits, this period</label><strong>${fmt(period)}</strong></div><div class="card kpi"><label>Visits, all time</label><strong>${fmt(data.allTimeVisits)}</strong></div><div class="card kpi"><label>Busiest day</label><strong>${busiest ? fmt(busiest.views) : '—'}</strong><div>${busiest ? esc(busiest.date) : ''}</div></div></div>
+      <div class="kpis"><div class="card kpi"><label>Visits, this period</label><strong>${fmt(period)}</strong></div><div class="card kpi"><label>Visits, all time</label><strong>${fmt(data.allTimeVisits)}</strong></div><div class="card kpi"><label>Audio bulletin plays, this period</label><strong>${fmt(t.plays || 0)}</strong></div><div class="card kpi"><label>Busiest day</label><strong>${busiest ? fmt(busiest.views) : '—'}</strong><div>${busiest ? esc(busiest.date) : ''}</div></div></div>
       <section class="card"><h2>Visits per day (East Africa time)</h2>${chart(data.days)}</section>
-      <div class="grid">${bars('Tabs viewed', t.tabs, key => TAB_NAMES[key] || key)}${bars('Cities viewed', t.cities, key => key === 'other' ? 'Additional cities' : key)}${bars('Countries', t.countries, countryName)}${bars('Language', t.languages, key => LANGUAGE_NAMES[key] || key)}${bars('Device', t.devices, key => DEVICE_NAMES[key] || key)}</div>
+      <div class="grid">${bars('Tabs viewed', t.tabs, key => TAB_NAMES[key] || key)}${bars('Cities viewed', t.cities, key => key === 'other' ? 'Additional cities' : key)}${bars('Countries', t.countries, countryName)}${bars('Language', t.languages, key => LANGUAGE_NAMES[key] || key)}${bars('Device', t.devices, key => DEVICE_NAMES[key] || key)}${bars('Audio bulletins played', t.bulletins || {}, key => BULLETIN_NAMES[key] || key)}</div>
       <p class="note">${esc(data.note)} Updated ${esc(new Date(data.generatedAt).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}))} EAT.</p>`;
     root.querySelectorAll('[data-days]').forEach(button => button.addEventListener('click', () => { days = Number(button.dataset.days); load(); }));
     document.getElementById('forget')?.addEventListener('click', () => { ownerKey = ''; try { localStorage.removeItem(STORE); } catch {} document.getElementById('owner').hidden = false; load(); });

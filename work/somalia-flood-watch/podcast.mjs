@@ -10,7 +10,7 @@
 // Switched off until all three hold: the owner has approved this template version (APPROVED_TEMPLATE ===
 // TEMPLATE_VERSION), GEMINI_API_KEY is set, and PODCAST_ENABLED=1. Bulletins are kept KEEP_DAYS days in
 // <dataDir>/podcast/ as MP3 (ffmpeg turns Gemini's WAV into 48 kbit/s mono, about 0.35 MB a minute).
-import {readFile, writeFile, rename, unlink, mkdir, readdir} from 'node:fs/promises';
+import {readFile, writeFile, rename, unlink, mkdir, readdir, stat} from 'node:fs/promises';
 import path from 'node:path';
 import {execFile} from 'node:child_process';
 import {randomBytes, timingSafeEqual} from 'node:crypto';
@@ -251,6 +251,29 @@ export function toMp3(ffmpeg, wavFile, mp3File) {
     error => error ? reject(new Error(`ffmpeg failed: ${error.message.split('\n')[0]}`)) : resolve()));
 }
 
+// ---- The podcast feed ----------------------------------------------------------------------------
+
+const xmlEscape = text => String(text ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;'}[c]));
+export const FEED = Object.freeze({
+  title: 'El Nino Watch: Warbixinta codka',
+  description: 'Warbixin gaaban oo Af-Soomaali ah oo ku saabsan El Niño iyo fatahaadda Soomaaliya, saddex jeer maalintii (06:30, 12:30 iyo 18:30 saacadda Bariga Afrika). Ma aha digniin rasmi ah; digniinaha rasmiga ah waxay ka yimaadaan MOEWR. A short Somali-language bulletin on El Niño and flooding in Somalia, three times a day. Not an official warning.',
+  owner: 'Mandek Consulting', email: 'contact@mandekconsulting.com', cover: `${SITE}/podcast-cover.jpg`
+});
+export function buildFeed(items, sizes = []) {
+  const entry = (item, i) => `<item><title>${xmlEscape(item.title)}</title><description>${xmlEscape(item.text)}</description>`
+    + `<enclosure url="${SITE}/podcast/${xmlEscape(item.file)}" length="${Number(sizes[i]) || 0}" type="audio/mpeg"/>`
+    + `<guid isPermaLink="false">elninowatch-${xmlEscape(item.id)}</guid><pubDate>${new Date(item.publishedAt).toUTCString()}</pubDate>`
+    + `<itunes:duration>${Math.round(Number(item.seconds) || 0)}</itunes:duration><itunes:explicit>false</itunes:explicit></item>`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom"><channel>`
+    + `<title>${xmlEscape(FEED.title)}</title><link>${SITE}/#podcast</link><atom:link href="${SITE}/podcast.xml" rel="self" type="application/rss+xml"/>`
+    + `<language>so</language><description>${xmlEscape(FEED.description)}</description><copyright>El Nino Watch</copyright>`
+    + `<itunes:author>El Nino Watch</itunes:author><itunes:owner><itunes:name>${xmlEscape(FEED.owner)}</itunes:name><itunes:email>${xmlEscape(FEED.email)}</itunes:email></itunes:owner>`
+    + `<itunes:image href="${FEED.cover}"/><image><url>${FEED.cover}</url><title>${xmlEscape(FEED.title)}</title><link>${SITE}/#podcast</link></image>`
+    + `<itunes:category text="News"><itunes:category text="Daily News"/></itunes:category><itunes:explicit>false</itunes:explicit><itunes:type>episodic</itunes:type>`
+    + (items[0] ? `<lastBuildDate>${new Date(items[0].publishedAt).toUTCString()}</lastBuildDate>` : '')
+    + items.map(entry).join('') + `</channel></rss>\n`;
+}
+
 // ---- The service ---------------------------------------------------------------------------------
 
 export function createPodcast({dataDir, cities = [], config = podcastConfig(), statsKey = '', feeds = {}, fetchImpl = fetch,
@@ -289,7 +312,8 @@ export function createPodcast({dataDir, cities = [], config = podcastConfig(), s
     const wavFile = path.join(dir, `${due.id}.wav`), mp3File = path.join(dir, `${due.id}.mp3`);
     await writeFile(wavFile, wav);
     try { await encode(wavFile, mp3File); } finally { await unlink(wavFile).catch(() => {}); }
-    const item = {id: due.id, slot: due.slot.id, date: due.date, title: script.title, text: script.text, seconds: Math.round(wavSeconds(wav)), publishedAt: new Date(at).toISOString(), file: `${due.id}.mp3`};
+    // bytes: the podcast feed's enclosure length.
+    const item = {id: due.id, slot: due.slot.id, date: due.date, title: script.title, text: script.text, seconds: Math.round(wavSeconds(wav)), publishedAt: new Date(at).toISOString(), file: `${due.id}.mp3`, bytes: (await stat(mp3File)).size};
     state.items = [item, ...state.items.filter(other => other.id !== item.id)];
     state.facts = {date: due.date, ...script.facts};
     delete state.attempts[due.id];
@@ -332,6 +356,7 @@ export function createPodcast({dataDir, cities = [], config = podcastConfig(), s
   const publicItem = item => ({id: item.id, slot: item.slot, date: item.date, title: item.title, text: item.text, seconds: item.seconds, publishedAt: item.publishedAt, url: `/podcast/${item.file}`});
 
   async function handle(req, res, url) {
+    if (url.pathname === '/podcast.xml') return sendFeed(req, res);
     if (url.pathname !== '/api/podcast' && url.pathname !== '/api/podcast/hold') return false;
     const send = (status, body) => {
       const buffer = Buffer.from(JSON.stringify(body));
@@ -358,6 +383,20 @@ export function createPodcast({dataDir, cities = [], config = podcastConfig(), s
     await save();
     log.log(`Podcast: ${hold ? 'held' : 'resumed'} by the owner.`);
     return send(200, {hold});
+  }
+
+  // The podcast feed (RSS 2.0 with Apple's podcast tags) at /podcast.xml, for Spotify, Apple Podcasts and
+  // podcast apps: the bulletins of the last KEEP_DAYS days, newest first. Owner, 2026-10-17.
+  async function sendFeed(req, res) {
+    await ready;
+    if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, {'Allow': 'GET, HEAD'}); res.end(); return true; }
+    if (!config.enabled && !state.items.length) { res.writeHead(404, {'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store'}); res.end(req.method === 'HEAD' ? undefined : 'No audio bulletins.'); return true; }
+    const sizes = await Promise.all(state.items.map(async item => item.bytes ?? (await stat(path.join(dir, item.file)).catch(() => null))?.size ?? 0));
+    const xml = buildFeed(state.items, sizes);
+    const buffer = Buffer.from(xml);
+    res.writeHead(200, {'Content-Type': 'application/rss+xml; charset=utf-8', 'Content-Length': buffer.length, 'Cache-Control': 'public, max-age=300', 'X-Content-Type-Options': 'nosniff'});
+    res.end(req.method === 'HEAD' ? undefined : buffer);
+    return true;
   }
 
   // /podcast/<id>.mp3 -> the file to stream, or null.

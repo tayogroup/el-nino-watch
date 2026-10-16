@@ -50,7 +50,7 @@ export function createVisits({dataDir, cities = [], now = () => Date.now(), log 
   }
 
   function dayBucket(day) {
-    return days[day] ||= {views: 0, tabs: {}, cities: {}, countries: {}, languages: {}, devices: {}};
+    return days[day] ||= {views: 0, plays: 0, tabs: {}, cities: {}, countries: {}, languages: {}, devices: {}, bulletins: {}};
   }
 
   async function save() {
@@ -87,6 +87,11 @@ export function createVisits({dataDir, cities = [], now = () => Date.now(), log 
       const country = String(req.headers['cdn-requestcountrycode'] || '').toUpperCase();
       bump(bucket.countries, /^[A-Z]{2}$/.test(country) ? country : 'unknown');
     }
+    // A play of the audio bulletin (podcast.js): once per bulletin per page load, by its slot.
+    if (event.type === 'play') {
+      bucket.plays = (bucket.plays || 0) + 1;
+      bump(bucket.bulletins ||= {}, ['morning', 'midday', 'evening'].includes(event.slot) ? event.slot : null);
+    }
     if (event.type === 'view' || event.type === 'tab') bump(bucket.tabs, tab);
     if (event.type === 'view' || event.type === 'city') bump(bucket.cities, city);
     for (const old of Object.keys(days).sort().slice(0, Math.max(0, Object.keys(days).length - KEEP_DAYS))) delete days[old];
@@ -103,13 +108,14 @@ export function createVisits({dataDir, cities = [], now = () => Date.now(), log 
     // 2026-10-16); the breakdowns stay private.
     if (!published() && !owner) return {published: false, threshold: publishAfter, allTimeVisits: allVisits(), note: `Visitor statistics are published once the site has had ${publishAfter.toLocaleString('en')} visits.`};
     const keys = Object.keys(days).sort().slice(-dayCount);
-    const total = {views: 0, tabs: {}, cities: {}, countries: {}, languages: {}, devices: {}};
+    const total = {views: 0, plays: 0, tabs: {}, cities: {}, countries: {}, languages: {}, devices: {}, bulletins: {}};
     for (const key of keys) {
       const d = days[key];
       total.views += d.views;
-      for (const group of ['tabs', 'cities', 'countries', 'languages', 'devices']) for (const [name, n] of Object.entries(d[group] || {})) total[group][name] = (total[group][name] || 0) + n;
+      total.plays += d.plays || 0;
+      for (const group of ['tabs', 'cities', 'countries', 'languages', 'devices', 'bulletins']) for (const [name, n] of Object.entries(d[group] || {})) total[group][name] = (total[group][name] || 0) + n;
     }
-    return {published: published(), privateView: owner && !published(), threshold: publishAfter, allTimeVisits: allVisits(), generatedAt: new Date(now()).toISOString(), timezone: 'Africa/Mogadishu', days: keys.map(key => ({date: key, views: days[key].views})), totals: total,
+    return {published: published(), privateView: owner && !published(), threshold: publishAfter, allTimeVisits: allVisits(), generatedAt: new Date(now()).toISOString(), timezone: 'Africa/Mogadishu', days: keys.map(key => ({date: key, views: days[key].views, plays: days[key].plays || 0})), totals: total,
       note: 'Anonymous counts of visits (page loads), not of people: one person visiting twice counts twice. No cookies; no addresses stored. Browsers asking not to be tracked are not counted.'};
   }
 
@@ -144,7 +150,7 @@ export function createVisits({dataDir, cities = [], now = () => Date.now(), log 
     for await (const chunk of req) { text += chunk; if (text.length > 2048) return send(413, {error: 'Too large.'}), true; }
     let event;
     try { event = JSON.parse(text || '{}'); } catch { return send(400, {error: 'Invalid JSON.'}), true; }
-    if (!event || !['view', 'tab', 'city'].includes(event.type)) return send(400, {error: 'Unknown visit event.'}), true;
+    if (!event || !['view', 'tab', 'city', 'play'].includes(event.type)) return send(400, {error: 'Unknown visit event.'}), true;
     const counted = await record(req, event);
     return send(202, {counted, published: published()}), true;
   }

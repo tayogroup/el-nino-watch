@@ -231,12 +231,15 @@ test('WhatsApp: CODKA or AUDIO opts in, JOOJI CODKA or STOP AUDIO opts out; only
 // ---- The page ----
 
 async function runPanel(answer, lang = 'en') {
-  const node = () => ({hidden: true, textContent: '', attrs: {}, paused: true, getAttribute(n) { return this.attrs[n] ?? null; }, setAttribute(n, v) { this.attrs[n] = v; }});
-  const nodes = Object.fromEntries(['podcast', 'podcast-audio', 'podcast-player', 'podcast-read', 'podcast-when', 'podcast-text', 'podcast-times'].map(id => [id, node()]));
-  const window = {document: {getElementById: id => nodes[id] || null, addEventListener() {}}, fetch: async () => ({json: async () => answer}), SiteLanguage: {getLanguage: () => lang}};
+  const node = () => ({hidden: true, textContent: '', innerHTML: '', attrs: {}, dataset: {}, paused: true, listeners: {},
+    getAttribute(n) { return this.attrs[n] ?? null; }, setAttribute(n, v) { this.attrs[n] = v; }, addEventListener(type, fn) { this.listeners[type] = fn; }});
+  const nodes = Object.fromEntries(['podcast', 'podcast-audio', 'podcast-player', 'podcast-read', 'podcast-when', 'podcast-text', 'podcast-times', 'podcast-save', 'podcast-earlier', 'podcast-list'].map(id => [id, node()]));
+  const dispatched = [];
+  const window = {document: {getElementById: id => nodes[id] || null, addEventListener() {}}, fetch: async () => ({json: async () => answer}), SiteLanguage: {getLanguage: () => lang},
+    CustomEvent: class { constructor(type, init) { this.type = type; this.detail = init?.detail; } }, dispatchEvent: event => dispatched.push({type: event.type, detail: {...event.detail}})};
   vm.runInContext(await readFile(new URL('podcast.js', dist), 'utf8'), vm.createContext({window}));
   await window.ElNinoPodcast.load();
-  return {nodes, api: window.ElNinoPodcast};
+  return {nodes, api: window.ElNinoPodcast, dispatched};
 }
 
 test('the bulletin is first on the home page, under the header, and only there', async () => {
@@ -283,4 +286,124 @@ test('the footer links to the audio bulletin, in Somali too', async () => {
   assert.ok(footer.includes('<a href="#podcast">Audio bulletin</a><a href="#diseases-panel">Diseases</a>'), 'beside the other in-page links');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['Audio bulletin'], 'Warbixinta codka');
+});
+
+// ---- The enhancements of 2026-10-17: earlier bulletins, play counts, the news flash, the podcast feed ----
+
+const bulletin = (id, slot, title, publishedAt) => ({id, slot, title, text: `Waa El Nino Watch. ${title}.`, seconds: 95, url: `/podcast/${id}.mp3`, publishedAt});
+const THREE = [bulletin('2026-10-17-midday', 'midday', 'Warbixinta duhurka, Sabti, 17 Oktoobar', '2026-10-17T09:31:00Z'),
+  bulletin('2026-10-17-morning', 'morning', 'Warbixinta subaxa, Sabti, 17 Oktoobar', '2026-10-17T03:31:00Z'),
+  bulletin('2026-10-16-evening', 'evening', 'Warbixinta fiidka, Jimce, 16 Oktoobar', '2026-10-16T15:31:00Z')];
+
+test('earlier bulletins are listed to play or save for offline listening, and the first play of each is counted once', async () => {
+  const {nodes, dispatched} = await runPanel({enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: THREE});
+  assert.equal(nodes['podcast-audio'].attrs.src, '/podcast/2026-10-17-midday.mp3', 'the latest plays first');
+  assert.equal(nodes['podcast-save'].hidden, false); assert.equal(nodes['podcast-save'].attrs.href, '/podcast/2026-10-17-midday.mp3');
+  assert.equal(nodes['podcast-save'].attrs.download, 'el-nino-watch-2026-10-17-midday.mp3'); assert.equal(nodes['podcast-save'].textContent, 'Save MP3');
+  assert.equal(nodes['podcast-earlier'].hidden, false);
+  const list = nodes['podcast-list'].innerHTML;
+  assert.equal((list.match(/<li>/g) || []).length, 2, 'the two before it');
+  assert.ok(list.includes('data-podcast-id="2026-10-17-morning" lang="so">Warbixinta subaxa, Sabti, 17 Oktoobar · 1:35</button>'));
+  assert.ok(list.includes('<a href="/podcast/2026-10-16-evening.mp3" download="el-nino-watch-2026-10-16-evening.mp3">Save MP3</a>'));
+  assert.ok(!list.includes('2026-10-17-midday'), 'not the one already in the player');
+  const play = nodes['podcast-audio'].listeners.play;
+  play({target: nodes['podcast-audio']}); play({target: nodes['podcast-audio']});
+  assert.deepEqual(dispatched, [{type: 'podcast-play', detail: {slot: 'midday'}}], 'once per bulletin per page');
+  const somali = await runPanel({enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: THREE}, 'so');
+  assert.equal(somali.nodes['podcast-save'].textContent, 'Kaydi MP3'); assert.ok(somali.nodes['podcast-list'].innerHTML.includes('>Kaydi MP3</a>'));
+  const one = await runPanel({enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: THREE.slice(0, 1)});
+  assert.equal(one.nodes['podcast-earlier'].hidden, true, 'nothing earlier yet: no list');
+  const index = await readFile(new URL('index.html', dist), 'utf8');
+  assert.ok(index.includes('<details class="podcast-earlier" id="podcast-earlier" hidden><summary>Earlier bulletins</summary><ul id="podcast-list" data-i18n-skip></ul></details>'));
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['Earlier bulletins'], 'Warbixinihii hore');
+});
+
+test('plays are counted anonymously by the visit counter, by slot, and shown on the stats page', async () => {
+  const {createVisits} = await import('./somalia-flood-watch/visits.mjs');
+  const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-plays-'));
+  const post = (visits, body) => new Promise(resolve => {
+    const req = Readable.from([JSON.stringify(body)]);
+    Object.assign(req, {method: 'POST', headers: {host: 'elninowatch.so', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0) Chrome/129'}, socket: {remoteAddress: '10.0.0.9'}});
+    visits.handle(req, {writeHead(status) { this.status = status; }, end(data) { resolve({status: this.status, body: data ? JSON.parse(data.toString()) : null}); }}, new URL('https://elninowatch.so/api/visit'));
+  });
+  try {
+    const visits = createVisits({dataDir, cities, log: quiet, publishAfter: 1, now: () => Date.parse('2026-10-17T04:00:00Z')});
+    await post(visits, {type: 'view', tab: 'overview', city: 'Mogadishu', lang: 'so'});
+    for (const slot of ['morning', 'morning', 'evening', 'nonsense']) assert.equal((await post(visits, {type: 'play', slot, tab: 'overview', city: 'Mogadishu', lang: 'so'})).status, 202);
+    const summary = visits.summary(7);
+    assert.equal(summary.totals.views, 1, 'a play is not a visit');
+    assert.equal(summary.totals.plays, 4);
+    assert.deepEqual(summary.totals.bulletins, {morning: 2, evening: 1}, 'an unknown slot is counted but not named');
+    assert.deepEqual(summary.days, [{date: '2026-10-17', views: 1, plays: 4}]);
+  } finally { await rm(dataDir, {recursive: true, force: true}); }
+  // visits.js sends one "play" for the page's podcast-play event.
+  const sent = [], listeners = {};
+  const window = {location: {protocol: 'https:'}, navigator: {}, setTimeout() {}, addEventListener: (type, fn) => { listeners[type] = fn; },
+    fetch: (url, options) => { sent.push(JSON.parse(options.body)); return Promise.resolve({ok: false}); }};
+  const document = {getElementById: () => null, body: {classList: {contains: () => false}}, documentElement: {lang: 'so'}};
+  vm.runInContext(await readFile(new URL('visits.js', dist), 'utf8'), vm.createContext({window, document, fetch: window.fetch, setTimeout: window.setTimeout}));
+  listeners['podcast-play']({detail: {slot: 'evening'}});
+  listeners['podcast-play']({detail: {slot: 'bogus'}});
+  assert.deepEqual(sent.map(body => [body.type, body.slot]), [['play', 'evening']]);
+  const stats = await readFile(new URL('stats.html', dist), 'utf8');
+  assert.ok(stats.includes('Audio bulletin plays, this period') && stats.includes("bars('Audio bulletins played'"));
+  const sources = await readFile(new URL('sources.html', dist), 'utf8');
+  assert.ok(sources.includes('and so is each play of the audio bulletin'), 'the privacy notice says so');
+});
+
+test('the news flash carries the audio bulletin while bulletins are on, in Somali too', async () => {
+  const {loadNews, PODCAST_FLASH, HEALTH_FLASH} = await import('./somalia-flood-watch/news-feed.mjs');
+  assert.deepEqual({...PODCAST_FLASH}, {kind: 'app', key: 'podcast', label: 'Audio bulletin · Somali', title: 'Listen: El Niño and flood news in Somali, three times a day', url: '#podcast', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
+  const down = async () => ({ok: false, status: 503, text: async () => ''});
+  const enso = {available: true, alertStatus: 'El Niño Advisory', phase: 'El Niño Advisory', issuedAt: '2026-10-08', synopsis: 'El Niño continues.', sourceUrl: 'https://www.cpc.ncep.noaa.gov/'};
+  const on = await loadNews({app: {enso, podcast: true}, fetchImpl: down, reliefWebAppname: ''});
+  const keys = on.items.filter(item => item.kind === 'app').map(item => item.key);
+  assert.ok(keys.includes('podcast'), 'shown while on');
+  assert.ok(keys.indexOf('podcast') < keys.indexOf(HEALTH_FLASH.key), 'before the health items');
+  const off = await loadNews({app: {enso, podcast: false}, fetchImpl: down, reliefWebAppname: ''});
+  assert.ok(!off.items.some(item => item.key === 'podcast'), 'not while off');
+  const flash = await readFile(new URL('news-flash.js', dist), 'utf8');
+  assert.match(flash, /\['icpac', 'health', 'film', 'podcast'\]\.includes\(item\.key\)/, 'its label and title are translated');
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages[PODCAST_FLASH.label], 'Warbixinta codka · Af-Soomaali');
+  assert.ok(catalog.messages[PODCAST_FLASH.title]);
+});
+
+test('the podcast feed lists the week\'s bulletins for podcast apps, with cover art; nothing while off', async () => {
+  const {buildFeed, FEED} = await import('./somalia-flood-watch/podcast.mjs');
+  const xml = buildFeed(THREE.map(item => ({...item, file: `${item.id}.mp3`})), [500000, 480000, 510000]);
+  assert.ok(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
+  assert.ok(xml.includes('xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"'));
+  assert.ok(xml.includes('<language>so</language>') && xml.includes('<title>El Nino Watch: Warbixinta codka</title>'));
+  assert.ok(xml.includes(`<itunes:image href="${FEED.cover}"/>`) && FEED.cover === 'https://elninowatch.so/podcast-cover.jpg');
+  assert.ok(xml.includes('<itunes:category text="News"><itunes:category text="Daily News"/></itunes:category>'));
+  assert.equal((xml.match(/<item>/g) || []).length, 3);
+  assert.ok(xml.includes('<enclosure url="https://elninowatch.so/podcast/2026-10-17-midday.mp3" length="500000" type="audio/mpeg"/>'));
+  assert.ok(xml.includes('<guid isPermaLink="false">elninowatch-2026-10-17-midday</guid><pubDate>Sat, 17 Oct 2026 09:31:00 GMT</pubDate><itunes:duration>95</itunes:duration>'));
+  assert.ok(xml.indexOf('2026-10-17-midday') < xml.indexOf('2026-10-16-evening'), 'newest first');
+  assert.ok(buildFeed([{...THREE[0], file: 'x.mp3', title: 'A & B <c>'}], [1]).includes('<title>A &amp; B &lt;c&gt;</title>'), 'escaped');
+  assert.ok(xml.includes('Ma aha digniin rasmi ah') && xml.includes('Not an official warning'));
+  // Served by the bulletin service, with a real file's size.
+  const t = await setup();
+  try {
+    await t.service.tick();
+    const served = await call(t.service, 'GET', '/podcast.xml');
+    assert.equal(served.handled, true); assert.equal(served.status, 200);
+    const size = (await stat(path.join(t.dataDir, 'podcast', '2026-10-16-evening.mp3'))).size;
+    assert.ok(served.body.includes(`<enclosure url="https://elninowatch.so/podcast/2026-10-16-evening.mp3" length="${size}" type="audio/mpeg"/>`));
+  } finally { await t.done(); }
+  const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-feed-off-'));
+  try {
+    const off = createPodcast({dataDir, cities, config: {enabled: false}, log: quiet});
+    assert.equal((await call(off, 'GET', '/podcast.xml')).status, 404, 'off and nothing made: no feed');
+  } finally { await rm(dataDir, {recursive: true, force: true}); }
+  const index = await readFile(new URL('index.html', dist), 'utf8');
+  assert.ok(index.includes('<link rel="alternate" type="application/rss+xml" title="El Nino Watch audio bulletin (Somali)" href="/podcast.xml"></head>'));
+  const cover = await readFile(new URL('podcast-cover.jpg', dist));
+  assert.equal(cover.readUInt16BE(0), 0xFFD8, 'a JPEG');
+  // Its size, from the first start-of-frame marker: square, at least the 1400 px Apple asks for.
+  let i = 2, w = 0, h = 0;
+  while (i < cover.length) { const marker = cover.readUInt16BE(i), len = cover.readUInt16BE(i + 2); if (marker >= 0xFFC0 && marker <= 0xFFC3) { h = cover.readUInt16BE(i + 5); w = cover.readUInt16BE(i + 7); break; } i += 2 + len; }
+  assert.deepEqual([w, h], [1400, 1400]);
 });

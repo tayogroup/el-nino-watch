@@ -40,8 +40,8 @@
     },
     {
       "path": "DEPLOYMENT.md",
-      "bytes": 18694,
-      "sha256": "6ae179b767c456a90d313c56155f44d5469c628ee692a029898d337746bd98e7"
+      "bytes": 19726,
+      "sha256": "c7472d1fc39895f1e0c0fb2f2478844c080028bd980f71e89ae14265f9a5ef53"
     },
     {
       "path": "Dockerfile",
@@ -585,8 +585,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 109822,
-      "sha256": "3416ff1468189787d4ae3d27e00c6cef4a9eb3bb612734a4ce051d6ee8f14016"
+      "bytes": 110327,
+      "sha256": "a6986662684a62233570cf73ae785177663f54a8a707d88f9f22e6ec3474219e"
     },
     {
       "path": "work/i18n-weather.json",
@@ -675,8 +675,8 @@
     },
     {
       "path": "work/package-files.test.mjs",
-      "bytes": 4230,
-      "sha256": "9805ae4a3f8a9393bf97635c6c3c263bd8025f60cfd9a7fa385428b487d63a4e"
+      "bytes": 4405,
+      "sha256": "bf380a7025162877262e4e9a1be49ff77c0f1adb09bc39ab5259725bf311aac3"
     },
     {
       "path": "work/package-flood-app.mjs",
@@ -690,8 +690,8 @@
     },
     {
       "path": "work/podcast.test.mjs",
-      "bytes": 24319,
-      "sha256": "ed60d3f56dc66d851ddcd3b6b1a83e4678ede6068d54e9a08f31cf074350bacb"
+      "bytes": 35353,
+      "sha256": "28fa12ebf4ac590eff4aba0b3ef899e53794518d31396dda3510da9f6b703c9c"
     },
     {
       "path": "work/print-social-image.mjs",
@@ -760,8 +760,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.css",
-      "bytes": 13830,
-      "sha256": "a1604ac57cba0119d2c42225d25a4cd8341301b90d4b9bc9f867f6eb6ad5ae90"
+      "bytes": 14295,
+      "sha256": "7099491e01797d50079e901994aecc5095d58700f48b6c0fb270c06e37dff9ae"
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.js",
@@ -955,8 +955,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 44963,
-      "sha256": "0ff9a79c03f772e4675194385f42bfb9b4ad142ff60624d59643d8fc01ce8f51"
+      "bytes": 45329,
+      "sha256": "72a37b8c12ace81a4f124788401715280d813827a0ff0a5e654c3dfb10994b21"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
@@ -985,8 +985,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/news-flash.js",
-      "bytes": 8177,
-      "sha256": "e701de0017f9af201ea69e00c271f34b21598f3e22737b12888409ca362d2b81"
+      "bytes": 8188,
+      "sha256": "724aa29e8e653cced0617165cf9630ec1c256ff9befcb67b72512e82633f6437"
     },
     {
       "path": "work/somalia-flood-watch/dist/observed-flood-source.json",
@@ -1004,9 +1004,14 @@
       "sha256": "a3286ff15383aba90e6b057d574209442808561a01ba7706d203182ca58b35fd"
     },
     {
+      "path": "work/somalia-flood-watch/dist/podcast-cover.jpg",
+      "bytes": 103594,
+      "sha256": "d37dcf9e0db3a8c9ca3bea373ceb7b805aedd888e1df5947589280e2a5083b90"
+    },
+    {
       "path": "work/somalia-flood-watch/dist/podcast.js",
-      "bytes": 5235,
-      "sha256": "6453dbe729663876d389be99835c839cd7c908e650531991936fbce9c4ffb377"
+      "bytes": 7711,
+      "sha256": "74b7641bef49b00bc3ad4a243db68917577a82d9d20ecc2cc3ca09cd5631642d"
     },
     {
       "path": "work/somalia-flood-watch/dist/rankings.css",
@@ -1035,13 +1040,13 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/sources.html",
-      "bytes": 33393,
-      "sha256": "4ea1ac0e2d494eeade8660271713ec3099500db71167ff456ddb78c1cb41103c"
+      "bytes": 33436,
+      "sha256": "09ea7be1d6424ef8d6ac1520b3585600b68417ba7bfeaf04419c32e9aced940d"
     },
     {
       "path": "work/somalia-flood-watch/dist/stats.html",
-      "bytes": 12689,
-      "sha256": "9a3687e42d8fea4625135e2aecedf275b000375ee1794a4881f1b40acb08c433"
+      "bytes": 12995,
+      "sha256": "c6d4fe86d56cbba5380cd879a4f144eb9f39d9d49e7e1b5593b1710ca39e68da"
     },
     {
       "path": "work/somalia-flood-watch/dist/style.css",
@@ -1075,8 +1080,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 227019,
-      "sha256": "f27a1fcbe3461d4398bfe5147ed92e1e82fd910b194c4faa1864c52bbae2e9ca"
+      "bytes": 227494,
+      "sha256": "cb34403676b97e06775006aaa522d73f353f194fb635baf256fe3f2c7a0aacf5"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",
@@ -1125,8 +1130,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/visits.js",
-      "bytes": 2004,
-      "sha256": "66c7b6341fe8317c7cad3e037d23a9acb089ea05c16b1bb6bbd9c6f77fd40dc1"
+      "bytes": 2364,
+      "sha256": "7db63eb30f023551ec6ff07fbf6b17ebb33161e8fe3f78d33782389f0dff321d"
     },
     {
       "path": "work/somalia-flood-watch/dist/watchlist.css",
@@ -1170,8 +1175,8 @@
     },
     {
       "path": "work/somalia-flood-watch/news-feed.mjs",
-      "bytes": 15917,
-      "sha256": "5788fe220d3ee6e9776fa25fb05b837a7c7fa4118766d97c2e9b7894efdb650f"
+      "bytes": 16340,
+      "sha256": "9f31662d07ecd99c328c46a9957b27bbffdb8cb1c5ab54da954ab89fcc590686"
     },
     {
       "path": "work/somalia-flood-watch/observed-flood.mjs",
@@ -1180,8 +1185,8 @@
     },
     {
       "path": "work/somalia-flood-watch/podcast.mjs",
-      "bytes": 26392,
-      "sha256": "e3a3b3656e12ce91444654714ca0ed1dcc90ba90c76f0f543d09aaf2f04959ba"
+      "bytes": 30149,
+      "sha256": "e777c545fb8fc14478081318d9013b8e0b4d34d69fdfa89d8daa9bd78a8cc8b7"
     },
     {
       "path": "work/somalia-flood-watch/README.md",
@@ -1190,8 +1195,8 @@
     },
     {
       "path": "work/somalia-flood-watch/server.mjs",
-      "bytes": 12642,
-      "sha256": "fabb37709338e282f7b25490d956b86eecf8b0e94ac4dcefc48fdd2c103886ca"
+      "bytes": 12676,
+      "sha256": "8e9474afee6bd4bc01eec44d3c2cdf00f44af460c73b76a7cdb2a1db59b8510e"
     },
     {
       "path": "work/somalia-flood-watch/Start-Live-App.ps1",
@@ -1220,8 +1225,8 @@
     },
     {
       "path": "work/somalia-flood-watch/visits.mjs",
-      "bytes": 9480,
-      "sha256": "baa3d72a8f95e6d34cabe30cd27382e256dc8bb67feaf90d0fdc4270aa03a985"
+      "bytes": 9908,
+      "sha256": "40f0e9be99f319a18e178a37cffbd2d6342b190aafbb725cb28354b5c26668de"
     },
     {
       "path": "work/somalia-flood-watch/whatsapp.mjs",
@@ -1260,8 +1265,8 @@
     },
     {
       "path": "work/visits.test.mjs",
-      "bytes": 12728,
-      "sha256": "5a364c51baa1ce3610d471451264cc5566afe24350ea708993ab78d27f68791c"
+      "bytes": 12762,
+      "sha256": "70b652182b33eb93fcfd9f608f0fff1582059da81910a1b1a728f21c00dc896d"
     },
     {
       "path": "work/watchlist.test.mjs",

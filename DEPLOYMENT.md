@@ -137,6 +137,10 @@ Try the template without publishing anything: `node work/somalia-flood-watch/pod
 
 Hold switch: to stop new bulletins at once, without a deploy, send `{"hold": true}` to `/api/podcast/hold` with the stats key; `{"hold": false}` resumes. For example, with the stats key in the shell variable `STATS_KEY`: `curl -X POST https://elninowatch.so/api/podcast/hold -H "X-Stats-Key: $STATS_KEY" -H "Content-Type: application/json" -d '{"hold": true}'`. Bulletins already made stay listenable.
 
+Podcast feed: `https://elninowatch.so/podcast.xml` lists the last 7 days of bulletins for podcast apps, with the cover `podcast-cover.jpg` (1400 x 1400) and `contact@mandekconsulting.com` as the owner address the directories verify. To publish it: Spotify, at https://podcasters.spotify.com, choose "I already have a podcast" and paste the feed address; Apple, at https://podcastsconnect.apple.com, add a show "From an RSS feed". Both read the feed again by themselves, so new bulletins appear there without anything more to do. The site also announces the feed in its page head, so podcast apps that are given https://elninowatch.so find it.
+
+Plays: the first play of each bulletin in a page is counted, anonymously and by slot, with the visit counts; the private stats view shows "Audio bulletin plays" and which bulletins are played. The news flash carries a standing "Audio bulletin" item while bulletins are on, and the home-page panel lists the earlier bulletins of the week, each playable or saved as MP3 to listen offline.
+
 Costs: about 25 audio tokens a second; at $9 per million audio tokens (the price until 31 December 2026, then $18) three bulletins a day cost about $3 a month. A failed bulletin is tried again after 5 minutes, at most 3 times; a slot missed by more than 2 hours (a restart) is skipped.
 
 ## Data and migration

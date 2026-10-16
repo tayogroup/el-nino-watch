@@ -1,5 +1,6 @@
 /* El Nino Watch: report anonymous visits to this site's own server (visits.mjs).
-   One "view" per page load, then "tab" and "city" when the visitor switches.
+   One "view" per page load, then "tab" and "city" when the visitor switches, and
+   "play" the first time each audio bulletin is played.
    Nothing identifying is sent: the tab, the city, the page language. No cookies
    or storage are used. Browsers asking not to be tracked (Global Privacy Control,
    Do Not Track) send nothing. Loaded before app.js. */
@@ -20,11 +21,11 @@
       lang: document.documentElement.lang === 'so' ? 'so' : 'en'
     };
   }
-  function send(type) {
+  function send(type, extra = {}) {
     const now = state();
     lastTab = now.tab; lastCity = now.city;
     // text/plain keeps this a simple same-origin request; keepalive lets it finish on page exit.
-    fetch('/api/visit', {method: 'POST', body: JSON.stringify({type, ...now}), headers: {'Content-Type': 'text/plain'}, keepalive: true, credentials: 'omit'})
+    fetch('/api/visit', {method: 'POST', body: JSON.stringify({type, ...now, ...extra}), headers: {'Content-Type': 'text/plain'}, keepalive: true, credentials: 'omit'})
       .then(response => response.ok ? response.json() : null)
       .then(result => { if (result?.published && link) link.hidden = false; })
       .catch(() => {});
@@ -34,6 +35,11 @@
   setTimeout(() => { viewSent = true; send('view'); }, 1500);
   window.addEventListener('site-tab-change', event => {
     if (viewSent && event.detail?.tab && event.detail.tab !== lastTab) send('tab');
+  });
+  // The audio bulletin was played (podcast.js): counted once per bulletin per page load, by its slot.
+  window.addEventListener('podcast-play', event => {
+    const slot = event.detail?.slot;
+    if (['morning', 'midday', 'evening'].includes(slot)) send('play', {slot});
   });
   window.addEventListener('site-city-change', event => {
     if (viewSent && event.detail?.city && event.detail.city !== lastCity) send('city');

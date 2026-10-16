@@ -45,7 +45,7 @@ test('the offline package builds, and its server starts and serves the app', {ti
     assert.doesNotMatch(portable, /<link rel="stylesheet" href="(?!https?:|\/\/)[^"]+">/, 'no stylesheet left behind either');
     // Start the packaged server on a free port, with its own empty data folder.
     const port = 47000 + Math.floor(Math.random() * 2000);
-    const child = spawn(process.execPath, [path.join(folder, 'server.mjs')], {cwd: folder, env: {...process.env, PORT: String(port), HOST: '127.0.0.1', COMMUNITY_DATA_DIR: path.join(out, 'data'), GEMINI_API_KEY: '', PODCAST_ENABLED: '', WHATSAPP_TOKEN: ''}, stdio: ['ignore', 'pipe', 'pipe']});
+    const child = spawn(process.execPath, [path.join(folder, 'server.mjs')], {cwd: os.tmpdir(), env: {...process.env, PORT: String(port), HOST: '127.0.0.1', COMMUNITY_DATA_DIR: path.join(out, 'data'), GEMINI_API_KEY: '', PODCAST_ENABLED: '', WHATSAPP_TOKEN: ''}, stdio: ['ignore', 'pipe', 'pipe']});
     let output = '';
     child.stdout.on('data', chunk => { output += chunk; }); child.stderr.on('data', chunk => { output += chunk; });
     try {
@@ -55,6 +55,9 @@ test('the offline package builds, and its server starts and serves the app', {ti
       const page = await fetch(`http://127.0.0.1:${port}/`);
       assert.equal(page.status, 200); assert.match(await page.text(), /<title>/);
       assert.deepEqual(await (await fetch(`http://127.0.0.1:${port}/api/podcast`)).json(), {enabled: false});
-    } finally { child.kill(); }
+    } finally {
+      // Windows keeps the folder busy until the process has gone.
+      if (child.exitCode === null) await new Promise(resolve => { child.once('exit', resolve); child.kill(); });
+    }
   } finally { await rm(out, {recursive: true, force: true}); }
 });
