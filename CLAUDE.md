@@ -182,6 +182,10 @@ it that way. `health-alert.test.mjs` pins it, its WHO-only links and its Somali.
   humanitarian organisations) and ReliefWeb once `RELIEFWEB_APPNAME` is set to
   an appname ReliefWeb has approved (requested at
   https://apidoc.reliefweb.int/parameters#appname; the API refuses others).
+- A standing "Public health · WHO guidance" item (`HEALTH_FLASH`, owner,
+  2026-10-16) follows the app's own flashes and opens the public health alert
+  (`#health-alert`); in the city manager view it opens the Alerts tool first. It
+  is added after the outage check, so it never makes a dead news feed look alive.
 - **No meeting or event announcements** (`isEventAnnouncement`, Somali and
   English headline words). Of SoDMA's posts this leaves mainly its weekly
   flood-warning bulletin.

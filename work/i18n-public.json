@@ -721,7 +721,9 @@
     "WHO: Cholera fact sheet ↗": "WHO: Warqadda xaqiiqooyinka daacuunka ↗",
     "Public health alert: flooding raises the risk of cholera, malaria and dengue in Somalia.": "Digniinta caafimaadka: fatahaaddu waxay kordhisaa khatarta daacuunka, duumada iyo dengue ee Soomaaliya.",
     "Drink boiled or treated water, keep ORS ready and use bed nets.": "Cab biyo la karkariyay ama la nadiifiyay, hayso ORS, isticmaal maro-kaneeco.",
-    "Health guidance from WHO, not an outbreak report.": "Talo caafimaad oo ka timid WHO, ma aha warbixin faafitaan."
+    "Health guidance from WHO, not an outbreak report.": "Talo caafimaad oo ka timid WHO, ma aha warbixin faafitaan.",
+    "Public health · WHO guidance": "Caafimaadka bulshada · talada WHO",
+    "Flooding raises the risk of cholera, malaria and dengue: what to do": "Fatahaaddu waxay kordhisaa khatarta daacuunka, duumada iyo dengue: waxa la sameeyo"
   },
   "patterns": [
     {

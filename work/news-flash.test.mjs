@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-import {parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES, EXCLUDED_OUTLETS, excludedOutlet, isEventAnnouncement} from './somalia-flood-watch/news-feed.mjs';
+import {HEALTH_FLASH, parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES, EXCLUDED_OUTLETS, excludedOutlet, isEventAnnouncement} from './somalia-flood-watch/news-feed.mjs';
 
 const NOW = Date.parse('2026-10-15T12:00:00Z');
 const day = n => new Date(NOW - n * 86400000).toUTCString();
@@ -121,7 +121,7 @@ test('loading: each source on its own, SWALIM\'s HTTP 500 feed accepted, ReliefW
     return {ok: !url.startsWith(NEWS_SOURCES.swalim.url), status: url.startsWith(NEWS_SOURCES.swalim.url) ? 500 : 200, text: async () => text, json: async () => JSON.parse(text)};
   };
   const without = await loadNews({fetchImpl, now: NOW, reliefWebAppname: ''});
-  assert.deepEqual(without.items.map(item => item.title), ['Digniinta fatahaadaha', 'El Niño flood warning']);
+  assert.deepEqual(without.items.map(item => item.title), [HEALTH_FLASH.title, 'Digniinta fatahaadaha', 'El Niño flood warning'], 'the health flash leads the headlines');
   assert.equal(without.sources.find(source => source.id === 'googleElNino').available, false, 'a failing source is reported, not fatal');
   assert.match(without.sources.find(source => source.id === 'reliefweb').error, /RELIEFWEB_APPNAME/);
   assert.equal(requests.some(request => request.url.includes('reliefweb')), false, 'no ReliefWeb call without an appname');
@@ -146,4 +146,28 @@ test('the bar: headlines as published and escaped, links open safely, the app\'s
   const icpac = itemHtml({kind: 'app', key: 'icpac', label: 'Rainfall forecast · ICPAC', title: '16 of 30 cities have a heavy-rainfall forecast for 13 Oct–20 Oct', url: '#tab=alerts', source: 'ICPAC', group: 'app'});
   assert.match(icpac, /<span class="news-flash-title">16 of 30 cities/, 'translated through the catalogue pattern');
   assert.ok(!icpac.includes('target="_blank"'), 'an in-app link stays in the page');
+});
+
+test('the health flash: a standing item that opens the health alert, translated, and never hiding an outage', async () => {
+  assert.deepEqual({...HEALTH_FLASH}, {kind: 'app', key: 'health', label: 'Public health · WHO guidance', title: 'Flooding raises the risk of cholera, malaria and dengue: what to do', url: '#health-alert', publishedAt: null, source: 'WHO', group: 'app', language: 'en'});
+  const index = await readFile(new URL('./somalia-flood-watch/dist/index.html', import.meta.url), 'utf8');
+  assert.ok(index.includes('id="health-alert"'), 'the section it points to exists');
+  const opened = [], scrolled = [];
+  const healthSection = {closest: selector => selector === '#alerts-panel' ? {} : null, scrollIntoView() { scrolled.push('health-alert'); }};
+  for (const mayorView of [false, true]) {
+    opened.length = 0; scrolled.length = 0;
+    const document = {readyState: 'complete', body: {classList: {contains: name => mayorView && name === 'mayor-view'}}, getElementById: id => id === 'health-alert' ? healthSection : null, addEventListener() {}};
+    const window = {document, location: {protocol: 'http:'}, setInterval() {}, setTimeout: fn => fn(), clearTimeout() {}, matchMedia: () => ({matches: false}), fetch: async () => ({ok: false}), MayorNavigation: {open: tool => opened.push(tool)}};
+    vm.runInContext(await readFile(new URL('./somalia-flood-watch/dist/news-flash.js', import.meta.url), 'utf8'), vm.createContext({window, URL}));
+    const html = window.NewsFlash.itemHtml(HEALTH_FLASH);
+    assert.match(html, /<a class="news-flash-link" href="#health-alert">/, 'an in-page link, not a new tab');
+    assert.match(html, /<span class="news-flash-title">Flooding raises the risk/, 'the title is translatable');
+    let prevented = false;
+    const link = {getAttribute: () => '#health-alert', closest: selector => selector === 'a.news-flash-link' ? link : null};
+    window.NewsFlash.onClick({target: link, preventDefault() { prevented = true; }});
+    assert.equal(prevented, true);
+    assert.deepEqual(scrolled, ['health-alert']);
+    assert.deepEqual(opened, mayorView ? ['alerts'] : [], mayorView ? 'the city manager view opens the Alerts tool first' : 'the public page leaves the tab to tabs.js');
+  }
+  assert.equal(globalThis.NewsFlash, undefined);
 });

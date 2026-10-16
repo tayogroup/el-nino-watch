@@ -10,7 +10,7 @@
   const ROTATE_MS = 8000, REFRESH_MS = 30 * 60 * 1000;
   const GROUPS = {app: 'El Nino Watch', government: 'Government', un: 'UN', humanitarian: 'Humanitarian', media: 'Media'};
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
-  const safeUrl = value => { const text = String(value || ''); if (/^#tab=[a-z]+$/.test(text)) return text; try { const url = new URL(text); return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : null; } catch { return null; } };
+  const safeUrl = value => { const text = String(value || ''); if (/^#tab=[a-z]+$/.test(text) || /^#[a-z][a-z-]*$/.test(text)) return text; try { const url = new URL(text); return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : null; } catch { return null; } };
   const dayLabel = value => { const time = Date.parse(value); return Number.isFinite(time) ? new Date(time).toLocaleDateString('en-GB', {timeZone: 'Africa/Mogadishu', day: 'numeric', month: 'short'}) : ''; };
   let items = [], index = 0, timer = 0, paused = false, holding = false;
   const reducedMotion = () => global.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches === true;
@@ -20,7 +20,7 @@
   function itemHtml(item, inList = false) {
     const url = safeUrl(item.url), external = url && !url.startsWith('#');
     const group = `<span class="news-flash-badge news-flash-${esc(item.group)}"${item.group === 'app' ? ' data-i18n-skip' : ''}>${esc(GROUPS[item.group] || 'Media')}</span>`;
-    const translated = item.kind === 'app' && item.key === 'icpac';
+    const translated = item.kind === 'app' && ['icpac', 'health'].includes(item.key);
     const title = `<span class="news-flash-title"${translated ? '' : ` data-i18n-skip lang="${esc(item.language === 'so' ? 'so' : item.language === 'en' ? 'en' : 'und')}"`}>${esc(item.title)}</span>`;
     const label = item.label ? `<span class="news-flash-label-text">${esc(item.label)}</span> ` : '';
     const meta = `<span class="news-flash-meta"><span data-i18n-skip>${esc(item.source)}</span>${dayLabel(item.publishedAt) ? ` · <span data-i18n-skip>${esc(dayLabel(item.publishedAt))}</span>` : ''}</span>`;
@@ -47,7 +47,24 @@
     show(Math.min(index, items.length - 1));
     schedule();
   }
+  // A link to a section of this page (#health-alert). On the public page tabs.js opens its tab and
+  // scrolls; in the city manager view, open the tool that holds the section first.
+  const TOOL_PANELS = {alerts: 'alerts-panel', map: 'map-panel', weather: 'daily-panel', community: 'community-panel'};
+  function openSection(link, event) {
+    const href = link.getAttribute('href') || '';
+    if (!/^#[a-z][a-z-]*$/.test(href)) return false;
+    const target = doc.getElementById(href.slice(1)); if (!target) return false;
+    event.preventDefault();
+    if (doc.body?.classList?.contains('mayor-view')) {
+      const tool = Object.keys(TOOL_PANELS).find(key => target.closest?.('#' + TOOL_PANELS[key]));
+      if (tool) global.MayorNavigation?.open?.(tool);
+    }
+    global.setTimeout(() => target.scrollIntoView({behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start'}), 0);
+    return true;
+  }
   function onClick(event) {
+    const link = event.target?.closest?.('a.news-flash-link');
+    if (link && openSection(link, event)) return;
     const button = event.target?.closest?.('[data-news]'); if (!button) return;
     const action = button.getAttribute('data-news');
     if (action === 'prev') show(index - 1);
@@ -81,6 +98,6 @@
     load();
     global.setInterval(load, REFRESH_MS);
   }
-  global.NewsFlash = {itemHtml, safeUrl, setItems(list) { items = list; render(); }, load};
+  global.NewsFlash = {itemHtml, safeUrl, onClick, setItems(list) { items = list; render(); }, load};
   if (doc?.readyState === 'loading') doc.addEventListener('DOMContentLoaded', init, {once: true}); else init();
 })(window);
