@@ -193,3 +193,8 @@ test('the map tab calls out the cholera film, in Somali too', async () => {
   assert.equal(catalog.messages['Flood water can carry cholera.'], 'Biyaha fatahaaddu waxay qaadi karaan daacuun.');
   assert.equal(catalog.messages['Watch the film: how to protect your family ▶'], 'Daawo filimka: sida qoyskaaga loo ilaaliyo ▶');
 });
+
+test('the weather tab calls out the cholera film too', () => {
+  const start = index.indexOf('id="daily-panel"'), panel = index.slice(start, index.indexOf('id="daily-status"', start));
+  assert.ok(panel.includes('<p class="map-film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>'), 'under the weather panel heading');
+});

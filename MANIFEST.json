@@ -465,8 +465,8 @@
     },
     {
       "path": "work/health-alert.test.mjs",
-      "bytes": 16597,
-      "sha256": "8b28eb14d309b5eab67b95a3391c431b4ee94a525794a628a4d682ed401d5624"
+      "bytes": 17004,
+      "sha256": "23029ee06426b9d2061d220fe4bbe08b9e070c031281fffe49dc83f504b22649"
     },
     {
       "path": "work/home-city.test.mjs",
@@ -800,8 +800,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 41308,
-      "sha256": "ad019ca64dfb8638376fe8f09e60733d271fd9cbc996d1141e5218adb20f0bb4"
+      "bytes": 41457,
+      "sha256": "180c2607ca652c2d29b035603a5cdfb1ec1858a0b4fb18a75d6192004469cdf7"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
