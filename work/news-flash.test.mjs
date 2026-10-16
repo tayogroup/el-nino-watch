@@ -153,11 +153,12 @@ test('the health flash: a standing item that opens the health alert, translated,
   const index = await readFile(new URL('./somalia-flood-watch/dist/index.html', import.meta.url), 'utf8');
   assert.ok(index.includes('id="health-alert"'), 'the section it points to exists');
   const opened = [], scrolled = [];
-  const healthSection = {closest: selector => selector === '#alerts-panel' ? {} : null, scrollIntoView() { scrolled.push('health-alert'); }};
+  // The health alert is on the Diseases tab, which the city manager view has no tool for.
+  const healthSection = {closest: selector => selector === '#diseases-panel' ? {} : null, scrollIntoView() { scrolled.push('health-alert'); }};
   for (const mayorView of [false, true]) {
     opened.length = 0; scrolled.length = 0;
     const document = {readyState: 'complete', body: {classList: {contains: name => mayorView && name === 'mayor-view'}}, getElementById: id => id === 'health-alert' ? healthSection : null, addEventListener() {}};
-    const window = {document, location: {protocol: 'http:'}, setInterval() {}, setTimeout: fn => fn(), clearTimeout() {}, matchMedia: () => ({matches: false}), fetch: async () => ({ok: false}), MayorNavigation: {open: tool => opened.push(tool)}};
+    const window = {document, location: {protocol: 'http:'}, setInterval() {}, setTimeout: fn => fn(), clearTimeout() {}, matchMedia: () => ({matches: false}), fetch: async () => ({ok: false}), MayorNavigation: {open: tool => opened.push(tool)}, SiteTabs: {leaveMayor: () => opened.push('public page')}};
     vm.runInContext(await readFile(new URL('./somalia-flood-watch/dist/news-flash.js', import.meta.url), 'utf8'), vm.createContext({window, URL}));
     const html = window.NewsFlash.itemHtml(HEALTH_FLASH);
     assert.match(html, /<a class="news-flash-link" href="#health-alert">/, 'an in-page link, not a new tab');
@@ -167,7 +168,7 @@ test('the health flash: a standing item that opens the health alert, translated,
     window.NewsFlash.onClick({target: link, preventDefault() { prevented = true; }});
     assert.equal(prevented, true);
     assert.deepEqual(scrolled, ['health-alert']);
-    assert.deepEqual(opened, mayorView ? ['alerts'] : [], mayorView ? 'the city manager view opens the Alerts tool first' : 'the public page leaves the tab to tabs.js');
+    assert.deepEqual(opened, mayorView ? ['public page'] : [], mayorView ? 'the city manager view goes back to the public page, where tabs.js opens the Diseases tab' : 'the public page leaves the tab to tabs.js');
   }
   assert.equal(globalThis.NewsFlash, undefined);
 });

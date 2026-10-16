@@ -6,7 +6,7 @@
    Loaded before app.js, which reads window.SiteTabs for links and the URL. */
 (function () {
   'use strict';
-  const TABS = ['overview', 'weather', 'map', 'alerts', 'community', 'sources'];
+  const TABS = ['overview', 'weather', 'map', 'alerts', 'diseases', 'community', 'sources'];
   const doc = document, body = doc.body;
   const nav = doc.getElementById('site-tabs');
   // The sticky card holding the city control and the tabs (the tabs alone if absent).
@@ -124,22 +124,36 @@
   // In-page anchors (hero buttons, skip link) to a block on another tab open that
   // tab instead of the browser jumping to a hidden element. Links app.js wires
   // ([data-manager-tool], [data-dashboard-view]) are left to app.js.
-  // In the city manager view, a link to a section inside one of its tools (the footer's and the news
-  // flash's link to the health alert) opens that tool and scrolls there, rather than changing the
-  // address, which would leave the view.
+  // In the city manager view, a link to a section inside one of its tools opens that tool and scrolls
+  // there, rather than changing the address, which would leave the view. A section on a tab the view has
+  // no tool for (the Diseases tab: the health alert and the films, linked from the footer and the film
+  // notes) leaves the view for that public tab instead of landing on the top of the page.
   const TOOL_PANELS = {alerts: 'alerts-panel', map: 'map-panel', weather: 'daily-panel', community: 'community-panel'};
   function openInMayor(event) {
     const link = event.target.closest?.('a[href^="#"]');
     if (!link || link.dataset.managerTool || link.dataset.dashboardView) return;
     const id = decodeURIComponent(link.getAttribute('href').slice(1));
     const target = id && /^[\w-]+$/.test(id) ? doc.getElementById(id) : null;
-    const tool = target && Object.keys(TOOL_PANELS).find(key => target.closest('#' + TOOL_PANELS[key]));
-    if (!tool || !window.MayorNavigation?.open) return;
-    event.preventDefault();
-    event.stopPropagation();
-    window.MayorNavigation.open(tool);
-    nextFrame(() => target.scrollIntoView({behavior: 'smooth', block: 'start'}));
+    if (!target) return;
+    const tool = Object.keys(TOOL_PANELS).find(key => target.closest('#' + TOOL_PANELS[key]));
+    if (tool && window.MayorNavigation?.open) {
+      event.preventDefault();
+      event.stopPropagation();
+      window.MayorNavigation.open(tool);
+      nextFrame(() => target.scrollIntoView({behavior: 'smooth', block: 'start'}));
+      return;
+    }
+    const tab = !tool && tabOf(target);
+    if (tab) {
+      event.preventDefault();
+      event.stopPropagation();
+      leaveMayor();
+      show(tab, {scroll: false});
+      nextFrame(() => target.scrollIntoView({behavior: 'instant', block: 'start'}));
+    }
   }
+  // Back to the public page, the way its "All 30 cities" link does it (app.js wires that link).
+  function leaveMayor() { doc.querySelector('[data-dashboard-view="public"]')?.click(); }
   doc.addEventListener('click', event => {
     if (event.defaultPrevented) return;
     if (mayor()) return openInMayor(event);
@@ -217,6 +231,7 @@
 
   window.SiteTabs = Object.freeze({
     show,
+    leaveMayor,
     get current() { return current; },
     tabs: TABS.slice()
   });

@@ -6,7 +6,7 @@ const dist = new URL('./somalia-flood-watch/dist/', import.meta.url);
 const html = await readFile(new URL('index.html', dist), 'utf8');
 const app = await readFile(new URL('app.js', dist), 'utf8');
 const tabsJs = await readFile(new URL('tabs.js', dist), 'utf8');
-const TABS = ['overview', 'weather', 'map', 'alerts', 'community', 'sources'];
+const TABS = ['overview', 'weather', 'map', 'alerts', 'diseases', 'community', 'sources'];
 // Blocks shown on every tab, or only in the mayor view.
 const GLOBAL = ['site-disclaimer', 'intro', 'livebar', 'manager-tool-bar', 'mayor-extension-bar', 'mayor-panel', 'site-bar', 'site-footer'];
 const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr']);

@@ -731,7 +731,6 @@
     "Cholera film": "Filimka daacuunka",
     "Public health guidance": "Hagaha caafimaadka bulshada",
     "6 sources": "6 ilood",
-    "The public health alert at the bottom of the Alerts tab and the cholera film are based on these World Health Organization documents. They are guidance, not outbreak reports.": "Digniinta caafimaadka bulshada ee ku taal qaybta Digniinaha hoosteeda iyo filimka daacuunka waxay ku salaysan yihiin dukumentiyadan Ururka Caafimaadka Adduunka. Waa talo, ma aha warbixinno faafitaan.",
     "Film": "Filim",
     "El Nino Watch film · English and Somali": "Filimka El Nino Watch · Ingiriisi iyo Soomaali",
     "A narrated film on preventing cholera: safe water, handwashing, latrines, safe food and ORS. It plays in the reader's language and is based on the WHO cholera fact sheet and WHO's floods guidance below.": "Filim cod leh oo ku saabsan ka hortagga daacuunka: biyo nadiif ah, dhaqidda gacmaha, musqulaha, cunto nadiif ah iyo ORS. Wuxuu ku daaramaa luqadda akhristaha, wuxuuna ku salaysan yahay warqadda xaqiiqooyinka daacuunka ee WHO iyo hagaha fatahaadaha ee WHO ee hoose.",
@@ -741,7 +740,15 @@
     "Fact sheet": "Warqad xaqiiqo",
     "Checked against the app on 16 October 2026.": "Waxaa lagu hubiyay abka 16 Oktoobar 2026.",
     "Flood water can carry cholera.": "Biyaha fatahaaddu waxay qaadi karaan daacuun.",
-    "Watch the film: how to protect your family ▶": "Daawo filimka: sida qoyskaaga loo ilaaliyo ▶"
+    "Watch the film: how to protect your family ▶": "Daawo filimka: sida qoyskaaga loo ilaaliyo ▶",
+    "Diseases": "Cudurrada",
+    "FLOODING AND PUBLIC HEALTH": "FATAHAADDA IYO CAAFIMAADKA BULSHADA",
+    "TRAININGS": "TABABARRO",
+    "Protect your family": "Ilaali qoyskaaga",
+    "Short films that show, step by step, how to protect your family. You can watch them in English or Somali.": "Filimo gaagaaban oo tallaabo-tallaabo u muujinaya sida qoyskaaga loo ilaaliyo. Waxaad ku daawan kartaa Ingiriisi ama Soomaali.",
+    "Flooding raises the risk of cholera, malaria and dengue.": "Fatahaaddu waxay kordhisaa khatarta daacuunka, duumada iyo dengue.",
+    "Health guidance and a training film are on the Diseases tab ▶": "Hagaha caafimaadka iyo filim tababar ayaa ku jira qaybta Cudurrada ▶",
+    "The public health alert and the cholera film on the Diseases tab are based on these World Health Organization documents. They are guidance, not outbreak reports.": "Digniinta caafimaadka bulshada iyo filimka daacuunka ee qaybta Cudurrada waxay ku salaysan yihiin dukumentiyadan Ururka Caafimaadka Adduunka. Waa talo, ma aha warbixinno faafitaan."
   },
   "patterns": [
     {

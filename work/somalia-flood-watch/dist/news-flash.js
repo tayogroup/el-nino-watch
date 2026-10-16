@@ -48,7 +48,8 @@
     schedule();
   }
   // A link to a section of this page (#health-alert). On the public page tabs.js opens its tab and
-  // scrolls; in the city manager view, open the tool that holds the section first.
+  // scrolls; in the city manager view, open the tool that holds the section first, or, for a section
+  // no tool holds (the Diseases tab), go back to the public page, where tabs.js opens its tab.
   const TOOL_PANELS = {alerts: 'alerts-panel', map: 'map-panel', weather: 'daily-panel', community: 'community-panel'};
   function openSection(link, event) {
     const href = link.getAttribute('href') || '';
@@ -58,6 +59,7 @@
     if (doc.body?.classList?.contains('mayor-view')) {
       const tool = Object.keys(TOOL_PANELS).find(key => target.closest?.('#' + TOOL_PANELS[key]));
       if (tool) global.MayorNavigation?.open?.(tool);
+      else global.SiteTabs?.leaveMayor?.();
     }
     global.setTimeout(() => target.scrollIntoView({behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start'}), 0);
     return true;

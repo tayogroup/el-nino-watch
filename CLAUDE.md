@@ -167,8 +167,16 @@ in `data/whatsapp.json`, are never logged in full, and are not in the backups.
 Only MOEWR messages say "official". Somali alerts depend on Meta accepting a
 Somali template (`WHATSAPP_TEMPLATE_SO_LANGUAGE`); until then English.
 
-**Public health alert** (owner, 2026-10-16): the section at the bottom of the
-Alerts tab (`#health-alert` in `dist/index.html`), El Niño, flooding and disease
+**Diseases tab** (owner, 2026-10-16): its own tab in the side menu, after Alerts
+(`#diseases-panel`, tab key `diseases`), holding the public health alert and then
+"Trainings" (`#trainings`, the health films; the cholera film is the first). The
+Alerts tab keeps only a pointer to it (`.health-callout`, hidden on the overview,
+which shows the alert list). The city manager view has no Diseases tool: a link
+to the tab's sections from there (footer, film notes, news flash) goes back to
+the public page and opens the tab (`SiteTabs.leaveMayor`).
+
+**Public health alert** (owner, 2026-10-16): the first section of the
+Diseases tab (`#health-alert` in `dist/index.html`), El Niño, flooding and disease
 in Somalia, in the owner's words, sourced to six WHO documents (links checked;
 the 2026 WHO analysis lists Somalia on printed page 14). It is WHO-based health
 guidance, labelled "not an outbreak report" and "not an official warning"; keep
@@ -193,8 +201,8 @@ treatment tablet). Words drawn in the pictures go through
 `W()`, translated by a storyboard's `words`.
 On the site (owner, 2026-10-16): `dist/film/` holds the English film, its poster,
 the English captions and Somali captions (`render-film.cjs --audio … --translation
-cholera-prevention-so.json --lang so`, timed by scene). It plays near the top
-of the health alert; `alerts.js` shows the captions in the page language. The
+cholera-prevention-so.json --lang so`, timed by scene). It is the first training
+on the Diseases tab; `alerts.js` shows the captions in the page language. The
 server sends `/film/` files in byte ranges (`sendFilm`; Safari and iPhones need
 them) with an hour of CDN caching, so a replaced film shows within the hour.
 Somali readers get the Somali film (`cholera-prevention-so.*`); `alerts.js`
@@ -202,7 +210,7 @@ swaps the film, poster and captions with the page language.
 Every tab points to it: a `.film-callout` note under the first panel heading of the
 overview, map, weather, community and Sources tabs ("Flood water can carry
 cholera. Watch the film…"), plus the news flash, the footer and `/sources`; all
-link to `#health-film`, which opens the Alerts tab (or tool) at the film.
+link to `#health-film`, which opens the Diseases tab at the film.
 
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the

@@ -14,7 +14,7 @@ import {readFile, writeFile, rename, unlink} from 'node:fs/promises';
 import path from 'node:path';
 import {createHash, randomBytes, timingSafeEqual} from 'node:crypto';
 
-export const VISIT_TABS = ['overview', 'weather', 'map', 'alerts', 'community', 'sources', 'mayor'];
+export const VISIT_TABS = ['overview', 'weather', 'map', 'alerts', 'diseases', 'community', 'sources', 'mayor'];
 const BOT = /bot|crawl|spider|slurp|curl|wget|python|httpclient|headless|lighthouse|monitor|preview|facebookexternalhit|bunny/i;
 const KEEP_DAYS = 400;
 const MAX_EVENTS_PER_VISITOR_DAY = 200;

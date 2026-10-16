@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {mkdtemp, rm, stat} from 'node:fs/promises';
 import os from 'node:os';
@@ -12,12 +13,35 @@ const index = await readFile(new URL('index.html', dist), 'utf8');
 const start = index.indexOf('<section class="health-alert" id="health-alert"');
 const section = index.slice(start, index.indexOf('</section>', start) + '</section>'.length);
 
-test('the public health alert sits at the bottom of the Alerts tab', () => {
-  const alerts = index.indexOf('id="alerts-panel"'), next = index.indexOf('<section', alerts + 1 + section.length);
-  assert.ok(start > alerts, 'after the alerts panel opens');
-  assert.ok(start > index.indexOf('East Africa Hazards Watch ↗</a>', alerts), 'below the alert list and its links');
-  assert.ok(index.indexOf('</section>', start + section.length - 1) < index.indexOf('id="daily-panel"'), 'and inside the alerts panel');
-  assert.ok(next > start);
+// The Diseases tab (owner, 2026-10-16): the health alert, then the trainings (the films).
+const panelStart = index.indexOf('<section class="panel diseases-panel" id="diseases-panel" data-site-tab="diseases"');
+const panelEnd = index.indexOf('\n', panelStart);
+const panel = index.slice(panelStart, panelEnd);
+
+test('the public health alert and the trainings have their own Diseases tab, after Alerts', () => {
+  assert.ok(panelStart > index.indexOf('id="alerts-panel"'), 'the panel follows the alerts panel');
+  assert.ok(panelStart < index.indexOf('id="daily-panel"'));
+  assert.ok(start > panelStart && start < panelEnd, 'the health alert is in it');
+  assert.ok(panel.indexOf('id="trainings"') > panel.indexOf('id="health-share"'), 'then the trainings');
+  assert.ok(panel.endsWith('</figure></section></section>'), 'the film closes the trainings, which close the panel');
+  assert.match(panel, /<h2 id="diseases-title">Diseases<\/h2>/);
+  const alerts = index.slice(index.indexOf('id="alerts-panel"'), panelStart);
+  assert.ok(!alerts.includes('id="health-alert"') && !alerts.includes('<video'), 'nothing of it is left on the Alerts tab');
+  assert.ok(alerts.includes('<p class="film-callout health-callout"><span>Flooding raises the risk of cholera, malaria and dengue.</span> <a href="#diseases-panel">Health guidance and a training film are on the Diseases tab ▶</a></p>'), 'which points to it');
+  const tabs = [...index.matchAll(/data-site-tab-link="([a-z]+)"/g)].map(match => match[1]);
+  assert.equal(tabs[tabs.indexOf('alerts') + 1], 'diseases', 'the side menu lists it after Alerts');
+  assert.match(index, /<a class="site-tab" role="tab" id="site-tab-diseases" href="#diseases-panel" data-site-tab-link="diseases" aria-selected="false" tabindex="-1"><svg[^]*?<\/svg><span>Diseases<\/span><\/a>/);
+  const shell = readFileSync(new URL('shell.css', dist), 'utf8');
+  assert.match(shell, /#alerts-panel>:is\([^)]*\.health-callout[^)]*\)\{display:none\}/, 'the overview, which shows the alert list, leaves the pointer out');
+});
+
+test('the Diseases tab reads in Somali', async () => {
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages.Diseases, 'Cudurrada');
+  const texts = [...panel.slice(0, panel.indexOf('<section class="health-alert"')).matchAll(/>([^<>]+)</g), ...panel.slice(panel.indexOf('id="trainings"')).matchAll(/>([^<>]+)</g)]
+    .map(match => match[1].trim()).filter(text => /[A-Za-z]/.test(text));
+  assert.ok(texts.length >= 5);
+  for (const text of [...texts, 'Flooding raises the risk of cholera, malaria and dengue.', 'Health guidance and a training film are on the Diseases tab ▶']) assert.ok(catalog.messages[text], text);
 });
 
 test('its content: eight diseases, five actions, WHO sources only, and never an official warning', () => {
@@ -57,7 +81,7 @@ test('the health alert has a Share row, and its post fits X whole in English and
     for (const file of ['translations-so.js', 'i18n.js', 'share.js', 'alerts.js']) vm.runInContext(await readFile(new URL(file, dist), 'utf8'), context);
     const row = nodes['health-share'].innerHTML;
     assert.match(row, /^<div class="share-row" role="group" aria-label="Share" data-share-lines="/);
-    assert.match(row, /data-share-tab="alerts"/);
+    assert.match(row, /data-share-tab="diseases"/);
     const text = window.SiteShare.textOf(window.FloodAlerts.healthShareLines);
     assert.equal(text.split('\n').length, 3);
     assert.equal(window.SiteShare.fit(text), text, `${lang}: nothing is cut or dropped for X`);
@@ -70,17 +94,18 @@ test('the site footer links to the health alert, in Somali too', async () => {
   const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
   assert.ok(footer.includes('<a href="#health-alert">Public health alert</a>'));
   const tabs = await readFile(new URL('tabs.js', dist), 'utf8');
-  assert.match(tabs, /if \(mayor\(\)\) return openInMayor\(event\);/, 'the city manager view opens the Alerts tool for it');
+  assert.match(tabs, /if \(mayor\(\)\) return openInMayor\(event\);/, 'the city manager view handles it');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['Public health alert'], 'Digniinta caafimaadka bulshada');
 });
 
-test('the cholera film sits in the health alert, with English and Somali captions', async () => {
-  assert.ok(section.includes('<video id="health-film" controls preload="metadata" playsinline poster="film/cholera-prevention.jpg"'), 'the film is in the section');
-  assert.ok(section.includes('<source src="film/cholera-prevention.mp4" type="video/mp4">'));
-  assert.ok(section.includes('<track kind="captions" src="film/cholera-prevention.vtt" srclang="en" label="English" default>'));
-  assert.ok(section.includes('<track kind="captions" src="film/cholera-prevention.so.vtt" srclang="so" label="Soomaali">'));
-  assert.ok(section.indexOf('id="health-film"') < section.indexOf('How flooding raises the risk'), 'near the top of the section');
+test('the cholera film is the first training on the Diseases tab, with English and Somali captions', async () => {
+  const trainings = panel.slice(panel.indexOf('<section class="trainings" id="trainings"'));
+  assert.ok(trainings.includes('<video id="health-film" controls preload="metadata" playsinline poster="film/cholera-prevention.jpg"'), 'the film is in the trainings');
+  assert.ok(!section.includes('<video'), 'and no longer in the health alert');
+  assert.ok(trainings.includes('<source src="film/cholera-prevention.mp4" type="video/mp4">'));
+  assert.ok(trainings.includes('<track kind="captions" src="film/cholera-prevention.vtt" srclang="en" label="English" default>'));
+  assert.ok(trainings.includes('<track kind="captions" src="film/cholera-prevention.so.vtt" srclang="so" label="Soomaali">'));
   for (const name of ['cholera-prevention.mp4', 'cholera-prevention.jpg', 'cholera-prevention.vtt', 'cholera-prevention.so.vtt', 'cholera-prevention-so.mp4', 'cholera-prevention-so.jpg', 'cholera-prevention-so.vtt']) assert.ok((await stat(new URL('film/' + name, dist))).size > 1000, name);
   const en = await readFile(new URL('film/cholera-prevention.vtt', dist), 'utf8'), so = await readFile(new URL('film/cholera-prevention.so.vtt', dist), 'utf8');
   for (const vtt of [en, so]) { assert.match(vtt, /^WEBVTT\n\n1\n\d\d:\d\d:\d\d\.\d{3} --> /); assert.doesNotMatch(vtt, /O R S/, 'captions show ORS, not the spelled-out narration'); }
