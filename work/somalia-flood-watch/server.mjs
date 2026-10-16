@@ -1,6 +1,7 @@
 import http from 'node:http';
 import path from 'node:path';
-import {readFile, lstat} from 'node:fs/promises';
+import {readFile, lstat, stat} from 'node:fs/promises';
+import {createReadStream} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {loadEnso, loadStations, SOURCES} from './feeds.mjs';
 import {loadHazardPoint} from './hazards.mjs';
@@ -22,7 +23,7 @@ const RETRY_MS = 60 * 1000;
 const cache = new Map();
 const pending = new Map();
 const feeds = Object.freeze({'/api/enso': {load: loadEnso, sourceUrl: SOURCES.enso}, '/api/stations': {load: loadStations, sourceUrl: SOURCES.stations}, '/api/alerts': {load: () => loadOfficialAlerts({cities: CITY_DATA}), sourceUrl: ALERT_SOURCES.icpac}, '/api/observed-flood': {load: loadObservedFlood, sourceUrl: OBSERVED_SOURCE_URL}, '/api/news': {load: async () => loadNews({app: {enso: await feed('/api/enso'), alerts: await feed('/api/alerts')}}), sourceUrl: NEWS_SOURCES.sodma.site}});
-const types = {'.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.mjs':'text/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.ico':'image/x-icon', '.woff2':'font/woff2', '.pdf':'application/pdf'};
+const types = {'.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.mjs':'text/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.ico':'image/x-icon', '.woff2':'font/woff2', '.pdf':'application/pdf', '.mp4':'video/mp4', '.vtt':'text/vtt; charset=utf-8'};
 
 async function feed(name, loader = feeds[name]?.load, sourceUrl = feeds[name]?.sourceUrl) {
   const entry = cache.get(name);
@@ -47,6 +48,26 @@ async function feed(name, loader = feeds[name]?.load, sourceUrl = feeds[name]?.s
   })();
   pending.set(name, request);
   return request;
+}
+
+// Films (dist/film/): a video is sent in the byte ranges the player asks for (Safari and iPhones play
+// nothing without them), streamed rather than read whole, and the CDN may keep film files an hour.
+const FILM_CACHE = 'public, max-age=3600';
+async function sendFilm(req, res, target, contentType) {
+  const size = (await stat(target)).size;
+  const head = {'Content-Type': contentType, 'Accept-Ranges': 'bytes', 'X-Content-Type-Options': 'nosniff', 'Cache-Control': FILM_CACHE};
+  const range = /^bytes=(\d*)-(\d*)$/.exec(String(req.headers.range || ''));
+  if (req.headers.range && !range) { res.writeHead(416, {...head, 'Content-Range': `bytes */${size}`}); return res.end(); }
+  let start = 0, end = size - 1;
+  if (range) {
+    if (range[1] === '' && range[2] === '') { res.writeHead(416, {...head, 'Content-Range': `bytes */${size}`}); return res.end(); }
+    if (range[1] === '') start = Math.max(0, size - Number(range[2]));          // the last N bytes
+    else { start = Number(range[1]); if (range[2] !== '') end = Math.min(size - 1, Number(range[2])); }
+    if (start >= size || start > end) { res.writeHead(416, {...head, 'Content-Range': `bytes */${size}`}); return res.end(); }
+    res.writeHead(206, {...head, 'Content-Range': `bytes ${start}-${end}/${size}`, 'Content-Length': end - start + 1});
+  } else res.writeHead(200, {...head, 'Content-Length': size});
+  if (req.method === 'HEAD') return res.end();
+  createReadStream(target, {start, end}).on('error', () => res.destroy()).pipe(res);
 }
 
 function reply(res, status, body, contentType = 'text/plain; charset=utf-8', head = false) {
@@ -112,6 +133,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
         if ((await lstat(current)).isSymbolicLink()) return reply(res, 403, 'Linked paths are not served.');
       }
       if (!(await lstat(target)).isFile()) return reply(res, 404, 'File not found.');
+      if (path.relative(ROOT, target).split(path.sep)[0] === 'film') return sendFilm(req, res, target, types[path.extname(target).toLowerCase()] || 'application/octet-stream');
       return reply(res, 200, await readFile(target), types[path.extname(target).toLowerCase()] || 'application/octet-stream', req.method === 'HEAD');
     } catch (error) {
       reply(res, error.code === 'ENOENT' || error.code === 'ENOTDIR' ? 404 : 400, 'File not found or invalid request.');

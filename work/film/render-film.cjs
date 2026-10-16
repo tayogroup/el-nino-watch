@@ -5,6 +5,9 @@
 //       Three still frames per scene (PNG) to check the drawings. Free.
 //   node work/film/render-film.cjs <storyboard.json> --preview
 //       Silent film with the captions burned in; scene lengths ESTIMATED from word count. Free.
+//   node work/film/render-film.cjs <storyboard.json> --audio <dir> --translation <other.json> --lang <code>
+//       Captions only: <film-id>.<code>.vtt in the other storyboard's language, each scene's sentences
+//       spread over that scene's speech (timed by scene, not word by word). No frames are rendered.
 //   node work/film/render-film.cjs <storyboard.json> --audio <dir>
 //       Narrated film. <dir> holds <scene-id>.mp3 and <scene-id>.json (character timings) from the
 //       narration tool. Scene lengths come from the real audio, captions from the real timings, and the
@@ -22,6 +25,8 @@ const argv = process.argv.slice(2);
 const sbPath = path.resolve(argv[0] || '');
 const stills = argv.includes('--stills'), preview = argv.includes('--preview');
 const audioDir = argv.includes('--audio') ? path.resolve(argv[argv.indexOf('--audio') + 1]) : null;
+const translation = argv.includes('--translation') ? JSON.parse(fs.readFileSync(path.resolve(argv[argv.indexOf('--translation') + 1]), 'utf8')) : null;
+const lang = argv.includes('--lang') ? argv[argv.indexOf('--lang') + 1] : null;
 if (!fs.existsSync(sbPath) || (!stills && !preview && !audioDir)) { console.log('Usage: render-film.cjs <storyboard.json> --stills | --preview | --audio <dir> [--out <dir>]'); process.exit(2); }
 const outDir = path.resolve(argv.includes('--out') ? argv[argv.indexOf('--out') + 1] : path.join(__dirname, '..', '..', 'outputs', 'film'));
 const FFMPEG = process.env.FFMPEG || 'ffmpeg';
@@ -56,7 +61,7 @@ sb.scenes.forEach((scene, i) => {
     aligned = JSON.parse(fs.readFileSync(path.join(audioDir, scene.id + '.json'), 'utf8'));
   } else speech = scene.narration.split(/\s+/).length / 2.6; // about 156 words a minute
   const start = clock, speechStart = clock + lead, end = speechStart + speech + GAP;
-  timings.push({start, end});
+  timings.push({start, end, speechStart, speech});
   const parts = chunks(scene.narration);
   if (aligned) {
     const full = aligned.characters.join('');
@@ -79,6 +84,23 @@ const duration = clock;
 for (const c of captions) for (const [from, to] of sb.captionReplace || []) c.text = c.text.split(from).join(to);
 captions.forEach((c, i) => { if (captions[i + 1] && c.end > captions[i + 1].start) c.end = captions[i + 1].start; });
 const vttTime = x => `${String(Math.floor(x / 3600)).padStart(2, '0')}:${String(Math.floor(x % 3600 / 60)).padStart(2, '0')}:${(x % 60).toFixed(3).padStart(6, '0')}`;
+
+if (translation) {
+  if (!audioDir || !/^[a-z]{2}$/.test(lang || '')) { console.log('--translation needs --audio <dir> and --lang <two-letter code>.'); process.exit(2); }
+  if (translation.scenes.length !== sb.scenes.length || translation.scenes.some((x, i) => x.id !== sb.scenes[i].id)) { console.log('The translation does not have the same scenes.'); process.exit(1); }
+  const lines = [];
+  translation.scenes.forEach((scene, i) => {
+    const parts = chunks(scene.narration), total = parts.reduce((n, text) => n + text.length, 0);
+    let c0 = timings[i].speechStart;
+    parts.forEach(text => { const d = timings[i].speech * text.length / total; lines.push({start: c0, end: c0 + d, text}); c0 += d; });
+  });
+  for (const c of lines) for (const [from, to] of translation.captionReplace || []) c.text = c.text.split(from).join(to);
+  fs.mkdirSync(outDir, {recursive: true});
+  const file = path.join(outDir, `${sb.id}.${lang}.vtt`);
+  fs.writeFileSync(file, 'WEBVTT\n\n' + lines.map((c, i) => `${i + 1}\n${vttTime(c.start)} --> ${vttTime(c.end)}\n${c.text}\n`).join('\n'));
+  console.log(JSON.stringify({captions: file, lines: lines.length}));
+  process.exit(0);
+}
 
 (async () => {
   fs.mkdirSync(outDir, {recursive: true});

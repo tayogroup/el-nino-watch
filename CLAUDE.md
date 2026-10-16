@@ -186,6 +186,14 @@ approval before `--go`.** Cholera film: English approved and voiced (Ava HD);
 the Somali script (`cholera-prevention-so.json`, voice Ubax) awaits the owner's
 review and must not be voiced before it. Words drawn in the pictures go through
 `W()`, translated by a storyboard's `words`.
+On the site (owner, 2026-10-16): `dist/film/` holds the English film, its poster,
+the English captions and Somali captions (`render-film.cjs --audio … --translation
+cholera-prevention-so.json --lang so`, timed by scene). It plays near the top
+of the health alert; `alerts.js` shows the captions in the page language. The
+server sends `/film/` files in byte ranges (`sendFilm`; Safari and iPhones need
+them) with an hour of CDN caching, so a replaced film shows within the hour.
+When the Somali narration is approved, voice it, render it, and play it to
+Somali readers.
 
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
