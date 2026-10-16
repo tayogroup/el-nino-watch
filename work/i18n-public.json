@@ -748,8 +748,18 @@
     "Short films that show, step by step, how to protect your family. You can watch them in English or Somali.": "Filimo gaagaaban oo tallaabo-tallaabo u muujinaya sida qoyskaaga loo ilaaliyo. Waxaad ku daawan kartaa Ingiriisi ama Soomaali.",
     "Flooding raises the risk of cholera, malaria and dengue.": "Fatahaaddu waxay kordhisaa khatarta daacuunka, duumada iyo dengue.",
     "Health guidance and a training film are on the Diseases tab ▶": "Hagaha caafimaadka iyo filim tababar ayaa ku jira qaybta Cudurrada ▶",
-    "The public health alert and the cholera film on the Diseases tab are based on these World Health Organization documents. They are guidance, not outbreak reports.": "Digniinta caafimaadka bulshada iyo filimka daacuunka ee qaybta Cudurrada waxay ku salaysan yihiin dukumentiyadan Ururka Caafimaadka Adduunka. Waa talo, ma aha warbixinno faafitaan.",
-    "Map": "Khariidad"
+    "Map": "Khariidad",
+    "Film: Diseases from dirty water (2 min 50 s). Narrated in English, with captions in English and Somali.": "Filim: Cudurrada biyaha wasakhda ah (2 daqiiqo iyo 50 ilbiriqsi). Cod Ingiriisi ah, qoraallo Ingiriisi iyo Soomaali ah.",
+    "El Nino Watch film · English, with Somali captions": "Filimka El Nino Watch · Ingiriisi, qoraallo Soomaali ah",
+    "A narrated overview of cholera, dysentery, typhoid and hepatitis A and E: how they spread, how to prevent them and when to get help. It is based on the WHO fact sheets in this list.": "Filim cod leh oo guud ahaan ka hadlaya daacuunka, dhiig-shubanka, tiifowga iyo cagaarshowga A iyo E: sida ay u faafaan, sida looga hortago iyo goorta caawimaad la raadiyo. Wuxuu ku salaysan yahay warqadaha xaqiiqooyinka WHO ee liiskan ku jira.",
+    "10 sources": "10 ilood",
+    "The public health alert and the films on the Diseases tab are based on these World Health Organization documents. They are guidance, not outbreak reports.": "Digniinta caafimaadka bulshada iyo filimada qaybta Cudurrada waxay ku salaysan yihiin dukumentiyadan Ururka Caafimaadka Adduunka. Waa talo, ma aha warbixinno faafitaan.",
+    "Explains how diarrhoea spreads through contaminated food and water, that bloody diarrhoea is dysentery, and treatment with ORS and zinc, with continued feeding and breastfeeding.": "Wuxuu sharraxayaa sida shubanku ugu faafo cunto iyo biyo wasakhaysan, in shubanka dhiigga leh uu yahay dhiig-shuban, iyo daaweynta ORS iyo zinc, iyadoo cuntada iyo naas-nuujinta la sii wado.",
+    "Explains that typhoid spreads through contaminated food and water, causes a prolonged high fever, is treated with antibiotics and can be prevented by vaccination.": "Wuxuu sharraxayaa in tiifowgu ku faafo cunto iyo biyo wasakhaysan, uu keeno qandho sare oo muddo socota, lagu daaweeyo antibiyootiko, laguna ka hortagi karo tallaal.",
+    "Explains how hepatitis A spreads through contaminated food and water, its signs, including yellow eyes and skin and dark urine, and the vaccine.": "Wuxuu sharraxayaa sida cagaarshowga A ugu faafo cunto iyo biyo wasakhaysan, calaamadihiisa, oo ay ku jiraan indho iyo maqaar huruud ah iyo kaadi madow, iyo tallaalka.",
+    "Explains that hepatitis E spreads mainly through contaminated drinking water and is especially dangerous for pregnant women.": "Wuxuu sharraxayaa in cagaarshowga E uu inta badan ku faafo biyo la cabbo oo wasakhaysan, uuna si gaar ah khatar ugu yahay haweenka uurka leh.",
+    "Watch: diseases from dirty water, and how to protect your family": "Daawo: cudurrada biyaha wasakhda ah iyo sida qoyskaaga looga ilaaliyo",
+    "A short film on cholera, dysentery, typhoid and hepatitis: how they spread and how to prevent them.": "Filim gaaban oo ku saabsan daacuunka, dhiig-shubanka, tiifowga iyo cagaarshowga: sida ay u faafaan iyo sida looga hortago."
   },
   "patterns": [
     {

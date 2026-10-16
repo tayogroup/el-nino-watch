@@ -246,36 +246,50 @@
   const FILM_SHARE = [[{t: 'Watch: how to protect your family from cholera'}], [{t: "A short film on safe water, handwashing, latrines, safe food and ORS."}], [{t: 'Health guidance from WHO, not an outbreak report.'}]];
   const filmShare = root.document?.getElementById?.('film-share');
   if (filmShare && root.SiteShare?.row) filmShare.innerHTML = root.SiteShare.row(FILM_SHARE, '#health-film', {t: 'Health guidance from WHO, not an outbreak report.'});
+  const WATERBORNE_SHARE = [[{t: 'Watch: diseases from dirty water, and how to protect your family'}], [{t: 'A short film on cholera, dysentery, typhoid and hepatitis: how they spread and how to prevent them.'}], [{t: 'Health guidance from WHO, not an outbreak report.'}]];
+  const waterborneShare = root.document?.getElementById?.('waterborne-share');
+  if (waterborneShare && root.SiteShare?.row) waterborneShare.innerHTML = root.SiteShare.row(WATERBORNE_SHARE, '#waterborne-film', {t: 'Health guidance from WHO, not an outbreak report.'});
   // The health film plays in the page's language: Somali readers get the Somali film (narrated by Ubax),
   // everyone else the English one, which index.html loads; each shows captions in that language (the English
   // film also carries scene-timed Somali captions). Set on load, on each redraw, and after the EN/SO buttons,
   // without overriding a viewer's own choice in the player while the language stays the same.
+  // The waterborne-diseases film has no Somali narration yet (its Somali script awaits the owner's review):
+  // Somali readers keep the English film, with its Somali captions on.
   const FILMS = {
-    en: {src: 'film/cholera-prevention.mp4', poster: 'film/cholera-prevention.jpg', tracks: [['en', 'English', 'film/cholera-prevention.vtt'], ['so', 'Soomaali', 'film/cholera-prevention.so.vtt']]},
-    so: {src: 'film/cholera-prevention-so.mp4', poster: 'film/cholera-prevention-so.jpg', tracks: [['so', 'Soomaali', 'film/cholera-prevention-so.vtt']]}
-  };
-  let filmLanguage = null, filmLoaded = 'en';
-  function filmCaptions() {
-    const video = root.document?.getElementById?.('health-film');
-    if (!video) return;
-    const lang = root.SiteLanguage?.getLanguage?.() === 'so' ? 'so' : 'en';
-    if (lang === filmLanguage) return;
-    filmLanguage = lang;
-    if (lang !== filmLoaded) {
-      const film = FILMS[lang];
-      video.innerHTML = `<source src="${film.src}" type="video/mp4">` + film.tracks.map(([code, label, src]) => `<track kind="captions" src="${src}" srclang="${code}" label="${label}"${code === lang ? ' default' : ''}>`).join('');
-      video.setAttribute('poster', film.poster);
-      video.load?.();
-      filmLoaded = lang;
+    'health-film': {
+      en: {src: 'film/cholera-prevention.mp4', poster: 'film/cholera-prevention.jpg', tracks: [['en', 'English', 'film/cholera-prevention.vtt'], ['so', 'Soomaali', 'film/cholera-prevention.so.vtt']]},
+      so: {src: 'film/cholera-prevention-so.mp4', poster: 'film/cholera-prevention-so.jpg', tracks: [['so', 'Soomaali', 'film/cholera-prevention-so.vtt']]}
+    },
+    'waterborne-film': {
+      en: {src: 'film/waterborne-diseases.mp4', poster: 'film/waterborne-diseases.jpg', tracks: [['en', 'English', 'film/waterborne-diseases.vtt'], ['so', 'Soomaali', 'film/waterborne-diseases.so.vtt']]}
     }
-    // Again once the browser has taken in new <track> elements and the film's details: a browser may
-    // turn on tracks of its own choosing as they arrive.
-    const show = () => { const tracks = video.textTracks || []; for (let i = 0; i < tracks.length; i++) tracks[i].mode = tracks[i].language === lang ? 'showing' : 'disabled'; };
-    show();
-    root.setTimeout?.(() => { if (filmLanguage === lang) show(); }, 0);
-    video.addEventListener?.('loadedmetadata', () => { if (filmLanguage === lang) show(); }, {once: true});
+  };
+  const filmState = {};
+  function filmCaptions() {
+    const lang = root.SiteLanguage?.getLanguage?.() === 'so' ? 'so' : 'en';
+    for (const [id, versions] of Object.entries(FILMS)) {
+      const video = root.document?.getElementById?.(id);
+      if (!video) continue;
+      const state = filmState[id] || (filmState[id] = {language: null, loaded: 'en'});
+      if (lang === state.language) continue;
+      state.language = lang;
+      const want = versions[lang] ? lang : 'en';
+      if (want !== state.loaded) {
+        const film = versions[want];
+        video.innerHTML = `<source src="${film.src}" type="video/mp4">` + film.tracks.map(([code, label, src]) => `<track kind="captions" src="${src}" srclang="${code}" label="${label}"${code === lang ? ' default' : ''}>`).join('');
+        video.setAttribute('poster', film.poster);
+        video.load?.();
+        state.loaded = want;
+      }
+      // Again once the browser has taken in new <track> elements and the film's details: a browser may
+      // turn on tracks of its own choosing as they arrive.
+      const show = () => { const tracks = video.textTracks || []; for (let i = 0; i < tracks.length; i++) tracks[i].mode = tracks[i].language === lang ? 'showing' : 'disabled'; };
+      show();
+      root.setTimeout?.(() => { if (state.language === lang) show(); }, 0);
+      video.addEventListener?.('loadedmetadata', () => { if (state.language === lang) show(); }, {once: true});
+    }
   }
   root.document?.addEventListener?.('click', event => { if (event.target?.closest?.('[data-site-language]')) root.setTimeout(filmCaptions, 0); });
   filmCaptions();
-  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE, filmShareLines: FILM_SHARE, filmCaptions };
+  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE, filmShareLines: FILM_SHARE, waterborneShareLines: WATERBORNE_SHARE, filmCaptions };
 })(typeof window === 'object' ? window : globalThis);

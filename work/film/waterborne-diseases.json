@@ -10,7 +10,7 @@
     "voice": "en-US-Ava:DragonHDLatestNeural",
     "voice_name": "Ava (HD)",
     "rate": "0%",
-    "approved": "PENDING: the script and voice need the owner's approval before narrate-film.cjs --go"
+    "approved": "owner, 2026-10-16 (script and voice)"
   },
   "captionReplace": [
     [

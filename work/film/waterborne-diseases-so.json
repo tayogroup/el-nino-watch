@@ -10,7 +10,7 @@
     "voice": "so-SO-UbaxNeural",
     "voice_name": "Ubax",
     "rate": "0%",
-    "approved": "PENDING: the script and voice need the owner's approval before narrate-film.cjs --go"
+    "approved": "PENDING: voice approved by the owner 2026-10-16; the Somali script awaits the owner's review before narrate-film.cjs --go"
   },
   "captionReplace": [
     [

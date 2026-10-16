@@ -213,6 +213,22 @@ overview, map, weather, community and Sources tabs ("Flood water can carry
 cholera. Watch the film…"), plus the news flash, the footer and `/sources`; all
 link to `#health-film`, which opens the Diseases tab at the film.
 
+**Waterborne-diseases film** (owner, 2026-10-16): "Diseases from dirty water"
+(`work/film/waterborne-diseases.json`, `#waterborne-film`, the first training),
+an overview of cholera, dysentery, typhoid and hepatitis A and E from the health
+alert and WHO's fact sheets on diarrhoeal disease, typhoid and hepatitis A and E
+(`/sources` lists them; `sources-page.test.mjs` checks they match the
+storyboard). English script and both voices approved by the owner; English
+voiced (Ava HD, 2:50). Its boil, handwash, latrine and food scenes are the
+approved cholera scenes word for word, so their clips were copied, not bought
+(`health-alert.test.mjs` keeps them identical; new scenes take new ids so no
+other cholera clip is picked up). **The Somali script
+(`waterborne-diseases-so.json`, same reuse with the owner's corrected Somali)
+awaits the owner's review: do not `--go` it before then.** Until it is voiced,
+Somali readers get the English film with the draft Somali captions
+(`waterborne-diseases.so.vtt`); adding an `so` entry to `FILMS['waterborne-film']`
+in `alerts.js` switches them to the Somali film.
+
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
   ICPAC heavy-rain city count), then items from SoDMA, FAO SWALIM, ICRC (its own

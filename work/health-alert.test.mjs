@@ -112,7 +112,35 @@ test('the site footer links to the health alert, in Somali too', async () => {
   assert.equal(catalog.messages['Public health alert'], 'Digniinta caafimaadka bulshada');
 });
 
-test('the cholera film is the first training on the Diseases tab, with English and Somali captions', async () => {
+test('the waterborne-diseases film is the first training, in English with English and Somali captions and its own Share row', async () => {
+  const trainings = panel.slice(panel.indexOf('<section class="trainings" id="trainings"'));
+  assert.ok(trainings.indexOf('id="waterborne-film"') > 0 && trainings.indexOf('id="waterborne-film"') < trainings.indexOf('id="health-film"'), 'the overview first, then the cholera film');
+  for (const part of ['<video id="waterborne-film" controls preload="metadata" playsinline poster="film/waterborne-diseases.jpg"', '<source src="film/waterborne-diseases.mp4" type="video/mp4">',
+    '<track kind="captions" src="film/waterborne-diseases.vtt" srclang="en" label="English" default>', '<track kind="captions" src="film/waterborne-diseases.so.vtt" srclang="so" label="Soomaali">', '<div id="waterborne-share"></div></figure>']) assert.ok(trainings.includes(part), part);
+  for (const name of ['waterborne-diseases.mp4', 'waterborne-diseases.jpg', 'waterborne-diseases.vtt', 'waterborne-diseases.so.vtt']) assert.ok((await stat(new URL('film/' + name, dist))).size > 1000, name);
+  const so = await readFile(new URL('film/waterborne-diseases.so.vtt', dist), 'utf8');
+  assert.match(so, /^WEBVTT\n\n1\n/); assert.match(so, /Cagaarshowga/); assert.doesNotMatch(so, /O R S/);
+  // Somali readers keep the English film (no Somali narration yet), with the Somali captions showing.
+  const video = {innerHTML: '', loads: 0, setAttribute() {}, load() { this.loads++; }, textTracks: [{language: 'en', mode: 'showing'}, {language: 'so', mode: 'disabled'}]};
+  const document = {getElementById: id => id === 'waterborne-film' ? video : null, addEventListener() {}};
+  const window = {document, SiteLanguage: {getLanguage: () => 'so'}, setTimeout: fn => fn(), localStorage: {getItem: () => null, setItem() {}}};
+  vm.runInContext(await readFile(new URL('alerts.js', dist), 'utf8'), vm.createContext({window, URL, URLSearchParams, Date}));
+  assert.equal(video.loads, 0, 'the English film stays');
+  assert.deepEqual(video.textTracks.map(track => track.mode), ['disabled', 'showing']);
+  for (const lang of ['en', 'so']) {
+    const nodes = {'waterborne-share': {innerHTML: ''}};
+    const doc = {readyState: 'complete', title: '', body: {nodeType: 11, childNodes: []}, documentElement: {setAttribute() {}}, getElementById: id => nodes[id] || null, querySelectorAll: () => [], addEventListener() {}};
+    const win = {document: doc, location: {href: `https://elninowatch.so/?lang=${lang}`, protocol: 'https:'}, localStorage: {getItem: () => null, setItem() {}}, navigator: {}, setTimeout: fn => fn()};
+    const context = vm.createContext({window: win, URL, URLSearchParams, Date});
+    for (const file of ['translations-so.js', 'i18n.js', 'share.js', 'alerts.js']) vm.runInContext(await readFile(new URL(file, dist), 'utf8'), context);
+    assert.match(nodes['waterborne-share'].innerHTML, /data-share-tab="#waterborne-film"/);
+    const text = win.SiteShare.textOf(win.FloodAlerts.waterborneShareLines);
+    assert.equal(win.SiteShare.fit(text), text, `${lang}: nothing is cut or dropped for X`);
+    if (lang === 'so') { assert.match(text, /^Daawo: cudurrada biyaha/); assert.doesNotMatch(text, /\b(the|and|with|film)\b/); }
+  }
+});
+
+test('the cholera film is the second training on the Diseases tab, with English and Somali captions', async () => {
   const trainings = panel.slice(panel.indexOf('<section class="trainings" id="trainings"'));
   assert.ok(trainings.includes('<video id="health-film" controls preload="metadata" playsinline poster="film/cholera-prevention.jpg"'), 'the film is in the trainings');
   assert.ok(!section.includes('<video'), 'and no longer in the health alert');

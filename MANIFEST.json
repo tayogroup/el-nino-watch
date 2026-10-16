@@ -414,6 +414,96 @@
       "sha256": "28166c5c9788ee56596d9c8507dbb42c4cbce2b8500f0412fbb245c3f50654f4"
     },
     {
+      "path": "work/film/audio/waterborne-diseases/boil.json",
+      "bytes": 6965,
+      "sha256": "ac155f2caaf443a285418e94105edbae5af69866e7e0ce6cba6b40810b14c3ef"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/boil.mp3",
+      "bytes": 338400,
+      "sha256": "2edd6939a311479f0835fd21eb8ae8091e8c7b89c734b88e665f547e305e6cb2"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/diseases.json",
+      "bytes": 9923,
+      "sha256": "b513acfad3977505fe9492c08d6a3c49c740b66708045802c3b8f3b8342c98fb"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/diseases.mp3",
+      "bytes": 528000,
+      "sha256": "439aa8cd527405a83aab2865273af69fde72eab31c500e621cc1b985a5d1555c"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/end.json",
+      "bytes": 6156,
+      "sha256": "2e76f230285f614270e89ac1457d507e5fd33a2e7ce31fcd22c3b0a7433f7324"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/end.mp3",
+      "bytes": 309120,
+      "sha256": "eb9dc107f6c4113ca0673bf08f602e8851c1fbd92951a1db75440b8403cf9a33"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/food.json",
+      "bytes": 2930,
+      "sha256": "d02288e0b316e4600c03e2f3e47e2de34c0e31641bcae518a8c0119d6707e8ed"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/food.mp3",
+      "bytes": 186240,
+      "sha256": "70fa9d37ff300a394cc28a569ed76b4d6bddbc0373b526b43b8d6efa0642646e"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/handwash.json",
+      "bytes": 7300,
+      "sha256": "80b36879f9cd99aca43559acb52a8ababc3c8585aed04cd6a0ca3e00e6ba2efa"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/handwash.mp3",
+      "bytes": 404160,
+      "sha256": "9a9539971eaed87107d2caccab1d9904dbb24d247364e66dd0cf95bfd346f1a2"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/help.json",
+      "bytes": 11638,
+      "sha256": "09d13c114b9589b0142ebe7cab24db87a73dfa118430fa366a0bcac57ddc3518"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/help.mp3",
+      "bytes": 619200,
+      "sha256": "b21699845f754293480b6d5b743b7e4485fbfddd8ba8b380368d84385dbc5a5a"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/how.json",
+      "bytes": 6006,
+      "sha256": "754934589b7d41b3aacb52cc595e60c466f1e2e235f5f5c7eaedc23e67a263cf"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/how.mp3",
+      "bytes": 312000,
+      "sha256": "ffae90c964d9ee9854b514e22b26ba781e55c2237e2533773a037a3645061747"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/intro.json",
+      "bytes": 5660,
+      "sha256": "9d75df99442cae2c88e371edc334a05c3178e40321ad94781918b58dc2cac5cb"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/intro.mp3",
+      "bytes": 288000,
+      "sha256": "a005ba1373ac3d09e8a93ee9e8598e43eb9fff0b46273fbb7c5af1cb3cbe25ee"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/latrine.json",
+      "bytes": 4948,
+      "sha256": "8ce0c7142d95aab19d2c0edf3e7851ad81cf873d160a287fedd7b225636bd8bf"
+    },
+    {
+      "path": "work/film/audio/waterborne-diseases/latrine.mp3",
+      "bytes": 248160,
+      "sha256": "a67170cefada229ce2de23c68b11031e5667f6a2c44f92ca724aeccb162771c0"
+    },
+    {
       "path": "work/film/cholera-prevention-so.json",
       "bytes": 7770,
       "sha256": "7c690d6dd3f322e08087be125cf91a2b597aeb9a4f4aa97d4b11fbb90d494291"
@@ -440,13 +530,13 @@
     },
     {
       "path": "work/film/waterborne-diseases-so.json",
-      "bytes": 9137,
-      "sha256": "a24939d717fe1a26d4a8c59d24a3b9cbfd5c83fe4a86b028b2e07512e1b23c4a"
+      "bytes": 9174,
+      "sha256": "c4fde8a99fcfe8eda47c42a894b2a7a8d3b698e0e775c9e80fc8a82100a91d82"
     },
     {
       "path": "work/film/waterborne-diseases.json",
-      "bytes": 7166,
-      "sha256": "e9203a0ec44a3f5af29dd215db398e611e105a77be05888a540101d8a3426cd1"
+      "bytes": 7118,
+      "sha256": "a7694524b6c248a31da3af6e658f39b89b6b8041b46e0de0f4e89b59c432345e"
     },
     {
       "path": "work/find-browser.mjs",
@@ -475,8 +565,8 @@
     },
     {
       "path": "work/health-alert.test.mjs",
-      "bytes": 22617,
-      "sha256": "501184b4fe609413972dd47eca0cb5a5976ec66fe7d67c1b83cb96df8889bf37"
+      "bytes": 25877,
+      "sha256": "71bc561d645be63288edd90266386b8b8acf06015434bbb913ee938482861475"
     },
     {
       "path": "work/home-city.test.mjs",
@@ -495,8 +585,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 106389,
-      "sha256": "33503b2c38779c45fdef621672e47c346f09fa55ab89ac192164d74aa5ce9fbf"
+      "bytes": 108885,
+      "sha256": "afbe97c4d6c78dba261bf6eeaddedf222255447bd97b95b3442818996c67b816"
     },
     {
       "path": "work/i18n-weather.json",
@@ -655,13 +745,13 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.css",
-      "bytes": 12574,
-      "sha256": "f0c5477c9f5ed85b36a21141e7025db8bd55f494a3ed173e9d2ad9dc8bbb902a"
+      "bytes": 12591,
+      "sha256": "ddca5f7de283e43638b1ae8668650df945c5e55eeb2070fbf9d0944254e92147"
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.js",
-      "bytes": 27494,
-      "sha256": "7d89a9e17851246248d6d58c70577da975ca23155f065b29d4b88f29cdc9c78e"
+      "bytes": 28745,
+      "sha256": "19c5402f062dcdfcbfb7bab9bcf865e025c4943d41e3671de89aa0fede0d5fa9"
     },
     {
       "path": "work/somalia-flood-watch/dist/app.js",
@@ -710,8 +800,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/el-nino-watch-sources.pdf",
-      "bytes": 132544,
-      "sha256": "338fd1b46a2b0da6a6b6f3e8e074392b31e6fe0f36e959ebf6c3d6a09d9a5b9c"
+      "bytes": 143122,
+      "sha256": "347e15bd95e6287ee891810a4d829704150edcab9ed22425c349502c93d8437f"
     },
     {
       "path": "work/somalia-flood-watch/dist/enhancements.css",
@@ -767,6 +857,26 @@
       "path": "work/somalia-flood-watch/dist/film/cholera-prevention.vtt",
       "bytes": 3376,
       "sha256": "77ba7cb658bfee3ea55f84c1648f9455e4bbee07351184b2b7386420d9569577"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/waterborne-diseases.jpg",
+      "bytes": 51208,
+      "sha256": "e8e3f40f2e7621885414563f31867b537eb9e65fa3dc5159818c04cdf3e0e90d"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/waterborne-diseases.mp4",
+      "bytes": 5293286,
+      "sha256": "468a136b9ca97532f6e857311a8be1f3e5d8c000772df01ff082029f363bf3da"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/waterborne-diseases.so.vtt",
+      "bytes": 4583,
+      "sha256": "c47dd3a11be8940965db0e41d8f5084ddfd793e49941edd9719cbd18be9a8a97"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/waterborne-diseases.vtt",
+      "bytes": 3978,
+      "sha256": "9f5e3f0f7088141a4cc87fa6598d7412aba0bf3b07db2c3d88bb21340546341c"
     },
     {
       "path": "work/somalia-flood-watch/dist/flood-outlook.css",
@@ -830,8 +940,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 43446,
-      "sha256": "fa695ad29306b6108ec9938eb5fc4adc1d42ac1d5e87aee293c3bbef289b0c7a"
+      "bytes": 44030,
+      "sha256": "3cca72693a0af5939f8bbf21133211f85ab993b5f8166ed2691556dea4e6b426"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
@@ -905,8 +1015,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/sources.html",
-      "bytes": 29794,
-      "sha256": "a37211ac917a3623f872ee8b3b5e0abf2e4b9e69ed7c8a339b48577ee70fd3ba"
+      "bytes": 33224,
+      "sha256": "c1024cfd52a53fe2839363ca0c4a2a62c870a1f15c9c2b8a776c14889f0a82ce"
     },
     {
       "path": "work/somalia-flood-watch/dist/stats.html",
@@ -945,8 +1055,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 223676,
-      "sha256": "9b5e55d653c8cff52749616e4ae1c41d8f6fbec2a11413e574e8f373324c7d64"
+      "bytes": 226112,
+      "sha256": "cf8451cec782b3a1e16f9715b27f1b6c3ea72e5558ae353049a02aa2276509f8"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",
@@ -1095,8 +1205,8 @@
     },
     {
       "path": "work/sources-page.test.mjs",
-      "bytes": 7611,
-      "sha256": "3cb340cbfa584cc02f65bce976d93df924a8be071ac43a8bafbf6a3fe93aa593"
+      "bytes": 8265,
+      "sha256": "d4314760678fe4368368d7179d8f02042586c339dc1b6e7a0352ba7bfd17bb6e"
     },
     {
       "path": "work/swalim-stations.html",

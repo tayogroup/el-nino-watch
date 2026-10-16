@@ -99,7 +99,12 @@ test('the sources page lists the cholera film and the same WHO documents as the 
   assert.ok(start > 0 && start < page.indexOf('id="privacy-notice"'), 'before the privacy notice');
   assert.ok(section.includes('<a data-i18n-skip href="/#health-film" data-keep-language>elninowatch.so/#health-film</a>'), 'the film, opened in the reader\'s language');
   const linksOf = html => [...html.matchAll(/href="(https:\/\/[^"]+)"/g)].map(match => match[1]).sort();
+  assert.ok(section.includes('<a data-i18n-skip href="/#waterborne-film" data-keep-language>elninowatch.so/#waterborne-film</a>'), 'and the waterborne-diseases film');
   const alertStart = index.indexOf('<section class="health-alert"'), alert = index.slice(alertStart, index.indexOf('</section>', alertStart));
-  assert.deepEqual(linksOf(section), linksOf(alert), 'the same six WHO documents');
-  assert.equal(linksOf(section).length, 6);
+  // The health alert's six WHO documents, and the four more fact sheets the waterborne-diseases film is based on.
+  const film = JSON.parse(await readFile(new URL('./film/waterborne-diseases.json', import.meta.url), 'utf8'));
+  const filmWho = film.sources.map(source => (source.match(/https:\/\/www\.who\.int\/\S+/) || [])[0]).filter(Boolean);
+  assert.deepEqual(linksOf(section), [...new Set([...linksOf(alert), ...filmWho])].sort(), 'every WHO document behind the alert and the films, once');
+  assert.equal(linksOf(section).length, 10);
+  assert.ok(section.includes('<span class="count">10 sources</span>'));
 });
