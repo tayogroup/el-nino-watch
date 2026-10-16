@@ -122,7 +122,7 @@ test('mayor workspace uses focused tools, a touch-sized return control and acces
   assert.match(css,/#mayor-panel\[hidden\],#manager-tool-bar\[hidden\]\{display:none!important\}/);
   assert.match(css,/\.workspace\.mayor-active-tool\{grid-template-columns:minmax\(0,1fr\)/);
   assert.match(css,/\.workspace\.mayor-active-tool > \.detail,\.workspace\.mayor-active-tool > \.planning-panel\{display:none\}/);
-  assert.match(css,/\.mobile-bottom-nav\{grid-template-columns:repeat\(5,minmax\(0,1fr\)\)/);
+  assert.match(css,/\.mobile-bottom-nav\{grid-template-columns:repeat\(6,minmax\(0,1fr\)\)/);
   assert.match(css,/\.mobile-bottom-nav>a:last-child:not\(\[aria-current=page\]\)\{color:var\(--neutral-600\);background:transparent\}/);
   assert.match(css,/\.mobile-bottom-nav>a\[aria-current=page\]\{color:var\(--blue-600\);background:var\(--blue-50\)\}/);
   assert.match(css,/#mayor-home-button:focus-visible\{outline:3px solid/);

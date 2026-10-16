@@ -168,7 +168,8 @@ Only MOEWR messages say "official". Somali alerts depend on Meta accepting a
 Somali template (`WHATSAPP_TEMPLATE_SO_LANGUAGE`); until then English.
 
 **Diseases tab** (owner, 2026-10-16): its own tab in the side menu, after Alerts
-(`#diseases-panel`, tab key `diseases`), holding the public health alert and then
+(`#diseases-panel`, tab key `diseases`; also on the phone bottom bar, whose map
+label is the short "Map", Somali "Khariidad", so six items fit 320px), holding the public health alert and then
 "Trainings" (`#trainings`, the health films; the cholera film is the first). The
 Alerts tab keeps only a pointer to it (`.health-callout`, hidden on the overview,
 which shows the alert list). The city manager view has no Diseases tool: a link

@@ -42,7 +42,15 @@
     window.history.replaceState(null, '', next ? '#' + next : location.pathname + location.search);
   }
   // Keep the nav links app.js wires (top and bottom bars) in step with the tab.
+  // A tab with no manager tool (Diseases) has its own phone bottom-bar link, marked here alone: app.js
+  // knows only the tool links. The in-page click handler below opens it, in either view.
+  function markTabLinks() {
+    doc.querySelectorAll('[data-site-tab-target]').forEach(link => {
+      if (!mayor() && link.dataset.siteTabTarget === current) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+    });
+  }
   function markLinks() {
+    markTabLinks();
     if (mayor()) return;
     doc.querySelectorAll('[data-manager-tool], [data-dashboard-view]').forEach(link => {
       const active = link.dataset.dashboardView ? link.dataset.dashboardView === 'public' && current === 'overview' : link.dataset.managerTool === current;
@@ -197,13 +205,14 @@
   countAlerts(); countReports();
 
   // Leaving the mayor view returns to whichever tab was open.
-  if (window.MutationObserver) new MutationObserver(() => { if (!mayor()) { apply(false); markLinks(); } }).observe(body, {attributes: true, attributeFilter: ['class']});
+  if (window.MutationObserver) new MutationObserver(() => { if (!mayor()) { apply(false); markLinks(); } else markTabLinks(); }).observe(body, {attributes: true, attributeFilter: ['class']});
 
   placeBar();
   window.addEventListener('resize', placeBar);
   current = fromHash();
   body.classList.add('site-tabs-ready');
   apply(false);
+  markTabLinks();
 
   // A shared link to a section (#health-film, from the film's Share row) opens its tab and brings the
   // section into view. Content above it (the alert list) arrives seconds later and pushes it down, so it is

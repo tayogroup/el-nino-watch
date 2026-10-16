@@ -35,6 +35,19 @@ test('the public health alert and the trainings have their own Diseases tab, aft
   assert.match(shell, /#alerts-panel>:is\([^)]*\.health-callout[^)]*\)\{display:none\}/, 'the overview, which shows the alert list, leaves the pointer out');
 });
 
+test('the phone bottom bar has Diseases too, after Alerts, in six columns that fit 320px in Somali', async () => {
+  const bar = index.slice(index.indexOf('<nav class="mobile-bottom-nav"'), index.indexOf('</nav>', index.indexOf('<nav class="mobile-bottom-nav"')));
+  const labels = [...bar.matchAll(/<span>([^<]+)<\/span><\/a>/g)].map(match => match[1]);
+  assert.deepEqual(labels, ['30 cities', 'Weather', 'Map', 'Alerts', 'Diseases', 'Report']);
+  assert.ok(bar.includes('<a href="#diseases-panel" data-site-tab-target="diseases">'), 'an in-page link tabs.js opens, in either view');
+  const tabs = readFileSync(new URL('tabs.js', dist), 'utf8');
+  assert.match(tabs, /querySelectorAll\('\[data-site-tab-target\]'\)/, 'tabs.js marks it as the current page');
+  assert.match(readFileSync(new URL('mayor.css', dist), 'utf8'), /\.mobile-bottom-nav\{grid-template-columns:repeat\(6,minmax\(0,1fr\)\)/);
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  // "Khariidadda fatahaadda" does not fit a sixth of 320px; "Khariidad" does (measured 47px in a 53px cell).
+  assert.equal(catalog.messages.Map, 'Khariidad');
+});
+
 test('the Diseases tab reads in Somali', async () => {
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages.Diseases, 'Cudurrada');
