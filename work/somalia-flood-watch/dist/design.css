@@ -88,3 +88,11 @@ a.news-flash-link:hover{text-decoration:underline}
 .hero-kicker,.eyebrow:has(+h2),#hourly-chart .eyebrow,.eyebrow:has(+#terrain-heading),.community-compose-heading>.eyebrow,.eyebrow:has(+#community-feed-title){position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;border:0!important}
 /* The tagline under the logo leaves the header on phones, where it would wrap to two lines. */
 @media(max-width:480px){.brand-subtitle{display:none}}
+/* Layout: a compact hero. Same words and links, about half the height. */
+.intro{min-height:0;padding:var(--space-6);gap:var(--space-6);align-items:center}
+.intro h1{font-size:clamp(2rem,1.4rem + 1.4vw,2.75rem);line-height:var(--leading-tight);letter-spacing:-.02em;margin:0 0 var(--space-3)}
+.intro>div>p{margin:0;max-width:56ch}
+.intro .hero-actions{margin-top:var(--space-5)}
+.intro .hero-specs{margin-top:var(--space-4)}
+.enso-card{padding:var(--space-5)}
+@media(max-width:600px){.intro{padding:var(--space-5)}.intro h1{font-size:var(--text-2xl)}}

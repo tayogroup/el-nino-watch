@@ -485,8 +485,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/design.css",
-      "bytes": 51477,
-      "sha256": "6efdbc7ebf0643e4b7dc5399655ef27ddd88201f457e6e5133b8c88b2b1b0c37"
+      "bytes": 52030,
+      "sha256": "275e3b91253b36276bf178bc35650000c77d041c03ccea2704639ba089151faf"
     },
     {
       "path": "work/somalia-flood-watch/dist/el-nino-watch-sources.pdf",
@@ -540,8 +540,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/i18n.css",
-      "bytes": 3437,
-      "sha256": "920282774942403b09547439e4c05f1a813775ea45c827f2a47592195eca50bd"
+      "bytes": 3365,
+      "sha256": "0446c60c5e2c242b9678c02f049880ad59736e3f7281f053b72d5098cc4194d1"
     },
     {
       "path": "work/somalia-flood-watch/dist/i18n.js",
@@ -575,8 +575,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/mayor.css",
-      "bytes": 31025,
-      "sha256": "36ca26966de48632f7f25ab61bdd4b6ed865316e3f8d835e0f543a0d9bc58c2f"
+      "bytes": 31461,
+      "sha256": "a960e7d5e40a5bba59901e4b56990816c6aee509737fa62b1d9238172de488e9"
     },
     {
       "path": "work/somalia-flood-watch/dist/mayor.js",
@@ -635,13 +635,13 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/style.css",
-      "bytes": 24989,
-      "sha256": "a3c67542929cd4b06e74c8f4ec9b30406f24cb8d1773c5243a9e064aa9f38fff"
+      "bytes": 25113,
+      "sha256": "b7a2ba4fdeb1697ae8f03a001ec5b12ab9ff391e6f80893b4b5b4a61c38996f0"
     },
     {
       "path": "work/somalia-flood-watch/dist/tabs.css",
-      "bytes": 7520,
-      "sha256": "2076d71b38d735690520b70179d8fce9f7e83f1b7252fbfd386b06002fedf2d4"
+      "bytes": 8003,
+      "sha256": "04816154361bf7196dfb218ed16a2541a05fef83eebc3c6c385de075328bc803"
     },
     {
       "path": "work/somalia-flood-watch/dist/tabs.js",
@@ -720,8 +720,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/watchlist.css",
-      "bytes": 5136,
-      "sha256": "471b52676913b7523a3deac9f475bb6eae1b9f1674955fc409cb3caed06805d7"
+      "bytes": 5297,
+      "sha256": "7baa57f6847f68ec60957f88268ae0024f3102f8c1759f5846b5bba83ac69e66"
     },
     {
       "path": "work/somalia-flood-watch/docker-entrypoint.mjs",

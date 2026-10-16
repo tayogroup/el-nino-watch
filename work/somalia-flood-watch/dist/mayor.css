@@ -23,3 +23,8 @@ body.mayor-view main > :not(.mayor-shell):not(.mayor-active-tool){display:none}
 
 /* Review-stage filter in the community report triage card. */
 .mayor-review-filter{display:grid;gap:6px;margin:0 0 12px;font-size:var(--text-xs);font-weight:700;color:var(--muted,var(--neutral-600));max-width:320px}.mayor-review-filter select{width:100%;min-height:40px;font-size:var(--text-sm)}
+/* Layout: a focused tool opens directly under its title bar. The city rankings, which belong to
+   the dashboard, follow the tool instead of sitting above it. Older browsers without :has() keep the old order. */
+body.mayor-view main:has(.mayor-active-tool){display:flex;flex-direction:column}
+body.mayor-view main:has(.mayor-active-tool)>#city-rankings-panel{order:1}
+body.mayor-view main:has(.mayor-active-tool)>.site-footer{order:2}

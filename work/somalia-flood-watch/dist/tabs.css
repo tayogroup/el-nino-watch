@@ -68,3 +68,9 @@ body.site-tabs-ready:not(.mayor-view) #alerts-list:focus-visible{outline:3px sol
 /* Narrow phones: the city bar fits the screen. The "Set as my city" label may wrap to two short lines
    (Somali "Ka dhig magaaladayda" is long), and the city box keeps room for the longest city name, "Buur Hakaba" (8.5em), while the button gives way. */
 @media (max-width:420px){.site-city{min-width:0;max-width:100%;gap:6px;padding-left:8px}.site-city select{min-width:8.5em;padding-left:4px;padding-right:4px}.home-city-button{flex:0 1 auto;min-width:0;white-space:normal;line-height:var(--leading-tight);text-align:center;padding:5px 9px;font-size:var(--text-sm)}}
+/* Layout: a tab opens on its own content. The hero belongs to the 30 cities overview;
+   on Weather, Flood map, Alerts, Reports and Sources the tool comes straight after the tab bar. */
+body[data-site-tab]:not([data-site-tab=overview]):not(.mayor-view) main>.intro{display:none}
+/* On phones the bottom navigation is always in reach, so the city and tab bar scrolls with the page
+   instead of staying pinned under the header. */
+@media(max-width:600px){#site-bar{position:static}}
