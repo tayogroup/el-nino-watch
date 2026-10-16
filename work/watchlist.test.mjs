@@ -65,5 +65,9 @@ assert.match(h.get('rows').innerHTML, /<td><button data-city="\d+"[^>]*>[^<]+<\/
   assert.ok(css.indexOf('one line per city') > css.indexOf('@media(max-width:600px){.site-disclaimer'), 'after the phone rules it overrides');
   for (const rule of ['.watchlist-group td:first-child{white-space:nowrap', '.watchlist-group td:first-child small{display:inline', '.watchlist-group td:first-child small::before{content:", "}', '.watchlist-group td{padding-top:5px;padding-bottom:5px}'])
     assert.ok(block.includes(rule), rule);
+  // The evidence column's Somali fits one line on a phone (owner, 2026-10-16): the cell has 175px at 375px wide; this is 151px.
+  // "Xogta waxyeellada magaalada lama hayo" (257px) took two lines.
+  const catalog = JSON.parse(readFileSync(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['City impacts unavailable'], 'Xog saameyn lama hayo');
 }
 console.log('PASS watchlist: two groups of 15, searching/selection, daily threshold boundaries, missing/stale data, and 420-row export.');
