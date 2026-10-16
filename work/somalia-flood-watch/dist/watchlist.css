@@ -31,6 +31,18 @@
 .watchlist-group tbody tr.selected-city button{color:var(--blue-800)}
 @media(max-width:960px){.watchlist-grid{grid-template-columns:1fr;gap:17px}.watchlist-group th{font-size:var(--text-xs)}.watchlist-group td,.watchlist-group td:first-child button{font-size:var(--text-sm)}.watchlist-group td:first-child button{min-height:40px}.watchlist-group .badge{font-size:var(--text-xs)}}
 @media(max-width:600px){.site-disclaimer{padding:14px 13px;gap:10px;margin-bottom:18px;border-radius:var(--radius-md)}.site-disclaimer>svg{width:20px;height:20px}.site-disclaimer b{font-size:var(--text-sm)}.site-disclaimer p{font-size:var(--text-xs);line-height:var(--leading-body)}.watchlist-grid{margin-top:17px}.watchlist-group table{min-width:490px}.watchlist-group th,.watchlist-group td{padding:10px 8px}.watchlist-group td:first-child button{min-height:44px}.footer-brand .footer-emergency{font-size:var(--text-xs)}}
+/* Owner, 2026-10-16: one line per city ("Mogadishu, Banaadir") and tighter rows, so the 30 cities take less scrolling. The city
+   link keeps a 30px target (32px on phones), above the 24px minimum; figures never break; the region is cut with an ellipsis only
+   if a name outgrows its column, which none of the 30 do at any width (measured in English and Somali). */
+.watchlist-group td{padding-top:5px;padding-bottom:5px}
+.watchlist-group td:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.watchlist-group td:first-child button{display:inline-flex;align-items:center;vertical-align:middle;min-height:30px;white-space:nowrap}
+.watchlist-group td:first-child small{display:inline;vertical-align:middle;margin:0;color:var(--neutral-600)}
+.watchlist-group td:first-child small::before{content:", "}
+.watchlist-group td:nth-child(2),.watchlist-group td:nth-child(3){white-space:nowrap}
+.watchlist-group th:nth-child(1){width:28%}.watchlist-group th:nth-child(2),.watchlist-group th:nth-child(3){width:11%}.watchlist-group th:nth-child(4){width:18%}.watchlist-group th:nth-child(5){width:32%}
+@media(max-width:960px){.watchlist-group table{min-width:660px}.watchlist-group th:nth-child(1){width:30%}.watchlist-group th:nth-child(2),.watchlist-group th:nth-child(3){width:12%}.watchlist-group th:nth-child(4){width:17%}.watchlist-group th:nth-child(5){width:29%}}
+@media(max-width:600px){.watchlist-group td:first-child button{min-height:32px}}
 @media print{.site-disclaimer{break-inside:avoid;background:white;box-shadow:none}.watchlist-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.watchlist-group{overflow:visible;break-inside:avoid}.watchlist-group table{min-width:0}.watchlist-group th,.watchlist-group td{font-size:var(--text-xs);padding:7px 6px}.watchlist-group td:first-child button{font-size:var(--text-xs);min-height:0}.watchlist-group .badge{font-size:var(--text-xs)}}
 /* Layout: the two groups of 15 cities stack, so each table has the full width and no column is cut off. */
 .watchlist-grid{grid-template-columns:minmax(0,1fr)}

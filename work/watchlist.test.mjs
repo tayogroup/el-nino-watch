@@ -55,4 +55,15 @@ assert.equal(unavailable.get('elevated').textContent, '—');
 assert.equal(unavailable.get('coverage').textContent, '≥10 mm/day · 0/30 complete forecasts');
 assert.match(unavailable.get('rows').innerHTML, /Unavailable/);
 assert.match(unavailable.get('rows-secondary').innerHTML, /Unavailable/);
+// One line per city, "Mogadishu, Banaadir", and tighter rows (owner, 2026-10-16). The rows keep the button + small markup;
+// the stylesheet puts them on one line, after the earlier block rules, and print keeps its own.
+assert.match(h.get('rows').innerHTML, /<td><button data-city="\d+"[^>]*>[^<]+<\/button><small>[^<]+<\/small><\/td>/);
+{
+  const { readFileSync } = await import('node:fs');
+  const css = readFileSync(new URL('./somalia-flood-watch/dist/watchlist.css', import.meta.url), 'utf8');
+  const block = css.slice(css.indexOf('one line per city'), css.indexOf('@media print{.site-disclaimer'));
+  assert.ok(css.indexOf('one line per city') > css.indexOf('@media(max-width:600px){.site-disclaimer'), 'after the phone rules it overrides');
+  for (const rule of ['.watchlist-group td:first-child{white-space:nowrap', '.watchlist-group td:first-child small{display:inline', '.watchlist-group td:first-child small::before{content:", "}', '.watchlist-group td{padding-top:5px;padding-bottom:5px}'])
+    assert.ok(block.includes(rule), rule);
+}
 console.log('PASS watchlist: two groups of 15, searching/selection, daily threshold boundaries, missing/stale data, and 420-row export.');
