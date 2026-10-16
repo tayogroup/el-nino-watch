@@ -56,7 +56,7 @@ test('every visit is counted, with its tab, city, language, device and country',
 });
 
 test('nothing is published until the site has had the threshold of visits', async () => {
-  assert.equal(PUBLISH_AFTER, 3000);
+  assert.equal(PUBLISH_AFTER, 1000, 'the owner lowered it from 3,000 on 2026-10-16');
   const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-visits-'));
   try {
     const visits = createVisits({dataDir, cities, log: quiet, publishAfter: 3});

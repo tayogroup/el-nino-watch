@@ -18,7 +18,7 @@ export const VISIT_TABS = ['overview', 'weather', 'map', 'alerts', 'community', 
 const BOT = /bot|crawl|spider|slurp|curl|wget|python|httpclient|headless|lighthouse|monitor|preview|facebookexternalhit|bunny/i;
 const KEEP_DAYS = 400;
 const MAX_EVENTS_PER_VISITOR_DAY = 200;
-export const PUBLISH_AFTER = 3000;
+export const PUBLISH_AFTER = 1000; // owner, 2026-10-16 (was 3,000)
 const MAX_KEY_FAILURES_PER_DAY = 20;
 // The audience is in East Africa, so a "day" is an East Africa Time day.
 const eatDay = ms => new Date(ms + 3 * 3600 * 1000).toISOString().slice(0, 10);

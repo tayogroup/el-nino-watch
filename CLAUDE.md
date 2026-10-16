@@ -176,8 +176,8 @@ applies to touch the range). Browser notifications follow the selected filters.
   Media. The bar never claims official status.
 
 **Visits and stats**: every page load is counted (not unique visitors),
-cookieless. The public `/stats` page stays hidden until 3,000 visits; the owner
-sees it earlier with the private `STATS_KEY`.
+cookieless. The public `/stats` page stays hidden until 1,000 visits (lowered
+from 3,000 on 2026-10-16); the owner sees it earlier with the private `STATS_KEY`.
 
 **Open items**: ReliefWeb appname (owner to request); Google Flood Forecasting
 API access (owner to request, then set the key); Somali review; optionally
@@ -205,7 +205,7 @@ Open-Meteo URLs, so a new forecast field must also be allowed in the relay —
 `forecast-relay.test.mjs` reads `app.js` and fails if they drift.
 
 Visits: `visits.mjs` counts page loads (not people), cookieless; public at
-`/stats` only after 3,000 visits (`PUBLISH_AFTER`).
+`/stats` only after 1,000 visits (`PUBLISH_AFTER`).
 
 Report backups: `backup.mjs` snapshots the volume to a private Bunny Storage
 zone every 6 hours and soon after any report change, keeping 14 days, and
