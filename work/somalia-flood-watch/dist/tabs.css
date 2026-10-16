@@ -4,26 +4,26 @@
    layout; in mayor view the bar is hidden. */
 
 /* One sticky card: the city on screen (and "My city") beside the section tabs. */
-.site-bar{position:sticky;top:var(--site-tabs-top,87px);z-index:1050;display:flex;align-items:center;gap:10px;margin:0 0 22px;padding:8px;border:1px solid var(--line,#dce6f0);border-radius:18px;background:rgba(255,255,255,.94);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);box-shadow:0 10px 30px rgba(11,44,76,.08)}
-.site-city{display:flex;align-items:center;gap:8px;flex:none;padding:4px 4px 4px 12px;border:1px solid #cfe0f1;border-radius:13px;background:linear-gradient(180deg,#f4f9ff,#e9f2fc)}
+.site-bar{position:sticky;top:var(--site-tabs-top,87px);z-index:1050;display:flex;align-items:center;gap:10px;margin:0 0 22px;padding:8px;border:1px solid var(--line,var(--neutral-150));border-radius:var(--radius-lg);background:rgba(255,255,255,.94);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);box-shadow:0 10px 30px rgba(11,44,76,.08)}
+.site-city{display:flex;align-items:center;gap:8px;flex:none;padding:4px 4px 4px 12px;border:1px solid var(--neutral-150);border-radius:var(--radius-lg);background:var(--color-surface-sunken)}
 .site-city[hidden]{display:none}
-.site-city > svg{width:20px;height:20px;flex:none;color:#1473cf}
-.site-city select{font:inherit;font-size:16px;font-weight:800;color:var(--navy,#082448);min-height:40px;max-width:15em;padding:6px 8px;border:0;border-radius:9px;background:transparent;cursor:pointer}
-.site-city select:hover{background:#fff}
-.site-city select:focus-visible{outline:3px solid #64ddf4;outline-offset:1px}
+.site-city > svg{width:20px;height:20px;flex:none;color:var(--blue-600)}
+.site-city select{font:inherit;font-size:var(--text-md);font-weight:700;color:var(--navy,var(--neutral-900));min-height:40px;max-width:15em;padding:6px 8px;border:0;border-radius:var(--radius-md);background:transparent;cursor:pointer}
+.site-city select:hover{background:var(--neutral-0)}
+.site-city select:focus-visible{outline:3px solid var(--cyan-300);outline-offset:1px}
 .site-tabs{flex:1;min-width:0}
 .site-tabs-inner{position:relative;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
 .site-tabs-inner::-webkit-scrollbar{display:none}
-.site-tab{position:relative;flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:10px 16px;border-radius:12px;color:var(--muted,#586f89);font-weight:650;font-size:14px;white-space:nowrap;text-decoration:none;scroll-snap-align:start;transition:background .18s ease,color .18s ease,box-shadow .18s ease}
+.site-tab{position:relative;flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:10px 16px;border-radius:var(--radius-lg);color:var(--muted,var(--neutral-600));font-weight:600;font-size:var(--text-md);white-space:nowrap;text-decoration:none;scroll-snap-align:start;transition:background .18s ease,color .18s ease,box-shadow .18s ease}
 .site-tab svg{width:20px;height:20px;flex:none;opacity:.85}
-.site-tab:hover{background:#eef4fb;color:var(--navy,#082448);text-decoration:none}
-.site-tab:focus-visible{outline:3px solid #64ddf4;outline-offset:2px}
-.site-tab[aria-selected="true"]{background:var(--navy,#082448);color:#fff;box-shadow:0 6px 16px rgba(8,36,72,.22)}
+.site-tab:hover{background:var(--neutral-50);color:var(--navy,var(--neutral-900));text-decoration:none}
+.site-tab:focus-visible{outline:3px solid var(--cyan-300);outline-offset:2px}
+.site-tab[aria-selected="true"]{background:var(--navy,var(--neutral-900));color:var(--neutral-0);box-shadow:0 6px 16px rgba(8,36,72,.22)}
 .site-tab[aria-selected="true"] svg{opacity:1}
-.site-tab[aria-selected="true"]::after{content:"";position:absolute;left:18px;right:18px;bottom:5px;height:3px;border-radius:3px;background:#64ddf4}
-.site-tab-badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:#e5effa;color:var(--navy,#082448);font-size:12px;font-weight:750;font-variant-numeric:tabular-nums}
-.site-tab[data-site-tab-link="alerts"] .site-tab-badge{background:#fde8e4;color:#a1301c}
-.site-tab[aria-selected="true"] .site-tab-badge{background:rgba(255,255,255,.18);color:#fff}
+.site-tab[aria-selected="true"]::after{content:"";position:absolute;left:18px;right:18px;bottom:5px;height:3px;border-radius:var(--radius-xs);background:var(--cyan-300)}
+.site-tab-badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 7px;border-radius:var(--radius-pill);background:var(--neutral-100);color:var(--navy,var(--neutral-900));font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums}
+.site-tab[data-site-tab-link="alerts"] .site-tab-badge{background:var(--red-100);color:var(--red-600)}
+.site-tab[aria-selected="true"] .site-tab-badge{background:rgba(255,255,255,.18);color:var(--neutral-0)}
 .site-tab-badge[hidden]{display:none}
 
 /* Without JavaScript nothing is hidden and the tabs work as jump links. */
@@ -35,36 +35,36 @@ body.mayor-view .site-bar{display:none}
 body.site-tabs-ready:not(.mayor-view) #primary-nav [data-manager-tool]{display:none}
 
 /* "My city" (home-city.js), inside the city control. */
-.home-city-button{font:inherit;font-size:13px;font-weight:750;min-height:38px;border:1px solid #d6e2ee;border-radius:10px;padding:7px 12px;color:#38597a;background:#fff;cursor:pointer;white-space:nowrap;transition:background .15s ease,border-color .15s ease}
-.home-city-button:hover{background:#f3f8fd;border-color:#abc8ee}
-.home-city-button:focus-visible{outline:3px solid #2681d5;outline-offset:2px}
-.home-city-button.is-home{color:#7a4b00;background:#fff6e0;border-color:#f1c76b}
-.home-city-button.is-home:hover{background:#ffefc7}
+.home-city-button{font:inherit;font-size:var(--text-sm);font-weight:700;min-height:38px;border:1px solid var(--neutral-150);border-radius:var(--radius-md);padding:7px 12px;color:var(--neutral-600);background:var(--neutral-0);cursor:pointer;white-space:nowrap;transition:background .15s ease,border-color .15s ease}
+.home-city-button:hover{background:var(--neutral-25);border-color:var(--blue-200)}
+.home-city-button:focus-visible{outline:3px solid var(--blue-500);outline-offset:2px}
+.home-city-button.is-home{color:var(--amber-700);background:var(--amber-50);border-color:var(--amber-200)}
+.home-city-button.is-home:hover{background:var(--amber-100)}
 .home-city-button[hidden]{display:none}
 
 /* ICPAC forecast layers on the flood map (icpac-map.js). */
-.icpac-legend{margin:10px 0 0;padding:12px 14px;border:1px solid var(--line,#dce6f0);border-radius:12px;background:#fff;font-size:13px}
+.icpac-legend{margin:10px 0 0;padding:12px 14px;border:1px solid var(--line,var(--neutral-150));border-radius:var(--radius-lg);background:var(--neutral-0);font-size:var(--text-sm)}
 .icpac-legend[hidden]{display:none}
 .icpac-head{margin:0 0 8px}
 .icpac-group{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin:6px 0}
-.icpac-title{flex-basis:100%;font-weight:700;color:var(--muted,#586f89);font-size:12px}
+.icpac-title{flex-basis:100%;font-weight:700;color:var(--muted,var(--neutral-600));font-size:var(--text-sm)}
 .icpac-key{display:inline-flex;align-items:center;gap:6px}
-.icpac-key i{display:inline-block;width:16px;height:12px;border-radius:3px;border:1px solid rgba(0,0,0,.15)}
+.icpac-key i{display:inline-block;width:16px;height:12px;border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,.15)}
 .icpac-legend .note{margin:6px 0 0}
 
 .site-tab-enter{animation:site-tab-in .22s ease-out}
 @keyframes site-tab-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* A tab is one subject, so the long alert list scrolls inside its card. */
-body.site-tabs-ready:not(.mayor-view) #alerts-list{max-height:min(74vh,940px);overflow:auto;overscroll-behavior:contain;padding:2px 6px 2px 2px;scrollbar-width:thin;scrollbar-color:#b9cde0 transparent;mask-image:linear-gradient(to bottom,#000 calc(100% - 36px),transparent);-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 36px),transparent)}
-body.site-tabs-ready:not(.mayor-view) #scenes{max-height:min(68vh,640px);overflow:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-width:thin;scrollbar-color:#b9cde0 transparent}
-body.site-tabs-ready:not(.mayor-view) #alerts-list:focus-visible{outline:3px solid #64ddf4;outline-offset:4px;border-radius:12px}
+body.site-tabs-ready:not(.mayor-view) #alerts-list{max-height:min(74vh,940px);overflow:auto;overscroll-behavior:contain;padding:2px 6px 2px 2px;scrollbar-width:thin;scrollbar-color:var(--neutral-200) transparent;mask-image:linear-gradient(to bottom,var(--neutral-950) calc(100% - 36px),transparent);-webkit-mask-image:linear-gradient(to bottom,var(--neutral-950) calc(100% - 36px),transparent)}
+body.site-tabs-ready:not(.mayor-view) #scenes{max-height:min(68vh,640px);overflow:auto;overscroll-behavior:contain;padding-right:6px;scrollbar-width:thin;scrollbar-color:var(--neutral-200) transparent}
+body.site-tabs-ready:not(.mayor-view) #alerts-list:focus-visible{outline:3px solid var(--cyan-300);outline-offset:4px;border-radius:var(--radius-lg)}
 
 /* Below this width the city control takes its own row above the tabs. */
 @media (max-width:1180px){.site-bar{flex-wrap:wrap}.site-city{flex:1 1 100%}.site-city select{flex:1;max-width:none}.site-tabs{flex:1 1 100%}.site-tab{padding:10px 14px}}
-@media (max-width:760px){.site-bar{margin:0 -4px 16px;border-radius:14px;padding:6px;gap:6px}.site-city{padding-left:10px}.site-city select{font-size:15px;min-height:38px}.site-tab{flex:0 0 auto;min-height:44px;padding:9px 13px;font-size:13px;gap:7px}.site-tab svg{width:18px;height:18px}}
+@media (max-width:760px){.site-bar{margin:0 -4px 16px;border-radius:var(--radius-lg);padding:6px;gap:6px}.site-city{padding-left:10px}.site-city select{font-size:var(--text-md);min-height:38px}.site-tab{flex:0 0 auto;min-height:44px;padding:9px 13px;font-size:var(--text-sm);gap:7px}.site-tab svg{width:18px;height:18px}}
 @media (prefers-reduced-motion:reduce){.site-tab-enter{animation:none}.site-tab{transition:none}}
 @media print{.site-bar{display:none}body.site-tabs-ready:not(.mayor-view) main > .site-tab-hidden,body.site-tabs-ready:not(.mayor-view) main [data-site-tab-part].site-tab-part-hidden{display:revert}}
 /* Narrow phones: the city bar fits the screen. The "Set as my city" label may wrap to two short lines
    (Somali "Ka dhig magaaladayda" is long), and the city box keeps room for the longest city name, "Buur Hakaba" (8.5em), while the button gives way. */
-@media (max-width:420px){.site-city{min-width:0;max-width:100%;gap:6px;padding-left:8px}.site-city select{min-width:8.5em;padding-left:4px;padding-right:4px}.home-city-button{flex:0 1 auto;min-width:0;white-space:normal;line-height:1.15;text-align:center;padding:5px 9px;font-size:12px}}
+@media (max-width:420px){.site-city{min-width:0;max-width:100%;gap:6px;padding-left:8px}.site-city select{min-width:8.5em;padding-left:4px;padding-right:4px}.home-city-button{flex:0 1 auto;min-width:0;white-space:normal;line-height:var(--leading-tight);text-align:center;padding:5px 9px;font-size:var(--text-sm)}}

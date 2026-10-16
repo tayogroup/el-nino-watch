@@ -1,0 +1,57 @@
+/* El Nino Watch design tokens: colour, type, space, shape and motion.
+   Loaded before every other stylesheet. Primitives were designed in OKLCH and are
+   written as hex so older phone browsers render them. Use the semantic names in
+   new rules; the primitives exist so older rules share one palette. */
+:root{
+  /* neutral: oklch hue 255 */
+  --neutral-0:#ffffff;--neutral-25:#f8fafd;--neutral-50:#f0f5fa;--neutral-100:#e6edf5;--neutral-150:#dce4ee;--neutral-200:#cdd7e4;--neutral-300:#afbccd;--neutral-400:#8a9aaf;--neutral-500:#677b94;--neutral-600:#4c627e;--neutral-700:#344c69;--neutral-800:#1d3656;--neutral-900:#072548;--neutral-950:#021936;
+  /* blue: oklch hue 256 */
+  --blue-50:#eef7ff;--blue-100:#d9ebff;--blue-200:#b5d5ff;--blue-300:#84b5f8;--blue-400:#5195ee;--blue-500:#2371d1;--blue-600:#0e5bb2;--blue-700:#0c488f;--blue-800:#09376d;
+  /* cyan: oklch hue 222 */
+  --cyan-200:#baeafc;--cyan-300:#7ddbfb;--cyan-400:#34bde5;
+  /* amber: oklch hue 80 */
+  --amber-50:#fff5e2;--amber-100:#ffeac4;--amber-200:#f5d091;--amber-300:#e9b452;--amber-500:#bd891c;--amber-700:#815c0a;--amber-800:#5e4205;--amber-900:#442e01;
+  /* orange: oklch hue 52 */
+  --orange-50:#fff2ea;--orange-100:#ffe2cf;--orange-300:#eda478;--orange-500:#da752d;--orange-600:#b4590e;--orange-700:#904912;
+  /* red: oklch hue 22 */
+  --red-50:#fff1f0;--red-100:#ffe0de;--red-300:#f08e8b;--red-500:#cf4047;--red-600:#af2934;--red-700:#8d242a;
+  /* green: oklch hue 162 */
+  --green-50:#ebfaf2;--green-100:#d0f4e0;--green-500:#1f855d;--green-700:#156446;
+  /* purple: oklch hue 302 */
+  --purple-50:#f8f3ff;--purple-100:#eee4ff;--purple-300:#b69ce0;--purple-500:#7c53b0;--purple-700:#5f3f89;
+
+  /* Semantic colour */
+  --color-bg:var(--neutral-50);--color-surface:var(--neutral-0);--color-surface-sunken:var(--neutral-25);--color-surface-raised:var(--neutral-0);
+  --color-border:var(--neutral-150);--color-border-strong:var(--neutral-300);
+  --color-text:var(--neutral-800);--color-text-strong:var(--neutral-900);--color-text-muted:var(--neutral-600);
+  --color-link:var(--blue-600);--color-accent:var(--blue-500);--color-accent-strong:var(--blue-600);--color-accent-soft:var(--blue-50);
+  --color-focus:var(--blue-500);--color-brand:var(--neutral-900);--color-brand-ink:var(--neutral-0);--color-brand-muted:var(--neutral-300);
+  --color-watch-bg:var(--amber-50);--color-watch-border:var(--amber-200);--color-watch-text:var(--amber-800);
+  --color-elevated-bg:var(--orange-50);--color-elevated-border:var(--orange-300);--color-elevated-text:var(--orange-700);
+  --color-danger-bg:var(--red-50);--color-danger-border:var(--red-300);--color-danger-text:var(--red-700);
+  --color-ok-bg:var(--green-50);--color-ok-text:var(--green-700);
+  --color-community:var(--purple-500);--color-community-bg:var(--purple-50);
+
+  /* Type: one system family, a fixed rem scale (about 1.15 between steps) */
+  --font-sans:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;
+  --font-mono:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono",monospace;
+  --text-xs:.75rem;--text-sm:.875rem;--text-md:1rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;--text-4xl:3rem;
+  --leading-tight:1.2;--leading-snug:1.35;--leading-body:1.55;
+  --weight-regular:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;
+  --tracking-caps:.04em;--tracking-tight:-.015em;
+
+  /* Space (4px base), shape, depth */
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.5rem;--space-6:2rem;--space-7:3rem;--space-8:4rem;
+  --radius-xs:4px;--radius-sm:6px;--radius-md:8px;--radius-lg:12px;--radius-pill:999px;
+  --shadow-sm:0 1px 2px rgb(7 37 72 / .06);--shadow-md:0 2px 8px rgb(7 37 72 / .08);--shadow-lg:0 8px 24px rgb(7 37 72 / .12);
+
+  /* Motion */
+  --ease-out:cubic-bezier(.22,1,.36,1);--duration-fast:150ms;--duration-base:200ms;--duration-slow:300ms;
+}
+
+/* Base defaults every later stylesheet builds on. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:var(--font-sans);color:var(--color-text);background:var(--color-bg)}
+table,td,th,strong,b,output,time{font-variant-numeric:tabular-nums}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
