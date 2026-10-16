@@ -2,6 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
+import {mkdtemp, rm, stat} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {createServer} from './somalia-flood-watch/server.mjs';
 
 const dist = new URL('./somalia-flood-watch/dist/', import.meta.url);
 const index = await readFile(new URL('index.html', dist), 'utf8');
@@ -69,4 +73,64 @@ test('the site footer links to the health alert, in Somali too', async () => {
   assert.match(tabs, /if \(mayor\(\)\) return openInMayor\(event\);/, 'the city manager view opens the Alerts tool for it');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['Public health alert'], 'Digniinta caafimaadka bulshada');
+});
+
+test('the cholera film sits in the health alert, with English and Somali captions', async () => {
+  assert.ok(section.includes('<video id="health-film" controls preload="metadata" playsinline poster="film/cholera-prevention.jpg"'), 'the film is in the section');
+  assert.ok(section.includes('<source src="film/cholera-prevention.mp4" type="video/mp4">'));
+  assert.ok(section.includes('<track kind="captions" src="film/cholera-prevention.vtt" srclang="en" label="English" default>'));
+  assert.ok(section.includes('<track kind="captions" src="film/cholera-prevention.so.vtt" srclang="so" label="Soomaali">'));
+  assert.ok(section.indexOf('id="health-film"') < section.indexOf('How flooding raises the risk'), 'near the top of the section');
+  for (const name of ['cholera-prevention.mp4', 'cholera-prevention.jpg', 'cholera-prevention.vtt', 'cholera-prevention.so.vtt']) assert.ok((await stat(new URL('film/' + name, dist))).size > 1000, name);
+  const en = await readFile(new URL('film/cholera-prevention.vtt', dist), 'utf8'), so = await readFile(new URL('film/cholera-prevention.so.vtt', dist), 'utf8');
+  for (const vtt of [en, so]) { assert.match(vtt, /^WEBVTT\n\n1\n\d\d:\d\d:\d\d\.\d{3} --> /); assert.doesNotMatch(vtt, /O R S/, 'captions show ORS, not the spelled-out narration'); }
+  assert.match(so, /Daacuun|daacuun/); assert.match(en, /cholera/i);
+  const last = text => text.trim().split('\n').filter(line => line.includes(' --> ')).at(-1).split(' --> ')[1];
+  assert.ok(Math.abs(Date.parse('1970-01-01T' + last(en) + 'Z') - Date.parse('1970-01-01T' + last(so) + 'Z')) < 2000, 'both tracks end with the film');
+});
+
+test('film files are sent in byte ranges, as Safari and iPhones need', async () => {
+  const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-film-'));
+  const server = createServer({dataDir});
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  try {
+    const base = 'http://127.0.0.1:' + server.address().port + '/film/';
+    const size = (await stat(new URL('film/cholera-prevention.mp4', dist))).size;
+    const whole = await fetch(base + 'cholera-prevention.mp4');
+    assert.equal(whole.status, 200); assert.equal(whole.headers.get('content-type'), 'video/mp4'); assert.equal(whole.headers.get('accept-ranges'), 'bytes');
+    assert.equal(Number(whole.headers.get('content-length')), size); assert.equal((await whole.arrayBuffer()).byteLength, size);
+    assert.equal(whole.headers.get('cache-control'), 'public, max-age=3600', 'the CDN may keep a film for an hour');
+    const first = await fetch(base + 'cholera-prevention.mp4', {headers: {Range: 'bytes=0-99'}});
+    assert.equal(first.status, 206); assert.equal(first.headers.get('content-range'), `bytes 0-99/${size}`); assert.equal((await first.arrayBuffer()).byteLength, 100);
+    const tail = await fetch(base + 'cholera-prevention.mp4', {headers: {Range: 'bytes=-500'}});
+    assert.equal(tail.status, 206); assert.equal(tail.headers.get('content-range'), `bytes ${size - 500}-${size - 1}/${size}`); assert.equal((await tail.arrayBuffer()).byteLength, 500);
+    const open = await fetch(base + 'cholera-prevention.mp4', {headers: {Range: `bytes=${size - 10}-`}});
+    assert.equal(open.status, 206); assert.equal((await open.arrayBuffer()).byteLength, 10);
+    for (const bad of [`bytes=${size}-`, 'bytes=50-10', 'bytes=-', 'items=0-5']) {
+      const answer = await fetch(base + 'cholera-prevention.mp4', {headers: {Range: bad}});
+      assert.equal(answer.status, 416, bad); assert.equal(answer.headers.get('content-range'), `bytes */${size}`); await answer.arrayBuffer();
+    }
+    const head = await fetch(base + 'cholera-prevention.mp4', {method: 'HEAD'});
+    assert.equal(head.status, 200); assert.equal(Number(head.headers.get('content-length')), size);
+    const vtt = await fetch(base + 'cholera-prevention.so.vtt');
+    assert.equal(vtt.headers.get('content-type'), 'text/vtt; charset=utf-8'); assert.match(await vtt.text(), /^WEBVTT/);
+    assert.equal((await fetch(base + '../film/../index.html')).status, 200, 'paths still resolve inside the app');
+  } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); await rm(dataDir, {recursive: true, force: true}); }
+});
+
+test('the film shows captions in the page language, and leaves a viewer\'s own choice alone', async () => {
+  for (const lang of ['en', 'so']) {
+    const tracks = [{language: 'en', mode: 'disabled'}, {language: 'so', mode: 'disabled'}];
+    const listeners = [];
+    const document = {getElementById: id => id === 'health-film' ? {textTracks: tracks} : null, addEventListener: (type, fn) => listeners.push(fn)};
+    const window = {document, SiteLanguage: {getLanguage: () => lang}, setTimeout: fn => fn(), localStorage: {getItem: () => null, setItem() {}}};
+    vm.runInContext(await readFile(new URL('alerts.js', dist), 'utf8'), vm.createContext({window, URL, URLSearchParams, Date}));
+    assert.deepEqual(tracks.map(track => track.mode), lang === 'so' ? ['disabled', 'showing'] : ['showing', 'disabled'], lang);
+    tracks[0].mode = 'disabled'; tracks[1].mode = 'disabled';
+    window.FloodAlerts.filmCaptions();
+    assert.deepEqual(tracks.map(track => track.mode), ['disabled', 'disabled'], 'a redraw in the same language keeps the viewer\'s choice');
+    window.SiteLanguage.getLanguage = () => (lang === 'so' ? 'en' : 'so');
+    listeners.forEach(fn => fn({target: {closest: selector => selector === '[data-site-language]' ? {} : null}}));
+    assert.deepEqual(tracks.map(track => track.mode), lang === 'so' ? ['showing', 'disabled'] : ['disabled', 'showing'], 'switching language switches the captions');
+  }
 });
