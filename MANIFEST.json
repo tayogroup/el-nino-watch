@@ -625,8 +625,8 @@
     },
     {
       "path": "work/make-source-bundles.mjs",
-      "bytes": 20627,
-      "sha256": "7953bd3bdbfc550503a30c90fe33d2a05f1534b5bd53476d09b112b4c050c55c"
+      "bytes": 20768,
+      "sha256": "d07fbf6682844f444c0b2357de1f1eee1d78994d4737597bf403fba077d119d5"
     },
     {
       "path": "work/map-context.test.mjs",
@@ -669,9 +669,19 @@
       "sha256": "e0cb0bb24f1ca63218cd950cfced1f56d239f9b9b3baed6bb3a82c34dead92d8"
     },
     {
+      "path": "work/package-files.mjs",
+      "bytes": 1508,
+      "sha256": "2f74a5614b85aaf33e71a0eac487f50a086459ab743402a9c168bf4cc2996e5e"
+    },
+    {
+      "path": "work/package-files.test.mjs",
+      "bytes": 4230,
+      "sha256": "9805ae4a3f8a9393bf97635c6c3c263bd8025f60cfd9a7fa385428b487d63a4e"
+    },
+    {
       "path": "work/package-flood-app.mjs",
-      "bytes": 2456,
-      "sha256": "ba7850871b037a8021f314e53f6c27fd72d1ac26db07240eb70a734720b218a0"
+      "bytes": 2189,
+      "sha256": "c94c46700e40681c72c7dafe9e71aa6a19265f240aa523f0af11ca2550b0578d"
     },
     {
       "path": "work/planning.test.mjs",
@@ -695,8 +705,8 @@
     },
     {
       "path": "work/rankings-integration.test.mjs",
-      "bytes": 12080,
-      "sha256": "4591d8be775b91c5906d8d9549848101a94714d46817416ec345276196c112e9"
+      "bytes": 12357,
+      "sha256": "b388396dd7dd4118db13882a63a858d40206f6c4be5c7c2ec37f5f04973ec945"
     },
     {
       "path": "work/rankings.test.mjs",

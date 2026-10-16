@@ -4,12 +4,15 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {deflateRawSync} from 'node:zlib';
 import {parseStations} from './somalia-flood-watch/feeds.mjs';
+import {serverModules} from './package-files.mjs';
 
 const work=path.dirname(fileURLToPath(import.meta.url)),root=path.dirname(work);
 const app=path.join(work,'somalia-flood-watch'),out=path.join(root,'outputs');
 const staging=path.join(work,'portable-release');
 const releaseDate='2026-10-14';
-const runtime=['server.mjs','feeds.mjs','hazards.mjs','alerts-feed.mjs','observed-flood.mjs','copernicus.mjs','community.mjs','docker-entrypoint.mjs','backup.mjs','forecast-relay.mjs','visits.mjs','Start-Live-App.ps1','README.md'];
+// The server and Docker entry points and every module they import (package-files.mjs), so a new module is
+// never left out of a release.
+const runtime=[...await serverModules(new URL('./somalia-flood-watch/',import.meta.url),['server.mjs','docker-entrypoint.mjs']),'Start-Live-App.ps1','README.md'];
 const appChecks=['verify.mjs','verify-daily.mjs','verify-interaction.mjs','verify-map.mjs'];
 const write=async(base,file,value)=>{const target=path.join(base,file);await fs.mkdir(path.dirname(target),{recursive:true});await fs.writeFile(target,value);};
 const copy=async(source,base,file)=>{await fs.mkdir(path.dirname(path.join(base,file)),{recursive:true});await fs.copyFile(source,path.join(base,file));};
@@ -161,7 +164,7 @@ async function make(source){
  for(const file of runtime)await copy(path.join(app,file),folder,path.join(appRelative,file==='README.md'&&!source?'APP-GUIDE.md':file));
  if(source){
   for(const file of appChecks)await copy(path.join(app,file),folder,path.join(appRelative,file));
-  const developer=['build-somali-catalog.mjs','i18n-public.json','i18n-weather.json','i18n-mayor.json','build-basemap.mjs','package-flood-app.mjs','make-source-bundles.mjs','verify-portable-release.mjs','verify-observed-flood.mjs','icpac-datasets.json','icpac-point-extreme.gml','icpac-point-very-heavy.gml','icpac-point-heavy.gml','icpac-point-none.gml','icpac-point-empty.gml','observed-gfm-capabilities.xml','observed-gibs-capabilities.xml'];
+  const developer=['build-somali-catalog.mjs','i18n-public.json','i18n-weather.json','i18n-mayor.json','build-basemap.mjs','package-flood-app.mjs','package-files.mjs','make-source-bundles.mjs','verify-portable-release.mjs','verify-observed-flood.mjs','icpac-datasets.json','icpac-point-extreme.gml','icpac-point-very-heavy.gml','icpac-point-heavy.gml','icpac-point-none.gml','icpac-point-empty.gml','observed-gfm-capabilities.xml','observed-gibs-capabilities.xml'];
   for(const file of [...developer,...(await fs.readdir(work)).filter(name=>name.endsWith('.test.mjs'))])await copy(path.join(work,file),folder,'work/'+file);
   await fs.cp(path.join(work,'basemap-source'),path.join(folder,'work/basemap-source'),{recursive:true});
   const records=parseStations(await fs.readFile(path.join(work,'swalim-stations.html'),'utf8'));

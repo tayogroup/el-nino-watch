@@ -204,8 +204,11 @@ test('rankings are mounted outside city-only content and their scripts and style
   assert.ok(scripts.indexOf(rankingScript)<scripts.indexOf('app.js'));
   const rankingCss=[...html.matchAll(/<link\b[^>]*href="([^"]+)"/g)].map(match=>match[1]).find(name=>/rankings.*\.css$/.test(name));
   assert.ok(rankingCss,'rankings styles are included');
-  assert.ok(packageSource.includes("'"+rankingScript+"'"),'portable artifact embeds rankings code');
-  assert.ok(packageSource.includes("'"+rankingCss+"'"),'portable artifact embeds rankings styles');
+  // The portable page inlines what index.html loads (package-files.mjs), so rankings are embedded with it.
+  const {pageAssets}=await import('./package-files.mjs');
+  assert.match(packageSource,/pageAssets\(html\)/,'the portable build reads its assets from index.html');
+  assert.ok(pageAssets(html).scripts.includes(rankingScript),'portable artifact embeds rankings code');
+  assert.ok(pageAssets(html).styles.includes(rankingCss),'portable artifact embeds rankings styles');
   for (const hash of ['', '#view=mayor&city=Galkayo']) {
     const s=await setup({hash});
     assert.ok(s.latest(),'rankings render in '+(hash?'mayor':'all-city')+' view');
