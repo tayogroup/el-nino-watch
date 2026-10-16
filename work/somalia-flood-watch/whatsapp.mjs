@@ -104,8 +104,8 @@ const REPLIES = {
     stoppedCity: (city, rest) => `You will no longer get alerts for ${city}.${rest ? ` You still get alerts for ${rest}.` : ' You follow no cities now, and your number has been deleted.'}`,
     notFollowing: city => `You do not follow ${city}.`,
     list: cities => cities ? `You get alerts for ${cities}. Reply STOP to stop all alerts.` : 'You do not follow any city. Send JOIN and a city name, for example JOIN Galkayo.',
-    help: `El Nino Watch flood alerts. Send JOIN and a city name to get alerts, for example JOIN Galkayo. LIST shows your cities, STOP stops all alerts. Send AUDIO for the audio bulletin in Somali. More: ${SITE}`,
-    audioOn: when => `You will get the El Nino Watch audio bulletin, in Somali, ${when}, as a link to listen. Reply STOP AUDIO to stop it. Your number is used only for these messages.`,
+    help: `El Nino Watch flood alerts. Send JOIN and a city name to get alerts, for example JOIN Galkayo. LIST shows your cities, STOP stops all alerts. Send AUDIO for the audio bulletin. More: ${SITE}`,
+    audioOn: when => `You will get the El Nino Watch audio bulletin ${when}, as a link to listen. Reply STOP AUDIO to stop it. Your number is used only for these messages.`,
     audioOff: cities => `You will no longer get the audio bulletin.${cities ? ` You still get flood alerts for ${cities}.` : ' Your number has been deleted.'}`,
     when: {evening: 'each evening', all: 'three times a day', some: 'each day'}
   },
@@ -300,14 +300,18 @@ export function createWhatsApp({dataDir, cities = [], config = whatsappConfig(),
     return checking;
   }
 
-  // A new audio bulletin, to the subscribers who asked for it, in the slots chosen for WhatsApp.
-  async function sendBulletin(item) {
+  // A new audio bulletin, to the subscribers who asked for it, in the slots chosen for WhatsApp, in the
+  // language they signed up in. Until English bulletins are made (info.languages), everyone gets the Somali one.
+  async function sendBulletin(item, info = {}) {
     if (!config.enabled || !item || !(config.bulletinSlots || ['evening']).includes(item.slot)) return {sent: 0};
     await ready;
     let sent = 0;
-    const link = `${SITE}/?lang=so#podcast`;
+    const lang = item.lang === 'en' ? 'en' : 'so', english = (info.languages || ['so']).includes('en');
+    const link = `${SITE}/?lang=${lang}#podcast`;
     for (const [waId, subscriber] of Object.entries(state.subscribers)) {
       if (!subscriber.bulletin) continue;
+      const wants = english && subscriber.lang === 'en' ? 'en' : 'so';
+      if (wants !== lang) continue;
       const somali = subscriber.lang === 'so' && config.somaliLanguage;
       const parameters = [flat(item.title), link].map(text => ({type: 'text', text}));
       try {

@@ -47,7 +47,9 @@
   const byId = id => doc.getElementById(id);
 
   function draw(data) {
-    const items = (data?.items || []).filter(playable), latest = items[0];
+    // The page's language when there are bulletins in it (English ones once approved), otherwise Somali.
+    const all = (data?.items || []).filter(playable), mine = all.filter(other => (other.lang || 'so') === language());
+    const items = mine.length ? mine : all.filter(other => (other.lang || 'so') === 'so'), latest = items[0];
     if (!data?.enabled && !latest) { section.hidden = true; return; }
     const item = items.find(other => other.id === chosen) || latest, w = WORDS[language()];
     const audio = byId('podcast-audio'), save = byId('podcast-save');
@@ -62,15 +64,17 @@
     }
     if (save) { save.hidden = !item; if (item) { save.setAttribute('href', item.url); save.setAttribute('download', `el-nino-watch-${item.id}.mp3`); save.textContent = w.save; } }
     const when = byId('podcast-when'), text = byId('podcast-text'), times = byId('podcast-times');
-    if (when) when.textContent = item ? `${item.title} · ${length(Number(item.seconds) || 0)}` : '';
+    if (when) { when.textContent = item ? `${item.title} · ${length(Number(item.seconds) || 0)}` : ''; when.setAttribute?.('lang', item?.lang || 'so'); }
+    byId('podcast-text')?.setAttribute?.('lang', item?.lang || 'so');
     if (text) text.textContent = item ? item.text || '' : '';
-    if (times) times.textContent = describeTimes(data, Date.now(), language(), item);
+    // Before English bulletins exist, the English page says the one it plays is in Somali.
+    if (times) times.textContent = describeTimes(data, Date.now(), language(), item) + (item && language() === 'en' && (item.lang || 'so') === 'so' ? ' · in Somali' : '');
     // Earlier bulletins: play here, or save to listen offline.
     const earlier = byId('podcast-earlier'), list = byId('podcast-list');
     const others = items.filter(other => other.id !== item?.id).slice(0, EARLIER);
     if (earlier) earlier.hidden = !others.length;
     // While an earlier one plays, the latest is the first in this list.
-    if (list) list.innerHTML = others.map(other => `<li><button type="button" class="linkish" data-podcast-id="${esc(other.id)}" lang="so">${esc(other.title)} · ${esc(length(Number(other.seconds) || 0))}</button> <a href="${esc(other.url)}" download="el-nino-watch-${esc(other.id)}.mp3">${esc(w.save)}</a></li>`).join('');
+    if (list) list.innerHTML = others.map(other => `<li><button type="button" class="linkish" data-podcast-id="${esc(other.id)}" lang="${esc(other.lang || 'so')}">${esc(other.title)} · ${esc(length(Number(other.seconds) || 0))}</button> <a href="${esc(other.url)}" download="el-nino-watch-${esc(other.id)}.mp3">${esc(w.save)}</a></li>`).join('');
     section.hidden = false;
   }
   async function load() {
@@ -99,6 +103,7 @@
   // line in English on a Somali page. The timer lets i18n.js's own DOMContentLoaded handler run first.
   if (doc.readyState === 'loading') doc.addEventListener?.('DOMContentLoaded', () => root.setTimeout(load, 0), {once: true});
   else load();
+  // The English page plays English bulletins once there are some; redraw on a language switch picks them.
   // Every 5 minutes: a new bulletin appears soon after its time, and "next" stays right.
   root.setInterval?.(load, 5 * 60 * 1000);
   doc.addEventListener?.('click', event => { if (last && event.target?.closest?.('[data-site-language]')) root.setTimeout?.(() => draw(last), 0); });

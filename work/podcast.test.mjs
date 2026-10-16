@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
 import {createServer} from './somalia-flood-watch/server.mjs';
-import {buildScript, dueSlot, podcastConfig, createPodcast, STYLE, TIPS, KEEP_DAYS, APPROVED_TEMPLATE, TEMPLATE_VERSION} from './somalia-flood-watch/podcast.mjs';
+import {buildScript, dueSlot, podcastConfig, createPodcast, STYLE, TIPS, KEEP_DAYS, APPROVED_TEMPLATE, TEMPLATE_VERSION, APPROVED_TEMPLATE_EN, TEMPLATE_VERSION_EN} from './somalia-flood-watch/podcast.mjs';
 import {createWhatsApp, whatsappConfig, parseCommand} from './somalia-flood-watch/whatsapp.mjs';
 
 const dist = new URL('./somalia-flood-watch/dist/', import.meta.url);
@@ -354,7 +354,7 @@ test('plays are counted anonymously by the visit counter, by slot, and shown on 
 
 test('the news flash carries the audio bulletin while bulletins are on, in Somali too', async () => {
   const {loadNews, PODCAST_FLASH, HEALTH_FLASH} = await import('./somalia-flood-watch/news-feed.mjs');
-  assert.deepEqual({...PODCAST_FLASH}, {kind: 'app', key: 'podcast', label: 'Audio bulletin · Somali', title: 'Listen: El Niño and flood news in Somali, three times a day', url: '#podcast', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
+  assert.deepEqual({...PODCAST_FLASH}, {kind: 'app', key: 'podcast', label: 'Audio bulletin', title: 'Listen: El Niño and flood news, three times a day', url: '#podcast', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
   const down = async () => ({ok: false, status: 503, text: async () => ''});
   const enso = {available: true, alertStatus: 'El Niño Advisory', phase: 'El Niño Advisory', issuedAt: '2026-10-08', synopsis: 'El Niño continues.', sourceUrl: 'https://www.cpc.ncep.noaa.gov/'};
   const on = await loadNews({app: {enso, podcast: true}, fetchImpl: down, reliefWebAppname: ''});
@@ -366,7 +366,7 @@ test('the news flash carries the audio bulletin while bulletins are on, in Somal
   const flash = await readFile(new URL('news-flash.js', dist), 'utf8');
   assert.match(flash, /\['icpac', 'health', 'film', 'podcast'\]\.includes\(item\.key\)/, 'its label and title are translated');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
-  assert.equal(catalog.messages[PODCAST_FLASH.label], 'Warbixinta codka · Af-Soomaali');
+  assert.equal(catalog.messages[PODCAST_FLASH.label], 'Warbixinta codka');
   assert.ok(catalog.messages[PODCAST_FLASH.title]);
 });
 
@@ -399,11 +399,124 @@ test('the podcast feed lists the week\'s bulletins for podcast apps, with cover 
     assert.equal((await call(off, 'GET', '/podcast.xml')).status, 404, 'off and nothing made: no feed');
   } finally { await rm(dataDir, {recursive: true, force: true}); }
   const index = await readFile(new URL('index.html', dist), 'utf8');
-  assert.ok(index.includes('<link rel="alternate" type="application/rss+xml" title="El Nino Watch audio bulletin (Somali)" href="/podcast.xml"></head>'));
+  assert.ok(index.includes('<link rel="alternate" type="application/rss+xml" title="El Nino Watch audio bulletin (Somali)" href="/podcast.xml"><link rel="alternate" type="application/rss+xml" title="El Nino Watch audio bulletin (English)" href="/podcast-en.xml"></head>'));
   const cover = await readFile(new URL('podcast-cover.jpg', dist));
   assert.equal(cover.readUInt16BE(0), 0xFFD8, 'a JPEG');
   // Its size, from the first start-of-frame marker: square, at least the 1400 px Apple asks for.
   let i = 2, w = 0, h = 0;
   while (i < cover.length) { const marker = cover.readUInt16BE(i), len = cover.readUInt16BE(i + 2); if (marker >= 0xFFC0 && marker <= 0xFFC3) { h = cover.readUInt16BE(i + 5); w = cover.readUInt16BE(i + 7); break; } i += 2 + len; }
   assert.deepEqual([w, h], [1400, 1400]);
+});
+
+// ---- Somali and English (owner, 2026-10-17) ----
+
+test('the English bulletin: the same sections and rules, in English, with English-language news only', async () => {
+  const {text, title} = buildScript({slotId: 'evening', now: EVENING, ...DATA, lang: 'en'});
+  assert.equal(title, 'Evening bulletin, Friday 16 October');
+  assert.ok(text.startsWith('This is El Nino Watch, with the evening bulletin for Friday 16 October. This is not an official warning service.'));
+  assert.ok(text.includes('Official flood warnings from the Ministry of Energy and Water Resources. Flood warning: Galgaduud; anticipatory action has been activated. Flood watch: Bakool. Flood advisory: Bay.'));
+  assert.ok(text.includes('The Shabelle at Jowhar is at 5.17 metres, above its moderate flood level, and close to its high level of 5.25 metres.'));
+  assert.ok(text.includes('Rain tomorrow: the most rain is expected in Galkayo, 23 millimetres and Adado, 16 millimetres. This is a model forecast.'));
+  assert.ok(text.includes("ICPAC's forecast for this week shows heavy rain in 2 of the 30 cities, including Beledweyne and Baidoa. That is a model forecast, not an official warning."));
+  assert.ok(text.includes('News: NOAA said on 8 October that El Niño is under way. FTL Somalia reports: Flash floods in Hudur affect 37 households.'), 'English items only');
+  assert.doesNotMatch(text, /SoDMA ayaa|WAR-BIXINTA/, 'the Somali item is not read in English');
+  assert.ok(text.endsWith('Follow the instructions of local authorities and SoDMA. More at elninowatch.so. This is El Nino Watch.'));
+  const rest = text.replace('This is not an official warning service', '').replace('Official flood warnings from the Ministry', '').replace('not an official warning', '');
+  assert.doesNotMatch(rest, /official/i, 'only MOEWR is called official');
+  assert.doesNotMatch(text, /\b(iyo|waa|ayaa|roobka|webiga)\b/, 'no Somali');
+  const down = buildScript({slotId: 'morning', now: MORNING, alerts: null, stations: null, enso: null, news: null, rain: null, lang: 'en'}).text;
+  assert.ok(down.includes('Official warnings from the Ministry of Energy and Water Resources are not available right now.'));
+  assert.ok(down.includes('River levels on the Juba and Shabelle are not available right now.'));
+  assert.ok(down.includes('The rain forecast for today is not available right now.'));
+  const morning = buildScript({slotId: 'morning', now: MORNING, ...DATA, lang: 'en'});
+  assert.ok(buildScript({slotId: 'midday', now: MIDDAY, ...DATA, lang: 'en', previous: morning.facts}).text.includes('Official warnings and river levels have not changed since this morning.'));
+});
+
+test('English bulletins wait for the owner to approve their wording; Somali runs on its own approval', () => {
+  const config = podcastConfig({GEMINI_API_KEY: 'key-not-real', PODCAST_ENABLED: '1'});
+  assert.deepEqual(config.languages, APPROVED_TEMPLATE_EN === TEMPLATE_VERSION_EN ? ['so', 'en'] : ['so']);
+  assert.equal(TEMPLATE_VERSION_EN, '2026-10-17');
+});
+
+test('with both languages on, each slot is voiced in Somali and English from one reading of the data, each with its own feed', async () => {
+  const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-podcast-both-'));
+  const calls = [], handed = [];
+  let rainFetches = 0;
+  const pcm = Buffer.alloc(48000);
+  const fetchImpl = async (url, options = {}) => {
+    if (String(url).startsWith('https://api.open-meteo.com/')) { rainFetches++; return {ok: true, status: 200, json: async () => cities.map(() => ({daily: {time: ['2026-10-16', '2026-10-17'], precipitation_sum: [1, 2]}}))}; }
+    calls.push(JSON.parse(options.body));
+    return {ok: true, status: 200, json: async () => ({steps: [{type: 'model_output', content: [{type: 'audio', data: pcm.toString('base64')}]}]})};
+  };
+  const config = {enabled: true, apiKey: 'key-not-real', model: 'gemini-3.8-flash-tts', voice: 'Puck', languages: ['so', 'en']};
+  const service = createPodcast({dataDir, cities, config, fetchImpl, now: () => EVENING, log: quiet, encode: (wav, mp3) => copyFile(wav, mp3),
+    feeds: {alerts: async () => ALERTS, stations: async () => STATIONS, enso: async () => ENSO, news: async () => NEWS}, onPublished: (item, info) => handed.push([item.id, info.languages.join('+')])});
+  try {
+    await service.tick();
+    assert.deepEqual(service.state().items.map(item => `${item.id}:${item.lang}`).sort(), ['2026-10-16-evening-en:en', '2026-10-16-evening:so']);
+    assert.equal(rainFetches, 1, 'the data is read once for both');
+    assert.ok(calls[0].input[0].content[0].text.startsWith('Waa El Nino Watch') && calls[1].input[0].content[0].text.startsWith('This is El Nino Watch'), 'Somali first, then English, same voice');
+    assert.deepEqual(calls.map(call => call.generation_config.speech_config[0].voice), ['Puck', 'Puck']);
+    assert.deepEqual(handed, [['2026-10-16-evening', 'so+en'], ['2026-10-16-evening-en', 'so+en']]);
+    await service.tick(); assert.equal(calls.length, 2, 'never twice');
+    const listed = (await call(service, 'GET', '/api/podcast')).json();
+    assert.deepEqual(listed.languages, ['so', 'en']); assert.deepEqual(listed.items.map(item => item.lang).sort(), ['en', 'so']);
+    const so = (await call(service, 'GET', '/podcast.xml')).body, en = (await call(service, 'GET', '/podcast-en.xml')).body;
+    assert.ok(so.includes('<language>so</language>') && so.includes('2026-10-16-evening.mp3') && !so.includes('-en.mp3'));
+    assert.ok(en.includes('<language>en</language>') && en.includes('2026-10-16-evening-en.mp3') && en.includes('<title>El Nino Watch: Audio bulletin</title>') && en.includes('podcast-cover-en.jpg'));
+    assert.ok(service.audioFile('/podcast/2026-10-16-evening-en.mp3'));
+  } finally { await rm(dataDir, {recursive: true, force: true}); }
+  const off = await mkdtemp(path.join(os.tmpdir(), 'elnino-podcast-en-off-'));
+  try {
+    const somaliOnly = createPodcast({dataDir: off, cities, config: {enabled: true, languages: ['so']}, log: quiet});
+    assert.equal((await call(somaliOnly, 'GET', '/podcast-en.xml')).status, 404, 'no English feed until English is on');
+  } finally { await rm(off, {recursive: true, force: true}); }
+});
+
+test('WhatsApp: the bulletin in the language each subscriber signed up in, Somali for everyone until English is on', async () => {
+  const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-podcast-wa-lang-'));
+  const sent = [];
+  const fetchImpl = async (url, options) => { sent.push(JSON.parse(options.body)); return {ok: true, status: 200, json: async () => ({})}; };
+  const env = {WHATSAPP_TOKEN: 'token-not-real', WHATSAPP_PHONE_NUMBER_ID: '1234567890', WHATSAPP_APP_SECRET: 'secret-not-real', WHATSAPP_VERIFY_TOKEN: 'verify-not-real', WHATSAPP_NUMBER: '252610000000'};
+  const wa = createWhatsApp({dataDir, cities, config: whatsappConfig(env), alerts: async () => null, fetchImpl, log: quiet});
+  const SO = '252610000011', EN = '252610000012';
+  try {
+    await wa.onMessage(SO, 'CODKA'); await wa.onMessage(EN, 'AUDIO');
+    const somali = {id: '2026-10-16-evening', lang: 'so', slot: 'evening', title: 'Warbixinta fiidka, Jimce, 16 Oktoobar'};
+    const english = {id: '2026-10-16-evening-en', lang: 'en', slot: 'evening', title: 'Evening bulletin, Friday 16 October'};
+    sent.length = 0;
+    await wa.sendBulletin(somali, {languages: ['so']});
+    assert.deepEqual(sent.map(m => m.to).sort(), [SO, EN].sort(), 'English not on yet: everyone hears Somali');
+    sent.length = 0;
+    await wa.sendBulletin(somali, {languages: ['so', 'en']}); await wa.sendBulletin(english, {languages: ['so', 'en']});
+    assert.deepEqual(sent.map(m => [m.to, m.template.components[0].parameters[1].text]), [[SO, 'https://elninowatch.so/?lang=so#podcast'], [EN, 'https://elninowatch.so/?lang=en#podcast']]);
+  } finally { await rm(dataDir, {recursive: true, force: true}); }
+});
+
+test('the page plays the bulletin in its own language, and says so when the English page has only Somali', async () => {
+  const en = bulletin('2026-10-17-midday-en', 'midday', 'Midday bulletin, Saturday 17 October', '2026-10-17T09:31:30Z');
+  const both = await runPanel({enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: [{...en, lang: 'en'}, {...THREE[0], lang: 'so'}]}, 'en');
+  assert.equal(both.nodes['podcast-audio'].attrs.src, '/podcast/2026-10-17-midday-en.mp3');
+  assert.equal(both.nodes['podcast-when'].attrs.lang, 'en');
+  const somaliPage = await runPanel({enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: [{...en, lang: 'en'}, {...THREE[0], lang: 'so'}]}, 'so');
+  assert.equal(somaliPage.nodes['podcast-audio'].attrs.src, '/podcast/2026-10-17-midday.mp3');
+  const onlySomali = await runPanel({enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: [{...THREE[0], lang: 'so'}]}, 'en');
+  assert.equal(onlySomali.nodes['podcast-audio'].attrs.src, '/podcast/2026-10-17-midday.mp3');
+  assert.match(onlySomali.nodes['podcast-times'].textContent, / · in Somali$/);
+  const index = await readFile(new URL('index.html', dist), 'utf8');
+  assert.ok(index.includes('<h2 id="podcast-title">Audio bulletin</h2>'));
+  assert.ok(index.includes('href="/podcast.xml">') && index.includes('href="/podcast-en.xml">'));
+});
+
+test('the sources page has the audio bulletin, with the player and both feeds, in Somali too', async () => {
+  const sources = await readFile(new URL('sources.html', dist), 'utf8');
+  const start = sources.indexOf('<section aria-labelledby="audio-bulletin">'), section = sources.slice(start, sources.indexOf('</section>', start));
+  assert.ok(start > 0 && start < sources.indexOf('<section aria-labelledby="health">'), 'before the public health guidance');
+  for (const href of ['href="/#podcast" data-keep-language', 'href="https://elninowatch.so/podcast.xml"', 'href="https://elninowatch.so/podcast-en.xml"']) assert.ok(section.includes(href), href);
+  for (const name of ['MOEWR', 'SWALIM', 'Open-Meteo', 'ICPAC', 'NOAA']) assert.ok(section.includes(name), name);
+  assert.ok(section.includes('in Somali and English') && section.includes('It is not an official warning'));
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['Somali and English'], 'Af-Soomaali iyo Ingiriisi');
+  const cover = await readFile(new URL('podcast-cover-en.jpg', dist));
+  assert.equal(cover.readUInt16BE(0), 0xFFD8);
 });

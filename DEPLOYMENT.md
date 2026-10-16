@@ -121,7 +121,7 @@ Audio bulletin on WhatsApp (opt-in): sending `CODKA` (English `AUDIO`) asks for 
 
    Optional settings on the container: `WHATSAPP_BULLETIN_TEMPLATE` (another template name) and `WHATSAPP_BULLETIN_SLOTS` (default `evening`; `morning,midday,evening` for all three). Each bulletin message is charged like an alert.
 
-### Audio bulletins (Somali, three times a day)
+### Audio bulletins (Somali and English, three times a day)
 
 A short Somali bulletin at 06:30, 12:30 and 18:30 East Africa Time (`work/somalia-flood-watch/podcast.mjs`), written from the site's own feeds by a fixed template and voiced by Google Gemini (model `gemini-3.8-flash-tts`, voice Puck). The latest one plays first on the home page, under the header, with its text, when it was recorded and when the next is due; before the first recording the panel says when that will be. Bulletins are kept 7 days on the reports volume (`podcast/`); they are not in the backups.
 
@@ -137,7 +137,9 @@ Try the template without publishing anything: `node work/somalia-flood-watch/pod
 
 Hold switch: to stop new bulletins at once, without a deploy, send `{"hold": true}` to `/api/podcast/hold` with the stats key; `{"hold": false}` resumes. For example, with the stats key in the shell variable `STATS_KEY`: `curl -X POST https://elninowatch.so/api/podcast/hold -H "X-Stats-Key: $STATS_KEY" -H "Content-Type: application/json" -d '{"hold": true}'`. Bulletins already made stay listenable.
 
-Podcast feed: `https://elninowatch.so/podcast.xml` lists the last 7 days of bulletins for podcast apps, with the cover `podcast-cover.jpg` (1400 x 1400) and `contact@mandekconsulting.com` as the owner address the directories verify. To publish it: Spotify, at https://podcasters.spotify.com, choose "I already have a podcast" and paste the feed address; Apple, at https://podcastsconnect.apple.com, add a show "From an RSS feed". Both read the feed again by themselves, so new bulletins appear there without anything more to do. The site also announces the feed in its page head, so podcast apps that are given https://elninowatch.so find it.
+English bulletins (owner, 2026-10-17): each slot is also voiced in English, from the same data and the same rules, once the owner approves the English wording: set `APPROVED_TEMPLATE_EN` in `podcast.mjs` to `TEMPLATE_VERSION_EN`. Until then English readers hear the Somali bulletin, marked "in Somali". Try it with `node work/somalia-flood-watch/podcast.mjs --slot evening --lang en` (add `--voice` for an MP3). With English on, the cost is about $6 a month at the 2026 price.
+
+Podcast feeds: `https://elninowatch.so/podcast.xml` (Somali) and `https://elninowatch.so/podcast-en.xml` (English, once English is on) list the last 7 days of bulletins for podcast apps, with the covers `podcast-cover.jpg` and `podcast-cover-en.jpg` (1400 x 1400) and `contact@mandekconsulting.com` as the owner address the directories verify. To publish it: Spotify, at https://podcasters.spotify.com, choose "I already have a podcast" and paste the feed address; Apple, at https://podcastsconnect.apple.com, add a show "From an RSS feed". Both read the feed again by themselves, so new bulletins appear there without anything more to do. The site also announces the feed in its page head, so podcast apps that are given https://elninowatch.so find it.
 
 Plays: the first play of each bulletin in a page is counted, anonymously and by slot, with the visit counts; the private stats view shows "Audio bulletin plays" and which bulletins are played. The news flash carries a standing "Audio bulletin" item while bulletins are on, and the home-page panel lists the earlier bulletins of the week, each playable or saved as MP3 to listen offline.
 

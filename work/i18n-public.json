@@ -735,7 +735,6 @@
     "Q&A": "Su'aalo iyo jawaabo",
     "Page": "Bog",
     "Fact sheet": "Warqad xaqiiqo",
-    "Checked against the app on 16 October 2026.": "Waxaa lagu hubiyay abka 16 Oktoobar 2026.",
     "Flood water can carry cholera.": "Biyaha fatahaaddu waxay qaadi karaan daacuun.",
     "Watch the film: how to protect your family ▶": "Daawo filimka: sida qoyskaaga loo ilaaliyo ▶",
     "Diseases": "Cudurrada",
@@ -769,7 +768,18 @@
     "Each page load is counted, with the tab, city, language, type of device and the country the connection comes from, and so is each play of the audio bulletin. No cookies, internet addresses or browser details are stored, and browsers that ask not to be tracked are not counted. The totals are shown on the visitor statistics page.": "Boog kasta oo la furo waa la tiriyaa, iyadoo lala xusayo qaybta, magaalada, luqadda, nooca qalabka iyo dalka uu xiriirku ka yimid; sidoo kale waa la tiriyaa mar kasta oo la dhageysto warbixinta codka. Lama kaydiyo kukiis, cinwaannada internetka ama faahfaahinta browser-ka, browser-yada codsada in aan lala socon lama tiriyo. Wadarta waxaa lagu muujiyaa bogga tirakoobka booqdayaasha.",
     "Earlier bulletins": "Warbixinihii hore",
     "Save MP3": "Kaydi MP3",
-    "El Nino Watch audio bulletin (Somali)": "Warbixinta codka ee El Nino Watch (Af-Soomaali)"
+    "El Nino Watch audio bulletin (Somali)": "Warbixinta codka ee El Nino Watch (Af-Soomaali)",
+    "Listen: El Niño and flood news, three times a day": "Dhageyso: wararka El Niño iyo fatahaadda, saddex jeer maalintii",
+    "El Nino Watch audio bulletin (English)": "Warbixinta codka ee El Nino Watch (Ingiriisi)",
+    "Somali and English": "Af-Soomaali iyo Ingiriisi",
+    "A short spoken bulletin at 06:30, 12:30 and 18:30 East Africa Time, in Somali and English, first on the home page. It is written by a fixed template from the sources on this page and read by a computer voice (Google Gemini). It is not an official warning: official flood warnings come only from MOEWR.": "Warbixin gaaban oo cod ah oo soo baxda 06:30, 12:30 iyo 18:30 saacadda Bariga Afrika, Af-Soomaali iyo Ingiriisi, kuna jirta bogga hore ugu horreyn. Waxaa lagu qoraa qaab go'an iyadoo laga soo qaado ilaha boggan, waxaana akhriya cod kombiyuutar (Google Gemini). Ma aha digniin rasmi ah: digniinaha rasmiga ah ee fatahaadda waxay ka yimaadaan MOEWR oo keliya.",
+    "Audio": "Cod",
+    "El Nino Watch · read by Google Gemini (voice Puck)": "El Nino Watch · waxaa akhriya Google Gemini (codka Puck)",
+    "Built from MOEWR's official flood levels, SWALIM's Juba and Shabelle river gauges, Open-Meteo's rain forecast for the 30 cities, ICPAC's weekly heavy-rain outlook, NOAA's El Niño status and news items in the bulletin's own language, with the source named. Nothing is machine-translated. The last seven days of bulletins are kept, and each can be saved as MP3.": "Waxaa laga dhisay heerarka rasmiga ah ee fatahaadda ee MOEWR, cabbirada webiyada Jubba iyo Shabeelle ee SWALIM, saadaasha roobka ee Open-Meteo ee 30-ka magaalo, saadaasha toddobaadlaha ah ee roobka xooggan ee ICPAC, xaaladda El Niño ee NOAA iyo wararka ku qoran luqadda warbixinta, iyadoo isha la sheegayo. Wax lama turjumo mashiin. Warbixinada toddobadii maalmood ee ugu dambeysay waa la hayaa, mid kastana waxaa loo kaydin karaa MP3.",
+    "Listen": "Dhageyso",
+    "RSS, Somali": "RSS, Af-Soomaali",
+    "RSS, English": "RSS, Ingiriisi",
+    "Checked against the app on 17 October 2026.": "Waxaa lagu hubiyay abka 17 Oktoobar 2026."
   },
   "patterns": [
     {

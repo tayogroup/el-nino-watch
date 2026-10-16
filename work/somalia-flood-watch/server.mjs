@@ -88,7 +88,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
   // PODCAST_ENABLED=1 are set. A new bulletin goes to the WhatsApp subscribers who opted in.
   const podcast = createPodcast({dataDir, cities:CITY_DATA, config:podcastSettings, statsKey,
     feeds:{alerts:() => feed('/api/alerts'), stations:() => feed('/api/stations'), enso:() => feed('/api/enso'), news:() => feed('/api/news')},
-    onPublished:item => whatsapp.sendBulletin(item)});
+    onPublished:(item, info) => whatsapp.sendBulletin(item, info)});
   const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, 'http://127.0.0.1');
