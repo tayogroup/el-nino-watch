@@ -585,8 +585,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/map.js",
-      "bytes": 15112,
-      "sha256": "e53f07f78babd40de36a10ed129b1b303c1d6b919e2f657bccd65ae864ee3927"
+      "bytes": 15721,
+      "sha256": "7868695e632740d7e3443b0cff700c399c1eda389559b50aa47f26b284b43c82"
     },
     {
       "path": "work/somalia-flood-watch/dist/mayor-store.js",
@@ -660,8 +660,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/style.css",
-      "bytes": 25916,
-      "sha256": "6a51e79dea50a2556e6648fd78b1783b9e9bc2971270d78a47304454ea61b6d4"
+      "bytes": 26844,
+      "sha256": "c93c337dc1ce4968344282d0b8c6ae8da2763329128cf848c425f5dfac1d33eb"
     },
     {
       "path": "work/somalia-flood-watch/dist/tabs.css",

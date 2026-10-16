@@ -27,3 +27,11 @@
 /* Polish: with readable labels the 14-day bars and river days can be wider than a small phone; they scroll
    sideways inside their own box, like the day and hour strips, instead of widening the page. */
 .bars,.riverdays{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
+/* Map: open water is blue so the coast reads at any zoom; city names sit on the map. The selected city is
+   always named, the rest once zoomed in (map.js sets data-labels). Labels never take clicks. */
+#map.leaflet-container{background:#bcd3e6}
+#map .leaflet-label-pane,#map .map-city-label{pointer-events:none}
+#map .map-city-label{display:none}
+#map[data-labels=all] .map-city-label,#map .map-city-label.is-selected{display:block}
+#map .map-city-label span{position:absolute;left:0;top:0;transform:translate(11px,-50%);white-space:nowrap;padding:1px 6px;border-radius:var(--radius-xs);background:rgba(255,255,255,.9);box-shadow:0 0 0 1px rgba(29,54,86,.12);color:var(--neutral-800);font:600 var(--text-xs)/1.4 var(--font-sans)}
+#map .map-city-label.is-selected span{transform:translate(16px,-50%);padding:2px 8px;background:var(--neutral-900);box-shadow:none;color:var(--neutral-0);font-size:var(--text-sm);font-weight:700}
