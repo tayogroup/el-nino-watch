@@ -8,7 +8,7 @@ await fs.mkdir(stage,{recursive:true});
 await fs.cp(new URL('dist/',base),new URL('dist/',stage),{recursive:true});
 for(const file of ['server.mjs','feeds.mjs','hazards.mjs','alerts-feed.mjs','observed-flood.mjs','copernicus.mjs','community.mjs','backup.mjs','forecast-relay.mjs','visits.mjs','Start-Live-App.ps1','README.md'])await fs.copyFile(new URL(file,base),new URL(file,stage));
 let html=await fs.readFile(new URL('dist/index.html',base),'utf8');
-for(const file of ['vendor/leaflet.css','style.css','alerts.css','design.css','enhancements.css','terrain.css','watchlist.css','copernicus.css','mayor.css','flood-outlook.css','extra-cities.css','rankings.css','i18n.css','tabs.css']){
+for(const file of ['vendor/leaflet.css','tokens.css','style.css','alerts.css','design.css','enhancements.css','terrain.css','watchlist.css','copernicus.css','mayor.css','flood-outlook.css','extra-cities.css','rankings.css','i18n.css','tabs.css','shell.css']){
  const content=await fs.readFile(new URL('dist/'+file,base),'utf8');
  html=html.replace(`<link rel="stylesheet" href="${file}">`,()=>`<style>${content}</style>`);
 }

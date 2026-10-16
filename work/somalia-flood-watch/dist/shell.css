@@ -1,0 +1,97 @@
+/* El Nino Watch dashboard shell. Loaded last. Layout only: no content is added or removed.
+   Public view (not the mayor dashboard):
+   - Desktop (1100px and wider): the city control and section tabs become a side navigation.
+   - 30 cities overview: live status first (city counts and the NOAA El Nino status), then the
+     flood map beside the official national flood forecasts, then the rankings and watchlist.
+     The slogan stays in the page for screen readers and search, off screen.
+   - Other tabs keep their content, now beside the side navigation. */
+
+/* Shared: the slogan hero becomes a status card holding the NOAA El Nino status. */
+body.site-tabs-ready:not(.mayor-view) .intro .hero-copy{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;border:0!important}
+body.site-tabs-ready:not(.mayor-view) .intro{display:block;min-height:0;margin:0;padding:var(--space-5);border-radius:var(--radius-lg)}
+body.site-tabs-ready:not(.mayor-view) .intro .enso-card{padding:0;border:0;background:none}
+body.site-tabs-ready:not(.mayor-view) .stats{margin:0}
+
+/* Overview: the flood map joins the overview. The map panel keeps its heading, the colour key and
+   the map; its detailed layers, terrain and satellite sections stay on the Flood map tab. */
+body[data-site-tab=overview]:not(.mayor-view) main>#manager-map-workspace.site-tab-hidden{display:block}
+body[data-site-tab=overview]:not(.mayor-view) #manager-map-workspace>#map-panel.site-tab-part-hidden{display:block}
+body[data-site-tab=overview]:not(.mayor-view) #manager-map-workspace>.detail,
+body[data-site-tab=overview]:not(.mayor-view) #manager-map-workspace>.planning-panel{display:none}
+body[data-site-tab=overview]:not(.mayor-view) #map-panel{margin:0}
+body[data-site-tab=overview]:not(.mayor-view) #map-panel>:is(.map-controls,#scenario-banner,.terrain-panel,.observed-panel,.map-layer-controls,#map-legend,#icpac-legend,p.note,#point-info,.map-context-panel){display:none}
+body[data-site-tab=overview]:not(.mayor-view) #map-panel .mapbody{grid-template-columns:minmax(0,1fr);margin-top:var(--space-3)}
+body[data-site-tab=overview]:not(.mayor-view) #map-panel #citynav{display:none}
+body[data-site-tab=overview]:not(.mayor-view) #map-panel .mapframe #map{height:440px}
+
+/* Overview: the alerts panel shows the official national flood forecasts (MOEWR) as a compact list.
+   When none are in force it shows the other signals instead. Filters, counts and full cards stay on
+   the Alerts tab. */
+body[data-site-tab=overview]:not(.mayor-view) main>#alerts-panel.site-tab-hidden{display:block}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-panel{margin:0}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-panel>:is(.alert-filters,#alerts-summary,#alerts-status,.links){display:none}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-panel>.sectionhead button{display:none}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-list{grid-template-columns:minmax(0,1fr);gap:var(--space-2);max-height:520px}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-list:has(.is-official)>.alert-card:not(.is-official){display:none}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card{padding:var(--space-3) var(--space-4)}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card>:not(.alert-card-head,h3,.alert-scope){display:none}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card-head{margin-bottom:var(--space-2)}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card h3{font-size:var(--text-md);margin:0 0 var(--space-1)}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card .alert-scope{margin:0}
+
+/* Overview, below desktop width: one column in this order. */
+@media (max-width:1099px){
+  body[data-site-tab=overview]:not(.mayor-view) main{display:flex;flex-direction:column;gap:var(--space-5)}
+  body[data-site-tab=overview]:not(.mayor-view) main>*{margin-top:0;margin-bottom:0}
+  body[data-site-tab=overview]:not(.mayor-view) main>#site-disclaimer{order:0}
+  body[data-site-tab=overview]:not(.mayor-view) main>.livebar{order:1}
+  body[data-site-tab=overview]:not(.mayor-view) main>.mayor-extension-bar{order:2}
+  body[data-site-tab=overview]:not(.mayor-view) main>#site-bar{order:3}
+  body[data-site-tab=overview]:not(.mayor-view) main>.stats{order:4}
+  body[data-site-tab=overview]:not(.mayor-view) main>.intro{order:5}
+  body[data-site-tab=overview]:not(.mayor-view) main>#alerts-panel{order:6}
+  body[data-site-tab=overview]:not(.mayor-view) main>#manager-map-workspace{order:7}
+  body[data-site-tab=overview]:not(.mayor-view) main>#city-rankings-panel{order:8}
+  body[data-site-tab=overview]:not(.mayor-view) main>#watchlist{order:9}
+  body[data-site-tab=overview]:not(.mayor-view) main>.site-footer{order:10}
+}
+@media (max-width:600px){
+  body[data-site-tab=overview]:not(.mayor-view) #map-panel .mapframe #map{height:340px}
+  body[data-site-tab=overview]:not(.mayor-view) #alerts-list{max-height:none}
+}
+
+/* Desktop: side navigation. */
+@media (min-width:1100px){
+  body.site-tabs-ready:not(.mayor-view) main{display:grid;grid-template-columns:232px minmax(0,1fr);column-gap:var(--space-5);row-gap:var(--space-5);align-items:start;max-width:1600px}
+  body.site-tabs-ready:not(.mayor-view) main>*{grid-column:2 / -1;min-width:0;margin-top:0;margin-bottom:0}
+  body.site-tabs-ready:not(.mayor-view) main>#site-bar{grid-column:1;grid-row:1 / span 30;position:sticky;top:calc(87px + var(--space-4));display:flex;flex-direction:column;align-items:stretch;gap:var(--space-3);margin:0;padding:var(--space-3);box-shadow:none}
+  body.site-tabs-ready:not(.mayor-view) #site-bar .site-city{flex:none;flex-direction:column;align-items:stretch;padding:var(--space-2);gap:var(--space-1)}
+  body.site-tabs-ready:not(.mayor-view) #site-bar .site-city>svg{display:none}
+  body.site-tabs-ready:not(.mayor-view) #site-bar .site-city select{max-width:none;width:100%}
+  body.site-tabs-ready:not(.mayor-view) #site-bar .site-tabs{flex:none}
+  body.site-tabs-ready:not(.mayor-view) #site-bar .site-tabs-inner{flex-direction:column;gap:2px;overflow:visible}
+  body.site-tabs-ready:not(.mayor-view) #site-bar .site-tab{justify-content:flex-start;width:100%;min-height:44px;padding:var(--space-2) var(--space-3);box-shadow:none}
+  body.site-tabs-ready:not(.mayor-view) #site-bar .site-tab[aria-selected="true"]::after{left:0;right:auto;top:10px;bottom:10px;width:3px;height:auto;border-radius:0 var(--radius-xs) var(--radius-xs) 0}
+  body.site-tabs-ready:not(.mayor-view) #site-bar .site-tab-badge{margin-left:auto}
+
+  /* Overview: status row, then map beside the official forecasts, then the rest. */
+  body[data-site-tab=overview]:not(.mayor-view) main{grid-template-columns:232px minmax(0,1fr) minmax(320px,400px);grid-template-areas:"nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
+  body[data-site-tab=overview]:not(.mayor-view) main>#site-bar{grid-area:nav}
+  body[data-site-tab=overview]:not(.mayor-view) main>#site-disclaimer{grid-area:disc}
+  body[data-site-tab=overview]:not(.mayor-view) main>.livebar{grid-area:live}
+  body[data-site-tab=overview]:not(.mayor-view) main>.mayor-extension-bar{grid-area:ext}
+  body[data-site-tab=overview]:not(.mayor-view) main>.stats{grid-area:stats;align-self:stretch}
+  body[data-site-tab=overview]:not(.mayor-view) main>.intro{grid-area:status;align-self:stretch}
+  body[data-site-tab=overview]:not(.mayor-view) main>#manager-map-workspace{grid-area:map}
+  body[data-site-tab=overview]:not(.mayor-view) main>#alerts-panel{grid-area:alerts;align-self:stretch}
+  body[data-site-tab=overview]:not(.mayor-view) main>#city-rankings-panel{grid-area:rank}
+  body[data-site-tab=overview]:not(.mayor-view) main>#watchlist{grid-area:watch}
+  body[data-site-tab=overview]:not(.mayor-view) main>.site-footer{grid-area:foot}
+  body[data-site-tab=overview]:not(.mayor-view) main>.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body[data-site-tab=overview]:not(.mayor-view) main>.stats>div{display:flex;flex-direction:column;justify-content:center;padding:var(--space-4) var(--space-5)}
+  body[data-site-tab=overview]:not(.mayor-view) main>.livebar{align-self:center}
+  body[data-site-tab=overview]:not(.mayor-view) main>.mayor-extension-bar{justify-self:end;align-self:center;margin:0}
+  /* The official forecasts column scrolls inside, about as tall as the map beside it. */
+  body[data-site-tab=overview]:not(.mayor-view) main>#alerts-panel{align-self:start}
+  body[data-site-tab=overview]:not(.mayor-view) #alerts-list{max-height:620px}
+}
