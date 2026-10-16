@@ -485,8 +485,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 103957,
-      "sha256": "a9ed737e3f9e1552d7f83cdca8966732ded3515d73be57aea2e0f812dc81a35f"
+      "bytes": 104104,
+      "sha256": "6682069f67ef666917f9a5ce11deddbf0499ddbd645541aa29b41e838596a08f"
     },
     {
       "path": "work/i18n-weather.json",
@@ -550,8 +550,8 @@
     },
     {
       "path": "work/news-flash.test.mjs",
-      "bytes": 16380,
-      "sha256": "2f9baa85c66828800c216b9ff085bcd9da0567e57f49b2e8a1406a8fe54ece1b"
+      "bytes": 17934,
+      "sha256": "3a4558d95252b019dbc745ddc2eea8608205c613ad7e8637cb8ea440f168fcc3"
     },
     {
       "path": "work/observed-gfm-capabilities.xml",
@@ -645,8 +645,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.css",
-      "bytes": 9924,
-      "sha256": "b35c2ef02adcc2d6ace7465ac34a0d6a2c5ec2476b7977a726ce6adda66ceb9d"
+      "bytes": 10076,
+      "sha256": "14518041380447301e788a49e69e60d8dd8e9c47cff10c01a7ec6830c45d14e7"
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.js",
@@ -830,8 +830,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/news-flash.js",
-      "bytes": 8011,
-      "sha256": "ce378659890bd9cdabcd8faeb748aca8bc30c6389bb9b81d52d0d401c05f9664"
+      "bytes": 8019,
+      "sha256": "e4bb3fa802708a043e0d34d5d1e56a9d85724f5d1de578cc3f95176a96011ff5"
     },
     {
       "path": "work/somalia-flood-watch/dist/observed-flood-source.json",
@@ -905,8 +905,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 221388,
-      "sha256": "71f8b31038c5adee1d3d06435629cc1d56081dbde37ba953509b31c43214c2b1"
+      "bytes": 221523,
+      "sha256": "4ed80c33f2d89626c92ed0f132962ed81f2c92aa757e78bce49b93c4a8f5a1ea"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",
@@ -1000,8 +1000,8 @@
     },
     {
       "path": "work/somalia-flood-watch/news-feed.mjs",
-      "bytes": 15557,
-      "sha256": "b00bc5df633b82731d5da904dc8cbd217f938cd08a9bc3c6d440d3a3b5c0b376"
+      "bytes": 15917,
+      "sha256": "5788fe220d3ee6e9776fa25fb05b837a7c7fa4118766d97c2e9b7894efdb650f"
     },
     {
       "path": "work/somalia-flood-watch/observed-flood.mjs",
