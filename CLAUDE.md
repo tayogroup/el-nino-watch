@@ -173,6 +173,9 @@ in Somalia, in the owner's words, sourced to six WHO documents (links checked;
 the 2026 WHO analysis lists Somalia on printed page 14). It is WHO-based health
 guidance, labelled "not an outbreak report" and "not an official warning"; keep
 it that way. `health-alert.test.mjs` pins it, its WHO-only links and its Somali.
+`/sources` lists the film (linked, `/#health-film`) and the same six WHO documents
+under "Public health guidance"; `sources-page.test.mjs` fails if the two lists
+drift apart.
 
 **Health films** (`work/film/`, owner, 2026-10-16): narrated animated films,
 modelled on the Healthcare Skillup course films (same owner): a storyboard JSON

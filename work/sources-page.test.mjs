@@ -93,3 +93,13 @@ test('the privacy notice is on the page, linked from the top, and its claims mat
     assert.doesNotMatch(await readFile(new URL(`./somalia-flood-watch/${file}`, import.meta.url), 'utf8'), /set-cookie/i, file);
   }
 });
+
+test('the sources page lists the cholera film and the same WHO documents as the health alert', async () => {
+  const start = page.indexOf('<section aria-labelledby="health">'), section = page.slice(start, page.indexOf('</section>', start));
+  assert.ok(start > 0 && start < page.indexOf('id="privacy-notice"'), 'before the privacy notice');
+  assert.ok(section.includes('<a data-i18n-skip href="/#health-film" data-keep-language>elninowatch.so/#health-film</a>'), 'the film, opened in the reader\'s language');
+  const linksOf = html => [...html.matchAll(/href="(https:\/\/[^"]+)"/g)].map(match => match[1]).sort();
+  const alertStart = index.indexOf('<section class="health-alert"'), alert = index.slice(alertStart, index.indexOf('</section>', alertStart));
+  assert.deepEqual(linksOf(section), linksOf(alert), 'the same six WHO documents');
+  assert.equal(linksOf(section).length, 6);
+});
