@@ -1,0 +1,141 @@
+{
+  "id": "cholera-prevention",
+  "title": "Cholera: protect your family",
+  "tag": "Public health · Cholera",
+  "brand": {
+    "name": "El Nino Watch"
+  },
+  "voice": {
+    "provider": "azure",
+    "voice": "en-US-Ava:DragonHDLatestNeural",
+    "voice_name": "Ava (HD)",
+    "rate": "0%",
+    "approved": "owner, 2026-10-16 (script and voice)"
+  },
+  "captionReplace": [
+    [
+      "O R S",
+      "ORS"
+    ]
+  ],
+  "sources": [
+    "WHO cholera fact sheet (29 September 2026): https://www.who.int/news-room/fact-sheets/detail/cholera",
+    "WHO, Floods: how to protect your health: https://www.who.int/news-room/q-a-detail/how-do-i-protect-my-health-in-a-flood"
+  ],
+  "fps": 24,
+  "width": 1280,
+  "height": 720,
+  "scenes": [
+    {
+      "id": "title",
+      "visual": "title",
+      "heading": "Cholera: protect your family",
+      "sub": "Safe water · clean hands · quick ORS",
+      "narration": "Floods can carry cholera into wells and water tanks. Cholera spreads through dirty water and food, and it can kill within hours. But it can be prevented, and it can be treated. Here is how to protect your family."
+    },
+    {
+      "id": "spread",
+      "visual": "spread",
+      "heading": "How cholera spreads",
+      "steps": [
+        "The germ lives in faeces",
+        "Floods carry it into water and food",
+        "Sudden watery diarrhoea and vomiting"
+      ],
+      "narration": "The cholera germ lives in the faeces of infected people. When floodwater or overflowing latrines reach wells, tanks and food, the germ gets in. Most people who swallow it have mild illness or none, but they can still spread it. Some become very sick, with sudden, watery diarrhoea and vomiting."
+    },
+    {
+      "id": "boil",
+      "visual": "boil",
+      "heading": "1. Make water safe",
+      "steps": [
+        "Bring it to a rolling boil",
+        "Let it cool with the lid on",
+        "No fuel? Use treatment tablets"
+      ],
+      "narration": "First, make drinking water safe. Bring the water to a rolling boil, with big bubbles, then let it cool with the lid on. If you cannot boil it, use water treatment tablets exactly as the packet says. Use safe water for drinking, cooking, brushing teeth and making baby food."
+    },
+    {
+      "id": "store",
+      "visual": "store",
+      "heading": "Keep it safe",
+      "steps": [
+        "A clean container with a lid",
+        "Pour it out, or use the tap",
+        "Never dip hands or cups in"
+      ],
+      "narration": "Keep safe water in a clean container with a lid. Pour it out, or use a tap. Never dip your hands, or a dirty cup, into stored water."
+    },
+    {
+      "id": "handwash",
+      "visual": "handwash",
+      "heading": "2. Wash your hands with soap",
+      "steps": [
+        "Wet",
+        "Soap",
+        "Scrub everywhere",
+        "Rinse",
+        "Air dry"
+      ],
+      "times": [
+        "After the toilet",
+        "After cleaning a child",
+        "Before cooking",
+        "Before eating or feeding a child"
+      ],
+      "narration": "Second, wash your hands with soap and clean water. Wet your hands and rub in soap. Scrub every part: palms, backs, between the fingers and under the nails. Rinse, and let them dry in the air. Do it after the toilet, after cleaning a child, before cooking, and before eating or feeding a child."
+    },
+    {
+      "id": "latrine",
+      "visual": "latrine",
+      "heading": "3. Keep faeces away from water",
+      "steps": [
+        "Always use a latrine",
+        "Keep latrines far from wells",
+        "Children's faeces go in too"
+      ],
+      "narration": "Third, keep faeces away from water. Always use a latrine, never open ground, and keep latrines far from wells. Put children's faeces in the latrine too, and wash your hands afterwards."
+    },
+    {
+      "id": "food",
+      "visual": "food",
+      "heading": "4. Make food safe",
+      "steps": [
+        "Cook it well, eat it hot",
+        "Wash and peel fruit",
+        "Keep food covered"
+      ],
+      "narration": "Fourth, make food safe. Cook food well and eat it while it is hot. Wash fruit with safe water and peel it, and keep food covered."
+    },
+    {
+      "id": "ors",
+      "visual": "ors",
+      "heading": "Watery diarrhoea? Act fast",
+      "steps": [
+        "Start ORS straight away",
+        "Mix it exactly as the packet says",
+        "Give small sips, often",
+        "Go to a health facility quickly"
+      ],
+      "signs": [
+        "Very weak or sleepy",
+        "Cannot drink",
+        "A young child"
+      ],
+      "narration": "If someone has watery diarrhoea, act fast. Start oral rehydration solution, O R S, straight away. Mix one packet with safe water exactly as the packet says, and give small sips often. Go to a health facility quickly, especially if the person is very weak, cannot drink, or is a young child. Most people recover with quick O R S."
+    },
+    {
+      "id": "close",
+      "visual": "close",
+      "heading": "Safe water. Clean hands. Quick ORS.",
+      "items": [
+        "Safe water",
+        "Clean hands",
+        "Quick ORS"
+      ],
+      "vaccine": "Oral cholera vaccine: take it where health workers offer it",
+      "source": "Source: World Health Organization",
+      "narration": "Where health workers offer the oral cholera vaccine, take it, and keep boiling water and washing hands. Safe water, clean hands, quick O R S. Share this with your family."
+    }
+  ]
+}

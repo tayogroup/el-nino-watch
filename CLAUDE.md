@@ -174,6 +174,19 @@ the 2026 WHO analysis lists Somalia on printed page 14). It is WHO-based health
 guidance, labelled "not an outbreak report" and "not an official warning"; keep
 it that way. `health-alert.test.mjs` pins it, its WHO-only links and its Somali.
 
+**Health films** (`work/film/`, owner, 2026-10-16): narrated animated films,
+modelled on the Healthcare Skillup course films (same owner): a storyboard JSON
+per film, `film.html` draws each frame (the cholera film's handwashing, boiling,
+safe storage, latrine, food and ORS demonstrations are its own animated SVG), and
+`render-film.cjs` (`--stills`, `--preview` free; `--audio` for the final)
+makes the MP4 and a VTT. `narrate-film.cjs` voices with Azure (dry run unless
+`--go`, which bills); voiced clips in `work/film/audio/` are committed so they
+are never bought twice. **A new film's script and voice need the owner's
+approval before `--go`.** Cholera film: English approved and voiced (Ava HD);
+the Somali script (`cholera-prevention-so.json`, voice Ubax) awaits the owner's
+review and must not be voiced before it. Words drawn in the pictures go through
+`W()`, translated by a storyboard's `words`.
+
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
   ICPAC heavy-rain city count), then items from SoDMA, FAO SWALIM, ICRC (its own

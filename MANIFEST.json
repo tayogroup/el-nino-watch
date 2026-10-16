@@ -234,6 +234,121 @@
       "sha256": "b7b06e74ce7eccd11f35193b129ba3fb5b14d78c4be2ca3e3e7580b7770fa6f7"
     },
     {
+      "path": "work/film/audio/cholera-prevention/boil.json",
+      "bytes": 6965,
+      "sha256": "ac155f2caaf443a285418e94105edbae5af69866e7e0ce6cba6b40810b14c3ef"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/boil.mp3",
+      "bytes": 338400,
+      "sha256": "2edd6939a311479f0835fd21eb8ae8091e8c7b89c734b88e665f547e305e6cb2"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/close.json",
+      "bytes": 4379,
+      "sha256": "e8eff7907e1587c0b9f60205c291249e271b3499638ff02a21e261d7a75197c1"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/close.mp3",
+      "bytes": 254400,
+      "sha256": "5efb1118cb58845a8b88e4e8b5973fe475d094d97b11e2641fd1f1ed88deb513"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/food.json",
+      "bytes": 2930,
+      "sha256": "d02288e0b316e4600c03e2f3e47e2de34c0e31641bcae518a8c0119d6707e8ed"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/food.mp3",
+      "bytes": 186240,
+      "sha256": "70fa9d37ff300a394cc28a569ed76b4d6bddbc0373b526b43b8d6efa0642646e"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/handwash.json",
+      "bytes": 7300,
+      "sha256": "80b36879f9cd99aca43559acb52a8ababc3c8585aed04cd6a0ca3e00e6ba2efa"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/handwash.mp3",
+      "bytes": 404160,
+      "sha256": "9a9539971eaed87107d2caccab1d9904dbb24d247364e66dd0cf95bfd346f1a2"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/latrine.json",
+      "bytes": 4948,
+      "sha256": "8ce0c7142d95aab19d2c0edf3e7851ad81cf873d160a287fedd7b225636bd8bf"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/latrine.mp3",
+      "bytes": 248160,
+      "sha256": "a67170cefada229ce2de23c68b11031e5667f6a2c44f92ca724aeccb162771c0"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/ors.json",
+      "bytes": 8622,
+      "sha256": "9be3197592eea80cec806aa4123018202aee9d8d43180705e242c86c9dfb85a9"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/ors.mp3",
+      "bytes": 459360,
+      "sha256": "b877805b81173e05406efed9ac1158d70a3ab9213352dd8a2dd9ed418debe7e7"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/spread.json",
+      "bytes": 7096,
+      "sha256": "a7fe4ff82f4878e1929def9c83aceb65dc7fade088b4df8d884c881d6739ce02"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/spread.mp3",
+      "bytes": 369120,
+      "sha256": "4c6c4eace2ebc9f6accfc0cc224d327ee1fd5319a1f034928b61e29652686665"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/store.json",
+      "bytes": 3176,
+      "sha256": "cfb098fefcb1343e2d03d772db35de725c6c2eaf16f66a86ae8fd54e19ae5105"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/store.mp3",
+      "bytes": 179040,
+      "sha256": "6aca266e5c329e4f89068781d4df8f32c93ef8e962eeddfafa70d2c4b4291e75"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/title.json",
+      "bytes": 5372,
+      "sha256": "4d31fab5c0ed6009bdc41b8cae500a2819bb988492a0800094bab955b7b639be"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/title.mp3",
+      "bytes": 263040,
+      "sha256": "28166c5c9788ee56596d9c8507dbb42c4cbce2b8500f0412fbb245c3f50654f4"
+    },
+    {
+      "path": "work/film/cholera-prevention-so.json",
+      "bytes": 6771,
+      "sha256": "cb07f3dd5b6db81aad2151fe6c9a679973fd49eb2f9d416966b14a8f87e4b44c"
+    },
+    {
+      "path": "work/film/cholera-prevention.json",
+      "bytes": 5429,
+      "sha256": "7d20a2daef3438cd638bb09a7f830fb3df8485d76fa252fbb0de227c56da52e4"
+    },
+    {
+      "path": "work/film/film.html",
+      "bytes": 29700,
+      "sha256": "aefafd3bb46c6d3f1dc80ccd4c91ba191e3148f63c51e3519faef6ad9eff2645"
+    },
+    {
+      "path": "work/film/narrate-film.cjs",
+      "bytes": 5661,
+      "sha256": "f54ef4e7a557906e1858a105f5c76a5bdf218e8c434c52e628afdd69f797fe09"
+    },
+    {
+      "path": "work/film/render-film.cjs",
+      "bytes": 8134,
+      "sha256": "faf98f0473bd5679890fbb0643f5c22c5085d8b6cef8c6edba499024f9ee3e18"
+    },
+    {
       "path": "work/find-browser.mjs",
       "bytes": 1715,
       "sha256": "8cbd2ee3399ab3bdf44ee2167d64a503a75ebc67c0ec80e01fa1bbed0aaa929b"

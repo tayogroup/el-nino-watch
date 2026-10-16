@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>El Nino Watch film renderer</title>
+<!-- Draws one frame of an El Nino Watch health film for a time t (seconds). work/film/render-film.cjs
+     loads this page, gives it the storyboard and the timings, and screenshots window.renderAt(t) frame
+     by frame. Adapted from the Healthcare Skillup course-film renderer (same owner); the demonstration
+     scenes (spread, boil, store, handwash, latrine, food, ors) are drawn here as animated SVG. -->
+<style>
+  :root { --navy:#082448; --ink:#153653; --blue:#1473cf; --cyan:#64ddf4; --water:#3d9be0; --water-soft:#cfe8fa; --paper:#f0f5fb; --muted:#586f89;
+          --skin:#8a5a3c; --skin-dark:#6e4630; --soap:#ffd36e; --germ:#5fae4a; --danger:#c0392b; --earth:#c9a66b; --grass:#9cc77a; --good:#1f7a4d; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden; background: var(--paper); font-family: "Segoe UI", system-ui, Arial, sans-serif; color: var(--ink); }
+  #stage { position: absolute; inset: 0; background: radial-gradient(900px 520px at 105% -10%, rgba(100,221,244,.28), transparent 60%), radial-gradient(800px 600px at -10% 0%, rgba(20,115,207,.12), transparent 60%), var(--paper); }
+  .scene { position: absolute; inset: 0; padding: 92px 70px 140px; }
+  .wordmark { position: absolute; left: 40px; top: 30px; font: 800 20px/34px "Segoe UI", Arial; letter-spacing: .14em; text-transform: uppercase; color: var(--navy); }
+  .wordmark i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; background: var(--blue); margin-right: 10px; vertical-align: -1px; }
+  .tag { position: absolute; right: 40px; top: 36px; font: 800 14px/1 "Segoe UI", Arial; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); }
+  h1 { font-size: 66px; line-height: 1.04; letter-spacing: -.02em; margin: 0; color: var(--navy); }
+  h2 { font-size: 44px; line-height: 1.08; letter-spacing: -.02em; margin: 0 0 26px; color: var(--navy); }
+  .sub { font: 600 26px "Segoe UI", Arial; color: var(--muted); margin-top: 18px; }
+  .demo { display: grid; grid-template-columns: 470px 1fr; gap: 40px; align-items: center; height: 100%; }
+  .demo svg { width: 100%; height: 470px; display: block; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .steps li { display: flex; gap: 16px; align-items: center; font: 650 27px/1.25 "Segoe UI", Arial; color: #7f93aa; transition: none; }
+  .steps li i { flex: 0 0 46px; height: 46px; border-radius: 14px; background: #dfe9f4; color: #7f93aa; display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: 22px; }
+  .steps li.on { color: var(--navy); }
+  .steps li.on i { background: var(--blue); color: #fff; }
+  .steps li.done { color: var(--ink); }
+  .steps li.done i { background: #bfe0c8; color: var(--good); }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .chips span { font: 700 20px "Segoe UI", Arial; background: #fff; color: var(--navy); border: 2px solid var(--blue); border-radius: 999px; padding: 8px 16px; }
+  .chips b { width: 100%; font: 800 15px "Segoe UI", Arial; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .signs { margin-top: 20px; background: #fff3f1; border: 2px solid #efb4ab; border-radius: 20px; padding: 16px 20px; }
+  .signs b { display: block; font: 800 15px "Segoe UI", Arial; letter-spacing: .12em; text-transform: uppercase; color: var(--danger); margin-bottom: 8px; }
+  .signs span { display: block; font: 650 23px/1.4 "Segoe UI", Arial; color: #7a2018; }
+  .titlewrap { display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; height: 100%; }
+  .titlewrap svg { width: 100%; height: 470px; }
+  .closewrap { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+  .closewrap h1 { font-size: 60px; }
+  .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin: 34px 0 26px; }
+  .trio div { background: #fff; border-radius: 26px; padding: 22px; box-shadow: 0 14px 40px rgba(8,36,72,.1); display: grid; justify-items: center; gap: 10px; }
+  .trio svg { width: 120px; height: 120px; }
+  .trio b { font: 800 28px "Segoe UI", Arial; color: var(--navy); }
+  .vaccine { font: 650 26px "Segoe UI", Arial; color: var(--ink); display: flex; gap: 14px; align-items: center; }
+  .vaccine i { width: 44px; height: 44px; border-radius: 14px; background: var(--blue); color: #fff; display: grid; place-items: center; font-style: normal; font-weight: 800; }
+  .source { font: 600 18px "Segoe UI", Arial; color: var(--muted); margin-top: 18px; }
+  #cap { position: absolute; left: 90px; right: 90px; bottom: 34px; text-align: center; }
+  #cap span { display: inline; font: 600 26px/1.5 "Segoe UI", Arial; color: #fff; background: rgba(8,36,72,.9); padding: 6px 14px; border-radius: 10px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+  #bar { position: absolute; left: 0; bottom: 0; height: 6px; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+  svg text { font-family: "Segoe UI", Arial, sans-serif; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="cap"></div>
+<div id="bar"></div>
+<script>
+(function () {
+  'use strict';
+  // ---- Time helpers. p runs 0..1 across a scene; t is the film's clock in seconds (for steady motion). ----
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const ease = x => { x = clamp(x); return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+  const seg = (p, a, b) => clamp((p - a) / (b - a));          // 0..1 inside [a, b]
+  const enter = (p, start, dur) => ease((p - start) / (dur || .08));
+  const st = (o, y) => `style="opacity:${o.toFixed(3)};transform:translateY(${((1 - o) * (y || 24)).toFixed(1)}px)"`;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+  const f = n => n.toFixed(1);
+  const rand = i => { const x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); };
+
+  // The left column: the heading and numbered steps; the step running now is highlighted.
+  function steps(s, p, at) {
+    let active = 0;
+    at.forEach((a, i) => { if (p >= a) active = i; });
+    return `<h2 ${st(enter(p, 0, .06))}>${esc(s.heading)}</h2><ol class="steps">${s.steps.map((x, i) =>
+      `<li class="${i === active ? 'on' : i < active ? 'done' : ''}" ${st(enter(p, at[i] - .02, .05), 16)}><i>${i < active ? '✓' : i + 1}</i>${esc(x)}</li>`).join('')}</ol>`;
+  }
+  const even = (n, from = .06, to = .8) => Array.from({length: n}, (_, i) => from + i * (to - from) / n);
+
+  // ---- Drawings ----
+  function germ(x, y, r, o) {
+    return `<g transform="translate(${f(x)} ${f(y)})" opacity="${o.toFixed(2)}"><circle r="${r}" fill="var(--germ)"/><circle r="${r * .35}" cx="${-r * .3}" cy="${-r * .25}" fill="#3d7d2c"/>
+      ${[0, 1, 2, 3, 4, 5].map(k => { const a = k * Math.PI / 3; return `<line x1="${f(Math.cos(a) * r)}" y1="${f(Math.sin(a) * r)}" x2="${f(Math.cos(a) * r * 1.45)}" y2="${f(Math.sin(a) * r * 1.45)}" stroke="var(--germ)" stroke-width="3" stroke-linecap="round"/>`; }).join('')}</g>`;
+  }
+  function drop(x, y, s, fill) { return `<path transform="translate(${f(x)} ${f(y)}) scale(${s})" d="M0 -30C14 -12 22 0 22 12A22 22 0 0 1 -22 12C-22 0 -14 -12 0 -30Z" fill="${fill || 'var(--water)'}"/>`; }
+  function bubble(x, y, r, o) { return `<circle cx="${f(x)}" cy="${f(y)}" r="${f(r)}" fill="#fff" fill-opacity=".75" stroke="#b9d9f5" stroke-width="2" opacity="${o.toFixed(2)}"/>`; }
+  // A hand, palm facing the viewer, fingers up; mirror for the other hand.
+  function hand(x, y, mirror, rot, tone) {
+    const c = tone || 'var(--skin)';
+    return `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot || 0)}) scale(${mirror ? -1 : 1} 1)">
+      <g stroke="#4a2c1a" stroke-width="3.5">
+      ${[-36, -12, 12, 34].map((fx, k) => `<rect x="${fx - 11}" y="${-82 + Math.abs(k - 1.5) * 8}" width="22" height="${84 - Math.abs(k - 1.5) * 8}" rx="11" fill="${c}"/>`).join('')}
+      <rect x="40" y="-6" width="22" height="64" rx="11" fill="${c}" transform="rotate(-38 51 26)"/>
+      <rect x="-48" y="-10" width="96" height="104" rx="34" fill="${c}"/></g>
+      ${[-36, -12, 12, 34].map((fx, k) => `<rect x="${fx - 9.5}" y="${-8}" width="19" height="14" fill="${c}"/>`).join('')}
+      <rect x="-30" y="90" width="60" height="44" rx="10" fill="#1473cf"/></g>`;
+  }
+  function jerrycan(x, y, s, lid) {
+    return `<g transform="translate(${f(x)} ${f(y)}) scale(${s})"><rect x="-70" y="-60" width="140" height="170" rx="22" fill="#f2c94c" stroke="#c99a1d" stroke-width="5"/>
+      <rect x="-40" y="-90" width="56" height="36" rx="10" fill="none" stroke="#c99a1d" stroke-width="10"/>
+      <rect x="28" y="-80" width="30" height="${lid ? 24 : 0}" rx="6" fill="#1473cf"/><rect x="-50" y="-20" width="100" height="70" rx="10" fill="#fff" opacity=".35"/></g>`;
+  }
+  function tick(x, y, s) { return `<g transform="translate(${f(x)} ${f(y)}) scale(${s})"><circle r="30" fill="var(--good)"/><path d="M-13 1 -3 11 15 -9" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g>`; }
+  function cross(x, y, s) { return `<g transform="translate(${f(x)} ${f(y)}) scale(${s})"><circle r="30" fill="var(--danger)"/><path d="M-11 -11 11 11M11 -11 -11 11" stroke="#fff" stroke-width="7" stroke-linecap="round"/></g>`; }
+  function label(x, y, text, o, fill) { return `<g opacity="${o.toFixed(2)}"><rect x="${f(x - text.length * 6.6 - 14)}" y="${f(y - 22)}" width="${f(text.length * 13.2 + 28)}" height="40" rx="20" fill="${fill || 'var(--navy)'}"/><text x="${f(x)}" y="${f(y + 5)}" text-anchor="middle" font-size="21" font-weight="700" fill="#fff">${esc(text)}</text></g>`; }
+  const ground = `<rect x="0" y="380" width="640" height="100" fill="#e3d3b2"/><rect x="0" y="372" width="640" height="14" fill="var(--grass)"/>`;
+
+  // A storyboard's "words" translate what is drawn in the pictures; without it, English.
+  const W = word => (F && F.storyboard.words && F.storyboard.words[word]) || word;
+  const V = {};
+
+  V.title = (s, p, t) => {
+    const bob = Math.sin(t * 2) * 6;
+    const bubbles = Array.from({length: 9}, (_, i) => { const k = (t * .25 + rand(i)) % 1; return bubble(330 + rand(i + 9) * 220, 380 - k * 320, 8 + rand(i + 3) * 14, Math.sin(k * Math.PI)); }).join('');
+    return `<div class="titlewrap"><div><p class="tag" style="position:static;margin:0 0 20px">${esc(W('El Nino Watch · Public health'))}</p>
+      <h1 ${st(enter(p, .02, .12))}>${esc(s.heading)}</h1><p class="sub" ${st(enter(p, .14, .12))}>${esc(s.sub)}</p></div>
+      <svg viewBox="0 0 640 480" ${st(enter(p, 0, .12), 40)}><circle cx="330" cy="250" r="210" fill="#dcecfb"/>${jerrycan(250, 250 + bob, 1.15, true)}${drop(440, 170 - bob, 2.2)}
+      ${hand(470, 360, true, -12)}${bubbles}</svg></div>`;
+  };
+
+  V.spread = (s, p, t) => {
+    const rise = ease(seg(p, .05, .4)), level = 470 - rise * 120;
+    const path = k => { const a = clamp(k); return [130 + a * 200, level + 10 - Math.sin(a * Math.PI) * 50]; };
+    const germs = Array.from({length: 8}, (_, i) => { const k = seg(p, .25 + i * .04, .6 + i * .04); const [x, y] = path(k); return k > 0 && k < 1 ? germ(x, y + Math.sin(t * 3 + i) * 4, 9, 1) : ''; }).join('');
+    const inset = enter(p, .62, .08);
+    return `<div class="demo"><div>${steps(s, p, [.02, .25, .62])}</div><svg viewBox="0 0 640 480">
+      ${ground}
+      <g><rect x="60" y="250" width="120" height="130" rx="8" fill="#a77b4f"/><path d="M50 255 120 205 190 255Z" fill="#7c5634"/><rect x="100" y="300" width="40" height="80" rx="4" fill="#5b3c22"/><text x="120" y="190" text-anchor="middle" font-size="20" font-weight="700" fill="var(--muted)">${esc(W("Latrine"))}</text></g>
+      <g><rect x="300" y="300" width="90" height="80" rx="10" fill="#9aa9b8"/><rect x="292" y="292" width="106" height="16" rx="6" fill="#7b8a99"/><path d="M310 250h70M345 250v42" stroke="#5b6b7a" stroke-width="8"/><text x="345" y="235" text-anchor="middle" font-size="20" font-weight="700" fill="var(--muted)">${esc(W("Well"))}</text></g>
+      <g><rect x="470" y="250" width="130" height="130" rx="6" fill="#f3e2c4"/><path d="M455 255 535 195 615 255Z" fill="#c25d3c"/><rect x="520" y="310" width="34" height="70" fill="#8a5a3c"/></g>
+      <rect x="0" y="${f(level)}" width="640" height="${f(480 - level)}" fill="var(--water)" opacity=".55"/>
+      <path d="M0 ${f(level)} Q 80 ${f(level - 8)} 160 ${f(level)} T 320 ${f(level)} T 480 ${f(level)} T 640 ${f(level)}" fill="none" stroke="#fff" stroke-width="3" opacity=".7"/>
+      ${germs}
+      <g opacity="${inset.toFixed(2)}" transform="translate(${f(400 + (1 - inset) * 40)} 40)"><rect width="220" height="150" rx="24" fill="#fff" stroke="#efb4ab" stroke-width="3"/>
+        <path d="M30 40h50l-8 80h-34Z" fill="var(--water-soft)" stroke="var(--water)" stroke-width="4"/>${germ(55, 80, 7, 1)}
+        <ellipse cx="150" cy="105" rx="52" ry="14" fill="#e9eef3"/><circle cx="140" cy="92" r="16" fill="#e8b04a"/><circle cx="165" cy="95" r="12" fill="#d9772e"/>${germ(155, 80, 7, 1)}
+        <text x="110" y="142" text-anchor="middle" font-size="17" font-weight="700" fill="var(--danger)">${esc(W("Water and food"))}</text></g>
+    </svg></div>`;
+  };
+
+  V.boil = (s, p, t) => {
+    const heat = seg(p, 0, .38), rolling = seg(p, .3, .58), cool = seg(p, .58, .74), tablet = enter(p, .76, .06);
+    const fireOn = 1 - cool;
+    const flames = [0, 1, 2, 3, 4, 5].map(i => { const h = (46 + Math.sin(t * 9 + i * 2) * 12) * fireOn; return `<path d="M${186 + i * 30} 418 q 14 ${f(-h)} 28 0Z" fill="${i % 2 ? '#f39c12' : '#e74c3c'}"/>`; }).join('');
+    const bubbleCount = Math.round(4 + heat * 6 + rolling * 14);
+    const bubbles = Array.from({length: bubbleCount}, (_, i) => { const k = (t * (1 + rolling * 1.6) * .6 + rand(i)) % 1; return bubble(185 + rand(i + 4) * 150, 330 - k * 110, (4 + rand(i + 7) * 6) * (1 + rolling * .8), (1 - cool) * Math.sin(k * Math.PI)); }).join('');
+    const steam = Array.from({length: 5}, (_, i) => { const k = (t * .35 + rand(i + 20)) % 1; return `<path d="M${f(200 + i * 26)} ${f(200 - k * 120)} q 10 -20 0 -40 q -10 -20 0 -40" fill="none" stroke="#c9d6e3" stroke-width="7" stroke-linecap="round" opacity="${f(Math.min(rolling * 1.3, 1) * (1 - cool) * Math.sin(k * Math.PI))}"/>`; }).join('');
+    const lidY = 180 - (1 - ease(seg(p, .58, .66))) * 90, lidO = seg(p, .56, .6);
+    const tab = 1 - ease(seg(p, .8, .9));
+    return `<div class="demo"><div>${steps(s, p, [.02, .58, .76])}</div><svg viewBox="0 0 640 480">
+      <path d="M150 200h240l-20 170H170Z" fill="#7f8c9a"/><rect x="140" y="192" width="260" height="16" rx="8" fill="#5f6d7a"/>
+      <rect x="164" y="220" width="212" height="140" fill="var(--water)" opacity=".75"/>${bubbles}${steam}
+      ${flames}<rect x="130" y="418" width="280" height="22" rx="8" fill="#4a4a4a"/><rect x="150" y="376" width="16" height="44" fill="#4a4a4a"/><rect x="374" y="376" width="16" height="44" fill="#4a4a4a"/>
+      <g opacity="${lidO.toFixed(2)}"><rect x="146" y="${f(lidY)}" width="248" height="14" rx="7" fill="#46525e"/><rect x="250" y="${f(lidY - 16)}" width="40" height="16" rx="6" fill="#46525e"/></g>
+      ${label(270, 110, W('Rolling boil'), enter(p, .38, .05) * (1 - seg(p, .56, .6)), 'var(--danger)')}
+      ${label(270, 110, W('Cool with the lid on'), enter(p, .62, .05) * (1 - tablet), 'var(--blue)')}
+      <g opacity="${tablet.toFixed(2)}" transform="translate(${f(470 + (1 - tablet) * 30)} 0)">
+        <rect x="-10" y="90" width="170" height="330" rx="26" fill="#fff" stroke="#b9d9f5" stroke-width="3"/>${jerrycan(75, 300, .7, false)}
+        <g transform="translate(${f(98)} ${f(130 + (1 - tab) * 120)})" opacity="${f(tab > .02 ? 1 : 0)}"><rect x="-16" y="-8" width="32" height="16" rx="8" fill="#fff" stroke="#1473cf" stroke-width="3"/></g>
+        ${Array.from({length: 6}, (_, i) => bubble(70 + rand(i + 40) * 50, 300 - ((t * .8 + rand(i + 50)) % 1) * 60, 4, seg(p, .9, .94))).join('')}
+        <text x="75" y="125" text-anchor="middle" font-size="18" font-weight="700" fill="var(--navy)">${esc(W("Tablet: as the"))}</text><text x="75" y="147" text-anchor="middle" font-size="18" font-weight="700" fill="var(--navy)">${esc(W("packet says"))}</text>
+      </g>
+    </svg></div>`;
+  };
+
+  V.store = (s, p, t) => {
+    const pour = seg(p, .3, .62), fill = ease(seg(p, .34, .62)), bad = enter(p, .68, .06);
+    const stream = pour > 0 && pour < 1 ? `<rect x="318" y="322" width="10" height="${f(70 - fill * 30)}" rx="5" fill="var(--water)"/>` : '';
+    const dipX = 380 + (1 - ease(seg(p, .68, .82))) * 120;
+    return `<div class="demo"><div>${steps(s, p, [.02, .3, .68])}</div><svg viewBox="0 0 640 480">
+      <rect x="0" y="420" width="640" height="60" fill="#e7dcc8"/>
+      <rect x="180" y="120" width="220" height="230" rx="26" fill="#3d8fd1"/><rect x="170" y="104" width="240" height="30" rx="12" fill="#255f99"/>
+      ${tick(420, 116, enter(p, .1, .06))}
+      <rect x="300" y="300" width="40" height="22" rx="6" fill="#255f99"/><rect x="${f(318 - pour * 0)}" y="312" width="10" height="12" fill="#255f99"/>
+      <rect x="180" y="350" width="220" height="70" fill="#6e5a43"/>${stream}
+      <g><path d="M290 392h70l-6 28h-58Z" fill="#fff" stroke="#9aa9b8" stroke-width="4"/><rect x="292" y="${f(418 - fill * 24)}" width="66" height="${f(fill * 24)}" fill="var(--water)" opacity=".8"/></g>
+      ${label(290, 70, W('Clean, with a lid'), enter(p, .08, .06) * (1 - bad))}
+      <g opacity="${bad.toFixed(2)}">${hand(dipX, 150, true, 160, 'var(--skin-dark)')}<circle cx="${f(dipX - 10)}" cy="120" r="5" fill="#6b5130"/><circle cx="${f(dipX + 12)}" cy="138" r="4" fill="#6b5130"/>${cross(470, 260, 1.4)}</g>
+      ${label(470, 330, W('Never dip hands in'), bad, 'var(--danger)')}
+    </svg></div>`;
+  };
+
+  V.handwash = (s, p, t) => {
+    // Timed to the narration: wet and soap, scrub, rinse and dry, then when to wash (from about .64).
+    const at = [0, .12, .24, .5, .57];
+    const wet = seg(p, .02, .12), soap = seg(p, .12, .24), scrub = seg(p, .24, .5), rinse = seg(p, .5, .57), dry = seg(p, .57, .64);
+    const tapOn = (p > .02 && p < .12) || (p > .5 && p < .57);
+    const rub = p > .24 && p < .5 ? Math.sin(t * 9) * 22 : 0;
+    const shake = p > .57 && p < .64 ? Math.sin(t * 18) * 6 : 0;
+    const sub = ['Palms', 'Backs', 'Between the fingers', 'Under the nails'].map(W)[Math.min(3, Math.floor(scrub * 4))];
+    const foam = p > .14 && p < .56 ? Array.from({length: 22}, (_, i) => bubble(250 + rand(i) * 150 + rub * .5, 230 + rand(i + 30) * 140, 6 + rand(i + 60) * 9, Math.min(1, seg(p, .14, .22) * 2) * (1 - seg(p, .5, .56)))).join('') : '';
+    const drops = Array.from({length: 10}, (_, i) => { const k = (t * 1.6 + rand(i)) % 1; return drop(260 + rand(i + 5) * 130, 360 + k * 90, .25, 'var(--water)').replace('<path', `<path opacity="${f((wet > 0 && wet < 1) || (rinse > 0 && rinse < 1) || (dry > 0 && dry < 1) ? Math.sin(k * Math.PI) : 0)}"`); }).join('');
+    const soapX = 470 - ease(soap) * 150, soapO = p < .26 ? enter(p, .1, .03) * (1 - seg(p, .22, .26)) : 0;
+    const timesO = enter(p, .63, .04);
+    // The times to wash take over the right side at the end: the hands step back behind a card.
+    const card = `<g opacity="${timesO.toFixed(2)}"><rect x="110" y="${f(70 + (1 - timesO) * 30)}" width="440" height="330" rx="28" fill="#fff" stroke="#b9d9f5" stroke-width="3"/><text x="330" y="${f(122 + (1 - timesO) * 30)}" text-anchor="middle" font-size="22" font-weight="800" fill="var(--muted)" letter-spacing="3">${esc(W("WHEN TO WASH"))}</text>${s.times.map((x, i) => label(330, 175 + i * 62 + (1 - timesO) * 30, x, enter(p, .66 + i * .06, .04), 'var(--blue)')).join('')}</g>`;
+    return `<div class="demo"><div>${steps(s, p, at)}</div><svg viewBox="0 0 640 480"><g opacity="${f(1 - timesO * .8)}">
+      <rect x="380" y="30" width="200" height="34" rx="12" fill="#9aa9b8"/><rect x="380" y="30" width="34" height="90" rx="10" fill="#9aa9b8"/><rect x="368" y="110" width="58" height="22" rx="8" fill="#7b8a99"/>
+      ${tapOn ? `<rect x="389" y="132" width="16" height="190" rx="8" fill="var(--water)" opacity=".8"/>` : ''}
+      ${hand(282 + rub + shake, 300, false, 14)}${hand(388 - rub + shake, 300, true, -14)}
+      ${foam}${drops}
+      <g opacity="${soapO.toFixed(2)}"><rect x="${f(soapX - 40)}" y="250" width="80" height="44" rx="18" fill="var(--soap)" stroke="#d9a531" stroke-width="3"/><text x="${f(soapX)}" y="279" text-anchor="middle" font-size="18" font-weight="800" fill="#8a6412">${esc(W("SOAP"))}</text></g>
+      ${label(330, 455, sub, p > .25 && p < .5 ? 1 : 0, 'var(--blue)')}
+      ${label(330, 455, W('Let them dry in the air'), p > .57 && p < .64 ? 1 : 0, 'var(--good)')}</g>${card}
+    </svg></div>`;
+  };
+
+  V.latrine = (s, p, t) => {
+    const far = enter(p, .3, .08), kid = ease(seg(p, .64, .86)), wash = enter(p, .88, .05);
+    const open = enter(p, .06, .06) * (1 - seg(p, .26, .3));
+    return `<div class="demo"><div>${steps(s, p, [.02, .3, .64])}</div><svg viewBox="0 0 640 480">
+      ${ground}
+      <g><rect x="70" y="200" width="150" height="180" rx="10" fill="#a77b4f"/><path d="M58 205 145 140 232 205Z" fill="#7c5634"/><rect x="118" y="262" width="54" height="118" rx="4" fill="#5b3c22"/><text x="145" y="128" text-anchor="middle" font-size="22" font-weight="700" fill="var(--muted)">${esc(W("Latrine"))}</text>${tick(230, 180, enter(p, .06, .06))}</g>
+      <g><rect x="480" y="300" width="96" height="80" rx="10" fill="#9aa9b8"/><rect x="472" y="292" width="112" height="16" rx="6" fill="#7b8a99"/><path d="M490 250h76M528 250v42" stroke="#5b6b7a" stroke-width="8"/><text x="528" y="235" text-anchor="middle" font-size="22" font-weight="700" fill="var(--muted)">${esc(W("Well"))}</text></g>
+      <g opacity="${far.toFixed(2)}"><path d="M235 330H465" stroke="var(--blue)" stroke-width="5" stroke-dasharray="14 10"/><path d="M235 330l18 -12v24Z M465 330l-18 -12v24Z" fill="var(--blue)"/>${label(350, 300, W('Far from the well'), far, 'var(--blue)')}</g>
+      <g opacity="${open.toFixed(2)}"><ellipse cx="350" cy="420" rx="70" ry="18" fill="#b89363"/>${cross(350, 400, 1.2)}<text x="350" y="465" text-anchor="middle" font-size="19" font-weight="700" fill="var(--danger)">${esc(W("Not open ground"))}</text></g>
+      <g opacity="${f(kid > 0 && kid < 1 ? 1 : 0)}" transform="translate(${f(330 - kid * 185)} ${f(392 - Math.sin(kid * Math.PI) * 60)})"><path d="M-26 -20h52l-6 34h-40Z" fill="#f28c8c"/><rect x="-30" y="-26" width="60" height="10" rx="5" fill="#d96b6b"/></g>
+      ${label(350, 70, W("Children's faeces too"), enter(p, .64, .05), 'var(--navy)')}
+      <g opacity="${wash.toFixed(2)}">${drop(300, 440, .55)}<text x="330" y="450" font-size="20" font-weight="700" fill="var(--navy)">${esc(W("Then wash hands"))}</text></g>
+    </svg></div>`;
+  };
+
+  V.food = (s, p, t) => {
+    const cook = 1 - seg(p, .32, .38), peel = ease(seg(p, .38, .62)), cover = ease(seg(p, .68, .82));
+    const steam = Array.from({length: 4}, (_, i) => { const k = (t * .4 + rand(i + 3)) % 1; return `<path d="M${f(150 + i * 30)} ${f(250 - k * 90)} q 10 -18 0 -36 q -10 -18 0 -36" fill="none" stroke="#c9d6e3" stroke-width="7" stroke-linecap="round" opacity="${f(cook * Math.sin(k * Math.PI))}"/>`; }).join('');
+    return `<div class="demo"><div>${steps(s, p, [.02, .38, .68])}</div><svg viewBox="0 0 640 480">
+      <rect x="0" y="400" width="640" height="80" fill="#e7dcc8"/>
+      <g opacity="${f(.25 + cook * .75)}"><path d="M110 270h170l-14 110H124Z" fill="#7f8c9a"/><rect x="100" y="262" width="190" height="14" rx="7" fill="#5f6d7a"/>${steam}${label(195, 210, W('Cook well, eat hot'), enter(p, .04, .05) * cook, 'var(--danger)')}</g>
+      <g opacity="${f(enter(p, .36, .05))}"><ellipse cx="460" cy="250" rx="62" ry="80" fill="#f2a93b"/><path d="M460 170 q -${f(10 + peel * 80)} ${f(30 + peel * 60)} -${f(peel * 120)} ${f(peel * 150)}" fill="none" stroke="#5d9b3a" stroke-width="${f(18 - peel * 6)}" stroke-linecap="round"/><ellipse cx="460" cy="250" rx="${f(62 - peel * 8)}" ry="${f(80 - peel * 6)}" fill="#ffd27a" opacity="${f(peel)}"/>${drop(540, 170, .5)}${label(460, 360, W('Wash and peel'), enter(p, .4, .05) * (1 - seg(p, .66, .7)), 'var(--good)')}</g>
+      <g opacity="${f(enter(p, .66, .05))}"><ellipse cx="460" cy="390" rx="110" ry="20" fill="#e9eef3"/><circle cx="430" cy="372" r="22" fill="#e8b04a"/><circle cx="480" cy="376" r="18" fill="#d9772e"/>
+        <path d="M${f(360)} ${f(380 - (1 - cover) * 160)} a 100 70 0 0 1 200 0Z" fill="#cfe1f3" stroke="#8fb3d6" stroke-width="4" opacity=".92"/>${label(460, 455, W('Keep food covered'), enter(p, .7, .05), 'var(--blue)')}</g>
+    </svg></div>`;
+  };
+
+  V.ors = (s, p, t) => {
+    const pour = seg(p, .1, .3), stir = seg(p, .3, .44), sip = enter(p, .44, .06), clinic = enter(p, .66, .08);
+    const tilt = -ease(seg(p, .06, .14)) * 70 * (1 - seg(p, .28, .32));
+    const powder = pour > 0 && pour < 1 ? Array.from({length: 14}, (_, i) => { const k = (t * 1.5 + rand(i)) % 1; return `<circle cx="${f(250 + rand(i + 3) * 30)}" cy="${f(150 + k * 120)}" r="3" fill="#fff" stroke="#d7dde3"/>`; }).join('') : '';
+    const spoon = stir > 0 && stir < 1 ? `<rect x="${f(245 + Math.sin(t * 8) * 26)}" y="150" width="10" height="150" rx="5" fill="#9aa9b8" transform="rotate(${f(Math.sin(t * 8) * 8)} 250 290)"/>` : '';
+    const pulse = 1 + Math.sin(t * 5) * .06 * clinic;
+    return `<div class="demo"><div>${steps(s, p, [.02, .1, .44, .66])}<div class="signs" ${st(enter(p, .74, .05), 14)}><b>${esc(W('Go at once if'))}</b>${s.signs.map(x => `<span>• ${esc(x)}</span>`).join('')}</div></div><svg viewBox="0 0 640 480">
+      <rect x="0" y="410" width="640" height="70" fill="#e7dcc8"/>
+      <g opacity="${f(1 - clinic)}">
+        <g transform="translate(300 110) rotate(${f(tilt)})"><rect x="-44" y="-56" width="88" height="112" rx="10" fill="#fff" stroke="#1473cf" stroke-width="4"/><text x="0" y="-8" text-anchor="middle" font-size="30" font-weight="800" fill="#1473cf">ORS</text><text x="0" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="var(--muted)">${esc(W("1 packet"))}</text></g>
+        ${powder}
+        <path d="M180 260h140l-10 150H190Z" fill="#fff" stroke="#9aa9b8" stroke-width="5"/><rect x="186" y="286" width="128" height="120" fill="var(--water)" opacity="${f(.55 + stir * .15)}"/>
+        <text x="250" y="250" text-anchor="middle" font-size="18" font-weight="700" fill="var(--muted)">${esc(W("Safe water"))}</text>${spoon}
+        <g opacity="${sip.toFixed(2)}" transform="translate(${f(440)} ${f(330 - Math.sin(t * 2.4) * 10 * sip)})"><path d="M-34 -40h68l-8 80h-52Z" fill="#fff" stroke="#9aa9b8" stroke-width="4"/><rect x="-28" y="-14" width="56" height="50" fill="var(--water)" opacity=".75"/></g>
+        ${label(450, 215, W('Small sips, often'), sip * (1 - clinic), 'var(--blue)')}
+      </g>
+      <g opacity="${clinic.toFixed(2)}" transform="translate(320 250) scale(${f(pulse)}) translate(-320 -250)">
+        <rect x="170" y="180" width="300" height="230" rx="12" fill="#fff" stroke="#c9d6e3" stroke-width="4"/><path d="M150 190 320 100 490 190Z" fill="#1473cf"/>
+        <rect x="290" y="300" width="60" height="110" rx="6" fill="#7b8a99"/><g transform="translate(320 230)"><rect x="-14" y="-40" width="28" height="80" rx="6" fill="var(--danger)"/><rect x="-40" y="-14" width="80" height="28" rx="6" fill="var(--danger)"/></g>
+        <text x="320" y="455" text-anchor="middle" font-size="22" font-weight="800" fill="var(--navy)">${esc(W("Health facility"))}</text></g>
+    </svg></div>`;
+  };
+
+  V.close = (s, p, t) => {
+    const icons = [
+      `<svg viewBox="0 0 120 120">${drop(60, 70, 1.6)}</svg>`,
+      `<svg viewBox="0 0 120 120"><g transform="translate(60 72) scale(.42)">${hand(-40, 0, false, 18).replace(/^<g transform="/, '<g transform="')}${hand(40, 0, true, -18)}</g></svg>`,
+      `<svg viewBox="0 0 120 120"><path d="M30 30h60l-8 70H38Z" fill="#fff" stroke="#1473cf" stroke-width="5"/><rect x="36" y="56" width="48" height="40" fill="var(--water)" opacity=".75"/><text x="60" y="50" text-anchor="middle" font-size="16" font-weight="800" fill="#1473cf">ORS</text></svg>`
+    ];
+    return `<div class="closewrap"><h1 ${st(enter(p, .02, .1))}>${esc(s.heading)}</h1><div class="trio">${s.items.map((x, i) => `<div ${st(enter(p, .15 + i * .1, .06), 30)}>${icons[i]}<b>${esc(x)}</b></div>`).join('')}</div>
+      <p class="vaccine" ${st(enter(p, .02, .08))}><i>✚</i>${esc(s.vaccine)}</p><p class="source" ${st(enter(p, .5, .08))}>${esc(s.source)}</p></div>`;
+  };
+
+  let F = null;
+  window.loadFilm = film => { F = film; };
+  window.renderAt = t => {
+    let sc = F.timings.length - 1;
+    for (let i = 0; i < F.timings.length; i++) if (t < F.timings[i].end) { sc = i; break; }
+    const tm = F.timings[sc], s = F.storyboard.scenes[sc];
+    const p = clamp((t - tm.start) / (tm.end - tm.start));
+    const fadeIn = Math.min(1, (t - tm.start) / .45), fadeOut = sc < F.timings.length - 1 ? Math.min(1, (tm.end - t) / .35) : 1;
+    document.getElementById('stage').innerHTML = `<div class="scene" style="opacity:${Math.max(0, Math.min(fadeIn, fadeOut)).toFixed(3)}"><span class="wordmark"><i></i>${esc(F.storyboard.brand.name)}</span><span class="tag">${esc(F.storyboard.tag)}</span>${V[s.visual](s, p, t)}</div>`;
+    let cap = '';
+    for (const c of F.captions) if (t >= c.start && t < c.end) { cap = c.text; break; }
+    document.getElementById('cap').innerHTML = cap ? `<span>${esc(cap)}</span>` : '';
+    document.getElementById('bar').style.width = (t / F.duration * 100).toFixed(2) + '%';
+    return document.fonts.ready;
+  };
+})();
+</script>
+</body>
+</html>
