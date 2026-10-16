@@ -234,6 +234,96 @@
       "sha256": "b7b06e74ce7eccd11f35193b129ba3fb5b14d78c4be2ca3e3e7580b7770fa6f7"
     },
     {
+      "path": "work/film/audio/cholera-prevention-so/boil.json",
+      "bytes": 9892,
+      "sha256": "2258d1af73d0581517d138a870e0043e509dd7f5269298b901ebeb5fbdff9b0a"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/boil.mp3",
+      "bytes": 495360,
+      "sha256": "91329e35f67c388fcf93f3170d4685a736cf3751ee09d40d19e427f4def0400e"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/close.json",
+      "bytes": 6544,
+      "sha256": "b4617137e7576803995bde12d917d7e0b818a4f233baec60f35e828bdd0ac27f"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/close.mp3",
+      "bytes": 324480,
+      "sha256": "626a42bf090d625185cbca04bdf3628ce4d9a4ac6eb25714b040770de059c3d2"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/food.json",
+      "bytes": 4242,
+      "sha256": "5dd4033eceea664fddb57ee455c59cb0ab9d830e105b75d37ba6d06a30a8588d"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/food.mp3",
+      "bytes": 232320,
+      "sha256": "6dd9cbe403731a578d1d31a893fcf49a118c865dcc909f4b83a845e477707fd0"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/handwash.json",
+      "bytes": 9733,
+      "sha256": "2d389aedf120eac92a1edb1306766af094c7f151f9382c79fb0ce54e543220e2"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/handwash.mp3",
+      "bytes": 497760,
+      "sha256": "d00ea8dbb131948555c11c09a3786a4d1452f5e725368177b5ed117fe47e78c4"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/latrine.json",
+      "bytes": 5576,
+      "sha256": "2a6538b79e5a3c667a12149986eae21a762fc1723cdebc997a66842dc96a5a95"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/latrine.mp3",
+      "bytes": 291840,
+      "sha256": "7bc207e9f94ace6f57063983bafb04135a6965d70bb096ce7756d713d49ecb6e"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/ors.json",
+      "bytes": 10597,
+      "sha256": "bdd2f89afc667f82692d51ef177ff94051646524109eef899d8734a6ef14baa0"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/ors.mp3",
+      "bytes": 554880,
+      "sha256": "77ebc0bbd26e57db48df847a6bd611091b76aaa7e640be9467124de084f70db1"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/spread.json",
+      "bytes": 10832,
+      "sha256": "a0a37781355f4d68160d343740d4fcfd32226559a0e7531d63a57b41b063d0b2"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/spread.mp3",
+      "bytes": 542880,
+      "sha256": "1abb0ff3147b3aed1004a399d063bc5a412b936035d9819e599de6744d14a976"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/store.json",
+      "bytes": 4466,
+      "sha256": "4bf39b7a34c516d6c62358c1966823b62739d600a866020c35d7d230e08f2c22"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/store.mp3",
+      "bytes": 240960,
+      "sha256": "ac6068318cdcd38f9dd84f147eb28145e6fe98653c36beed0ffbbf6c01d26f2e"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/title.json",
+      "bytes": 10527,
+      "sha256": "b685371a94cbb55d7527edff5bcfd1bc0ee95250825275d504565186a2247cf6"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention-so/title.mp3",
+      "bytes": 533760,
+      "sha256": "b48263b0e57e9115567c82c7788a5ac8feb4370701040b8c616523192e845d56"
+    },
+    {
       "path": "work/film/audio/cholera-prevention/boil.json",
       "bytes": 6965,
       "sha256": "ac155f2caaf443a285418e94105edbae5af69866e7e0ce6cba6b40810b14c3ef"
@@ -325,8 +415,8 @@
     },
     {
       "path": "work/film/cholera-prevention-so.json",
-      "bytes": 6771,
-      "sha256": "cb07f3dd5b6db81aad2151fe6c9a679973fd49eb2f9d416966b14a8f87e4b44c"
+      "bytes": 7770,
+      "sha256": "7c690d6dd3f322e08087be125cf91a2b597aeb9a4f4aa97d4b11fbb90d494291"
     },
     {
       "path": "work/film/cholera-prevention.json",
@@ -335,8 +425,8 @@
     },
     {
       "path": "work/film/film.html",
-      "bytes": 29700,
-      "sha256": "aefafd3bb46c6d3f1dc80ccd4c91ba191e3148f63c51e3519faef6ad9eff2645"
+      "bytes": 30010,
+      "sha256": "90c51e0c727cb11fc2d443b3c3d475c3206beca616e39873a3c12c6e0045ed91"
     },
     {
       "path": "work/film/narrate-film.cjs",
@@ -375,8 +465,8 @@
     },
     {
       "path": "work/health-alert.test.mjs",
-      "bytes": 11548,
-      "sha256": "78669fd5104e9391ab69a35b530fb237f46b4e2bb34fd83125a5d5713bf7bb0c"
+      "bytes": 13721,
+      "sha256": "99eb63835d2a354008eaa962274ef1f30001d66f3f4ff7e4f22237b0d0034e76"
     },
     {
       "path": "work/home-city.test.mjs",
@@ -395,8 +485,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 103993,
-      "sha256": "43e0628c0b82b9ce3e57314146a157c9fe07fba26c5954d51e85bce29c49bb8a"
+      "bytes": 103957,
+      "sha256": "a9ed737e3f9e1552d7f83cdca8966732ded3515d73be57aea2e0f812dc81a35f"
     },
     {
       "path": "work/i18n-weather.json",
@@ -560,8 +650,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.js",
-      "bytes": 25346,
-      "sha256": "33c61c5d027d1591900cfbc3d1230b45d501c00b4e2944541f5d3e112c757af3"
+      "bytes": 26626,
+      "sha256": "6188e891af1acd398881107d16d142b3eb112f9ef79fd8254896852b67826591"
     },
     {
       "path": "work/somalia-flood-watch/dist/app.js",
@@ -634,6 +724,21 @@
       "sha256": "88c7d14dd9cd94f62e8e6f507af6d14a3033a5246004ea746ebca90b9823fce6"
     },
     {
+      "path": "work/somalia-flood-watch/dist/film/cholera-prevention-so.jpg",
+      "bytes": 64552,
+      "sha256": "167ed1a9b579708ac64c2be365203e3c79de40920d6fd762733341c1cd58a49b"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/cholera-prevention-so.mp4",
+      "bytes": 5887894,
+      "sha256": "bd0aca8745048fd6eb2e6414c337983b80437cc9df8757a31ebe3858bda40559"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/cholera-prevention-so.vtt",
+      "bytes": 4264,
+      "sha256": "34c5b26020332c9620d9b0fcc1444acd77fd6b57828dba04db09901a18ff5e33"
+    },
+    {
       "path": "work/somalia-flood-watch/dist/film/cholera-prevention.jpg",
       "bytes": 49144,
       "sha256": "22b09e179b905657387f09f5d4a49181f80171702b98d5085ac1b83183b0c181"
@@ -645,8 +750,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/film/cholera-prevention.so.vtt",
-      "bytes": 3913,
-      "sha256": "ac2a55466ccdc39a0cadb385d2e2e422c8185a3ec882ae3fa6b667aef63778f5"
+      "bytes": 4264,
+      "sha256": "71022125e131ec9f39e1f0be5707b8d990afa0c34a4ca71d498d4c6f7665f5b2"
     },
     {
       "path": "work/somalia-flood-watch/dist/film/cholera-prevention.vtt",
@@ -800,8 +905,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 221424,
-      "sha256": "9c3103a146ff2b077950beab72a0fdcb1c09e100ffaeb7e92828ebfb2790b508"
+      "bytes": 221388,
+      "sha256": "71f8b31038c5adee1d3d06435629cc1d56081dbde37ba953509b31c43214c2b1"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",

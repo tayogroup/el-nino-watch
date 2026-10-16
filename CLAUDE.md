@@ -182,9 +182,11 @@ safe storage, latrine, food and ORS demonstrations are its own animated SVG), an
 makes the MP4 and a VTT. `narrate-film.cjs` voices with Azure (dry run unless
 `--go`, which bills); voiced clips in `work/film/audio/` are committed so they
 are never bought twice. **A new film's script and voice need the owner's
-approval before `--go`.** Cholera film: English approved and voiced (Ava HD);
-the Somali script (`cholera-prevention-so.json`, voice Ubax) awaits the owner's
-review and must not be voiced before it. Words drawn in the pictures go through
+approval before `--go`.** Cholera film: English approved and voiced (Ava HD,
+2:24); Somali voiced by Ubax (3:14) from the owner's corrected script, with two
+owner decisions kept in it: ORS is started at once (no "when a doctor
+prescribes") and is called "daawada ORS", never a tablet ("kiniin" is the water
+treatment tablet). Words drawn in the pictures go through
 `W()`, translated by a storyboard's `words`.
 On the site (owner, 2026-10-16): `dist/film/` holds the English film, its poster,
 the English captions and Somali captions (`render-film.cjs --audio … --translation
@@ -192,8 +194,8 @@ cholera-prevention-so.json --lang so`, timed by scene). It plays near the top
 of the health alert; `alerts.js` shows the captions in the page language. The
 server sends `/film/` files in byte ranges (`sendFilm`; Safari and iPhones need
 them) with an hour of CDN caching, so a replaced film shows within the hour.
-When the Somali narration is approved, voice it, render it, and play it to
-Somali readers.
+Somali readers get the Somali film (`cholera-prevention-so.*`); `alerts.js`
+swaps the film, poster and captions with the page language.
 
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
