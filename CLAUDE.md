@@ -167,6 +167,13 @@ in `data/whatsapp.json`, are never logged in full, and are not in the backups.
 Only MOEWR messages say "official". Somali alerts depend on Meta accepting a
 Somali template (`WHATSAPP_TEMPLATE_SO_LANGUAGE`); until then English.
 
+**Public health alert** (owner, 2026-10-16): the section at the bottom of the
+Alerts tab (`#health-alert` in `dist/index.html`), El Niño, flooding and disease
+in Somalia, in the owner's words, sourced to six WHO documents (links checked;
+the 2026 WHO analysis lists Somalia on printed page 14). It is WHO-based health
+guidance, labelled "not an outbreak report" and "not an official warning"; keep
+it that way. `health-alert.test.mjs` pins it, its WHO-only links and its Somali.
+
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
   ICPAC heavy-rain city count), then items from SoDMA, FAO SWALIM, ICRC (its own
