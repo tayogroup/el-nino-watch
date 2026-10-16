@@ -199,6 +199,10 @@ server sends `/film/` files in byte ranges (`sendFilm`; Safari and iPhones need
 them) with an hour of CDN caching, so a replaced film shows within the hour.
 Somali readers get the Somali film (`cholera-prevention-so.*`); `alerts.js`
 swaps the film, poster and captions with the page language.
+Every tab points to it: a `.film-callout` note under the first panel heading of the
+overview, map, weather, community and Sources tabs ("Flood water can carry
+cholera. Watch the film…"), plus the news flash, the footer and `/sources`; all
+link to `#health-film`, which opens the Alerts tab (or tool) at the film.
 
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the

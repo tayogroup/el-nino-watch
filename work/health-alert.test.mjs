@@ -188,7 +188,7 @@ test('the site footer links to the cholera film, in Somali too', async () => {
 
 test('the map tab calls out the cholera film, in Somali too', async () => {
   const start = index.indexOf('id="map-panel"'), panel = index.slice(start, index.indexOf('<div class="map-controls">', start) + 30);
-  assert.ok(panel.includes('<p class="map-film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>'), 'near the top of the map panel');
+  assert.ok(panel.includes('<p class="film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>'), 'near the top of the map panel');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['Flood water can carry cholera.'], 'Biyaha fatahaaddu waxay qaadi karaan daacuun.');
   assert.equal(catalog.messages['Watch the film: how to protect your family ▶'], 'Daawo filimka: sida qoyskaaga loo ilaaliyo ▶');
@@ -196,5 +196,12 @@ test('the map tab calls out the cholera film, in Somali too', async () => {
 
 test('the weather tab calls out the cholera film too', () => {
   const start = index.indexOf('id="daily-panel"'), panel = index.slice(start, index.indexOf('id="daily-status"', start));
-  assert.ok(panel.includes('<p class="map-film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>'), 'under the weather panel heading');
+  assert.ok(panel.includes('<p class="film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>'), 'under the weather panel heading');
+});
+
+test('every tab calls out the cholera film', () => {
+  const callout = '<p class="film-callout"><span>Flood water can carry cholera.</span> <a href="#health-film">Watch the film: how to protect your family ▶</a></p>';
+  const panelOf = id => { const start = index.indexOf(`id="${id}"`); return index.slice(start, index.indexOf('</section>', start)); };
+  for (const id of ['city-rankings-panel', 'map-panel', 'daily-panel', 'community-panel', 'source-panel']) assert.ok(panelOf(id).includes(callout), id);
+  assert.equal(index.split(callout).length - 1, 5, 'once on each tab');
 });

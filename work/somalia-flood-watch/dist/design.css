@@ -85,5 +85,5 @@ a.news-flash-link:hover{text-decoration:underline}
 @media(max-width:720px){.news-flash-inner{flex-wrap:wrap;gap:6px 8px;padding-top:5px;padding-bottom:5px}.news-flash-current{flex:1 1 100%;order:3}.news-flash-text{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.news-flash-controls{margin-left:auto;gap:3px}.news-flash-counter{display:none}.news-flash-heading{font-size:10px;padding:3px 6px}.news-flash-controls button{min-width:28px;min-height:28px}.news-flash-all{padding:0 8px}.news-flash-all-text{display:none}}
 @media(prefers-reduced-motion:reduce){.news-flash *{transition:none}}
 
-/* The cholera film, called out on the map tab (links to #health-film in the Alerts tab). */
-.map-film-callout{margin:0 0 14px;padding:10px 14px;border:1px solid #e6c98a;border-left:5px solid #b7791f;border-radius:10px;background:#fffaf0;color:#5b3a06;font-size:14px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}.map-film-callout a{color:#8a5a00;font-weight:700}
+/* The cholera film, called out on every tab (links to #health-film in the Alerts tab). */
+.film-callout{margin:0 0 14px;padding:10px 14px;border:1px solid #e6c98a;border-left:5px solid #b7791f;border-radius:10px;background:#fffaf0;color:#5b3a06;font-size:14px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}.film-callout a{color:#8a5a00;font-weight:700}
