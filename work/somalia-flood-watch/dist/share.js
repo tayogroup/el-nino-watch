@@ -31,6 +31,8 @@
     const url = new URL(SITE);
     if (language() === 'so') url.searchParams.set('lang', 'so');
     if (/^[a-z]+$/.test(String(tab || ''))) url.hash = 'tab=' + tab;
+    // A section of a tab (#health-film): tabs.js opens its tab and brings it into view on arrival.
+    else if (/^#[a-z][a-z-]*$/.test(String(tab || ''))) url.hash = tab.slice(1);
     return url.href;
   }
   // Too long for X: first shorten the closing disclaimer to "Not an official warning.", then drop

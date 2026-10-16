@@ -240,6 +240,10 @@
   const HEALTH_SHARE = [[{t: "Public health alert: flooding raises the risk of cholera, malaria and dengue in Somalia."}], [{t: "Drink boiled or treated water, keep ORS ready and use bed nets."}], [{t: "Health guidance from WHO, not an outbreak report."}]];
   const healthShare = root.document?.getElementById?.('health-share');
   if (healthShare && root.SiteShare?.row) healthShare.innerHTML = root.SiteShare.row(HEALTH_SHARE, 'alerts', {t: "Health guidance from WHO, not an outbreak report."});
+  // The film's Share row links straight to the film (#health-film), in the reader's language.
+  const FILM_SHARE = [[{t: 'Watch: how to protect your family from cholera'}], [{t: "A short film on safe water, handwashing, latrines, safe food and ORS."}], [{t: 'Health guidance from WHO, not an outbreak report.'}]];
+  const filmShare = root.document?.getElementById?.('film-share');
+  if (filmShare && root.SiteShare?.row) filmShare.innerHTML = root.SiteShare.row(FILM_SHARE, '#health-film', {t: 'Health guidance from WHO, not an outbreak report.'});
   // The health film plays in the page's language: Somali readers get the Somali film (narrated by Ubax),
   // everyone else the English one, which index.html loads; each shows captions in that language (the English
   // film also carries scene-timed Somali captions). Set on load, on each redraw, and after the EN/SO buttons,
@@ -271,5 +275,5 @@
   }
   root.document?.addEventListener?.('click', event => { if (event.target?.closest?.('[data-site-language]')) root.setTimeout(filmCaptions, 0); });
   filmCaptions();
-  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE, filmCaptions };
+  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE, filmShareLines: FILM_SHARE, filmCaptions };
 })(typeof window === 'object' ? window : globalThis);

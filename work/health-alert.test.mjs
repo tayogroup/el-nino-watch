@@ -160,3 +160,21 @@ test('the film plays in the page language: the Somali film for Somali readers, w
     }
   }
 });
+
+test('the film has a Share row whose link opens the film itself, in English and Somali', async () => {
+  assert.ok(index.includes('<div id="film-share"></div></figure>'), 'the row sits under the film');
+  for (const lang of ['en', 'so']) {
+    const nodes = {'film-share': {innerHTML: ''}};
+    const document = {readyState: 'complete', title: '', body: {nodeType: 11, childNodes: []}, documentElement: {setAttribute() {}}, getElementById: id => nodes[id] || null, querySelectorAll: () => [], addEventListener() {}};
+    const window = {document, location: {href: `https://elninowatch.so/?lang=${lang}`, protocol: 'https:'}, localStorage: {getItem: () => null, setItem() {}}, navigator: {}, setTimeout: fn => fn()};
+    const context = vm.createContext({window, URL, URLSearchParams, Date});
+    for (const file of ['translations-so.js', 'i18n.js', 'share.js', 'alerts.js']) vm.runInContext(await readFile(new URL(file, dist), 'utf8'), context);
+    const row = nodes['film-share'].innerHTML;
+    assert.match(row, /^<div class="share-row"/); assert.match(row, /data-share-tab="#health-film"/);
+    assert.equal(window.SiteShare.linkFor('#health-film'), lang === 'so' ? 'https://elninowatch.so/?lang=so#health-film' : 'https://elninowatch.so/#health-film');
+    const text = window.SiteShare.textOf(window.FloodAlerts.filmShareLines);
+    assert.equal(text.split('\n').length, 3);
+    assert.equal(window.SiteShare.fit(text), text, `${lang}: nothing is cut or dropped for X`);
+    if (lang === 'so') { assert.match(text, /^Daawo: sida qoyskaaga/); assert.doesNotMatch(text, /\b(the|and|with|film)\b/); }
+  }
+});
