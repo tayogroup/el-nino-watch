@@ -6,6 +6,7 @@ import {mkdtemp, readFile, rm} from 'node:fs/promises';
 import {Readable} from 'node:stream';
 import {createVisits, deviceOf, PUBLISH_AFTER} from './somalia-flood-watch/visits.mjs';
 import {createServer} from './somalia-flood-watch/server.mjs';
+import vm from 'node:vm';
 
 const dist = new URL('./somalia-flood-watch/dist/', import.meta.url);
 const html = await readFile(new URL('index.html', dist), 'utf8');
@@ -56,14 +57,15 @@ test('every visit is counted, with its tab, city, language, device and country',
 });
 
 test('nothing is published until the site has had the threshold of visits', async () => {
-  assert.equal(PUBLISH_AFTER, 3000);
+  assert.equal(PUBLISH_AFTER, 1000, 'the owner lowered it from 3,000 on 2026-10-16');
   const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-visits-'));
   try {
     const visits = createVisits({dataDir, cities, log: quiet, publishAfter: 3});
     const first = await call(visits, '/api/visit', request('POST', view()));
     assert.equal(first.body.published, false);
     const hidden = (await call(visits, '/api/visits', request('GET'))).body;
-    assert.deepEqual(Object.keys(hidden).sort(), ['note', 'published', 'threshold'], 'no numbers before the threshold');
+    assert.deepEqual(Object.keys(hidden).sort(), ['allTimeVisits', 'note', 'published', 'threshold'], 'before the threshold: the total only, no breakdowns');
+    assert.equal(hidden.allTimeVisits, 1, 'the total, as progress towards the threshold');
     assert.match(hidden.note, /3 visits/);
     await call(visits, '/api/visit', request('POST', view()));
     assert.equal((await call(visits, '/api/visit', request('POST', view()))).body.published, true);
@@ -140,4 +142,30 @@ test('the owner sees the numbers early with the key, sent only as a header', asy
     const weak = createVisits({dataDir, cities, log: quiet, statsKey: 'short'});
     assert.equal((await call(weak, '/api/visits', request('GET', undefined, {'x-stats-key': 'short'}))).status, 403, 'a guessable key is refused outright');
   } finally { await rm(dataDir, {recursive: true, force: true}); }
+});
+
+// The /stats page's own script, run against a stubbed /api/visits answer.
+async function statsPage(answer) {
+  const html = await readFile(new URL('./somalia-flood-watch/dist/stats.html', import.meta.url), 'utf8');
+  const script = html.slice(html.lastIndexOf('<script>') + 8, html.lastIndexOf('</script>'));
+  const node = () => ({innerHTML: '', className: '', hidden: false, open: false, value: '', checked: false, textContent: '', addEventListener() {}, querySelectorAll: () => []});
+  const nodes = Object.fromEntries(['root', 'owner', 'owner-form', 'owner-key', 'owner-msg', 'owner-remember'].map(id => [id, node()]));
+  const requests = [];
+  const fetch = async (url, options) => { requests.push({url, options}); return {ok: true, status: 200, json: async () => answer}; };
+  vm.runInContext(script, vm.createContext({document: {getElementById: id => nodes[id]}, fetch, localStorage: {getItem: () => null, setItem() {}, removeItem() {}}, Intl, Number, Math, Object, String, Date, Promise}));
+  for (let i = 0; i < 5; i++) await new Promise(resolve => setImmediate(resolve));
+  return {root: nodes.root, requests};
+}
+
+test('before the threshold, /stats shows the total as progress and nothing else', async () => {
+  const {root, requests} = await statsPage({published: false, threshold: 1000, allTimeVisits: 327, note: 'Visitor statistics are published once the site has had 1,000 visits.'});
+  assert.ok(root.innerHTML.includes('<b>327</b> of 1,000 visits'), root.innerHTML);
+  assert.ok(root.innerHTML.includes('style="width:32.7%"'), 'the bar is drawn to scale');
+  assert.ok(root.innerHTML.includes('role="progressbar"') && root.innerHTML.includes('aria-valuenow="327"') && root.innerHTML.includes('aria-valuemax="1000"'));
+  assert.ok(!/Countries|Tabs viewed|Busiest day/.test(root.innerHTML), 'no breakdowns');
+  assert.equal(requests[0].options.headers['X-Stats-Key'], undefined, 'the public view sends no key');
+  const over = await statsPage({published: false, threshold: 1000, allTimeVisits: 1200, note: ''});
+  assert.ok(over.root.innerHTML.includes('style="width:100.0%"'), 'the bar never runs past full');
+  const older = await statsPage({published: false, threshold: 1000, note: 'Visitor statistics are published once the site has had 1,000 visits.'});
+  assert.ok(!older.root.innerHTML.includes('progressbar'), 'a reply without a total draws no counter');
 });

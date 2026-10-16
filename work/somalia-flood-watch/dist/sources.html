@@ -47,6 +47,11 @@ h2{font-size:21px;margin:0;color:var(--navy)}
 .kind{flex:none;min-width:7.5em;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .links a{font:13px/1.5 Consolas,'Cascadia Mono',ui-monospace,monospace;color:var(--blue);overflow-wrap:anywhere;text-decoration:none;border-bottom:1px solid #c7dcf2}
 .links a:hover{border-bottom-color:var(--blue)}
+.privacy{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.privacy li{display:grid;gap:4px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.privacy li:last-child{border-bottom:0}
+.privacy b{color:var(--navy)}
+.privacy p{margin:0;max-width:76ch}
 footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:13px;display:grid;gap:6px;max-width:76ch}
 footer p{margin:0}
 @media(max-width:640px){main{padding-top:22px;gap:24px}.row{grid-template-columns:minmax(0,1fr)}.kind{min-width:6.5em}}
@@ -67,6 +72,9 @@ footer p{margin:0}
   .section-head{break-after:avoid}
   .links a{border-bottom:0;color:var(--ink)}
   .kind{min-width:9em}
+  #privacy-notice{break-before:page}
+  .privacy{border:0;border-radius:0}
+  .privacy li{display:block;padding:8px 0;break-inside:avoid}
 }
 </style>
 </head>
@@ -86,6 +94,7 @@ footer p{margin:0}
     <div class="actions">
       <a class="no-print" href="/" data-keep-language>← Back to El Nino Watch</a>
       <a class="no-print" href="/el-nino-watch-sources.pdf" download>Download PDF (English)</a>
+      <a class="no-print" href="#privacy">Privacy notice ↓</a>
       <span class="meta">Checked against the app on 15 October 2026.</span>
     </div>
   </div>
@@ -259,6 +268,19 @@ footer p{margin:0}
         </div>
       </li>
     </ul>
+  </section>
+
+  <section aria-labelledby="privacy" id="privacy-notice">
+    <div class="section-head"><h2 id="privacy">Privacy</h2></div>
+    <p class="section-note">What El Nino Watch keeps about you, and who else sees what. There are no accounts, no cookies and no advertising, and nothing is sold.</p>
+    <ul class="privacy">
+      <li><b>Visit counts</b><p>Each page load is counted, with the tab, city, language, type of device and the country the connection comes from. No cookies, internet addresses or browser details are stored, and browsers that ask not to be tracked are not counted. The totals are shown on the visitor statistics page.</p></li>
+      <li><b>Community reports</b><p>Reports and comments are public: what you write, the name or alias you give (or Anonymous), any location you add, and photos or videos exactly as uploaded, which may contain location data. Your internet address is held in memory for up to 10 minutes to limit abuse, and is never saved. Only the browser that sent a report can delete it, using a receipt kept in that browser.</p></li>
+      <li><b>WhatsApp alerts</b><p>If you sign up, your WhatsApp number, the cities you follow and your language are kept only to send the alerts. Messages go through Meta's WhatsApp service. Replying STOP deletes them.</p></li>
+      <li><b>Saved in your browser</b><p>Your language, home city, added cities, report receipts, alerts already shown, city manager review stages and private notes are saved in your own browser, not sent to El Nino Watch. Clearing the site's data in your browser removes them.</p></li>
+      <li><b>Other services</b><p>Forecasts, alerts and news are fetched by the El Nino Watch server, so those services do not see you. The flood map's layers and the place-name search for added cities load directly from their publishers, who see your internet address as any website does. Share buttons contact X or Facebook only when you tap them. The site is hosted on bunny.net, which handles every request as any web host does.</p></li>
+    </ul>
+    <p class="section-note">Questions about privacy: <a href="mailto:contact@mandekconsulting.com" data-i18n-skip>contact@mandekconsulting.com</a></p>
   </section>
 
   <footer>

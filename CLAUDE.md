@@ -138,8 +138,9 @@ applies to touch the range). Browser notifications follow the selected filters.
 
 **Sharing**
 - Share buttons only: visitors post from their own accounts. The site holds no
-  social media accounts or keys and posts nothing itself. Automatic posting to
-  El Nino Watch accounts was discussed and not built.
+  social media accounts or keys and posts nothing to social media itself.
+  Automatic posting to El Nino Watch accounts was discussed and not built.
+  (WhatsApp alerts, below, go only to people who signed up for them.)
 - Every alert and every top-5 ranking list (Rainfall today, Rainfall next 7
   days, Flood watch next 7 days, Flooding today) has a Share row: X (Twitter),
   Facebook (link only; Facebook cannot be prefilled), Copy text, and on phones
@@ -153,6 +154,39 @@ applies to touch the range). Browser notifications follow the selected filters.
 - Shared links show `dist/social-preview.png` (1200x630); its design is
   `work/social-preview.html`.
 
+**WhatsApp alerts** (owner, 2026-10-16; `whatsapp.mjs`, `dist/whatsapp.js`,
+setup in DEPLOYMENT.md): through Meta's WhatsApp Business Platform, off until
+the five `WHATSAPP_*` settings are set (owner: Meta verification, number,
+template, keys). Sources: MOEWR national levels, ICPAC heavy rain and Google
+Flood Hub. A message only when an alert starts or gets worse for a followed
+city; at most 3 a day per person, MOEWR first; the first check after switching
+on sends nothing. Sign-up is "JOIN <city>" / "KU BIIR <city>" sent FROM the
+person's WhatsApp (the site's button prefills it), never a number typed into the
+site, so nobody can sign up someone else. STOP deletes the number. Numbers stay
+in `data/whatsapp.json`, are never logged in full, and are not in the backups.
+Only MOEWR messages say "official". Somali alerts depend on Meta accepting a
+Somali template (`WHATSAPP_TEMPLATE_SO_LANGUAGE`); until then English.
+
+**Public health alert** (owner, 2026-10-16): the section at the bottom of the
+Alerts tab (`#health-alert` in `dist/index.html`), El Niño, flooding and disease
+in Somalia, in the owner's words, sourced to six WHO documents (links checked;
+the 2026 WHO analysis lists Somalia on printed page 14). It is WHO-based health
+guidance, labelled "not an outbreak report" and "not an official warning"; keep
+it that way. `health-alert.test.mjs` pins it, its WHO-only links and its Somali.
+
+**Health films** (`work/film/`, owner, 2026-10-16): narrated animated films,
+modelled on the Healthcare Skillup course films (same owner): a storyboard JSON
+per film, `film.html` draws each frame (the cholera film's handwashing, boiling,
+safe storage, latrine, food and ORS demonstrations are its own animated SVG), and
+`render-film.cjs` (`--stills`, `--preview` free; `--audio` for the final)
+makes the MP4 and a VTT. `narrate-film.cjs` voices with Azure (dry run unless
+`--go`, which bills); voiced clips in `work/film/audio/` are committed so they
+are never bought twice. **A new film's script and voice need the owner's
+approval before `--go`.** Cholera film: English approved and voiced (Ava HD);
+the Somali script (`cholera-prevention-so.json`, voice Ubax) awaits the owner's
+review and must not be voiced before it. Words drawn in the pictures go through
+`W()`, translated by a storyboard's `words`.
+
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
   ICPAC heavy-rain city count), then items from SoDMA, FAO SWALIM, ICRC (its own
@@ -161,6 +195,10 @@ applies to touch the range). Browser notifications follow the selected filters.
   humanitarian organisations) and ReliefWeb once `RELIEFWEB_APPNAME` is set to
   an appname ReliefWeb has approved (requested at
   https://apidoc.reliefweb.int/parameters#appname; the API refuses others).
+- A standing "Public health · WHO guidance" item (`HEALTH_FLASH`, owner,
+  2026-10-16) follows the app's own flashes and opens the public health alert
+  (`#health-alert`); in the city manager view it opens the Alerts tool first. It
+  is added after the outage check, so it never makes a dead news feed look alive.
 - **No meeting or event announcements** (`isEventAnnouncement`, Somali and
   English headline words). Of SoDMA's posts this leaves mainly its weekly
   flood-warning bulletin.
@@ -176,11 +214,14 @@ applies to touch the range). Browser notifications follow the selected filters.
   Media. The bar never claims official status.
 
 **Visits and stats**: every page load is counted (not unique visitors),
-cookieless. The public `/stats` page stays hidden until 3,000 visits; the owner
-sees it earlier with the private `STATS_KEY`.
+cookieless. The public `/stats` page stays hidden until 1,000 visits (lowered
+from 3,000 on 2026-10-16); until then it shows only the all-time total as
+progress ("327 of 1,000 visits", owner, 2026-10-16), never the breakdowns. The
+owner sees everything earlier with the private `STATS_KEY`.
 
 **Open items**: ReliefWeb appname (owner to request); Google Flood Forecasting
-API access (owner to request, then set the key); Somali review; optionally
+API access (owner to request, then set the key); WhatsApp Business setup
+(owner, DEPLOYMENT.md); Somali review; optionally
 limit the Google News searches to an approved list of outlets.
 
 ## Deploy
@@ -205,7 +246,7 @@ Open-Meteo URLs, so a new forecast field must also be allowed in the relay —
 `forecast-relay.test.mjs` reads `app.js` and fails if they drift.
 
 Visits: `visits.mjs` counts page loads (not people), cookieless; public at
-`/stats` only after 3,000 visits (`PUBLISH_AFTER`).
+`/stats` only after 1,000 visits (`PUBLISH_AFTER`).
 
 Report backups: `backup.mjs` snapshots the volume to a private Bunny Storage
 zone every 6 hours and soon after any report change, keeping 14 days, and

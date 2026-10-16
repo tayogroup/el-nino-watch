@@ -228,6 +228,7 @@
     if (summary) summary.innerHTML = `<div class="alert-metrics"><span><b>${model.counts.national}</b> National flood forecasts (MOEWR)</span>${model.floodHubEnabled ? `<span><b>${model.counts.rivers}</b> River forecasts (Google Flood Hub)</span>` : ''}<span><b>${model.counts.regional}</b> ICPAC forecasts</span><span><b>${model.counts.events}</b> Source event signals</span><span><b>${model.counts.gauges}</b> River thresholds</span><span><b>${model.counts.screens}</b> App rainfall screens</span></div><p class="note">${esc(model.scopeLabel)} · next 3 forecast days: ${model.forecastDates[0]}–${model.forecastDates[2]} (including full today). Source signals and app screening are distinct.</p>`;
     if (list) list.innerHTML = model.alerts.length ? model.alerts.map(a => `<article class="alert-card ${css(a.severity)} ${tier(a)}"><div class="alert-card-head"><span class="badge">${esc(a.badge)}</span><span class="badge">${esc(a.severityLabel || a.severity)}</span></div><h3${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.title)}</h3><p class="alert-scope">${esc(a.scopeLabel)}</p><p${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.description || 'Read the source notice for details.')}</p><small>${esc(a.timingLabel)} · ${esc(a.source)}</small><p class="alert-guidance">${esc(a.guidance)}</p>${a.sourceUrl ? `<a href="${esc(a.sourceUrl)}" target="_blank" rel="noopener">${esc(a.linkLabel || 'Read source ↗')}</a>` : ''}${root.SiteShare?.row ? root.SiteShare.row(shareLines(a), 'alerts', a.official ? {t: 'Official forecast (MOEWR).'} : undefined) : ''}</article>`).join('') : `<div class="alert-card alert-info"><h3>No active signals returned for this view</h3><p>${model.messages.length ? 'Some feeds are unavailable or stale; check the status below.' : 'No matching source notice or app threshold is present in the fresh responses.'} This does not confirm that an area is safe or free from flooding.</p></div>`;
     notificationButton(button);
+    root.WhatsAppAlerts?.update?.(model.selectedCity);
     notify(model);
     if (status) {
       const incomplete = model.weatherCoverage.filter(row => (model.scope === 'all' || normalized(row.city) === normalized(model.selectedCity)) && !row.complete);
@@ -235,5 +236,10 @@
     }
     return model;
   }
-  root.FloodAlerts = { build, render, shareLines, appliesBetween };
+  // The public health alert (index.html #health-alert) is static; its Share row is drawn once here. Each
+  // language's post fits X's limit whole, so no line is ever dropped (health-alert.test.mjs).
+  const HEALTH_SHARE = [[{t: "Public health alert: flooding raises the risk of cholera, malaria and dengue in Somalia."}], [{t: "Drink boiled or treated water, keep ORS ready and use bed nets."}], [{t: "Health guidance from WHO, not an outbreak report."}]];
+  const healthShare = root.document?.getElementById?.('health-share');
+  if (healthShare && root.SiteShare?.row) healthShare.innerHTML = root.SiteShare.row(HEALTH_SHARE, 'alerts', {t: "Health guidance from WHO, not an outbreak report."});
+  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE };
 })(typeof window === 'object' ? window : globalThis);

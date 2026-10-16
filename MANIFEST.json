@@ -10,8 +10,8 @@
     },
     {
       "path": ".env.example",
-      "bytes": 991,
-      "sha256": "f92b21a652f2ec485d335dbed137e6bfe737ced219412b53e3eb5e3fc6205124"
+      "bytes": 1353,
+      "sha256": "d26787f5b8877519d64fdf132229cf12234753ed7ab41828795808159cec642a"
     },
     {
       "path": ".gitignore",
@@ -40,8 +40,8 @@
     },
     {
       "path": "DEPLOYMENT.md",
-      "bytes": 11468,
-      "sha256": "bde275a6034b97cc4c72ed74bd20a068d87daaf57a3f67bffddaaef02f75c659"
+      "bytes": 15603,
+      "sha256": "ba6d9c81989bd1790a5288aceba3c701241584d05dcbb1c236333501e8039528"
     },
     {
       "path": "Dockerfile",
@@ -234,6 +234,121 @@
       "sha256": "b7b06e74ce7eccd11f35193b129ba3fb5b14d78c4be2ca3e3e7580b7770fa6f7"
     },
     {
+      "path": "work/film/audio/cholera-prevention/boil.json",
+      "bytes": 6965,
+      "sha256": "ac155f2caaf443a285418e94105edbae5af69866e7e0ce6cba6b40810b14c3ef"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/boil.mp3",
+      "bytes": 338400,
+      "sha256": "2edd6939a311479f0835fd21eb8ae8091e8c7b89c734b88e665f547e305e6cb2"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/close.json",
+      "bytes": 4379,
+      "sha256": "e8eff7907e1587c0b9f60205c291249e271b3499638ff02a21e261d7a75197c1"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/close.mp3",
+      "bytes": 254400,
+      "sha256": "5efb1118cb58845a8b88e4e8b5973fe475d094d97b11e2641fd1f1ed88deb513"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/food.json",
+      "bytes": 2930,
+      "sha256": "d02288e0b316e4600c03e2f3e47e2de34c0e31641bcae518a8c0119d6707e8ed"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/food.mp3",
+      "bytes": 186240,
+      "sha256": "70fa9d37ff300a394cc28a569ed76b4d6bddbc0373b526b43b8d6efa0642646e"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/handwash.json",
+      "bytes": 7300,
+      "sha256": "80b36879f9cd99aca43559acb52a8ababc3c8585aed04cd6a0ca3e00e6ba2efa"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/handwash.mp3",
+      "bytes": 404160,
+      "sha256": "9a9539971eaed87107d2caccab1d9904dbb24d247364e66dd0cf95bfd346f1a2"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/latrine.json",
+      "bytes": 4948,
+      "sha256": "8ce0c7142d95aab19d2c0edf3e7851ad81cf873d160a287fedd7b225636bd8bf"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/latrine.mp3",
+      "bytes": 248160,
+      "sha256": "a67170cefada229ce2de23c68b11031e5667f6a2c44f92ca724aeccb162771c0"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/ors.json",
+      "bytes": 8622,
+      "sha256": "9be3197592eea80cec806aa4123018202aee9d8d43180705e242c86c9dfb85a9"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/ors.mp3",
+      "bytes": 459360,
+      "sha256": "b877805b81173e05406efed9ac1158d70a3ab9213352dd8a2dd9ed418debe7e7"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/spread.json",
+      "bytes": 7096,
+      "sha256": "a7fe4ff82f4878e1929def9c83aceb65dc7fade088b4df8d884c881d6739ce02"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/spread.mp3",
+      "bytes": 369120,
+      "sha256": "4c6c4eace2ebc9f6accfc0cc224d327ee1fd5319a1f034928b61e29652686665"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/store.json",
+      "bytes": 3176,
+      "sha256": "cfb098fefcb1343e2d03d772db35de725c6c2eaf16f66a86ae8fd54e19ae5105"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/store.mp3",
+      "bytes": 179040,
+      "sha256": "6aca266e5c329e4f89068781d4df8f32c93ef8e962eeddfafa70d2c4b4291e75"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/title.json",
+      "bytes": 5372,
+      "sha256": "4d31fab5c0ed6009bdc41b8cae500a2819bb988492a0800094bab955b7b639be"
+    },
+    {
+      "path": "work/film/audio/cholera-prevention/title.mp3",
+      "bytes": 263040,
+      "sha256": "28166c5c9788ee56596d9c8507dbb42c4cbce2b8500f0412fbb245c3f50654f4"
+    },
+    {
+      "path": "work/film/cholera-prevention-so.json",
+      "bytes": 6771,
+      "sha256": "cb07f3dd5b6db81aad2151fe6c9a679973fd49eb2f9d416966b14a8f87e4b44c"
+    },
+    {
+      "path": "work/film/cholera-prevention.json",
+      "bytes": 5429,
+      "sha256": "7d20a2daef3438cd638bb09a7f830fb3df8485d76fa252fbb0de227c56da52e4"
+    },
+    {
+      "path": "work/film/film.html",
+      "bytes": 29700,
+      "sha256": "aefafd3bb46c6d3f1dc80ccd4c91ba191e3148f63c51e3519faef6ad9eff2645"
+    },
+    {
+      "path": "work/film/narrate-film.cjs",
+      "bytes": 5661,
+      "sha256": "f54ef4e7a557906e1858a105f5c76a5bdf218e8c434c52e628afdd69f797fe09"
+    },
+    {
+      "path": "work/film/render-film.cjs",
+      "bytes": 8134,
+      "sha256": "faf98f0473bd5679890fbb0643f5c22c5085d8b6cef8c6edba499024f9ee3e18"
+    },
+    {
       "path": "work/find-browser.mjs",
       "bytes": 1715,
       "sha256": "8cbd2ee3399ab3bdf44ee2167d64a503a75ebc67c0ec80e01fa1bbed0aaa929b"
@@ -259,6 +374,11 @@
       "sha256": "1bbbe69890ab6a2e77391828b211913903f9a1406680db69c0021a362919d40d"
     },
     {
+      "path": "work/health-alert.test.mjs",
+      "bytes": 5712,
+      "sha256": "a223b7b2bce539bf55f4c317127c5f6b5873b344c95bb67ced7901595c0efd83"
+    },
+    {
       "path": "work/home-city.test.mjs",
       "bytes": 5601,
       "sha256": "f4672961af7468bf0c2550a5521e86fb45efa207e280e09e721ff33f04c6b0e4"
@@ -275,8 +395,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 87959,
-      "sha256": "330a285af50bfd72bb7921d2ea104700842fb5e2af35e3700b815f9495df19e4"
+      "bytes": 103751,
+      "sha256": "f0e926b3e9adc89b68a9fd9b35d1c560d32fde3e72c85d200eedbe09e339a80d"
     },
     {
       "path": "work/i18n-weather.json",
@@ -340,8 +460,8 @@
     },
     {
       "path": "work/news-flash.test.mjs",
-      "bytes": 14013,
-      "sha256": "0b25dafbc0241a2dd3b9c58aabdc9e203b2c68420bee8a1b214737f112b2703f"
+      "bytes": 16380,
+      "sha256": "2f9baa85c66828800c216b9ff085bcd9da0567e57f49b2e8a1406a8fe54ece1b"
     },
     {
       "path": "work/observed-gfm-capabilities.xml",
@@ -435,13 +555,13 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.css",
-      "bytes": 9432,
-      "sha256": "f13320120ef54ac74c94eb5e74524a7e979e7750ac88c0e9872d4bbb54c33d25"
+      "bytes": 11930,
+      "sha256": "8ba32fa9737dff3a45357188c4df078b86f8884ddb1ede161a5c9b7d8ca4ae3c"
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.js",
-      "bytes": 23877,
-      "sha256": "3b3ac46001e8ffa318ee47dccf787edbe7f0397cf4ff762e213b85bd46043c5a"
+      "bytes": 24662,
+      "sha256": "09211386ab4fbe28408ba5069e0393ec2cd5204476a120121c6a08f2e56300ee"
     },
     {
       "path": "work/somalia-flood-watch/dist/app.js",
@@ -490,8 +610,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/el-nino-watch-sources.pdf",
-      "bytes": 106096,
-      "sha256": "353a9acb00084dcfd218b10f2b2e4fe3f1c2e04a1c536b8f5ebfb525895d7f99"
+      "bytes": 115128,
+      "sha256": "68b343fb6e9c175a58d78d314fc86a8472ce9aff5e97e747815f681cda001741"
     },
     {
       "path": "work/somalia-flood-watch/dist/enhancements.css",
@@ -575,8 +695,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 34064,
-      "sha256": "850eff35f70326af69ab53e5c7817dfe128ab1b1cf90c9e67e4b2f6003e7c980"
+      "bytes": 40738,
+      "sha256": "b98e6477fba3d974dc9b10b5a86d8fdf0e4a45ce47faf149ca4c7bbb5fb8d6f0"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
@@ -605,8 +725,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/news-flash.js",
-      "bytes": 6930,
-      "sha256": "bb83a6782a8c6cac568fd50ced33c1daf34a502d12d317ae2ff3ef4ac31dde03"
+      "bytes": 8011,
+      "sha256": "ce378659890bd9cdabcd8faeb748aca8bc30c6389bb9b81d52d0d401c05f9664"
     },
     {
       "path": "work/somalia-flood-watch/dist/observed-flood-source.json",
@@ -650,13 +770,13 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/sources.html",
-      "bytes": 21552,
-      "sha256": "2599da7594716aebbb6a498cdc9b801206b85a1c41a8c31c8227ffabd2c6ba9a"
+      "bytes": 24261,
+      "sha256": "d76bcb83518700f73ae5128ca3101efb2a2b49e47cff08590c2a8e3463257730"
     },
     {
       "path": "work/somalia-flood-watch/dist/stats.html",
-      "bytes": 11582,
-      "sha256": "518fc7e3117ef90fa8e20a30aaea96ab26ad749c01b3895a778099876a6da0d8"
+      "bytes": 12667,
+      "sha256": "6f8c4a3e34e5a304eb3b92e82478b51bf32c6529b873f0ae4f0a0e37806c4c44"
     },
     {
       "path": "work/somalia-flood-watch/dist/style.css",
@@ -670,8 +790,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/tabs.js",
-      "bytes": 9316,
-      "sha256": "7060449ae59a3ad2ecfb7876cc55adaa23f23bac55b6bea076aa886336197818"
+      "bytes": 10374,
+      "sha256": "1e6f783119fdcc62af23c14de4a9f09b76d1f5b010ca36a2b0bb6ec0c172611b"
     },
     {
       "path": "work/somalia-flood-watch/dist/terrain.css",
@@ -690,8 +810,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 205864,
-      "sha256": "238870014354f6bc873b6d3253df3b635cca2dfcb2db8c7efd90664ffb4c316b"
+      "bytes": 221188,
+      "sha256": "08252f7793969afde64f774d0785e2f459183a711c576ebfa86fbcbdcc69d402"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",
@@ -749,6 +869,11 @@
       "sha256": "7baa57f6847f68ec60957f88268ae0024f3102f8c1759f5846b5bba83ac69e66"
     },
     {
+      "path": "work/somalia-flood-watch/dist/whatsapp.js",
+      "bytes": 1585,
+      "sha256": "53d7f9b74f2bf2b76d104ec07c43b11dcaf5fdb5adf12c9b839507ff0676a183"
+    },
+    {
       "path": "work/somalia-flood-watch/docker-entrypoint.mjs",
       "bytes": 1324,
       "sha256": "729f23a18a1ef71d05866341105cda8444f37cd226abbb5510c3c705c2e3f610"
@@ -780,8 +905,8 @@
     },
     {
       "path": "work/somalia-flood-watch/news-feed.mjs",
-      "bytes": 15064,
-      "sha256": "70065df9581564edf928d3f3244ed1f63fbc517c4f49ef9ee981adeb33c04417"
+      "bytes": 15557,
+      "sha256": "b00bc5df633b82731d5da904dc8cbd217f938cd08a9bc3c6d440d3a3b5c0b376"
     },
     {
       "path": "work/somalia-flood-watch/observed-flood.mjs",
@@ -795,8 +920,8 @@
     },
     {
       "path": "work/somalia-flood-watch/server.mjs",
-      "bytes": 9388,
-      "sha256": "c817daa18f378e749f423a1b73513ce06830733ecbb23da975f5e87d4106856a"
+      "bytes": 9818,
+      "sha256": "4e211563e4a5c387a037b60969c5b9950abfb3d96053380cb90beb76099f7a96"
     },
     {
       "path": "work/somalia-flood-watch/Start-Live-App.ps1",
@@ -825,13 +950,18 @@
     },
     {
       "path": "work/somalia-flood-watch/visits.mjs",
-      "bytes": 9258,
-      "sha256": "39816667a11e56b4a798c3d27fff239e69babc3cfdd9abe3e4c750f7ef92e712"
+      "bytes": 9468,
+      "sha256": "354efb2dc48d29ffee4a500a2bc7e2da24892e6d5b4525be97c72b284a4294d7"
+    },
+    {
+      "path": "work/somalia-flood-watch/whatsapp.mjs",
+      "bytes": 21497,
+      "sha256": "9732fd3bc14a6a1b9147ddd79d236276bb1e4d06748934a0e51925b5923a67e2"
     },
     {
       "path": "work/sources-page.test.mjs",
-      "bytes": 5411,
-      "sha256": "2b69f57b8d826c8317688831961dc139e7ff9ac21da33b70e30f1558e9512980"
+      "bytes": 6719,
+      "sha256": "29701239f6f42dc94284b705cbab8fbfc38690fdfd318adb66c51246c3879508"
     },
     {
       "path": "work/swalim-stations.html",
@@ -860,13 +990,18 @@
     },
     {
       "path": "work/visits.test.mjs",
-      "bytes": 10142,
-      "sha256": "aa6f38b01a5fbaf4346ca8408c0f2e71478e8335ab5e8db0724e79adb1d57d41"
+      "bytes": 12728,
+      "sha256": "5a364c51baa1ce3610d471451264cc5566afe24350ea708993ab78d27f68791c"
     },
     {
       "path": "work/watchlist.test.mjs",
       "bytes": 3527,
       "sha256": "4dd63f3cad53e22afbf56851ccade258c3e4647596109e9df42c8dbf65a419cb"
+    },
+    {
+      "path": "work/whatsapp.test.mjs",
+      "bytes": 19773,
+      "sha256": "2a3a8b223747c32a1f1b972cc2ae20d3ec845662fe413de44db577d8f850a7b0"
     }
   ]
 }

@@ -77,3 +77,19 @@ test('links between the site\'s pages keep the language, including one chosen on
   window.SiteLanguage.setLanguage('en');
   assert.deepEqual(links.map(link => link.href), ['/sources?lang=en', '/?city=Mogadishu&lang=en#tab=sources'], 'switching language updates the links');
 });
+
+test('the privacy notice is on the page, linked from the top, and its claims match the code', async () => {
+  const start = page.indexOf('<section aria-labelledby="privacy" id="privacy-notice">'), section = page.slice(start, page.indexOf('</section>', start));
+  assert.ok(start > 0, 'the privacy section exists');
+  assert.ok(page.includes('<a class="no-print" href="#privacy">Privacy notice ↓</a>'), 'linked from the top of the page');
+  for (const title of ['Visit counts', 'Community reports', 'WhatsApp alerts', 'Saved in your browser', 'Other services']) assert.ok(section.includes(`<li><b>${title}</b>`), title);
+  assert.ok(section.includes('href="mailto:contact@mandekconsulting.com"'));
+  // "held in memory for up to 10 minutes": the report rate limit's window.
+  assert.ok(section.includes('up to 10 minutes'));
+  const community = await readFile(new URL('./somalia-flood-watch/community.mjs', import.meta.url), 'utf8');
+  assert.match(community, /until:now \+ 600000/, 'the rate-limit window is still 10 minutes');
+  // "No cookies": nothing the server sends sets one.
+  for (const file of ['server.mjs', 'community.mjs', 'visits.mjs', 'whatsapp.mjs']) {
+    assert.doesNotMatch(await readFile(new URL(`./somalia-flood-watch/${file}`, import.meta.url), 'utf8'), /set-cookie/i, file);
+  }
+});

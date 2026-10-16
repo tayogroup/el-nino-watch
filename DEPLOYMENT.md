@@ -61,7 +61,7 @@ Bunny volumes have no backups of their own, so the server makes them (`work/soma
 
 ### Visitor statistics
 
-The server counts visits itself (`visits.mjs`): every page load is one visit, plus which tab and city were viewed, the language, phone or computer, and the country Bunny reports. No cookies, no third party, and no internet address or browser string is stored; browsers asking not to be tracked are not counted. The counts are published at `/stats` (and a footer link appears) only once the site has had 3,000 visits; until then `/stats` says so and `/api/visits` returns no numbers. The owner can see them earlier: run **Actions > Bunny settings** with mode `stats-key`, which sets a random `STATS_KEY` on the container (hidden in the public logs), read it in Bunny under Container settings > Environment variables, and enter it under **Owner access** on `/stats`. It is sent only in an `X-Stats-Key` header; 20 wrong attempts a day lock a connection out. Running `stats-key` again replaces the key.
+The server counts visits itself (`visits.mjs`): every page load is one visit, plus which tab and city were viewed, the language, phone or computer, and the country Bunny reports. No cookies, no third party, and no internet address or browser string is stored; browsers asking not to be tracked are not counted. The counts are published at `/stats` (and a footer link appears) only once the site has had 1,000 visits; until then `/stats` says so and shows only the all-time total as progress towards 1,000, and `/api/visits` returns that total and nothing else. The owner can see them earlier: run **Actions > Bunny settings** with mode `stats-key`, which sets a random `STATS_KEY` on the container (hidden in the public logs), read it in Bunny under Container settings > Environment variables, and enter it under **Owner access** on `/stats`. It is sent only in an `X-Stats-Key` header; 20 wrong attempts a day lock a connection out. Running `stats-key` again replaces the key.
 
 Setup: create a Storage zone (Delivery > Storage > Add Storage Zone, e.g. `el-nino-watch-backups`, Standard tier, main region Falkenstein) and **do not connect a pull zone to it**; the reports and photos must not be publicly reachable. Then in the Magic Containers app, Container settings > Environment variables, add `BACKUP_STORAGE_ZONE` (the zone name) and `BACKUP_STORAGE_KEY` (the zone's password from its FTP & API Access page). If the zone's main region is not Falkenstein, also set `BACKUP_STORAGE_ENDPOINT` to that region's storage endpoint, for example `https://uk.storage.bunnycdn.com`.
 
@@ -73,6 +73,43 @@ Two optional sources need a key of their own, and each is switched off until it 
 - `RELIEFWEB_APPNAME`: ReliefWeb items in the news flash, an appname ReliefWeb has approved (https://apidoc.reliefweb.int/parameters#appname).
 
 To set them, add each as a secret of the `bunny-settings` environment (GitHub: Settings > Environments > bunny-settings > Add environment secret), then run **Actions > Bunny settings** with mode `source-keys` and approve the run. It copies the ones that are set onto the container and prints their names only.
+
+### WhatsApp alerts
+
+People who sign up get a WhatsApp message when a MOEWR national flood level, an ICPAC heavy-rain forecast or a Google Flood Hub river level starts or gets worse for a city they follow, at most 3 a day (`work/somalia-flood-watch/whatsapp.mjs`). It is off until all five settings below are on the container; until then the Alerts tab shows no WhatsApp button.
+
+How people sign up: the "Get alerts on WhatsApp" button on the Alerts tab opens WhatsApp with `JOIN <city>` (Somali `KU BIIR <city>`) ready to send to the El Nino Watch number. They can also type it. `LIST` shows their cities, `STOP <city>` drops one, `STOP` (`JOOJI`) stops everything and deletes their number. Up to 5 cities each.
+
+Set it up (the owner):
+
+1. Verify the business with Meta (Meta Business Suite, Security Center), for Mandek Consulting.
+2. At https://developers.facebook.com create a Business app and add the WhatsApp product. Add a phone number that is not already on the WhatsApp or WhatsApp Business app, and get the display name "El Nino Watch" approved. Add a payment method in WhatsApp Manager.
+3. In Business Settings create a system user and give it a permanent token with the `whatsapp_business_messaging` and `whatsapp_business_management` permissions.
+4. In WhatsApp Manager, create the message template `flood_alert`, category **Utility**, language **English**, with this body and the sample values shown:
+
+   > El Nino Watch alert for {{1}}: {{2}}. Source: {{3}}. {{4}} Details: https://elninowatch.so Reply STOP to stop these alerts.
+
+   Samples: {{1}} `Galkayo`, {{2}} `national flood watch`, {{3}} `Ministry of Energy and Water Resources (MOEWR)`, {{4}} `This is the official national flood forecast.`
+
+   Then try adding a Somali version of the same template. Meta's language list may not include Somali; if it accepts one under some language code, put that code in `WHATSAPP_TEMPLATE_SO_LANGUAGE`. Without it, Somali subscribers get the English template (their replies are still in Somali).
+
+   > Digniinta El Nino Watch ee {{1}}: {{2}}. Isha: {{3}}. {{4}} Faahfaahin: https://elninowatch.so Ku jawaab JOOJI si aad u joojiso digniinahan.
+
+5. Add these as secrets of the `bunny-settings` environment (GitHub: Settings > Environments > bunny-settings), then run **Actions > Bunny settings** with mode `source-keys` and approve it:
+   - `WHATSAPP_TOKEN`: the system user's token.
+   - `WHATSAPP_APP_SECRET`: the app's secret (App settings > Basic). Every message Meta sends the site is checked against it.
+   - `WHATSAPP_VERIFY_TOKEN`: any long random string you choose; it is entered again in step 6.
+   - `WHATSAPP_PHONE_NUMBER_ID`: the number's ID (WhatsApp > API setup), not the number.
+   - `WHATSAPP_NUMBER`: the number itself, in international form (e.g. 25261...). It is shown on the site's button.
+   - optional `WHATSAPP_TEMPLATE_SO_LANGUAGE`, see step 4.
+6. In the app, WhatsApp > Configuration: callback URL `https://elninowatch.so/api/whatsapp/webhook`, verify token as in step 5, and subscribe to the `messages` field.
+7. Test: from a phone, send `JOIN Galkayo` to the number. A confirmation should come back within seconds.
+
+How it behaves: the server checks the alerts every 15 minutes. The very first check only records the alerts already running, so switching it on sends nothing; after that a message goes out when an alert starts or gets worse, and a level that holds or falls sends nothing. MOEWR comes first when more than 3 are due in a day. Only MOEWR messages say "official"; ICPAC and Flood Hub messages say "This is not an official warning."
+
+Costs: Meta charges for each alert delivered (utility template, "Rest of Africa" rate; see Meta's rate card). Replies to people's own messages within 24 hours are free.
+
+Privacy: phone numbers, cities and language are kept in `whatsapp.json` on the reports volume, readable only by the server, and are deleted on STOP. They are not in the report backups, so a lost volume loses the subscriber list (people would sign up again). Logs show only the last 3 digits of a number.
 
 ## Data and migration
 

@@ -18,7 +18,7 @@ export const VISIT_TABS = ['overview', 'weather', 'map', 'alerts', 'community', 
 const BOT = /bot|crawl|spider|slurp|curl|wget|python|httpclient|headless|lighthouse|monitor|preview|facebookexternalhit|bunny/i;
 const KEEP_DAYS = 400;
 const MAX_EVENTS_PER_VISITOR_DAY = 200;
-export const PUBLISH_AFTER = 3000;
+export const PUBLISH_AFTER = 1000; // owner, 2026-10-16 (was 3,000)
 const MAX_KEY_FAILURES_PER_DAY = 20;
 // The audience is in East Africa, so a "day" is an East Africa Time day.
 const eatDay = ms => new Date(ms + 3 * 3600 * 1000).toISOString().slice(0, 10);
@@ -99,7 +99,9 @@ export function createVisits({dataDir, cities = [], now = () => Date.now(), log 
   const published = () => allVisits() >= publishAfter;
 
   function summary(dayCount, {owner = false} = {}) {
-    if (!published() && !owner) return {published: false, threshold: publishAfter, note: `Visitor statistics are published once the site has had ${publishAfter.toLocaleString('en')} visits.`};
+    // Before the threshold the public sees the all-time total only, as progress towards it (owner,
+    // 2026-10-16); the breakdowns stay private.
+    if (!published() && !owner) return {published: false, threshold: publishAfter, allTimeVisits: allVisits(), note: `Visitor statistics are published once the site has had ${publishAfter.toLocaleString('en')} visits.`};
     const keys = Object.keys(days).sort().slice(-dayCount);
     const total = {views: 0, tabs: {}, cities: {}, countries: {}, languages: {}, devices: {}};
     for (const key of keys) {

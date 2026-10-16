@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: inspect (read-only), snapshots (read-only report backups), apply / create-and-apply (backup variables), stats-key (new private stats key), source-keys (Google Flood Hub key / ReliefWeb appname from this environment's secrets)
+        description: inspect (read-only), snapshots (read-only report backups), apply / create-and-apply (backup variables), stats-key (new private stats key), source-keys (Google Flood Hub key, ReliefWeb appname and WhatsApp settings from this environment's secrets)
         required: true
         default: inspect
         type: choice
@@ -39,3 +39,9 @@ jobs:
           BACKUP_ZONE: ${{ inputs.zone }}
           GOOGLE_FLOOD_API_KEY: ${{ secrets.GOOGLE_FLOOD_API_KEY }}
           RELIEFWEB_APPNAME: ${{ secrets.RELIEFWEB_APPNAME }}
+          WHATSAPP_TOKEN: ${{ secrets.WHATSAPP_TOKEN }}
+          WHATSAPP_APP_SECRET: ${{ secrets.WHATSAPP_APP_SECRET }}
+          WHATSAPP_VERIFY_TOKEN: ${{ secrets.WHATSAPP_VERIFY_TOKEN }}
+          WHATSAPP_PHONE_NUMBER_ID: ${{ secrets.WHATSAPP_PHONE_NUMBER_ID }}
+          WHATSAPP_NUMBER: ${{ secrets.WHATSAPP_NUMBER }}
+          WHATSAPP_TEMPLATE_SO_LANGUAGE: ${{ secrets.WHATSAPP_TEMPLATE_SO_LANGUAGE }}
