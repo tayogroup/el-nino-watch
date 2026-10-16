@@ -55,3 +55,5 @@ body{font-family:var(--font-sans);color:var(--color-text);background:var(--color
 table,td,th,strong,b,output,time{font-variant-numeric:tabular-nums}
 h1,h2,h3{text-wrap:balance}
 p{text-wrap:pretty}
+/* Every control shows a keyboard focus ring, even where no stylesheet gave it one. */
+:where(a,button,select,input,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}

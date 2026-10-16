@@ -14,7 +14,7 @@
 .site-tabs{flex:1;min-width:0}
 .site-tabs-inner{position:relative;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
 .site-tabs-inner::-webkit-scrollbar{display:none}
-.site-tab{position:relative;flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:10px 16px;border-radius:var(--radius-lg);color:var(--muted,var(--neutral-600));font-weight:600;font-size:var(--text-md);white-space:nowrap;text-decoration:none;scroll-snap-align:start;transition:background .18s ease,color .18s ease,box-shadow .18s ease}
+.site-tab{position:relative;flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:10px 16px;border-radius:var(--radius-lg);color:var(--muted,var(--neutral-600));font-weight:600;font-size:var(--text-md);white-space:nowrap;text-decoration:none;scroll-snap-align:start;transition:background var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out),box-shadow var(--duration-fast) var(--ease-out)}
 .site-tab svg{width:20px;height:20px;flex:none;opacity:.85}
 .site-tab:hover{background:var(--neutral-50);color:var(--navy,var(--neutral-900));text-decoration:none}
 .site-tab:focus-visible{outline:3px solid var(--cyan-300);outline-offset:2px}
@@ -35,7 +35,7 @@ body.mayor-view .site-bar{display:none}
 body.site-tabs-ready:not(.mayor-view) #primary-nav [data-manager-tool]{display:none}
 
 /* "My city" (home-city.js), inside the city control. */
-.home-city-button{font:inherit;font-size:var(--text-sm);font-weight:700;min-height:38px;border:1px solid var(--neutral-150);border-radius:var(--radius-md);padding:7px 12px;color:var(--neutral-600);background:var(--neutral-0);cursor:pointer;white-space:nowrap;transition:background .15s ease,border-color .15s ease}
+.home-city-button{font:inherit;font-size:var(--text-sm);font-weight:700;min-height:38px;border:1px solid var(--neutral-150);border-radius:var(--radius-md);padding:7px 12px;color:var(--neutral-600);background:var(--neutral-0);cursor:pointer;white-space:nowrap;transition:background var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out)}
 .home-city-button:hover{background:var(--neutral-25);border-color:var(--blue-200)}
 .home-city-button:focus-visible{outline:3px solid var(--blue-500);outline-offset:2px}
 .home-city-button.is-home{color:var(--amber-700);background:var(--amber-50);border-color:var(--amber-200)}
@@ -52,7 +52,7 @@ body.site-tabs-ready:not(.mayor-view) #primary-nav [data-manager-tool]{display:n
 .icpac-key i{display:inline-block;width:16px;height:12px;border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,.15)}
 .icpac-legend .note{margin:6px 0 0}
 
-.site-tab-enter{animation:site-tab-in .22s ease-out}
+.site-tab-enter{animation:site-tab-in var(--duration-base) var(--ease-out)}
 @keyframes site-tab-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* A tab is one subject, so the long alert list scrolls inside its card. */

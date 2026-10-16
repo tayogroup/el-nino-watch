@@ -19,7 +19,7 @@
 .city-rankings-coverage b{color:var(--blue-700);font-size:var(--text-sm)}
 .city-rankings-list{padding:0;margin:0;list-style:none;display:grid;gap:3px}
 .city-rankings-list li{margin:0;padding:0;min-width:0}
-.city-rankings-row{display:flex;align-items:center;gap:11px;min-width:0;width:100%;padding:11px 8px;text-align:left;background:transparent;border:1px solid transparent;border-radius:var(--radius-lg);color:var(--neutral-800);box-shadow:none;cursor:pointer;transition:background .16s,border-color .16s}
+.city-rankings-row{display:flex;align-items:center;gap:11px;min-width:0;width:100%;padding:11px 8px;text-align:left;background:transparent;border:1px solid transparent;border-radius:var(--radius-lg);color:var(--neutral-800);box-shadow:none;cursor:pointer;transition:background var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out)}
 .city-rankings-row:hover{background:var(--neutral-100);border-color:var(--neutral-200)}
 .city-rankings-row:focus-visible,.city-rankings-map:focus-visible{outline:3px solid var(--blue-500);outline-offset:2px}
 .city-rankings-position{display:grid;place-items:center;flex-shrink:0;width:29px;height:29px;border-radius:var(--radius-md);background:var(--neutral-100);color:var(--neutral-600);font-size:var(--text-sm);font-weight:700}
@@ -59,3 +59,8 @@
 /* Components: the four ranking cards sit directly on the page instead of inside a second card. */
 #city-rankings-panel{background:transparent;border:0;box-shadow:none;padding-left:0;padding-right:0}
 .city-rankings-card{box-shadow:none}
+/* Polish: an empty ranking reads as a quiet note, not a warning. A feed that has not answered yet
+   uses the muted text colour; purple stays reserved for community reports. */
+.city-rankings-empty{border:1px dashed var(--color-border-strong);background:var(--color-surface-sunken);border-radius:var(--radius-md);color:var(--color-text-muted)}
+.city-rankings-empty strong{font-size:var(--text-md);font-weight:600;letter-spacing:0;color:var(--color-text)}
+.city-rankings-source.is-missing span{color:var(--color-text-muted)}

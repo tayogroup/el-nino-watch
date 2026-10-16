@@ -77,3 +77,7 @@ body.extra-dialog-open { overflow:hidden; }
   .extra-city-outlook { overflow:hidden; }
 }
 @media(max-width:380px) { .extra-coordinate-grid { grid-template-columns:1fr; gap:0; } }
+/* Polish: the dialog label reads in sentence case and the empty list matches the other empty states. */
+.extra-eyebrow{text-transform:none;letter-spacing:0}
+.extra-empty{border:1px dashed var(--color-border-strong);background:var(--color-surface-sunken);border-radius:var(--radius-md);color:var(--color-text-muted)}
+.extra-empty > span{color:var(--color-text-muted)}

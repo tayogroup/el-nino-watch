@@ -28,3 +28,5 @@ body.mayor-view main > :not(.mayor-shell):not(.mayor-active-tool){display:none}
 body.mayor-view main:has(.mayor-active-tool){display:flex;flex-direction:column}
 body.mayor-view main:has(.mayor-active-tool)>#city-rankings-panel{order:1}
 body.mayor-view main:has(.mayor-active-tool)>.site-footer{order:2}
+/* Polish: mayor empty states match the others. */
+.mayor-empty{border:1px dashed var(--color-border-strong);background:var(--color-surface-sunken);border-radius:var(--radius-md);color:var(--color-text-muted)}
