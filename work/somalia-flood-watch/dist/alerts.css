@@ -99,6 +99,8 @@
 #podcast-list button{font:inherit;color:#1473cf;background:none;border:0;padding:0;cursor:pointer;text-align:left}
 #podcast-list a,.podcast-save{color:#1473cf;font-weight:600;font-size:13px}
 .podcast-meta{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center}
+.podcast-whatsapp{justify-self:start;margin-top:2px}
+.podcast-whatsapp[hidden]{display:none}
 #podcast-text{white-space:pre-line;margin-top:8px;line-height:1.6;max-width:70ch}
 @media(max-width:760px){.podcast{grid-template-columns:minmax(0,1fr)}}
 #podcast{scroll-margin-top:250px}

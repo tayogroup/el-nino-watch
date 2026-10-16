@@ -520,3 +520,38 @@ test('the sources page has the audio bulletin, with the player and both feeds, i
   const cover = await readFile(new URL('podcast-cover-en.jpg', dist));
   assert.equal(cover.readUInt16BE(0), 0xFFD8);
 });
+
+test('WhatsApp: the audio bulletin has its own button on the Alerts tab and in the bulletin panel, AUDIO or CODKA ready to send', async () => {
+  const index = await readFile(new URL('index.html', dist), 'utf8');
+  assert.ok(index.includes('<a id="alerts-whatsapp-audio" class="whatsapp-link" href="https://wa.me/" target="_blank" rel="noopener" hidden>Get the audio bulletin on WhatsApp</a>'), 'beside the alerts button');
+  assert.ok(index.includes('<p class="podcast-times" id="podcast-times" data-i18n-skip></p><a id="podcast-whatsapp" class="podcast-save podcast-whatsapp" href="https://wa.me/" target="_blank" rel="noopener" hidden>Get it on WhatsApp</a>'), 'in the bulletin panel');
+  assert.match(index, /The audio bulletin button asks for the evening audio bulletin, in the language of this page\./);
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['Get the audio bulletin on WhatsApp'], 'Ku hel warbixinta codka WhatsApp');
+  for (const [answer, lang, shown, text] of [[{enabled: false}, 'en', false, null], [{enabled: true, number: '252610000000'}, 'en', true, 'AUDIO'], [{enabled: true, number: '252610000000'}, 'so', true, 'CODKA']]) {
+    const node = () => ({hidden: true, href: '', onclick: null});
+    const nodes = {'alerts-whatsapp': node(), 'alerts-whatsapp-note': node(), 'alerts-whatsapp-audio': node(), 'podcast-whatsapp': node()};
+    const window = {document: {getElementById: id => nodes[id] || null}, SiteLanguage: {getLanguage: () => lang}, fetch: async () => ({ok: true, json: async () => answer})};
+    vm.runInContext(await readFile(new URL('whatsapp.js', dist), 'utf8'), vm.createContext({window, encodeURIComponent}));
+    await new Promise(resolve => setTimeout(resolve, 10));
+    for (const id of ['alerts-whatsapp-audio', 'podcast-whatsapp']) {
+      assert.equal(nodes[id].hidden, !shown, `${id} shown: ${shown}`);
+      if (text) assert.equal(nodes[id].href, `https://wa.me/252610000000?text=${text}`, `${lang}: ${text}`);
+    }
+    assert.equal(nodes['alerts-whatsapp'].hidden, true, 'the alerts button still waits for a city');
+  }
+});
+
+test('WhatsApp LIST says whether the person takes the audio bulletin', async () => {
+  const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-podcast-wa-list-'));
+  const sent = [];
+  const fetchImpl = async (url, options) => { sent.push(JSON.parse(options.body)); return {ok: true, status: 200, json: async () => ({})}; };
+  const env = {WHATSAPP_TOKEN: 'token-not-real', WHATSAPP_PHONE_NUMBER_ID: '1234567890', WHATSAPP_APP_SECRET: 'secret-not-real', WHATSAPP_VERIFY_TOKEN: 'verify-not-real', WHATSAPP_NUMBER: '252610000000'};
+  const wa = createWhatsApp({dataDir, cities, config: whatsappConfig(env), alerts: async () => null, fetchImpl, log: quiet});
+  try {
+    await wa.onMessage('252610000021', 'AUDIO'); await wa.onMessage('252610000021', 'LIST');
+    assert.equal(sent.at(-1).text.body, 'You do not follow any city. Send JOIN and a city name, for example JOIN Galkayo. You also get the audio bulletin; reply STOP AUDIO to stop it.');
+    await wa.onMessage('252610000022', 'KU BIIR Galkayo'); await wa.onMessage('252610000022', 'LIISKA');
+    assert.equal(sent.at(-1).text.body, 'Waxaad heleysaa digniinaha Galkayo. Ku jawaab JOOJI si aad u joojiso dhammaan digniinaha. Soo dir CODKA si aad u hesho warbixinta codka.');
+  } finally { await rm(dataDir, {recursive: true, force: true}); }
+});

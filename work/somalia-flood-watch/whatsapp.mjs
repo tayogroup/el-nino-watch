@@ -103,7 +103,7 @@ const REPLIES = {
     stopped: 'You will get no more El Nino Watch alerts, and your number has been deleted. Send JOIN and a city name to start again.',
     stoppedCity: (city, rest) => `You will no longer get alerts for ${city}.${rest ? ` You still get alerts for ${rest}.` : ' You follow no cities now, and your number has been deleted.'}`,
     notFollowing: city => `You do not follow ${city}.`,
-    list: cities => cities ? `You get alerts for ${cities}. Reply STOP to stop all alerts.` : 'You do not follow any city. Send JOIN and a city name, for example JOIN Galkayo.',
+    list: (cities, audio) => (cities ? `You get alerts for ${cities}. Reply STOP to stop all alerts.` : 'You do not follow any city. Send JOIN and a city name, for example JOIN Galkayo.') + (audio ? ' You also get the audio bulletin; reply STOP AUDIO to stop it.' : ' Send AUDIO for the audio bulletin.'),
     help: `El Nino Watch flood alerts. Send JOIN and a city name to get alerts, for example JOIN Galkayo. LIST shows your cities, STOP stops all alerts. Send AUDIO for the audio bulletin. More: ${SITE}`,
     audioOn: when => `You will get the El Nino Watch audio bulletin ${when}, as a link to listen. Reply STOP AUDIO to stop it. Your number is used only for these messages.`,
     audioOff: cities => `You will no longer get the audio bulletin.${cities ? ` You still get flood alerts for ${cities}.` : ' Your number has been deleted.'}`,
@@ -118,7 +118,7 @@ const REPLIES = {
     stopped: 'Mar dambe ma heli doontid digniinaha El Nino Watch, lambarkaagana waa la tirtiray. Soo dir KU BIIR iyo magaalo si aad dib ugu bilowdo.',
     stoppedCity: (city, rest) => `Mar dambe ma heli doontid digniinaha ${city}.${rest ? ` Weli waxaad heleysaa digniinaha ${rest}.` : ' Hadda ma la socotid magaalo, lambarkaagana waa la tirtiray.'}`,
     notFollowing: city => `Ma la socotid ${city}.`,
-    list: cities => cities ? `Waxaad heleysaa digniinaha ${cities}. Ku jawaab JOOJI si aad u joojiso dhammaan digniinaha.` : 'Ma la socotid magaalo. Soo dir KU BIIR iyo magaalo, tusaale KU BIIR Galkayo.',
+    list: (cities, audio) => (cities ? `Waxaad heleysaa digniinaha ${cities}. Ku jawaab JOOJI si aad u joojiso dhammaan digniinaha.` : 'Ma la socotid magaalo. Soo dir KU BIIR iyo magaalo, tusaale KU BIIR Galkayo.') + (audio ? ' Sidoo kale waxaad heleysaa warbixinta codka; ku jawaab JOOJI CODKA si aad u joojiso.' : ' Soo dir CODKA si aad u hesho warbixinta codka.'),
     help: `Digniinaha fatahaadda ee El Nino Watch. Soo dir KU BIIR iyo magaalo si aad u hesho digniinaha, tusaale KU BIIR Galkayo. LIISKA wuxuu muujiyaa magaalooyinkaaga, JOOJI wuxuu joojiyaa dhammaan digniinaha. Soo dir CODKA si aad u hesho warbixinta codka. Wax badan: ${SITE}`,
     audioOn: when => `Waxaad WhatsApp ku heli doontaa warbixinta codka ee El Nino Watch ${when}, oo ah xiriir aad ka dhageysato. Ku jawaab JOOJI CODKA si aad u joojiso. Lambarkaaga waxaa loo isticmaalaa oo keliya fariimahan.`,
     audioOff: cities => `Mar dambe ma heli doontid warbixinta codka.${cities ? ` Weli waxaad heleysaa digniinaha fatahaadda ee ${cities}.` : ' Lambarkaagana waa la tirtiray.'}`,
@@ -220,7 +220,7 @@ export function createWhatsApp({dataDir, cities = [], config = whatsappConfig(),
     const command = parseCommand(text), existing = state.subscribers[from];
     const lang = command.lang || existing?.lang || 'en', say = REPLIES[lang];
     if (command.action === 'help') return sendText(from, say.help);
-    if (command.action === 'list') return sendText(from, say.list(existing ? cityList(existing.cities) : ''));
+    if (command.action === 'list') return sendText(from, say.list(existing ? cityList(existing.cities) : '', !!existing?.bulletin));
     if (command.action === 'audio-on') {
       const record = existing || {cities: [], lang, joinedAt: new Date(now()).toISOString()};
       record.bulletin = true; record.lang = lang;

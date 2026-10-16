@@ -647,7 +647,6 @@
     "Open gauge on Flood Hub ↗": "Ka fur xarunta cabbirka webiga Flood Hub ↗",
     "River forecasts: Google Flood Hub ↗": "Saadaalaha webiga: Google Flood Hub ↗",
     "Get alerts on WhatsApp": "Ka hel digniinaha WhatsApp",
-    "The WhatsApp button opens a message ready to send for the selected city. Alerts come from MOEWR, ICPAC and Google Flood Hub when one starts or gets worse, at most 3 a day. Your number is used only to send these alerts. Reply STOP to stop them.": "Badhanka WhatsApp wuxuu furayaa fariin diyaar u ah in loo diro magaalada la doortay. Digniinaha waxay ka yimaadaan MOEWR, ICPAC iyo Google Flood Hub marka mid bilaabmo ama uu sii xumaado, ugu badnaan 3 maalintii. Lambarkaaga waxaa loo isticmaalaa oo keliya dirista digniinahan. Ku jawaab JOOJI si aad u joojiso.",
     "Privacy": "Asturnaanta",
     "Privacy notice ↓": "Ogeysiiska asturnaanta ↓",
     "What El Nino Watch keeps about you, and who else sees what. There are no accounts, no cookies and no advertising, and nothing is sold.": "Waxa El Nino Watch kaa hayso, iyo cidda kale ee arki karta. Ma jiraan akoonno, kukiis (cookies) ama xayeysiis, waxna lama iibiyo.",
@@ -779,7 +778,10 @@
     "Listen": "Dhageyso",
     "RSS, Somali": "RSS, Af-Soomaali",
     "RSS, English": "RSS, Ingiriisi",
-    "Checked against the app on 17 October 2026.": "Waxaa lagu hubiyay abka 17 Oktoobar 2026."
+    "Checked against the app on 17 October 2026.": "Waxaa lagu hubiyay abka 17 Oktoobar 2026.",
+    "Get the audio bulletin on WhatsApp": "Ku hel warbixinta codka WhatsApp",
+    "The WhatsApp alerts button opens a message ready to send for the selected city. Alerts come from MOEWR, ICPAC and Google Flood Hub when one starts or gets worse, at most 3 a day. The audio bulletin button asks for the evening audio bulletin, in the language of this page. Your number is used only to send these messages. Reply STOP to stop the alerts, or STOP AUDIO to stop the bulletin.": "Badhanka digniinaha WhatsApp wuxuu furaa fariin diyaar u ah in loo diro magaalada la doortay. Digniinaha waxay ka yimaadaan MOEWR, ICPAC iyo Google Flood Hub marka mid bilaabmo ama uu sii xumaado, ugu badnaan 3 maalintii. Badhanka warbixinta codka wuxuu codsadaa warbixinta codka ee fiidka, luqadda boggan. Lambarkaaga waxaa loo isticmaalaa oo keliya dirista fariimahan. Ku jawaab JOOJI si aad u joojiso digniinaha, ama JOOJI CODKA si aad u joojiso warbixinta.",
+    "Get it on WhatsApp": "Ku hel WhatsApp"
   },
   "patterns": [
     {

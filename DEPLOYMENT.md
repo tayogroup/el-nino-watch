@@ -111,7 +111,7 @@ Costs: Meta charges for each alert delivered (utility template, "Rest of Africa"
 
 Privacy: phone numbers, cities and language are kept in `whatsapp.json` on the reports volume, readable only by the server, and are deleted on STOP. They are not in the report backups, so a lost volume loses the subscriber list (people would sign up again). Logs show only the last 3 digits of a number.
 
-Audio bulletin on WhatsApp (opt-in): sending `CODKA` (English `AUDIO`) asks for the Somali audio bulletin, with or without following a city; `JOOJI CODKA` (`STOP AUDIO`) stops it. Each new evening bulletin goes to them as the template `flood_bulletin` (category **Utility**), which needs creating like `flood_alert`:
+Audio bulletin on WhatsApp (opt-in): sending `CODKA` (English `AUDIO`) asks for the audio bulletin, in the language the person signs up in, with or without following a city; the site offers it with a "Get the audio bulletin on WhatsApp" button beside the alerts button and a "Get it on WhatsApp" link in the home-page bulletin panel, both shown only while WhatsApp is on; `LIST` says whether the person takes it; `JOOJI CODKA` (`STOP AUDIO`) stops it. Each new evening bulletin goes to them as the template `flood_bulletin` (category **Utility**), which needs creating like `flood_alert`:
 
    > El Nino Watch audio bulletin, in Somali: {{1}}. Listen: {{2}} Reply STOP AUDIO to stop the bulletin.
 

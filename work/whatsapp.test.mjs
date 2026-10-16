@@ -108,7 +108,7 @@ test('JOIN, KU BIIR, LIST and STOP; replies in the person\'s language; STOP dele
     await message(wa, ALICE, 'JOIN Atlantis');
     assert.match(sent.at(-1).body.text.body, /^We could not find "Atlantis"\. .*Cities: Mogadishu, Hargeisa/);
     await message(wa, ALICE, 'LIST');
-    assert.equal(sent.at(-1).body.text.body, 'You get alerts for Galkayo, Mogadishu. Reply STOP to stop all alerts.');
+    assert.equal(sent.at(-1).body.text.body, 'You get alerts for Galkayo, Mogadishu. Reply STOP to stop all alerts. Send AUDIO for the audio bulletin.');
     await message(wa, ALICE, 'STOP Mogadishu');
     assert.deepEqual(wa.subscribers()[ALICE].cities, ['Galkayo']);
     assert.match(sent.at(-1).body.text.body, /no longer get alerts for Mogadishu\. You still get alerts for Galkayo\./);
@@ -242,7 +242,8 @@ test('the button text and note read in Somali', async () => {
   assert.equal(window.SiteLanguage.translateText('Get alerts on WhatsApp'), 'Ka hel digniinaha WhatsApp');
   const index = await readFile(new URL('index.html', dist), 'utf8');
   const note = /<p id="alerts-whatsapp-note"[^>]*>([^<]+)<\/p>/.exec(index)[1];
-  assert.match(window.SiteLanguage.translateText(note), /^Badhanka WhatsApp/);
+  assert.match(window.SiteLanguage.translateText(note), /^Badhanka digniinaha WhatsApp/);
+  assert.match(window.SiteLanguage.translateText(note), /JOOJI CODKA/, 'how to stop the bulletin, too');
 });
 
 test('the server routes the WhatsApp endpoints, and is off without the settings', async () => {
