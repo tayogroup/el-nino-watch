@@ -29,7 +29,7 @@ body[data-site-tab=overview]:not(.mayor-view) #map-panel .mapframe #map{height:4
    the Alerts tab. */
 body[data-site-tab=overview]:not(.mayor-view) main>#alerts-panel.site-tab-hidden{display:block}
 body[data-site-tab=overview]:not(.mayor-view) #alerts-panel{margin:0}
-body[data-site-tab=overview]:not(.mayor-view) #alerts-panel>:is(.alert-filters,#alerts-summary,#alerts-status,.links,.health-callout,.podcast){display:none}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-panel>:is(.alert-filters,#alerts-summary,#alerts-status,.links,.health-callout){display:none}
 body[data-site-tab=overview]:not(.mayor-view) #alerts-panel>.sectionhead button{display:none}
 body[data-site-tab=overview]:not(.mayor-view) #alerts-list{grid-template-columns:minmax(0,1fr);gap:var(--space-2);max-height:520px}
 body[data-site-tab=overview]:not(.mayor-view) #alerts-list:has(.is-official)>.alert-card:not(.is-official){display:none}
@@ -43,6 +43,7 @@ body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card .alert-sc
 @media (max-width:1099px){
   body[data-site-tab=overview]:not(.mayor-view) main{display:flex;flex-direction:column;gap:var(--space-5)}
   body[data-site-tab=overview]:not(.mayor-view) main>*{margin-top:0;margin-bottom:0}
+  body[data-site-tab=overview]:not(.mayor-view) main>#podcast{order:-1}
   body[data-site-tab=overview]:not(.mayor-view) main>#site-disclaimer{order:0}
   body[data-site-tab=overview]:not(.mayor-view) main>.livebar{order:1}
   body[data-site-tab=overview]:not(.mayor-view) main>.mayor-extension-bar{order:2}
@@ -87,6 +88,9 @@ body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card .alert-sc
   body[data-site-tab=overview]:not(.mayor-view) main>#city-rankings-panel{grid-area:rank}
   body[data-site-tab=overview]:not(.mayor-view) main>#watchlist{grid-area:watch}
   body[data-site-tab=overview]:not(.mayor-view) main>.site-footer{grid-area:foot}
+  /* The audio bulletin, first under the header while there is one to show (its row would otherwise leave a gap). */
+  body[data-site-tab=overview]:not(.mayor-view) main:has(>#podcast:not([hidden])){grid-template-areas:"nav pod pod" "nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
+  body[data-site-tab=overview]:not(.mayor-view) main>#podcast{grid-area:pod}
   body[data-site-tab=overview]:not(.mayor-view) main>.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   body[data-site-tab=overview]:not(.mayor-view) main>.stats>div{display:flex;flex-direction:column;justify-content:center;padding:var(--space-4) var(--space-5)}
   body[data-site-tab=overview]:not(.mayor-view) main>.livebar{align-self:center}

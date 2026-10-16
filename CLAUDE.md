@@ -229,7 +229,7 @@ beddelin" when nothing changed. MOEWR level words are the WhatsApp ones
 (Digniin, Feejignaan, Talo). WhatsApp delivery is OPT-IN (`CODKA` / `AUDIO`;
 evening bulletin by default). Radio partners: to be decided by the owner. Off
 until approval, `GEMINI_API_KEY` and `PODCAST_ENABLED=1`; the owner can hold
-it at `/api/podcast/hold` with the stats key. DEPLOYMENT.md has the setup.
+it at `/api/podcast/hold` with the stats key. DEPLOYMENT.md has the setup. On the page (owner, 2026-10-17): first on the HOME page, directly under the header (`#podcast`, `data-site-tab="overview"`; order -1 in the one-column layout, the `pod` grid row on desktop), not on the Alerts tab; shown whenever the service is on, with when the bulletin was recorded and when the next is due, or when the first will be. The times line follows the page language and waits for i18n.js to set it.
 
 **Waterborne-diseases film** (owner, 2026-10-16): "Diseases from dirty water"
 (`work/film/waterborne-diseases.json`, `#waterborne-film`, the first training),

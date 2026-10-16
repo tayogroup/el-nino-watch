@@ -123,7 +123,7 @@ Audio bulletin on WhatsApp (opt-in): sending `CODKA` (English `AUDIO`) asks for 
 
 ### Audio bulletins (Somali, three times a day)
 
-A short Somali bulletin at 06:30, 12:30 and 18:30 East Africa Time (`work/somalia-flood-watch/podcast.mjs`), written from the site's own feeds by a fixed template and voiced by Google Gemini (model `gemini-3.8-flash-tts`, voice Puck). The latest one plays on the Alerts tab, with its text. Bulletins are kept 7 days on the reports volume (`podcast/`); they are not in the backups.
+A short Somali bulletin at 06:30, 12:30 and 18:30 East Africa Time (`work/somalia-flood-watch/podcast.mjs`), written from the site's own feeds by a fixed template and voiced by Google Gemini (model `gemini-3.8-flash-tts`, voice Puck). The latest one plays first on the home page, under the header, with its text, when it was recorded and when the next is due; before the first recording the panel says when that will be. Bulletins are kept 7 days on the reports volume (`podcast/`); they are not in the backups.
 
 It is off until all three of these hold:
 

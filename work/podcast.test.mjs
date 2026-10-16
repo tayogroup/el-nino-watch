@@ -230,25 +230,49 @@ test('WhatsApp: CODKA or AUDIO opts in, JOOJI CODKA or STOP AUDIO opts out; only
 
 // ---- The page ----
 
-test('the Alerts tab has a hidden bulletin panel that shows the latest bulletin, in Somali, when there is one', async () => {
+async function runPanel(answer, lang = 'en') {
+  const node = () => ({hidden: true, textContent: '', attrs: {}, paused: true, getAttribute(n) { return this.attrs[n] ?? null; }, setAttribute(n, v) { this.attrs[n] = v; }});
+  const nodes = Object.fromEntries(['podcast', 'podcast-audio', 'podcast-player', 'podcast-read', 'podcast-when', 'podcast-text', 'podcast-times'].map(id => [id, node()]));
+  const window = {document: {getElementById: id => nodes[id] || null, addEventListener() {}}, fetch: async () => ({json: async () => answer}), SiteLanguage: {getLanguage: () => lang}};
+  vm.runInContext(await readFile(new URL('podcast.js', dist), 'utf8'), vm.createContext({window}));
+  await window.ElNinoPodcast.load();
+  return {nodes, api: window.ElNinoPodcast};
+}
+
+test('the bulletin is first on the home page, under the header, and only there', async () => {
   const index = await readFile(new URL('index.html', dist), 'utf8');
-  assert.ok(index.includes('<div class="podcast" id="podcast" role="region" aria-labelledby="podcast-title" hidden>'));
-  const alerts = index.slice(index.indexOf('id="alerts-panel"'), index.indexOf('id="diseases-panel"'));
-  assert.ok(alerts.includes('id="podcast"'), 'on the Alerts tab');
+  assert.ok(index.includes('<main><div class="podcast" id="podcast" role="region" aria-labelledby="podcast-title" data-site-tab="overview" hidden>'), 'the first block of the page, on the home tab');
+  assert.equal(index.split('id="podcast"').length - 1, 1, 'not also on the Alerts tab');
   assert.ok(index.indexOf('<script src="podcast.js"></script>') > 0 && index.indexOf('<script src="podcast.js"></script>') < index.indexOf('<script src="alerts.js"></script>'));
-  assert.match(await readFile(new URL('shell.css', dist), 'utf8'), /#alerts-panel>:is\([^)]*\.podcast[^)]*\)\{display:none\}/, 'not on the overview');
+  const shell = await readFile(new URL('shell.css', dist), 'utf8');
+  assert.match(shell, /main>#podcast\{order:-1\}/, 'first in the one-column home page');
+  assert.match(shell, /main:has\(>#podcast:not\(\[hidden\]\)\)\{grid-template-areas:"nav pod pod" "nav disc disc"/, 'first row of the desktop home page');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
-  for (const text of ['AUDIO BULLETIN · IN SOMALI', 'Listen: the latest bulletin', 'Not an official warning', 'Read the bulletin']) assert.ok(catalog.messages[text], text);
-  for (const answer of [{enabled: false}, {enabled: true, items: [{title: 'Warbixinta fiidka, Jimce, 16 Oktoobar', text: 'Waa El Nino Watch.', seconds: 125, url: '/podcast/2026-10-16-evening.mp3'}]}]) {
-    const nodes = {podcast: {hidden: true}, 'podcast-audio': {paused: true, attrs: {}, getAttribute(n) { return this.attrs[n] ?? null; }, setAttribute(n, v) { this.attrs[n] = v; }}, 'podcast-when': {textContent: ''}, 'podcast-text': {textContent: ''}};
-    const window = {document: {getElementById: id => nodes[id] || null}, fetch: async () => ({json: async () => answer})};
-    vm.runInContext(await readFile(new URL('podcast.js', dist), 'utf8'), vm.createContext({window}));
-    await window.ElNinoPodcast.load();
-    if (answer.enabled) {
-      assert.equal(nodes.podcast.hidden, false);
-      assert.equal(nodes['podcast-audio'].attrs.src, '/podcast/2026-10-16-evening.mp3');
-      assert.equal(nodes['podcast-when'].textContent, 'Warbixinta fiidka, Jimce, 16 Oktoobar · 2:05');
-      assert.equal(nodes['podcast-text'].textContent, 'Waa El Nino Watch.');
-    } else assert.equal(nodes.podcast.hidden, true, 'nothing to play: the panel stays hidden');
-  }
+  for (const text of ['Audio bulletin in Somali', 'Not an official warning', 'Read the bulletin']) assert.ok(catalog.messages[text], text);
+});
+
+test('the panel shows when the first bulletin is due, then the latest bulletin with when it was recorded and when the next is', async () => {
+  const off = await runPanel({enabled: false});
+  assert.equal(off.nodes.podcast.hidden, true, 'the service is off: nothing shown');
+  const first = await runPanel({enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: []});
+  assert.equal(first.nodes.podcast.hidden, false, 'on but nothing recorded yet: shown');
+  assert.equal(first.nodes['podcast-player'].hidden, true, 'no empty player'); assert.equal(first.nodes['podcast-read'].hidden, true);
+  assert.match(first.nodes['podcast-times'].textContent, /^The first bulletin is (tomorrow )?at (06|12|18):30 East Africa Time\.$/);
+  const item = {title: 'Warbixinta subaxa, Sabti, 17 Oktoobar', text: 'Waa El Nino Watch.', seconds: 92, url: '/podcast/2026-10-17-morning.mp3', publishedAt: '2026-10-17T03:31:20Z'};
+  const shown = await runPanel({enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: [item]});
+  assert.equal(shown.nodes['podcast-player'].hidden, false); assert.equal(shown.nodes['podcast-audio'].attrs.src, '/podcast/2026-10-17-morning.mp3');
+  assert.equal(shown.nodes['podcast-when'].textContent, 'Warbixinta subaxa, Sabti, 17 Oktoobar · 1:32');
+  assert.equal(shown.nodes['podcast-text'].textContent, 'Waa El Nino Watch.');
+  // The times line, at fixed moments (East Africa Time is UTC+3).
+  const {describeTimes, nextSlot} = shown.api, data = {enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: [item]};
+  const at = utc => Date.parse(`2026-10-17T${utc}:00Z`);
+  assert.equal(describeTimes(data, at('03:40'), 'en'), 'Recorded at 06:31 EAT · next bulletin at 12:30');
+  assert.equal(describeTimes(data, at('03:40'), 'so'), 'Waxaa la duubay 06:31 (saacadda Bariga Afrika) · warbixinta xigta waa 12:30');
+  assert.equal(describeTimes(data, at('16:00'), 'en'), 'Recorded at 06:31 EAT · next bulletin tomorrow at 06:30', 'after 18:30 EAT');
+  assert.equal(describeTimes({...data, items: []}, at('16:00'), 'so'), 'Warbixinta ugu horreysa waa berri 06:30 saacadda Bariga Afrika.', 'after the last slot of the day: tomorrow');
+  assert.equal(describeTimes({...data, items: []}, Date.parse('2026-10-16T21:43:00Z'), 'en'), 'The first bulletin is at 06:30 East Africa Time.', 'what the owner saw at 00:43 EAT: later the same day');
+  assert.equal(describeTimes({...data, items: []}, Date.parse('2026-10-16T21:43:00Z'), 'so'), 'Warbixinta ugu horreysa waa 06:30 saacadda Bariga Afrika.');
+  assert.equal(describeTimes(data, at('09:00') + 86400000, 'en'), 'Recorded at 06:31 EAT, 2026-10-17 · next bulletin at 12:30', 'an older recording says which day');
+  assert.equal(describeTimes({...data, hold: true}, at('03:40'), 'en'), 'Recorded at 06:31 EAT · New bulletins are paused.');
+  assert.deepEqual({...nextSlot(at('09:29'))}, {at: '12:30', tomorrow: false}); assert.deepEqual({...nextSlot(at('09:30'))}, {at: '18:30', tomorrow: false});
 });
