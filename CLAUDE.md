@@ -177,7 +177,9 @@ applies to touch the range). Browser notifications follow the selected filters.
 
 **Visits and stats**: every page load is counted (not unique visitors),
 cookieless. The public `/stats` page stays hidden until 1,000 visits (lowered
-from 3,000 on 2026-10-16); the owner sees it earlier with the private `STATS_KEY`.
+from 3,000 on 2026-10-16); until then it shows only the all-time total as
+progress ("327 of 1,000 visits", owner, 2026-10-16), never the breakdowns. The
+owner sees everything earlier with the private `STATS_KEY`.
 
 **Open items**: ReliefWeb appname (owner to request); Google Flood Forecasting
 API access (owner to request, then set the key); Somali review; optionally

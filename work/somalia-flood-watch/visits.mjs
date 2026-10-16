@@ -99,7 +99,9 @@ export function createVisits({dataDir, cities = [], now = () => Date.now(), log 
   const published = () => allVisits() >= publishAfter;
 
   function summary(dayCount, {owner = false} = {}) {
-    if (!published() && !owner) return {published: false, threshold: publishAfter, note: `Visitor statistics are published once the site has had ${publishAfter.toLocaleString('en')} visits.`};
+    // Before the threshold the public sees the all-time total only, as progress towards it (owner,
+    // 2026-10-16); the breakdowns stay private.
+    if (!published() && !owner) return {published: false, threshold: publishAfter, allTimeVisits: allVisits(), note: `Visitor statistics are published once the site has had ${publishAfter.toLocaleString('en')} visits.`};
     const keys = Object.keys(days).sort().slice(-dayCount);
     const total = {views: 0, tabs: {}, cities: {}, countries: {}, languages: {}, devices: {}};
     for (const key of keys) {
