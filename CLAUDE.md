@@ -219,7 +219,9 @@ voiced by Gemini (`gemini-3.8-flash-tts`, voice Puck; only the full Flash TTS
 model speaks Somali, not Flash-Lite). The owner approves the TEMPLATE once,
 then bulletins publish on their own: `APPROVED_TEMPLATE` must equal
 `TEMPLATE_VERSION`, so changing the template's words means bumping the version
-and asking again. Template rules, kept by `podcast.test.mjs`: only MOEWR is
+and asking again. **Approved 2026-10-16** (version `2026-10-16`): the wording,
+the seven tips and the voice, after the owner heard that evening's bulletin
+voiced by Puck (89 s, 0.5 MB MP3). Template rules, kept by `podcast.test.mjs`: only MOEWR is
 called official; every figure comes from a feed; a source that is down is read
 as "lama heli karo", never as an older figure; gauges to the centimetre; news
 only from Somali-language items, with the source named; midday says "isma

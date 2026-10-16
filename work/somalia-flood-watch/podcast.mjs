@@ -17,8 +17,10 @@ import {randomBytes, timingSafeEqual} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 
 export const TEMPLATE_VERSION = '2026-10-16';
-// The template version the owner approved. null: not approved, so nothing is voiced or published.
-export const APPROVED_TEMPLATE = null;
+// The template version the owner approved; anything else, and nothing is voiced or published. Approved by the
+// owner on 2026-10-16 after hearing that evening's bulletin voiced by Puck: the wording, the seven tips and the
+// voice. Changing the template's words means a new TEMPLATE_VERSION and a new approval.
+export const APPROVED_TEMPLATE = '2026-10-16';
 export const SLOTS = Object.freeze([
   {id: 'morning', at: '06:30', name: 'subaxa'},
   {id: 'midday', at: '12:30', name: 'duhurka'},
