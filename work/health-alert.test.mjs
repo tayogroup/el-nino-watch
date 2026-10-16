@@ -178,3 +178,10 @@ test('the film has a Share row whose link opens the film itself, in English and 
     if (lang === 'so') { assert.match(text, /^Daawo: sida qoyskaaga/); assert.doesNotMatch(text, /\b(the|and|with|film)\b/); }
   }
 });
+
+test('the site footer links to the cholera film, in Somali too', async () => {
+  const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
+  assert.ok(footer.includes('<a href="#health-alert">Public health alert</a><a href="#health-film">Cholera film</a>'));
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['Cholera film'], 'Filimka daacuunka');
+});
