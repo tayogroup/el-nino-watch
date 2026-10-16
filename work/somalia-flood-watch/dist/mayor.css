@@ -30,3 +30,6 @@ body.mayor-view main:has(.mayor-active-tool)>#city-rankings-panel{order:1}
 body.mayor-view main:has(.mayor-active-tool)>.site-footer{order:2}
 /* Polish: mayor empty states match the others. */
 .mayor-empty{border:1px dashed var(--color-border-strong);background:var(--color-surface-sunken);border-radius:var(--radius-md);color:var(--color-text-muted)}
+/* Polish: on the narrowest phones the four action counts sit two by two, so long Somali words
+   (La dhammaystiray) fit whole. */
+@media(max-width:400px){.mayor-workflow-counts{grid-template-columns:repeat(2,minmax(0,1fr))}}

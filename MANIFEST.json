@@ -524,6 +524,26 @@
       "sha256": "a52bbdd423518fd7365f71b34c5dc3a36e9e50307a20aa6179f8357db62fc6bb"
     },
     {
+      "path": "work/somalia-flood-watch/dist/fonts/ibm-plex-sans-latin-400-normal.woff2",
+      "bytes": 19156,
+      "sha256": "db71f8a28ad8501544fb4e7668e3c6d0b731760b6f20de3525ebaeba597f1922"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/fonts/ibm-plex-sans-latin-600-normal.woff2",
+      "bytes": 20356,
+      "sha256": "31535a91ce3f6b8ed3ddedadab1e49957e2220263a640df1a3f14f6fdfe15eb6"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/fonts/ibm-plex-sans-latin-700-normal.woff2",
+      "bytes": 19440,
+      "sha256": "fff71a83690454ee6ea9014780a6797408918cb90cde1f0f3be65ea28a03c678"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/fonts/LICENSE-IBM-Plex.txt",
+      "bytes": 4348,
+      "sha256": "b7281c58df5d3b75d98dfa9a6a598705042f4cd8f90b92d9edb1c2db1b8275b9"
+    },
+    {
       "path": "work/somalia-flood-watch/dist/forecast-relay.js",
       "bytes": 1551,
       "sha256": "8d76c9ccbb72fe2e29ecebb0fb32faa1ae8a7ee6219f40b90657a4aee2b510ea"
@@ -617,6 +637,11 @@
       "path": "work/somalia-flood-watch/dist/share.js",
       "bytes": 6105,
       "sha256": "baffbcc02a8bbe982e530bbe819fe5c0b89993de5859670cc2d2e0f90783ab30"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/shell.css",
+      "bytes": 8748,
+      "sha256": "a236570a94957edede9c66c1ad27bd26f6a29be7850f57e4aca84adb52f38515"
     },
     {
       "path": "work/somalia-flood-watch/dist/social-preview.png",
