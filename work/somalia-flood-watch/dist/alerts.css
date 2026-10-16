@@ -53,3 +53,14 @@
 @media(max-width:900px){.alert-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.alert-metrics>span:nth-child(2){border-right:0}.alert-metrics>span:nth-child(-n+2){border-bottom:1px solid rgba(176,211,246,.2)}.alert-metrics>span{padding:16px 18px}#alerts-list{grid-template-columns:1fr}.observed-controls{gap:10px}}
 @media(max-width:600px){#alerts-panel .sectionhead,.alerts-panel .sectionhead{align-items:flex-start}.alert-controls,#alerts-panel .controls,.alerts-panel .controls{width:100%;gap:9px}#alerts-scope,#alerts-type{flex:1 1 140px;min-width:0;max-width:100%}#alerts-notify{flex:1 1 100%;width:100%}.alert-metrics>span{padding:14px 13px;font-size:var(--text-xs)}.alert-metrics b{font-size:var(--text-2xl)}.alert-card{padding:15px 14px}.alert-card h3{font-size:var(--text-md)}.alert-card-head{align-items:flex-start;gap:6px}.alert-card-head .badge{font-size:var(--text-xs)}.observed-panel{padding:14px 13px}.observed-controls{align-items:stretch;gap:11px}.observed-controls>div,.observed-controls>label{flex-basis:100%}.observed-legend{gap:9px 13px;font-size:var(--text-xs);padding:10px}#alerts-status{padding:11px 12px}}
 @media print{#alerts-notify{display:none}.alert-card,.observed-panel{break-inside:avoid;box-shadow:none}.alert-metrics{background:white;border-color:var(--neutral-300)}.alert-metrics b,.alert-metrics>span{color:var(--blue-800)}.alert-card{background:white}}
+/* Components: an alert card shows its place among the sources. Only MOEWR is official: its card has a
+   navy frame and a filled navy source badge. Regional forecasts, observations and the app's own screening
+   keep an outlined badge; the app screening badge is dashed. Severity stays in the coloured badge on the right. */
+.alert-card{border:1px solid var(--color-border);box-shadow:none}
+.alert-card.is-official{border-color:var(--color-brand);box-shadow:0 0 0 1px var(--color-brand)}
+.alert-card-head .badge:first-child{background:transparent;border:1px solid var(--color-border-strong);color:var(--color-text-muted)}
+.alert-card.is-official .alert-card-head .badge:first-child{background:var(--color-brand);border-color:var(--color-brand);color:var(--neutral-0)}
+.alert-card.is-screening .alert-card-head .badge:first-child{border-style:dashed}
+.alert-card.is-official h3{color:var(--color-text-strong)}
+/* The summary band holds five counts; give each its own column on wide screens. */
+@media(min-width:901px){.alert-metrics{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}

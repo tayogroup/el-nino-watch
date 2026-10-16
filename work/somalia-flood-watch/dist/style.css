@@ -20,3 +20,5 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}button{transition:none}}
 /* Layout: weather summary cards read from the top, like the rest of the page. */
 .weather-stat{justify-content:flex-start}
+/* Components: an official layer legend image sits in a quiet frame. */
+.layer-legend img{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-sm);padding:var(--space-2)}

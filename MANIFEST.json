@@ -435,13 +435,13 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.css",
-      "bytes": 8340,
-      "sha256": "7fabf399983de9adec0f4087025d960691bf61653a66f99dd0033a809871dd1c"
+      "bytes": 9432,
+      "sha256": "f13320120ef54ac74c94eb5e74524a7e979e7750ac88c0e9872d4bbb54c33d25"
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.js",
-      "bytes": 23610,
-      "sha256": "fa8f6495145ef942a4031665433594b5e6a29bcdf8e5bd333829698ec5b56785"
+      "bytes": 23877,
+      "sha256": "3b3ac46001e8ffa318ee47dccf787edbe7f0397cf4ff762e213b85bd46043c5a"
     },
     {
       "path": "work/somalia-flood-watch/dist/app.js",
@@ -485,8 +485,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/design.css",
-      "bytes": 52030,
-      "sha256": "275e3b91253b36276bf178bc35650000c77d041c03ccea2704639ba089151faf"
+      "bytes": 52586,
+      "sha256": "59c6d0927661bb35c1e3cd9392556d0e2aead779b21c069efe202c864c48b800"
     },
     {
       "path": "work/somalia-flood-watch/dist/el-nino-watch-sources.pdf",
@@ -605,8 +605,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/rankings.css",
-      "bytes": 7772,
-      "sha256": "9119dd337d38f06b32a01f660e1a411121b8de55f4cdf8da33c4cbfcf4a8202b"
+      "bytes": 8009,
+      "sha256": "e59ce7dce49b4f799ced8f8bd29aa057af3868480b5fe7a8e658763749af9b35"
     },
     {
       "path": "work/somalia-flood-watch/dist/rankings.js",
@@ -635,8 +635,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/style.css",
-      "bytes": 25113,
-      "sha256": "b7a2ba4fdeb1697ae8f03a001ec5b12ab9ff391e6f80893b4b5b4a61c38996f0"
+      "bytes": 25327,
+      "sha256": "6fcfb48240dd7387cb3881388b60ed366b70c4593106439dc0d762caa0e06ff4"
     },
     {
       "path": "work/somalia-flood-watch/dist/tabs.css",
