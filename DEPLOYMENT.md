@@ -111,6 +111,34 @@ Costs: Meta charges for each alert delivered (utility template, "Rest of Africa"
 
 Privacy: phone numbers, cities and language are kept in `whatsapp.json` on the reports volume, readable only by the server, and are deleted on STOP. They are not in the report backups, so a lost volume loses the subscriber list (people would sign up again). Logs show only the last 3 digits of a number.
 
+Audio bulletin on WhatsApp (opt-in): sending `CODKA` (English `AUDIO`) asks for the Somali audio bulletin, with or without following a city; `JOOJI CODKA` (`STOP AUDIO`) stops it. Each new evening bulletin goes to them as the template `flood_bulletin` (category **Utility**), which needs creating like `flood_alert`:
+
+   > El Nino Watch audio bulletin, in Somali: {{1}}. Listen: {{2}} Reply STOP AUDIO to stop the bulletin.
+
+   Samples: {{1}} `Warbixinta fiidka, Jimce, 16 Oktoobar`, {{2}} `https://elninowatch.so/?lang=so#podcast`. Somali version, if Meta accepts one:
+
+   > Warbixinta codka ee El Nino Watch: {{1}}. Dhageyso: {{2}} Ku jawaab JOOJI CODKA si aad u joojiso.
+
+   Optional settings on the container: `WHATSAPP_BULLETIN_TEMPLATE` (another template name) and `WHATSAPP_BULLETIN_SLOTS` (default `evening`; `morning,midday,evening` for all three). Each bulletin message is charged like an alert.
+
+### Audio bulletins (Somali, three times a day)
+
+A short Somali bulletin at 06:30, 12:30 and 18:30 East Africa Time (`work/somalia-flood-watch/podcast.mjs`), written from the site's own feeds by a fixed template and voiced by Google Gemini (model `gemini-3.8-flash-tts`, voice Puck). The latest one plays on the Alerts tab, with its text. Bulletins are kept 7 days on the reports volume (`podcast/`); they are not in the backups.
+
+It is off until all three of these hold:
+
+1. The owner has approved the template: `APPROVED_TEMPLATE` in `podcast.mjs` equals `TEMPLATE_VERSION`. Changing the template's wording means a new version and a new approval.
+2. `GEMINI_API_KEY` is set: create a key in Google AI Studio (https://aistudio.google.com/apikey) and add it as a secret of the `bunny-settings` environment.
+3. `PODCAST_ENABLED` is `1`: add it as a secret of the same environment.
+
+Then run **Actions > Bunny settings** with mode `source-keys` and approve it. Optional: `PODCAST_VOICE` (default `Puck`), `PODCAST_MODEL`.
+
+Try the template without publishing anything: `node work/somalia-flood-watch/podcast.mjs --slot evening` prints the bulletin as it would be read now, from the live site's data (free). Add `--voice` to make an MP3 in `outputs/podcast/` (needs `GEMINI_API_KEY` in the environment or in the file named by `ENV_FILE`, and ffmpeg; it is billed).
+
+Hold switch: to stop new bulletins at once, without a deploy, send `{"hold": true}` to `/api/podcast/hold` with the stats key; `{"hold": false}` resumes. For example, with the stats key in the shell variable `STATS_KEY`: `curl -X POST https://elninowatch.so/api/podcast/hold -H "X-Stats-Key: $STATS_KEY" -H "Content-Type: application/json" -d '{"hold": true}'`. Bulletins already made stay listenable.
+
+Costs: about 25 audio tokens a second; at $9 per million audio tokens (the price until 31 December 2026, then $18) three bulletins a day cost about $3 a month. A failed bulletin is tried again after 5 minutes, at most 3 times; a slot missed by more than 2 hours (a restart) is skipped.
+
 ## Data and migration
 
 The ZIP deliberately contains no existing reports, uploads, deletion receipt hashes, credentials, logs, .git state or local hosting identity. A fresh deployment starts with an empty report board. To move actual shared records separately, stop writes/the old server, back up its complete data directory (reports.json and media/ together), restore it on the new server, set COMMUNITY_DATA_DIR to that location, and give the Node process read/write access. Keep backups private and outside dist.

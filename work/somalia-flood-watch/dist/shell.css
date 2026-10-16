@@ -29,7 +29,7 @@ body[data-site-tab=overview]:not(.mayor-view) #map-panel .mapframe #map{height:4
    the Alerts tab. */
 body[data-site-tab=overview]:not(.mayor-view) main>#alerts-panel.site-tab-hidden{display:block}
 body[data-site-tab=overview]:not(.mayor-view) #alerts-panel{margin:0}
-body[data-site-tab=overview]:not(.mayor-view) #alerts-panel>:is(.alert-filters,#alerts-summary,#alerts-status,.links,.health-callout){display:none}
+body[data-site-tab=overview]:not(.mayor-view) #alerts-panel>:is(.alert-filters,#alerts-summary,#alerts-status,.links,.health-callout,.podcast){display:none}
 body[data-site-tab=overview]:not(.mayor-view) #alerts-panel>.sectionhead button{display:none}
 body[data-site-tab=overview]:not(.mayor-view) #alerts-list{grid-template-columns:minmax(0,1fr);gap:var(--space-2);max-height:520px}
 body[data-site-tab=overview]:not(.mayor-view) #alerts-list:has(.is-official)>.alert-card:not(.is-official){display:none}

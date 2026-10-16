@@ -14,6 +14,7 @@ import {createForecastRelay} from './forecast-relay.mjs';
 import {createVisits} from './visits.mjs';
 import {loadNews, NEWS_SOURCES} from './news-feed.mjs';
 import {createWhatsApp, whatsappConfig} from './whatsapp.mjs';
+import {createPodcast, podcastConfig} from './podcast.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'dist');
 const CITY_DATA = JSON.parse(await readFile(new URL('./dist/cities.json', import.meta.url), 'utf8'));
@@ -76,19 +77,25 @@ function reply(res, status, body, contentType = 'text/plain; charset=utf-8', hea
   res.end(head ? undefined : buffer);
 }
 
-export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null, statsKey = process.env.STATS_KEY || '', whatsapp: whatsappSettings = whatsappConfig()} = {}) {
+export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null, statsKey = process.env.STATS_KEY || '', whatsapp: whatsappSettings = whatsappConfig(), podcast: podcastSettings = podcastConfig()} = {}) {
   // A report change asks for a backup within minutes rather than the next 6-hour run.
   const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES, onChange:() => backup?.soon?.()});
   const visits = createVisits({dataDir, cities:CITY_DATA, statsKey});
   const forecasts = createForecastRelay({cities:CITY_DATA});
   // WhatsApp alerts (whatsapp.mjs): off until the WHATSAPP_* settings are present.
   const whatsapp = createWhatsApp({dataDir, cities:CITY_DATA, config:whatsappSettings, alerts:() => feed('/api/alerts')});
+  // Somali audio bulletins (podcast.mjs): off until the owner approves the template and GEMINI_API_KEY and
+  // PODCAST_ENABLED=1 are set. A new bulletin goes to the WhatsApp subscribers who opted in.
+  const podcast = createPodcast({dataDir, cities:CITY_DATA, config:podcastSettings, statsKey,
+    feeds:{alerts:() => feed('/api/alerts'), stations:() => feed('/api/stations'), enso:() => feed('/api/enso'), news:() => feed('/api/news')},
+    onPublished:item => whatsapp.sendBulletin(item)});
   const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, 'http://127.0.0.1');
       if (await community(req,res,url)) return;
       if (await visits.handle(req,res,url)) return;
       if (await whatsapp.handle(req,res,url)) return;
+      if (await podcast.handle(req,res,url)) return;
       if (!['GET', 'HEAD'].includes(req.method)) return reply(res, 405, 'Only GET and HEAD are supported.');
       if (url.pathname === '/api/copernicus') {
         const cityId = url.searchParams.get('city') || 'mogadishu';
@@ -117,6 +124,11 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
       if (await forecasts(req, res, url)) return;
       if (url.pathname === '/api/backup-status') return reply(res, 200, JSON.stringify(backup ? backup.status() : {enabled:false}), 'application/json; charset=utf-8', req.method === 'HEAD');
       if (url.pathname.startsWith('/api/')) return reply(res, 404, 'Unknown data endpoint.');
+      // Bulletin audio lives in the data volume, not in dist/; only a published bulletin's file is served.
+      if (url.pathname.startsWith('/podcast/')) {
+        const audio = podcast.audioFile(url.pathname);
+        return audio ? sendFilm(req, res, audio, 'audio/mpeg') : reply(res, 404, 'File not found.');
+      }
       const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname === '/stats' ? '/stats.html' : url.pathname === '/sources' ? '/sources.html' : url.pathname);
       if (requested.includes('\0')) return reply(res, 400, 'Invalid path.');
       // A backslash is a separator on Windows but a filename character on Linux;
@@ -141,6 +153,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
   });
   server.flushVisits = visits.flush;
   server.whatsapp = whatsapp;
+  server.podcast = podcast;
   return server;
 }
 
@@ -159,5 +172,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     console.log(`El Nino Watch: http://127.0.0.1:${port}\nKeep this process running for the live data relays.`);
     backup?.start();
     server.whatsapp.start();
+    server.podcast.start();
   });
 }

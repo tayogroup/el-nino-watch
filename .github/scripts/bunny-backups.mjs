@@ -11,7 +11,7 @@
 //   node bunny-backups.mjs create-and-apply   create the private zone if missing, then apply
 //   node bunny-backups.mjs stats-key          set a new random STATS_KEY (private /stats view);
 //                                             read it in Bunny: Container settings > Environment variables
-//   node bunny-backups.mjs source-keys        copy GOOGLE_FLOOD_API_KEY, RELIEFWEB_APPNAME and the WHATSAPP_*
+//   node bunny-backups.mjs source-keys        copy GOOGLE_FLOOD_API_KEY, RELIEFWEB_APPNAME, GEMINI_API_KEY, PODCAST_ENABLED and the WHATSAPP_*
 //                                             settings, where set, from the bunny-settings environment's
 //                                             secrets onto the container
 const [mode = 'inspect'] = process.argv.slice(2);
@@ -52,7 +52,7 @@ console.log(`Container fields: ${Object.keys(container).sort().join(', ')}`);
 const env = envList(container);
 for (const item of env) mask(envValue(item));
 console.log(`Environment variables on ${containerName}: ${env.length ? env.map(item => `${envName(item)}=${envValue(item) ? '<set>' : '<empty>'}`).join(', ') : 'none'}`);
-for (const wanted of ['BACKUP_STORAGE_ZONE', 'BACKUP_STORAGE_KEY', 'STATS_KEY', 'GOOGLE_FLOOD_API_KEY', 'RELIEFWEB_APPNAME', 'WHATSAPP_TOKEN', 'WHATSAPP_APP_SECRET', 'WHATSAPP_VERIFY_TOKEN', 'WHATSAPP_PHONE_NUMBER_ID', 'WHATSAPP_NUMBER', 'WHATSAPP_TEMPLATE_SO_LANGUAGE']) {
+for (const wanted of ['BACKUP_STORAGE_ZONE', 'BACKUP_STORAGE_KEY', 'STATS_KEY', 'GOOGLE_FLOOD_API_KEY', 'RELIEFWEB_APPNAME', 'GEMINI_API_KEY', 'PODCAST_ENABLED', 'WHATSAPP_TOKEN', 'WHATSAPP_APP_SECRET', 'WHATSAPP_VERIFY_TOKEN', 'WHATSAPP_PHONE_NUMBER_ID', 'WHATSAPP_NUMBER', 'WHATSAPP_TEMPLATE_SO_LANGUAGE']) {
   const near = env.map(envName).filter(name => name && name !== wanted && name.replace(/[^A-Z]/gi, '').toUpperCase() === wanted.replace(/_/g, ''));
   console.log(`${wanted}: ${env.some(item => envName(item) === wanted && envValue(item)) ? 'present' : 'MISSING'}${near.length ? ` (near-miss names: ${near.join(', ')})` : ''}`);
 }
@@ -77,9 +77,9 @@ console.log(`Other zones that may be this app's: ${candidates.map(item => `${ite
 // source-keys: the data-source keys the owner keeps as secrets of the bunny-settings environment.
 // Only the ones set are copied; the others on the container are left as they are.
 if (mode === 'source-keys') {
-  const wanted = Object.fromEntries(['GOOGLE_FLOOD_API_KEY', 'RELIEFWEB_APPNAME', 'WHATSAPP_TOKEN', 'WHATSAPP_APP_SECRET', 'WHATSAPP_VERIFY_TOKEN', 'WHATSAPP_PHONE_NUMBER_ID', 'WHATSAPP_NUMBER', 'WHATSAPP_TEMPLATE_SO_LANGUAGE'].map(name => [name, (process.env[name] || '').trim()]).filter(([, value]) => value));
+  const wanted = Object.fromEntries(['GOOGLE_FLOOD_API_KEY', 'RELIEFWEB_APPNAME', 'GEMINI_API_KEY', 'PODCAST_ENABLED', 'WHATSAPP_TOKEN', 'WHATSAPP_APP_SECRET', 'WHATSAPP_VERIFY_TOKEN', 'WHATSAPP_PHONE_NUMBER_ID', 'WHATSAPP_NUMBER', 'WHATSAPP_TEMPLATE_SO_LANGUAGE'].map(name => [name, (process.env[name] || '').trim()]).filter(([, value]) => value));
   Object.values(wanted).forEach(mask);
-  if (!Object.keys(wanted).length) { console.error('None of GOOGLE_FLOOD_API_KEY, RELIEFWEB_APPNAME or the WHATSAPP_* settings is set as a secret of the bunny-settings environment.'); process.exit(1); }
+  if (!Object.keys(wanted).length) { console.error('None of GOOGLE_FLOOD_API_KEY, RELIEFWEB_APPNAME, GEMINI_API_KEY, PODCAST_ENABLED or the WHATSAPP_* settings is set as a secret of the bunny-settings environment.'); process.exit(1); }
   process.exit((await setEnv(container, env, wanted)) ? 0 : 1);
 }
 if (mode === 'stats-key') {

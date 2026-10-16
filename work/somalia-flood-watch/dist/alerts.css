@@ -77,3 +77,14 @@
 #health-alert,#health-film,#waterborne-film,#trainings,#diseases-panel{scroll-margin-top:250px}
 /* The Diseases tab: the health alert, then the training films. */
 .diseases-panel .health-alert{margin-top:4px}.trainings{margin-top:22px;display:grid;gap:10px;min-width:0}.trainings h3{margin:0}.trainings>p{margin:0;max-width:65ch}
+/* The Somali audio bulletin (podcast.js). */
+.podcast{margin:0 0 14px;padding:14px 16px;border:1px solid #c9dcef;border-radius:12px;background:#f5f9fd;display:grid;gap:8px;min-width:0}
+.podcast[hidden]{display:none}
+.podcast-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px 12px;flex-wrap:wrap}
+.podcast h3{margin:2px 0 0;font-size:17px;color:#0c2d55}
+.podcast-tag{font-size:12px;font-weight:700;color:#5f6b7a;background:#e8eef5;border-radius:999px;padding:4px 10px}
+.podcast-when{margin:0;font-weight:700;color:#153653}
+.podcast audio{width:100%;max-width:560px}
+.podcast-read summary{cursor:pointer;font-weight:700;color:#1473cf}
+#podcast-text{white-space:pre-line;margin-top:8px;line-height:1.6;max-width:70ch}
+#podcast{scroll-margin-top:250px}

@@ -11,6 +11,11 @@
 // template (WHATSAPP_TEMPLATE, default flood_alert; its text is in DEPLOYMENT.md). At most
 // MAX_PER_DAY alerts per person per East Africa Time day, official MOEWR first.
 //
+// Audio bulletins (podcast.mjs), opt-in only (owner, 2026-10-16): "CODKA" (English "AUDIO") asks for them,
+// "JOOJI CODKA" ("STOP AUDIO") stops them. A new bulletin in WHATSAPP_BULLETIN_SLOTS (default: evening)
+// goes to those subscribers as the WHATSAPP_BULLETIN_TEMPLATE template (default flood_bulletin; its text is
+// in DEPLOYMENT.md) with a link to listen. Someone may take the bulletin without following any city.
+//
 // Switched off until every WHATSAPP_* setting below is present. Subscribers live in
 // <dataDir>/whatsapp.json (phone numbers: private, never committed, never logged in full).
 import {readFile, writeFile, rename, unlink} from 'node:fs/promises';
@@ -30,6 +35,8 @@ export function whatsappConfig(env = process.env) {
     token: env.WHATSAPP_TOKEN || '', phoneNumberId: String(env.WHATSAPP_PHONE_NUMBER_ID || '').trim(), appSecret: env.WHATSAPP_APP_SECRET || '',
     verifyToken: env.WHATSAPP_VERIFY_TOKEN || '', number: String(env.WHATSAPP_NUMBER || '').replace(/\D/g, ''),
     template: env.WHATSAPP_TEMPLATE || 'flood_alert',
+    bulletinTemplate: env.WHATSAPP_BULLETIN_TEMPLATE || 'flood_bulletin',
+    bulletinSlots: String(env.WHATSAPP_BULLETIN_SLOTS || 'evening').split(',').map(slot => slot.trim()).filter(slot => ['morning', 'midday', 'evening'].includes(slot)),
     // The language code Meta approved the Somali version of the template under, if it did. Without it,
     // Somali subscribers get the English template (their replies are still in Somali).
     somaliLanguage: String(env.WHATSAPP_TEMPLATE_SO_LANGUAGE || '').trim(),
@@ -97,7 +104,10 @@ const REPLIES = {
     stoppedCity: (city, rest) => `You will no longer get alerts for ${city}.${rest ? ` You still get alerts for ${rest}.` : ' You follow no cities now, and your number has been deleted.'}`,
     notFollowing: city => `You do not follow ${city}.`,
     list: cities => cities ? `You get alerts for ${cities}. Reply STOP to stop all alerts.` : 'You do not follow any city. Send JOIN and a city name, for example JOIN Galkayo.',
-    help: `El Nino Watch flood alerts. Send JOIN and a city name to get alerts, for example JOIN Galkayo. LIST shows your cities, STOP stops all alerts. More: ${SITE}`
+    help: `El Nino Watch flood alerts. Send JOIN and a city name to get alerts, for example JOIN Galkayo. LIST shows your cities, STOP stops all alerts. Send AUDIO for the audio bulletin in Somali. More: ${SITE}`,
+    audioOn: when => `You will get the El Nino Watch audio bulletin, in Somali, ${when}, as a link to listen. Reply STOP AUDIO to stop it. Your number is used only for these messages.`,
+    audioOff: cities => `You will no longer get the audio bulletin.${cities ? ` You still get flood alerts for ${cities}.` : ' Your number has been deleted.'}`,
+    when: {evening: 'each evening', all: 'three times a day', some: 'each day'}
   },
   so: {
     joined: (cities, active) => `Waxaad heli doontaa digniinaha El Nino Watch ee ${cities}: saadaasha rasmiga ah ee fatahaadda qaranka (MOEWR), saadaasha roobka xooggan ee ICPAC iyo saadaasha webiyada ee Google Flood Hub, marka mid bilaabmo ama uu sii xumaado, ugu badnaan ${MAX_PER_DAY} maalintii. ${active} Ku jawaab JOOJI si aad u joojiso dhammaan digniinaha, ama JOOJI iyo magaalo si aad u joojiso hal magaalo. Lambarkaaga waxaa loo isticmaalaa oo keliya dirista digniinahan. Wax badan: ${SITE}`,
@@ -109,7 +119,10 @@ const REPLIES = {
     stoppedCity: (city, rest) => `Mar dambe ma heli doontid digniinaha ${city}.${rest ? ` Weli waxaad heleysaa digniinaha ${rest}.` : ' Hadda ma la socotid magaalo, lambarkaagana waa la tirtiray.'}`,
     notFollowing: city => `Ma la socotid ${city}.`,
     list: cities => cities ? `Waxaad heleysaa digniinaha ${cities}. Ku jawaab JOOJI si aad u joojiso dhammaan digniinaha.` : 'Ma la socotid magaalo. Soo dir KU BIIR iyo magaalo, tusaale KU BIIR Galkayo.',
-    help: `Digniinaha fatahaadda ee El Nino Watch. Soo dir KU BIIR iyo magaalo si aad u hesho digniinaha, tusaale KU BIIR Galkayo. LIISKA wuxuu muujiyaa magaalooyinkaaga, JOOJI wuxuu joojiyaa dhammaan digniinaha. Wax badan: ${SITE}`
+    help: `Digniinaha fatahaadda ee El Nino Watch. Soo dir KU BIIR iyo magaalo si aad u hesho digniinaha, tusaale KU BIIR Galkayo. LIISKA wuxuu muujiyaa magaalooyinkaaga, JOOJI wuxuu joojiyaa dhammaan digniinaha. Soo dir CODKA si aad u hesho warbixinta codka. Wax badan: ${SITE}`,
+    audioOn: when => `Waxaad WhatsApp ku heli doontaa warbixinta codka ee El Nino Watch ${when}, oo ah xiriir aad ka dhageysato. Ku jawaab JOOJI CODKA si aad u joojiso. Lambarkaaga waxaa loo isticmaalaa oo keliya fariimahan.`,
+    audioOff: cities => `Mar dambe ma heli doontid warbixinta codka.${cities ? ` Weli waxaad heleysaa digniinaha fatahaadda ee ${cities}.` : ' Lambarkaagana waa la tirtiray.'}`,
+    when: {evening: 'fiid kasta', all: 'saddex jeer maalintii', some: 'maalin kasta'}
   }
 };
 
@@ -118,6 +131,11 @@ export function parseCommand(text) {
   let match;
   if ((match = /^(join|subscribe|start)(?:\s+(.*))?$/i.exec(words))) return {action: 'join', lang: 'en', city: match[2] || ''};
   if ((match = /^(ku biir|kubiir|biir)(?:\s+(.*))?$/i.exec(words))) return {action: 'join', lang: 'so', city: match[2] || ''};
+  // The audio bulletin, before STOP and JOOJI so "STOP AUDIO" is not read as a city.
+  if (/^(audio|bulletin)$/i.test(words)) return {action: 'audio-on', lang: 'en'};
+  if (/^(codka|cod)$/i.test(words)) return {action: 'audio-on', lang: 'so'};
+  if (/^stop (audio|bulletin)$/i.test(words)) return {action: 'audio-off', lang: 'en'};
+  if (/^(jooji codka|codka jooji)$/i.test(words)) return {action: 'audio-off', lang: 'so'};
   if ((match = /^(stop|unsubscribe)(?:\s+(.*))?$/i.exec(words))) return {action: 'stop', lang: 'en', city: match[2] || ''};
   if ((match = /^(jooji)(?:\s+(.*))?$/i.exec(words))) return {action: 'stop', lang: 'so', city: match[2] || ''};
   if (/^list$/i.test(words)) return {action: 'list', lang: 'en'};
@@ -203,13 +221,30 @@ export function createWhatsApp({dataDir, cities = [], config = whatsappConfig(),
     const lang = command.lang || existing?.lang || 'en', say = REPLIES[lang];
     if (command.action === 'help') return sendText(from, say.help);
     if (command.action === 'list') return sendText(from, say.list(existing ? cityList(existing.cities) : ''));
+    if (command.action === 'audio-on') {
+      const record = existing || {cities: [], lang, joinedAt: new Date(now()).toISOString()};
+      record.bulletin = true; record.lang = lang;
+      state.subscribers[from] = record;
+      await save();
+      const slots = config.bulletinSlots || ['evening'];
+      return sendText(from, say.audioOn(say.when[slots.length === 3 ? 'all' : slots.length === 1 && slots[0] === 'evening' ? 'evening' : 'some']));
+    }
+    if (command.action === 'audio-off') {
+      if (existing) {
+        existing.bulletin = false;
+        if (!existing.cities.length) { delete state.subscribers[from]; delete state.sentToday[from]; }
+        await save();
+      }
+      return sendText(from, say.audioOff(existing?.cities.length ? cityList(existing.cities) : ''));
+    }
     if (command.action === 'stop') {
       if (!existing) return sendText(from, say.stopped);
       if (!command.city) { delete state.subscribers[from]; delete state.sentToday[from]; await save(); return sendText(from, say.stopped); }
       const city = findCity(command.city, cities);
       if (!city || !existing.cities.includes(city)) return sendText(from, say.notFollowing(city || command.city));
       existing.cities = existing.cities.filter(name => name !== city);
-      if (!existing.cities.length) { delete state.subscribers[from]; delete state.sentToday[from]; }
+      // Someone who also takes the audio bulletin is kept for it.
+      if (!existing.cities.length && !existing.bulletin) { delete state.subscribers[from]; delete state.sentToday[from]; }
       await save();
       return sendText(from, say.stoppedCity(city, cityList(existing.cities)));
     }
@@ -265,6 +300,25 @@ export function createWhatsApp({dataDir, cities = [], config = whatsappConfig(),
     return checking;
   }
 
+  // A new audio bulletin, to the subscribers who asked for it, in the slots chosen for WhatsApp.
+  async function sendBulletin(item) {
+    if (!config.enabled || !item || !(config.bulletinSlots || ['evening']).includes(item.slot)) return {sent: 0};
+    await ready;
+    let sent = 0;
+    const link = `${SITE}/?lang=so#podcast`;
+    for (const [waId, subscriber] of Object.entries(state.subscribers)) {
+      if (!subscriber.bulletin) continue;
+      const somali = subscriber.lang === 'so' && config.somaliLanguage;
+      const parameters = [flat(item.title), link].map(text => ({type: 'text', text}));
+      try {
+        await graph({to: waId, type: 'template', template: {name: config.bulletinTemplate, language: {code: somali ? config.somaliLanguage : 'en'}, components: [{type: 'body', parameters}]}});
+        sent++;
+      } catch (error) { log.error(`WhatsApp bulletin to ${mask(waId)} failed: ${error.message}`); }
+    }
+    if (sent) log.log(`WhatsApp bulletin ${item.id}: ${sent} sent.`);
+    return {sent};
+  }
+
   function verified(req, raw) {
     const header = String(req.headers['x-hub-signature-256'] || '');
     const expected = Buffer.from(`sha256=${createHmac('sha256', config.appSecret).update(raw).digest('hex')}`);
@@ -317,5 +371,5 @@ export function createWhatsApp({dataDir, cities = [], config = whatsappConfig(),
     timer.unref?.();
   }
 
-  return {handle, check, start, onMessage, subscribers: () => state.subscribers, ready: () => ready};
+  return {handle, check, start, onMessage, sendBulletin, subscribers: () => state.subscribers, ready: () => ready};
 }

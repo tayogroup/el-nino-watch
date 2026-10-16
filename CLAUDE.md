@@ -213,6 +213,22 @@ overview, map, weather, community and Sources tabs ("Flood water can carry
 cholera. Watch the film…"), plus the news flash, the footer and `/sources`; all
 link to `#health-film`, which opens the Diseases tab at the film.
 
+**Audio bulletins** (owner, 2026-10-16): Somali only, 06:30, 12:30 and 18:30
+EAT, written from the site's feeds by the fixed template in `podcast.mjs` and
+voiced by Gemini (`gemini-3.8-flash-tts`, voice Puck; only the full Flash TTS
+model speaks Somali, not Flash-Lite). The owner approves the TEMPLATE once,
+then bulletins publish on their own: `APPROVED_TEMPLATE` must equal
+`TEMPLATE_VERSION`, so changing the template's words means bumping the version
+and asking again. Template rules, kept by `podcast.test.mjs`: only MOEWR is
+called official; every figure comes from a feed; a source that is down is read
+as "lama heli karo", never as an older figure; gauges to the centimetre; news
+only from Somali-language items, with the source named; midday says "isma
+beddelin" when nothing changed. MOEWR level words are the WhatsApp ones
+(Digniin, Feejignaan, Talo). WhatsApp delivery is OPT-IN (`CODKA` / `AUDIO`;
+evening bulletin by default). Radio partners: to be decided by the owner. Off
+until approval, `GEMINI_API_KEY` and `PODCAST_ENABLED=1`; the owner can hold
+it at `/api/podcast/hold` with the stats key. DEPLOYMENT.md has the setup.
+
 **Waterborne-diseases film** (owner, 2026-10-16): "Diseases from dirty water"
 (`work/film/waterborne-diseases.json`, `#waterborne-film`, the first training),
 an overview of cholera, dysentery, typhoid and hepatitis A and E from the health
