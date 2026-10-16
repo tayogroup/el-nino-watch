@@ -234,5 +234,10 @@
     }
     return model;
   }
-  root.FloodAlerts = { build, render, shareLines, appliesBetween };
+  // The public health alert (index.html #health-alert) is static; its Share row is drawn once here. Each
+  // language's post fits X's limit whole, so no line is ever dropped (health-alert.test.mjs).
+  const HEALTH_SHARE = [[{t: "Public health alert: flooding raises the risk of cholera, malaria and dengue in Somalia."}], [{t: "Drink boiled or treated water, keep ORS ready and use bed nets."}], [{t: "Health guidance from WHO, not an outbreak report."}]];
+  const healthShare = root.document?.getElementById?.('health-share');
+  if (healthShare && root.SiteShare?.row) healthShare.innerHTML = root.SiteShare.row(HEALTH_SHARE, 'alerts', {t: "Health guidance from WHO, not an outbreak report."});
+  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE };
 })(typeof window === 'object' ? window : globalThis);

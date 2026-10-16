@@ -42,3 +42,22 @@ test('every piece of its text reads in Somali', async () => {
   assert.equal(window.SiteLanguage.translateText('Malaria'), 'Duumada');
   assert.match(window.SiteLanguage.translateText('WHO: Cholera fact sheet ↗'), /^WHO: Warqadda xaqiiqooyinka daacuunka ↗$/);
 });
+
+test('the health alert has a Share row, and its post fits X whole in English and Somali', async () => {
+  assert.ok(section.includes('<div id="health-share"></div></section>'), 'the row sits at the end of the section');
+  for (const lang of ['en', 'so']) {
+    const nodes = {'health-share': {innerHTML: ''}};
+    const document = {readyState: 'complete', title: '', body: {nodeType: 11, childNodes: []}, documentElement: {setAttribute() {}}, getElementById: id => nodes[id] || null, querySelectorAll: () => [], addEventListener() {}};
+    const window = {document, location: {href: `https://elninowatch.so/?lang=${lang}`, protocol: 'https:'}, localStorage: {getItem: () => null, setItem() {}}, navigator: {}};
+    const context = vm.createContext({window, URL, URLSearchParams, Date});
+    for (const file of ['translations-so.js', 'i18n.js', 'share.js', 'alerts.js']) vm.runInContext(await readFile(new URL(file, dist), 'utf8'), context);
+    const row = nodes['health-share'].innerHTML;
+    assert.match(row, /^<div class="share-row" role="group" aria-label="Share" data-share-lines="/);
+    assert.match(row, /data-share-tab="alerts"/);
+    const text = window.SiteShare.textOf(window.FloodAlerts.healthShareLines);
+    assert.equal(text.split('\n').length, 3);
+    assert.equal(window.SiteShare.fit(text), text, `${lang}: nothing is cut or dropped for X`);
+    assert.match(text.split('\n')[2], lang === 'so' ? /^Talo caafimaad oo ka timid WHO/ : /^Health guidance from WHO, not an outbreak report\.$/);
+    if (lang === 'so') assert.doesNotMatch(text, /\b(the|and|with)\b/, 'the Somali post has no English left');
+  }
+});
