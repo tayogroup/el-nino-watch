@@ -12,6 +12,7 @@ import {backupFromEnv} from './backup.mjs';
 import {createForecastRelay} from './forecast-relay.mjs';
 import {createVisits} from './visits.mjs';
 import {loadNews, NEWS_SOURCES} from './news-feed.mjs';
+import {createWhatsApp, whatsappConfig} from './whatsapp.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'dist');
 const CITY_DATA = JSON.parse(await readFile(new URL('./dist/cities.json', import.meta.url), 'utf8'));
@@ -54,16 +55,19 @@ function reply(res, status, body, contentType = 'text/plain; charset=utf-8', hea
   res.end(head ? undefined : buffer);
 }
 
-export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null, statsKey = process.env.STATS_KEY || ''} = {}) {
+export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null, statsKey = process.env.STATS_KEY || '', whatsapp: whatsappSettings = whatsappConfig()} = {}) {
   // A report change asks for a backup within minutes rather than the next 6-hour run.
   const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES, onChange:() => backup?.soon?.()});
   const visits = createVisits({dataDir, cities:CITY_DATA, statsKey});
   const forecasts = createForecastRelay({cities:CITY_DATA});
+  // WhatsApp alerts (whatsapp.mjs): off until the WHATSAPP_* settings are present.
+  const whatsapp = createWhatsApp({dataDir, cities:CITY_DATA, config:whatsappSettings, alerts:() => feed('/api/alerts')});
   const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, 'http://127.0.0.1');
       if (await community(req,res,url)) return;
       if (await visits.handle(req,res,url)) return;
+      if (await whatsapp.handle(req,res,url)) return;
       if (!['GET', 'HEAD'].includes(req.method)) return reply(res, 405, 'Only GET and HEAD are supported.');
       if (url.pathname === '/api/copernicus') {
         const cityId = url.searchParams.get('city') || 'mogadishu';
@@ -114,6 +118,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
     }
   });
   server.flushVisits = visits.flush;
+  server.whatsapp = whatsapp;
   return server;
 }
 
@@ -131,5 +136,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   server.listen(port, host, () => {
     console.log(`El Nino Watch: http://127.0.0.1:${port}\nKeep this process running for the live data relays.`);
     backup?.start();
+    server.whatsapp.start();
   });
 }

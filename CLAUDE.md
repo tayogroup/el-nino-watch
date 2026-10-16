@@ -138,8 +138,9 @@ applies to touch the range). Browser notifications follow the selected filters.
 
 **Sharing**
 - Share buttons only: visitors post from their own accounts. The site holds no
-  social media accounts or keys and posts nothing itself. Automatic posting to
-  El Nino Watch accounts was discussed and not built.
+  social media accounts or keys and posts nothing to social media itself.
+  Automatic posting to El Nino Watch accounts was discussed and not built.
+  (WhatsApp alerts, below, go only to people who signed up for them.)
 - Every alert and every top-5 ranking list (Rainfall today, Rainfall next 7
   days, Flood watch next 7 days, Flooding today) has a Share row: X (Twitter),
   Facebook (link only; Facebook cannot be prefilled), Copy text, and on phones
@@ -152,6 +153,19 @@ applies to touch the range). Browser notifications follow the selected filters.
   Alert posts carry no "retrieved" time and do not repeat the place.
 - Shared links show `dist/social-preview.png` (1200x630); its design is
   `work/social-preview.html`.
+
+**WhatsApp alerts** (owner, 2026-10-16; `whatsapp.mjs`, `dist/whatsapp.js`,
+setup in DEPLOYMENT.md): through Meta's WhatsApp Business Platform, off until
+the five `WHATSAPP_*` settings are set (owner: Meta verification, number,
+template, keys). Sources: MOEWR national levels, ICPAC heavy rain and Google
+Flood Hub. A message only when an alert starts or gets worse for a followed
+city; at most 3 a day per person, MOEWR first; the first check after switching
+on sends nothing. Sign-up is "JOIN <city>" / "KU BIIR <city>" sent FROM the
+person's WhatsApp (the site's button prefills it), never a number typed into the
+site, so nobody can sign up someone else. STOP deletes the number. Numbers stay
+in `data/whatsapp.json`, are never logged in full, and are not in the backups.
+Only MOEWR messages say "official". Somali alerts depend on Meta accepting a
+Somali template (`WHATSAPP_TEMPLATE_SO_LANGUAGE`); until then English.
 
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
@@ -182,7 +196,8 @@ progress ("327 of 1,000 visits", owner, 2026-10-16), never the breakdowns. The
 owner sees everything earlier with the private `STATS_KEY`.
 
 **Open items**: ReliefWeb appname (owner to request); Google Flood Forecasting
-API access (owner to request, then set the key); Somali review; optionally
+API access (owner to request, then set the key); WhatsApp Business setup
+(owner, DEPLOYMENT.md); Somali review; optionally
 limit the Google News searches to an approved list of outlets.
 
 ## Deploy

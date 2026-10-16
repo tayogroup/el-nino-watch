@@ -646,7 +646,9 @@
     "Danger level": "Heerka khatarta",
     "Warning level": "Heerka digniinta",
     "Open gauge on Flood Hub ↗": "Ka fur xarunta cabbirka webiga Flood Hub ↗",
-    "River forecasts: Google Flood Hub ↗": "Saadaalaha webiga: Google Flood Hub ↗"
+    "River forecasts: Google Flood Hub ↗": "Saadaalaha webiga: Google Flood Hub ↗",
+    "Get alerts on WhatsApp": "Ka hel digniinaha WhatsApp",
+    "The WhatsApp button opens a message ready to send for the selected city. Alerts come from MOEWR, ICPAC and Google Flood Hub when one starts or gets worse, at most 3 a day. Your number is used only to send these alerts. Reply STOP to stop them.": "Badhanka WhatsApp wuxuu furayaa fariin diyaar u ah in loo diro magaalada la doortay. Digniinaha waxay ka yimaadaan MOEWR, ICPAC iyo Google Flood Hub marka mid bilaabmo ama uu sii xumaado, ugu badnaan 3 maalintii. Lambarkaaga waxaa loo isticmaalaa oo keliya dirista digniinahan. Ku jawaab JOOJI si aad u joojiso."
   },
   "patterns": [
     {
