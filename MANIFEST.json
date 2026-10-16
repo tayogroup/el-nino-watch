@@ -40,8 +40,8 @@
     },
     {
       "path": "DEPLOYMENT.md",
-      "bytes": 20327,
-      "sha256": "0a60496cd2b8c9886f7f504d79c6fe9c7e9100b41237342b0527b14c362a8ea0"
+      "bytes": 20410,
+      "sha256": "a940ca1e49e2f8b4f86c9d6e8fe1f547d14e03e6a72615fb9b01b06635d041e7"
     },
     {
       "path": "Dockerfile",
@@ -1190,8 +1190,8 @@
     },
     {
       "path": "work/somalia-flood-watch/podcast.mjs",
-      "bytes": 38217,
-      "sha256": "46a5f06e9e02d6760cc5c2da6bc84e292ecb01628752bec92fa8ae8206234dc5"
+      "bytes": 38369,
+      "sha256": "b47c6d113a661a81d34a236d3d884b032e27dfadefc122e91f4da495d4e6d369"
     },
     {
       "path": "work/somalia-flood-watch/README.md",

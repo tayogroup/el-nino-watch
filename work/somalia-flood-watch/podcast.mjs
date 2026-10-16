@@ -24,10 +24,11 @@ export const TEMPLATE_VERSION = '2026-10-16';
 // owner on 2026-10-16 after hearing that evening's bulletin voiced by Puck: the wording, the seven tips and the
 // voice. Changing the template's words means a new TEMPLATE_VERSION and a new approval.
 export const APPROVED_TEMPLATE = '2026-10-16';
-// The English template (owner asked for English bulletins on 2026-10-17). null: not approved yet, so English
-// bulletins are not made and English readers hear the Somali one.
+// The English template (owner asked for English bulletins on 2026-10-17). Approved by the owner on 2026-10-17
+// after hearing that evening's English bulletin voiced by Puck: the wording, the seven tips and the voice.
+// Anything else here, and English bulletins are not made (English readers then hear the Somali one).
 export const TEMPLATE_VERSION_EN = '2026-10-17';
-export const APPROVED_TEMPLATE_EN = null;
+export const APPROVED_TEMPLATE_EN = '2026-10-17';
 export const SLOTS = Object.freeze([
   {id: 'morning', at: '06:30', name: 'subaxa', en: 'morning'},
   {id: 'midday', at: '12:30', name: 'duhurka', en: 'midday'},
