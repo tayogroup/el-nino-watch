@@ -763,7 +763,8 @@
     "Not an official warning": "Ma aha digniin rasmi ah",
     "Read the bulletin": "Akhri warbixinta",
     "New bulletins at 06:30, 12:30 and 18:30 East Africa Time, written from this site's sources and read by a computer voice (Google Gemini). Official warnings come only from MOEWR.": "Warbixino cusub ayaa soo baxa 06:30, 12:30 iyo 18:30 saacadda Bariga Afrika. Waxaa laga qoraa ilaha boggan, waxaana akhriya cod kombiyuutar (Google Gemini). Digniinaha rasmiga ah waxay ka yimaadaan MOEWR oo keliya.",
-    "Audio bulletin in Somali": "Warbixinta codka ee Af-Soomaali"
+    "Audio bulletin in Somali": "Warbixinta codka ee Af-Soomaali",
+    "Audio bulletin": "Warbixinta codka"
   },
   "patterns": [
     {
