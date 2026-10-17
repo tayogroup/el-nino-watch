@@ -136,3 +136,11 @@
 .film-thumb-time{position:absolute;right:7px;bottom:7px;background:rgba(8,36,72,.85);color:#fff;font-size:12px;font-weight:700;line-height:1;padding:4px 7px;border-radius:6px}
 .film-thumb b{font-size:14px;line-height:1.3}
 .film-thumb:hover b{text-decoration:underline}.film-thumb:focus-visible{outline:none}.film-thumb:focus-visible .film-thumb-img{outline:3px solid #1473cf;outline-offset:2px}
+
+/* Field-video thumbnails at half size (owner, 2026-10-17), the caption beside them; a playing clip grows back. */
+.field-video-grid{grid-template-columns:minmax(0,1fr);gap:12px 18px}
+@media (min-width:700px){.field-video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.field-video{grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:start}
+.field-video.playing{grid-template-columns:minmax(0,260px)}
+.field-thumb::before{width:32px;height:32px}.field-thumb::after{border-width:7px 0 7px 11px}
+.field-thumb .film-thumb-time{right:5px;bottom:5px;font-size:11px;padding:3px 5px}

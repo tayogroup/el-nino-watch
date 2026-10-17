@@ -331,7 +331,9 @@
     video.controls = true; video.muted = true; video.playsInline = true;
     for (const [name, value] of [['playsinline', ''], ['poster', thumb.dataset.poster], ['width', '540'], ['height', '960'], ['aria-labelledby', thumb.getAttribute('aria-labelledby')]]) video.setAttribute(name, value);
     video.src = thumb.dataset.video;
+    const figure = thumb.closest?.('.field-video');
     thumb.replaceWith(video);
+    figure?.classList?.add('playing');
     video.focus?.();
     const playing = video.play?.(); playing?.catch?.(() => {});
   });
