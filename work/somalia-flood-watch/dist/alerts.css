@@ -108,3 +108,13 @@
 #podcast-text{white-space:pre-line;margin-top:8px;line-height:1.6;max-width:70ch}
 @media(max-width:760px){.podcast{grid-template-columns:minmax(0,1fr)}}
 #podcast{scroll-margin-top:250px}
+
+/* From the field: owner-supplied videos on the home page, two portrait clips side by side even on a phone. */
+#field-videos{scroll-margin-top:250px}
+.field-video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,250px));gap:14px;margin:4px 0 10px}
+.field-video{margin:0;display:grid;gap:6px;align-content:start}
+.field-video video{display:block;width:100%;height:auto;aspect-ratio:9/16;border-radius:12px;background:#082448;object-fit:cover}
+.field-video figcaption{display:grid;gap:3px;font-size:13px;line-height:1.4;color:var(--color-text-muted,#5f6b7a)}
+.field-video figcaption b{color:var(--color-text,#14233a);font-size:14px}
+.field-videos .note a{font-weight:700}
+@media (min-width:900px){.field-video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.field-video{grid-template-columns:190px minmax(0,1fr);gap:14px}.field-video figcaption{align-content:start;font-size:14px}.field-video figcaption b{font-size:16px}}

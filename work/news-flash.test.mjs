@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile} from 'node:fs/promises';
+import {readFile, stat} from 'node:fs/promises';
 import vm from 'node:vm';
-import {HEALTH_FLASH, FILM_FLASH, parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES, EXCLUDED_OUTLETS, excludedOutlet, isEventAnnouncement} from './somalia-flood-watch/news-feed.mjs';
+import {HEALTH_FLASH, FILM_FLASH, FIELD_FLASH, parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES, EXCLUDED_OUTLETS, excludedOutlet, isEventAnnouncement} from './somalia-flood-watch/news-feed.mjs';
 
 const NOW = Date.parse('2026-10-15T12:00:00Z');
 const day = n => new Date(NOW - n * 86400000).toUTCString();
@@ -121,7 +121,7 @@ test('loading: each source on its own, SWALIM\'s HTTP 500 feed accepted, ReliefW
     return {ok: !url.startsWith(NEWS_SOURCES.swalim.url), status: url.startsWith(NEWS_SOURCES.swalim.url) ? 500 : 200, text: async () => text, json: async () => JSON.parse(text)};
   };
   const without = await loadNews({fetchImpl, now: NOW, reliefWebAppname: ''});
-  assert.deepEqual(without.items.map(item => item.title), [HEALTH_FLASH.title, FILM_FLASH.title, 'Digniinta fatahaadaha', 'El Niño flood warning'], 'the health flash and the film lead the headlines');
+  assert.deepEqual(without.items.map(item => item.title), [FIELD_FLASH.title, HEALTH_FLASH.title, FILM_FLASH.title, 'Digniinta fatahaadaha', 'El Niño flood warning'], 'the field videos, the health flash and the film lead the headlines');
   assert.equal(without.sources.find(source => source.id === 'googleElNino').available, false, 'a failing source is reported, not fatal');
   assert.match(without.sources.find(source => source.id === 'reliefweb').error, /RELIEFWEB_APPNAME/);
   assert.equal(requests.some(request => request.url.includes('reliefweb')), false, 'no ReliefWeb call without an appname');
@@ -186,4 +186,26 @@ test('the film flash: a standing item that opens the cholera film, in Somali too
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages[FILM_FLASH.label], 'Filim · Daacuun');
   assert.equal(catalog.messages[FILM_FLASH.title], 'Daawo: sida qoyskaaga looga ilaaliyo daacuunka');
+});
+
+test('videos from the field: Cabudwaaq flooding and the Xingod water dam on the home page, in the news flash and the footer, in Somali too', async () => {
+  assert.deepEqual({...FIELD_FLASH}, {kind: 'app', key: 'field', label: 'Videos from the field', title: 'Watch: flooding in Cabudwaaq, and rain filling the Xingod water dam', url: '#field-videos', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
+  const index = await readFile(new URL('./somalia-flood-watch/dist/index.html', import.meta.url), 'utf8');
+  assert.ok(index.includes('</details></div><section class="panel field-videos" id="field-videos" data-site-tab="overview"'), 'on the home page, straight after the audio bulletin');
+  for (const name of ['cabudwaaq-flooding', 'xingod-water-dam']) {
+    assert.ok(index.includes(`poster="film/${name}.jpg" width="540" height="960"><source src="film/${name}.mp4" type="video/mp4">`), name);
+    const size = (await stat(new URL(`./somalia-flood-watch/dist/film/${name}.mp4`, import.meta.url))).size;
+    assert.ok(size < 8e6, `${name} stays small enough for a phone on mobile data (${size} bytes)`);
+  }
+  assert.match(index, /Like community reports, they are unverified\./, 'marked unverified, like community reports');
+  const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
+  assert.ok(footer.includes('<a href="#field-videos">Field videos: Cabudwaaq and Xingod</a>'));
+  const shell = await readFile(new URL('./somalia-flood-watch/dist/shell.css', import.meta.url), 'utf8');
+  assert.match(shell, /main>#field-videos\{order:-1\}/, 'phone: under the bulletin');
+  assert.match(shell, /"nav pod pod" "nav field field" "nav disc disc"/, 'desktop: under the bulletin');
+  assert.match(shell, /grid-template-areas:"nav field field" "nav disc disc"/, 'desktop, before the first bulletin too');
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  for (const text of [FIELD_FLASH.label, FIELD_FLASH.title, 'FROM THE FIELD · UNVERIFIED VIDEOS', 'Rain and flooding, October 2026', 'Cabudwaaq, Galgaduud: streets flooded', 'Xingod, Mudug: rain fills the water dam', 'Videos shared with El Nino Watch. Like community reports, they are unverified.', 'Field videos: Cabudwaaq and Xingod']) {
+    assert.ok(catalog.messages[text], `Somali for: ${text}`);
+  }
 });
