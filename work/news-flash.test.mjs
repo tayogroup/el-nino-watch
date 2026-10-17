@@ -194,16 +194,18 @@ test('videos from the field: Cabudwaaq and Mudug flooding on the home page as th
   const index = await readFile(new URL('./somalia-flood-watch/dist/index.html', import.meta.url), 'utf8');
   assert.ok(index.includes('</details></div><section class="panel field-videos" id="field-videos" data-site-tab="overview" aria-labelledby="field-videos-title"><div'), 'on the home page, straight after the audio bulletin, shown');
   const section = index.slice(index.indexOf('id="field-videos"'), index.indexOf('</section>', index.indexOf('id="field-videos"')));
-  for (const [id, file, shown] of [['cabudwaaq-video', 'cabudwaaq-flooding', true], ['mudug-video', 'mudug-flooding', true], ['xingod-video', 'xingod-water-dam', false]]) {
-    assert.ok(section.includes(`<figure class="field-video" id="${id}"${shown ? '' : ' hidden'}><button type="button" class="film-thumb-img field-thumb" data-video="film/${file}.mp4" data-poster="film/${file}.jpg" aria-labelledby="${id}-title"><img src="film/thumb-${file}.jpg"`), `${id}: a thumbnail${shown ? '' : ', hidden'}`);
-    for (const ext of ['mp4', 'jpg']) assert.ok((await stat(new URL(`./somalia-flood-watch/dist/film/${file}.${ext}`, import.meta.url))).size > 0);
+  // The silent Cabudwaaq clip has a new name: the CDN keeps a file for an hour and ignores query strings, so the
+  // old name went on serving the copy with sound after the deploy.
+  for (const [id, file, video, shown] of [['cabudwaaq-video', 'cabudwaaq-flooding', 'cabudwaaq-flooding-silent', true], ['mudug-video', 'mudug-flooding', 'mudug-flooding', true], ['xingod-video', 'xingod-water-dam', 'xingod-water-dam', false]]) {
+    assert.ok(section.includes(`<figure class="field-video" id="${id}"${shown ? '' : ' hidden'}><button type="button" class="film-thumb-img field-thumb" data-video="film/${video}.mp4" data-poster="film/${file}.jpg" aria-labelledby="${id}-title"><img src="film/thumb-${file}.jpg"`), `${id}: a thumbnail${shown ? '' : ', hidden'}`);
+    assert.ok((await stat(new URL(`./somalia-flood-watch/dist/film/${file}.jpg`, import.meta.url))).size > 0);
     const thumb = (await stat(new URL(`./somalia-flood-watch/dist/film/thumb-${file}.jpg`, import.meta.url))).size;
     assert.ok(thumb > 2000 && thumb < 40000, `thumb-${file}.jpg is a small thumbnail`);
-    const size = (await stat(new URL(`./somalia-flood-watch/dist/film/${file}.mp4`, import.meta.url))).size;
-    assert.ok(size < 8e6, `${file} stays small enough for a phone on mobile data (${size} bytes)`);
+    const size = (await stat(new URL(`./somalia-flood-watch/dist/film/${video}.mp4`, import.meta.url))).size;
+    assert.ok(size > 0 && size < 8e6, `${video} stays small enough for a phone on mobile data (${size} bytes)`);
   }
   // Without sound: the shown clips have no audio track (an MP4 audio track carries an 'mp4a' sample entry).
-  for (const file of ['cabudwaaq-flooding', 'mudug-flooding']) {
+  for (const file of ['cabudwaaq-flooding-silent', 'mudug-flooding']) {
     const bytes = await readFile(new URL(`./somalia-flood-watch/dist/film/${file}.mp4`, import.meta.url));
     assert.equal(bytes.indexOf('mp4a'), -1, `${file} has no audio track`);
   }

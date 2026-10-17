@@ -930,8 +930,8 @@
     },
     {
       "path": "work/news-flash.test.mjs",
-      "bytes": 22459,
-      "sha256": "81d6a325b4e27ec826787c7b18ca0b9190b7b4dd9340491bc57b150fd98177a4"
+      "bytes": 22700,
+      "sha256": "d03e9d033f259990fdc0f9c928b3daa4bae6025d83f0b1ae217e6ac9659e3f7f"
     },
     {
       "path": "work/observed-gfm-capabilities.xml",
@@ -1119,14 +1119,14 @@
       "sha256": "88c7d14dd9cd94f62e8e6f507af6d14a3033a5246004ea746ebca90b9823fce6"
     },
     {
+      "path": "work/somalia-flood-watch/dist/film/cabudwaaq-flooding-silent.mp4",
+      "bytes": 5832444,
+      "sha256": "4a4cad4ebea9ffc62f4631d16e1de9e45986bc341965254f2254e98ed4ee1ff3"
+    },
+    {
       "path": "work/somalia-flood-watch/dist/film/cabudwaaq-flooding.jpg",
       "bytes": 29967,
       "sha256": "72b3da24ade90e682a65d9d17fd9f988fb9cf28cdaca2402f5d5a1e9ebe7f02f"
-    },
-    {
-      "path": "work/somalia-flood-watch/dist/film/cabudwaaq-flooding.mp4",
-      "bytes": 5832444,
-      "sha256": "4a4cad4ebea9ffc62f4631d16e1de9e45986bc341965254f2254e98ed4ee1ff3"
     },
     {
       "path": "work/somalia-flood-watch/dist/film/cholera-prevention-so.jpg",
@@ -1355,8 +1355,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 52138,
-      "sha256": "5bc4be45e337b38e81fddf69a992552a882c5e4e56b167f35a915c42669a5883"
+      "bytes": 52145,
+      "sha256": "02a3b028fbe276607db08a3eae66ad555d08860b989d1ea6f003dfa6407ba8e6"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
