@@ -790,8 +790,8 @@
     },
     {
       "path": "work/film/malaria-prevention-so.json",
-      "bytes": 7823,
-      "sha256": "b6875c5817b7bdc21e99595a605151f8f96b2c4eca629f43e9ea7131b7a46590"
+      "bytes": 7831,
+      "sha256": "d29b8b75aa79501bc5965a3daa00246915b864255009b89d7cad96e18455a3db"
     },
     {
       "path": "work/film/malaria-prevention.json",
@@ -865,8 +865,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 118469,
-      "sha256": "11bb7f3365c92bfbacd240a131c333b48c0387cecb8c928c13d75913546e0202"
+      "bytes": 118471,
+      "sha256": "d8af522e80bcedf8ae1da29d5e9b331636cd979c26d886e1492c342c6ccc27c5"
     },
     {
       "path": "work/i18n-weather.json",
@@ -1430,8 +1430,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 235384,
-      "sha256": "63fc353ba548055c7b3c986c2778cdcf0a1bb6c6fff44300dfc09fce4d942d8b"
+      "bytes": 235386,
+      "sha256": "2f06633272604ba7cabf7cb423b772ca306a8607fc33700cc08d3ab196f9c475"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",

@@ -80,7 +80,7 @@
       "id": "title",
       "visual": "mtitle",
       "heading": "Ka hortagga duumada: Qoyskaaga ilaali",
-      "sub": "Gogol kaneeco habeen kasta · biyo fadhiya ha jirin · qandhada degdeg u baar",
+      "sub": "Shabaq kaneeco habeen kasta · biyo fadhiya ha jirin · qandhada degdeg u baar",
       "narration": "Roobabka iyo fatahaadaha kadib, biyaha fadhiya waxay dhalaan kaneeco, kaneecaduna waxay faafisaa duumada. Duumadu way dili kartaa, gaar ahaan carruurta yaryar iyo haweenka uurka leh. Laakiin waa laga hortagi karaa, waana la daaweyn karaa. Waa kan sida aad u ilaalin karto qoyskaaga."
     },
     {
@@ -107,13 +107,13 @@
         0.52,
         0.86
       ],
-      "heading": "1. Seexo gogol kaneeco oo daawaysan",
+      "heading": "1. Seexo shabaq kaneeco oo daawaysan",
       "steps": [
         "Habeen kasta, qoyska oo dhan",
         "Hoos u geli dhinac kasta",
         "Daloolada isla markiiba tol"
       ],
-      "narration": "Marka hore, seexo gogol kaneeco oo daawaysan, habeen kasta. Carruurta yaryar iyo haweenka uurka leh ka hormari, laakiin qof kasta oo qoyska ka mid ah ha seexdo. Gogosha hoos ugu geli furaashka ama derinta, dhinac kasta, si aysan kaneeco u gelin. Dalool kasta isla markiiba tol."
+      "narration": "Marka hore, seexo shabaq kaneeco oo daawaysan, habeen kasta. Carruurta yaryar iyo haweenka uurka leh ka hormari, laakiin qof kasta oo qoyska ka mid ah ha seexdo. Shabagga hoos ugu geli furaashka ama derinta, dhinac kasta, si aysan kaneeco u gelin. Dalool kasta isla markiiba tol."
     },
     {
       "id": "water",
@@ -173,9 +173,9 @@
     {
       "id": "close",
       "visual": "close",
-      "heading": "Gogol kaneeco habeen kasta. Biyo fadhiya ha jirin. Qandhada degdeg u baar.",
+      "heading": "Shabaq kaneeco habeen kasta. Biyo fadhiya ha jirin. Qandhada degdeg u baar.",
       "items": [
-        "Gogol kaneeco habeen kasta",
+        "Shabaq kaneeco habeen kasta",
         "Biyo fadhiya ha jirin",
         "Qandhada degdeg u baar"
       ],
@@ -186,7 +186,7 @@
       ],
       "vaccine": "Uur leedahay? Goor hore tag daryeelka uurka: duumadu waa khatar hooyada iyo ilmaha",
       "source": "Xigasho: Ururka Caafimaadka Adduunka (WHO)",
-      "narration": "Haddii aad uur leedahay, seexo gogol kaneeco, oo goor hore tag daryeelka uurka, sababtoo ah duumadu waa khatar hooyada iyo ilmaha. Gogol kaneeco habeen kasta, biyo fadhiya ha jirin, qandhada si degdeg ah u baar. La wadaag qoyskaaga."
+      "narration": "Haddii aad uur leedahay, seexo shabaq kaneeco, oo goor hore tag daryeelka uurka, sababtoo ah duumadu waa khatar hooyada iyo ilmaha. Shabaq kaneeco habeen kasta, biyo fadhiya ha jirin, qandhada si degdeg ah u baar. La wadaag qoyskaaga."
     }
   ]
 }
