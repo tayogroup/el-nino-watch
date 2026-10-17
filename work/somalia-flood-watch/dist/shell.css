@@ -45,6 +45,7 @@ body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card .alert-sc
   body[data-site-tab=overview]:not(.mayor-view) main>*{margin-top:0;margin-bottom:0}
   body[data-site-tab=overview]:not(.mayor-view) main>#podcast{order:-1}
   body[data-site-tab=overview]:not(.mayor-view) main>#field-videos{order:-1}
+  body[data-site-tab=overview]:not(.mayor-view) main>#health-films{order:-1}
   body[data-site-tab=overview]:not(.mayor-view) main>#site-disclaimer{order:0}
   body[data-site-tab=overview]:not(.mayor-view) main>.livebar{order:1}
   body[data-site-tab=overview]:not(.mayor-view) main>.mayor-extension-bar{order:2}
@@ -77,7 +78,7 @@ body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card .alert-sc
   body.site-tabs-ready:not(.mayor-view) #site-bar .site-tab-badge{margin-left:auto}
 
   /* Overview: status row, then map beside the official forecasts, then the rest. */
-  body[data-site-tab=overview]:not(.mayor-view) main{grid-template-columns:232px minmax(0,1fr) minmax(320px,400px);grid-template-areas:"nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
+  body[data-site-tab=overview]:not(.mayor-view) main{grid-template-columns:232px minmax(0,1fr) minmax(320px,400px);grid-template-areas:"nav films films" "nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
   body[data-site-tab=overview]:not(.mayor-view) main>#site-bar{grid-area:nav}
   body[data-site-tab=overview]:not(.mayor-view) main>#site-disclaimer{grid-area:disc}
   body[data-site-tab=overview]:not(.mayor-view) main>.livebar{grid-area:live}
@@ -90,11 +91,12 @@ body[data-site-tab=overview]:not(.mayor-view) #alerts-list .alert-card .alert-sc
   body[data-site-tab=overview]:not(.mayor-view) main>#watchlist{grid-area:watch}
   body[data-site-tab=overview]:not(.mayor-view) main>.site-footer{grid-area:foot}
   /* The audio bulletin, first under the header while there is one to show (its row would otherwise leave a gap). */
-  body[data-site-tab=overview]:not(.mayor-view) main:has(>#podcast:not([hidden])){grid-template-areas:"nav pod pod" "nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
-  body[data-site-tab=overview]:not(.mayor-view) main:has(>#field-videos:not([hidden])){grid-template-areas:"nav field field" "nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
-  body[data-site-tab=overview]:not(.mayor-view) main:has(>#podcast:not([hidden])):has(>#field-videos:not([hidden])){grid-template-areas:"nav pod pod" "nav field field" "nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
+  body[data-site-tab=overview]:not(.mayor-view) main:has(>#podcast:not([hidden])){grid-template-areas:"nav pod pod" "nav films films" "nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
+  body[data-site-tab=overview]:not(.mayor-view) main:has(>#field-videos:not([hidden])){grid-template-areas:"nav field field" "nav films films" "nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
+  body[data-site-tab=overview]:not(.mayor-view) main:has(>#podcast:not([hidden])):has(>#field-videos:not([hidden])){grid-template-areas:"nav pod pod" "nav field field" "nav films films" "nav disc disc" "nav live ext" "nav stats status" "nav map alerts" "nav rank rank" "nav watch watch" "nav foot foot"}
   body[data-site-tab=overview]:not(.mayor-view) main>#podcast{grid-area:pod}
   body[data-site-tab=overview]:not(.mayor-view) main>#field-videos{grid-area:field}
+  body[data-site-tab=overview]:not(.mayor-view) main>#health-films{grid-area:films}
   body[data-site-tab=overview]:not(.mayor-view) main>.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   body[data-site-tab=overview]:not(.mayor-view) main>.stats>div{display:flex;flex-direction:column;justify-content:center;padding:var(--space-4) var(--space-5)}
   body[data-site-tab=overview]:not(.mayor-view) main>.livebar{align-self:center}

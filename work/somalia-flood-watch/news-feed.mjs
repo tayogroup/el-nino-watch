@@ -142,8 +142,8 @@ export const FILM_FLASH = Object.freeze({kind: 'app', key: 'film', label: 'Film 
 export const FIELD_VIDEOS_SHOWN = false;
 export const FIELD_FLASH = Object.freeze({kind: 'app', key: 'field', label: 'Videos from the field', title: 'Watch: flooding in Cabudwaaq, and rain filling the Xingod sand dam', url: '#field-videos', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
 
-// And to the malaria, dysentery and typhoid, and hepatitis A and E films on the Diseases tab (owner, 2026-10-17).
-export const FILMS_FLASH = Object.freeze({kind: 'app', key: 'films', label: 'Films · Health', title: 'Watch: new films on malaria, dysentery and typhoid, and hepatitis', url: '#malaria-film', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
+// And to the health films, by their thumbnails on the home page (#health-films; owner, 2026-10-17).
+export const FILMS_FLASH = Object.freeze({kind: 'app', key: 'films', label: 'Films · Health', title: 'Watch: short films on cholera, malaria, dysentery, typhoid and hepatitis', url: '#health-films', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
 
 // And to the Somali audio bulletin first on the home page (owner, 2026-10-17), only while bulletins are on.
 export const PODCAST_FLASH = Object.freeze({kind: 'app', key: 'podcast', label: 'Audio bulletin', title: 'Listen: El Niño and flood news, three times a day', url: '#podcast', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});

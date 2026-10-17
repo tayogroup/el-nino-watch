@@ -205,8 +205,8 @@ test('videos from the field: Cabudwaaq flooding and the Xingod sand dam, ready o
   assert.ok(footer.includes('<a href="#field-videos" hidden>Field videos: Cabudwaaq and Xingod</a>'), 'its footer link hidden too');
   const shell = await readFile(new URL('./somalia-flood-watch/dist/shell.css', import.meta.url), 'utf8');
   assert.match(shell, /main>#field-videos\{order:-1\}/, 'phone: under the bulletin');
-  assert.match(shell, /:has\(>#podcast:not\(\[hidden\]\)\):has\(>#field-videos:not\(\[hidden\]\)\)\{grid-template-areas:"nav pod pod" "nav field field" "nav disc disc"/, 'desktop: under the bulletin, only while shown');
-  assert.match(shell, /:has\(>#podcast:not\(\[hidden\]\)\)\{grid-template-areas:"nav pod pod" "nav disc disc"/, 'hidden: no empty row');
+  assert.match(shell, /:has\(>#podcast:not\(\[hidden\]\)\):has\(>#field-videos:not\(\[hidden\]\)\)\{grid-template-areas:"nav pod pod" "nav field field" "nav films films" "nav disc disc"/, 'desktop: under the bulletin, only while shown');
+  assert.match(shell, /:has\(>#podcast:not\(\[hidden\]\)\)\{grid-template-areas:"nav pod pod" "nav films films" "nav disc disc"/, 'hidden: no empty row');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   for (const text of [FIELD_FLASH.label, FIELD_FLASH.title, 'FROM THE FIELD · UNVERIFIED VIDEOS', 'Rain and flooding, October 2026', 'Cabudwaaq, Galgaduud: streets flooded', 'Xingod, Mudug: rain fills the sand dam', 'Videos shared with El Nino Watch. Like community reports, they are unverified.', 'Field videos: Cabudwaaq and Xingod']) {
     assert.ok(catalog.messages[text], `Somali for: ${text}`);

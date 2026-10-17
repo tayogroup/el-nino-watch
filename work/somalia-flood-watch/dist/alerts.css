@@ -118,3 +118,17 @@
 .field-video figcaption b{color:var(--color-text,#14233a);font-size:14px}
 .field-videos .note a{font-weight:700}
 @media (min-width:900px){.field-video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.field-video{grid-template-columns:190px minmax(0,1fr);gap:14px}.field-video figcaption{align-content:start;font-size:14px}.field-video figcaption b{font-size:16px}}
+
+/* Health films on the home page: a thumbnail per film, opening it on the Diseases tab. */
+#health-films{scroll-margin-top:250px}
+.film-thumbs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px;margin-top:6px}
+@media (min-width:700px){.film-thumbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1100px){.film-thumbs{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.film-thumb{display:grid;gap:7px;align-content:start;text-decoration:none;color:var(--color-text,#14233a)}
+.film-thumb-img{position:relative;display:block;border-radius:12px;overflow:hidden;border:1px solid #dfe9f4;background:#082448}
+.film-thumb img{display:block;width:100%;height:auto;aspect-ratio:16/9}
+.film-thumb-img::before{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);border-radius:50%;background:rgba(8,36,72,.85)}
+.film-thumb-img::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-35%,-50%);border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent #fff}
+.film-thumb-time{position:absolute;right:7px;bottom:7px;background:rgba(8,36,72,.85);color:#fff;font-size:12px;font-weight:700;line-height:1;padding:4px 7px;border-radius:6px}
+.film-thumb b{font-size:14px;line-height:1.3}
+.film-thumb:hover b{text-decoration:underline}.film-thumb:focus-visible{outline:none}.film-thumb:focus-visible .film-thumb-img{outline:3px solid #1473cf;outline-offset:2px}

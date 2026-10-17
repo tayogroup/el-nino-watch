@@ -308,7 +308,7 @@ test('the malaria, dysentery and typhoid, and hepatitis A and E films: after the
   }
   assert.ok(footer.includes('<a href="#health-film">Cholera film</a><a href="#malaria-film">Malaria film</a>'), 'the new films follow the cholera film in the footer');
   const {FILMS_FLASH} = await import('./somalia-flood-watch/news-feed.mjs');
-  assert.equal(FILMS_FLASH.url, '#malaria-film');
+  assert.equal(FILMS_FLASH.url, '#health-films');
   assert.ok(catalog.messages[FILMS_FLASH.label] && catalog.messages[FILMS_FLASH.title], 'the flash item in Somali');
   // Each film's Share row links to that film, and each storyboard records the owner's approval of the English.
   const nodes = {'malaria-share': {innerHTML: ''}, 'dysentery-share': {innerHTML: ''}, 'hepatitis-share': {innerHTML: ''}};
@@ -323,4 +323,42 @@ test('the malaria, dysentery and typhoid, and hepatitis A and E films: after the
     const so = JSON.parse(await readFile(new URL(`./film/${file}-so.json`, import.meta.url), 'utf8'));
     assert.match(so.voice.approved, /^PENDING/, 'the Somali script still awaits the owner');
   }
+});
+
+test('the health films on the home page: a thumbnail for each film under the audio bulletin, opening and playing it on the Diseases tab', async () => {
+  const strip = index.slice(index.indexOf('<section class="panel film-strip" id="health-films" data-site-tab="overview"'), index.indexOf('</section>', index.indexOf('id="health-films"')));
+  assert.ok(strip.length > 0 && index.indexOf('id="health-films"') < index.indexOf('id="site-disclaimer"'), 'on the home page, before the disclaimer');
+  const films = [...strip.matchAll(/<a class="film-thumb" href="#([\w-]+)" data-film="\1"[^>]*><span class="film-thumb-img"><img src="(film\/thumb-[\w-]+\.jpg)"/g)].map(m => [m[1], m[2]]);
+  assert.deepEqual(films.map(f => f[0]), ['waterborne-film', 'health-film', 'malaria-film', 'dysentery-film', 'hepatitis-film'], 'every film on the Diseases tab');
+  for (const [id, thumb] of films) {
+    assert.ok(index.includes(`<video id="${id}"`), `${id} exists`);
+    const size = (await stat(new URL(thumb, dist))).size;
+    assert.ok(size > 2000 && size < 40000, `${thumb} is a small thumbnail (${size} bytes)`);
+  }
+  assert.ok(strip.includes('data-so-time="3:14" data-so-thumb="film/thumb-cholera-prevention-so.jpg"'), 'the cholera film is longer in Somali');
+  assert.ok((await stat(new URL('film/thumb-cholera-prevention-so.jpg', dist))).size > 2000);
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  for (const text of ['SHORT FILMS · DISEASES AFTER FLOODS', 'Health films: protect your family', 'Five short films, step by step. Tap one to watch it on the Diseases tab.', 'Diseases from dirty water', 'Cholera', 'Malaria', 'Dysentery and typhoid', 'Hepatitis A and E', 'Health films']) assert.ok(catalog.messages[text], `Somali for: ${text}`);
+  const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
+  assert.ok(footer.includes('<a href="#health-films">Health films</a>'));
+  const shell = await readFile(new URL('shell.css', dist), 'utf8');
+  assert.match(shell, /main>#health-films\{order:-1\}/, 'phones: under the bulletin');
+  assert.equal(shell.split('"nav films films" "nav disc disc"').length - 1, 4, 'desktop: its own row in every home layout');
+  const {FILMS_FLASH} = await import('./somalia-flood-watch/news-feed.mjs');
+  assert.equal(FILMS_FLASH.url, '#health-films', 'the news flash points to the thumbnails');
+  // A tap plays the film: the listener is in the capture phase, because tabs.js stops the click there.
+  const alerts = await readFile(new URL('alerts.js', dist), 'utf8');
+  assert.match(alerts, /closest\?\.\('\.film-thumb\[data-film\]'\)[\s\S]{0,260}\}, true\);/);
+  assert.ok(index.indexOf('<script src="alerts.js">') < index.indexOf('<script src="tabs.js">'), 'and it loads before tabs.js');
+  // The cholera thumbnail follows the page language.
+  const link = {dataset: {soTime: '3:14', soThumb: 'film/thumb-cholera-prevention-so.jpg'}, img: {src: 'film/thumb-cholera-prevention.jpg', getAttribute() { return this.src; }, setAttribute(_, v) { this.src = v; }}, time: {textContent: '2:24'}};
+  link.querySelector = sel => sel === 'img' ? link.img : link.time;
+  const doc = {readyState: 'complete', title: '', body: {nodeType: 11, childNodes: []}, documentElement: {setAttribute() {}}, getElementById: () => null, querySelectorAll: sel => sel === '.film-thumb[data-so-time]' ? [link] : [], addEventListener() {}};
+  const win = {document: doc, location: {href: 'https://elninowatch.so/', protocol: 'https:'}, localStorage: {getItem: () => null, setItem() {}}, navigator: {}, setTimeout: fn => fn()};
+  const context = vm.createContext({window: win, URL, URLSearchParams, Date});
+  for (const file of ['translations-so.js', 'i18n.js', 'share.js', 'alerts.js']) vm.runInContext(await readFile(new URL(file, dist), 'utf8'), context);
+  win.FloodAlerts.filmThumbs('so');
+  assert.deepEqual([link.time.textContent, link.img.src], ['3:14', 'film/thumb-cholera-prevention-so.jpg']);
+  win.FloodAlerts.filmThumbs('en');
+  assert.deepEqual([link.time.textContent, link.img.src], ['2:24', 'film/thumb-cholera-prevention.jpg']);
 });

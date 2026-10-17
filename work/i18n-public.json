@@ -795,7 +795,6 @@
     "October 2026. Rainwater pours into the sand dam. Keep stored water covered, and boil or treat it before drinking.": "Oktoobar 2026. Biyaha roobka ayaa ku shubmaya biyo-xireenka ciidda. Dabool biyaha la kaydiyo, oo karkari ama nadiifi ka hor intaadan cabbin.",
     "Watch: flooding in Cabudwaaq, and rain filling the Xingod sand dam": "Daawo: fatahaadda Cabudwaaq, iyo roobka buuxinaya biyo-xireenka ciidda ee Xingod",
     "Films · Health": "Filimaan · Caafimaad",
-    "Watch: new films on malaria, dysentery and typhoid, and hepatitis": "Daawo: filimaan cusub oo ku saabsan duumada, dhiig-shubanka iyo tiifowga, iyo cagaarshowga",
     "El Nino Watch film · English; Somali coming": "Filimka El Nino Watch · Ingiriisi; Soomaali ayaa soo socota",
     "Film: Malaria, protect your family (2 min 2 s). Narrated in English, with English captions; the Somali version is coming.": "Filim: Ka hortagga duumada (2 daqiiqo iyo 2 ilbiriqsi). Cod Ingiriisi ah, qoraallo Ingiriisi ah; nooca Af-Soomaaliga ah wuu soo socdaa.",
     "Malaria film": "Filimka duumada",
@@ -811,7 +810,15 @@
     "Hepatitis A and E film": "Filimka cagaarshowga A iyo E",
     "Watch: how to protect your family from hepatitis A and E": "Daawo: sida qoyskaaga looga ilaaliyo cagaarshowga A iyo E",
     "A short film on yellow eyes and other signs, the danger in pregnancy, safe water, handwashing and when to see a health worker.": "Filim gaaban oo ku saabsan indhaha huruudda ah iyo calaamadaha kale, khatarta uurka, biyo nadiif ah, dhaqidda gacmaha iyo goorta loo tago shaqaalaha caafimaadka.",
-    "A narrated film on hepatitis A and E: the signs, why hepatitis E is dangerous in pregnancy, safe water, handwashing, latrines, safe food, and seeing a health worker. It is based on the WHO hepatitis A and E fact sheets and WHO's floods guidance below.": "Filim cod leh oo ku saabsan cagaarshowga A iyo E: calaamadaha, sababta cagaarshowga E uu khatar ugu yahay uurka, biyo nadiif ah, dhaqidda gacmaha, musqulaha, cunto nadiif ah, iyo u tagidda shaqaalaha caafimaadka. Wuxuu ku salaysan yahay warqadaha xaqiiqooyinka cagaarshowga A iyo E ee WHO iyo hagaha fatahaadaha ee WHO ee hoose."
+    "A narrated film on hepatitis A and E: the signs, why hepatitis E is dangerous in pregnancy, safe water, handwashing, latrines, safe food, and seeing a health worker. It is based on the WHO hepatitis A and E fact sheets and WHO's floods guidance below.": "Filim cod leh oo ku saabsan cagaarshowga A iyo E: calaamadaha, sababta cagaarshowga E uu khatar ugu yahay uurka, biyo nadiif ah, dhaqidda gacmaha, musqulaha, cunto nadiif ah, iyo u tagidda shaqaalaha caafimaadka. Wuxuu ku salaysan yahay warqadaha xaqiiqooyinka cagaarshowga A iyo E ee WHO iyo hagaha fatahaadaha ee WHO ee hoose.",
+    "SHORT FILMS · DISEASES AFTER FLOODS": "FILIMO GAAGAABAN · CUDURRADA FATAHAADDA KADIB",
+    "Health films: protect your family": "Filimada caafimaadka: ilaali qoyskaaga",
+    "Five short films, step by step. Tap one to watch it on the Diseases tab.": "Shan filim oo gaagaaban, tallaabo-tallaabo. Mid taabo si aad ugu daawato qaybta Cudurrada.",
+    "Diseases from dirty water": "Cudurrada biyaha wasakhda ah",
+    "Cholera": "Daacuunka",
+    "Dysentery and typhoid": "Dhiig-shubanka iyo tiifowga",
+    "Health films": "Filimada caafimaadka",
+    "Watch: short films on cholera, malaria, dysentery, typhoid and hepatitis": "Daawo: filimo gaagaaban oo ku saabsan daacuunka, duumada, dhiig-shubanka, tiifowga iyo cagaarshowga"
   },
   "patterns": [
     {

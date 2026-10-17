@@ -285,8 +285,20 @@
     }
   };
   const filmState = {};
+  // The home page's film thumbnails (#health-films): the cholera film plays in Somali on the Somali page, so
+  // its picture and length follow the language.
+  function filmThumbs(lang) {
+    for (const link of root.document?.querySelectorAll?.('.film-thumb[data-so-time]') || []) {
+      const img = link.querySelector?.('img'), time = link.querySelector?.('.film-thumb-time');
+      if (!img || !time) continue;
+      if (!link.dataset.enTime) { link.dataset.enTime = time.textContent; link.dataset.enThumb = img.getAttribute('src'); }
+      time.textContent = lang === 'so' ? link.dataset.soTime : link.dataset.enTime;
+      img.setAttribute('src', lang === 'so' ? link.dataset.soThumb : link.dataset.enThumb);
+    }
+  }
   function filmCaptions() {
     const lang = root.SiteLanguage?.getLanguage?.() === 'so' ? 'so' : 'en';
+    filmThumbs(lang);
     for (const [id, versions] of Object.entries(FILMS)) {
       const video = root.document?.getElementById?.(id);
       if (!video) continue;
@@ -310,6 +322,14 @@
     }
   }
   root.document?.addEventListener?.('click', event => { if (event.target?.closest?.('[data-site-language]')) root.setTimeout(filmCaptions, 0); });
+  // A thumbnail opens its film on the Diseases tab (tabs.js handles the link) and starts it: the tap is the
+  // viewer's go-ahead to play. In the capture phase, like tabs.js, which stops the click there: this file
+  // loads first, so its listener still runs.
+  root.document?.addEventListener?.('click', event => {
+    const link = event.target?.closest?.('.film-thumb[data-film]');
+    const video = link && root.document.getElementById?.(link.dataset.film);
+    if (video) root.setTimeout(() => { const playing = video.play?.(); playing?.catch?.(() => {}); }, 400);
+  }, true);
   filmCaptions();
-  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE, filmShareLines: FILM_SHARE, waterborneShareLines: WATERBORNE_SHARE, malariaShareLines: MALARIA_SHARE, dysenteryShareLines: DYSENTERY_SHARE, hepatitisShareLines: HEPATITIS_SHARE, filmCaptions };
+  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE, filmShareLines: FILM_SHARE, waterborneShareLines: WATERBORNE_SHARE, filmThumbs, malariaShareLines: MALARIA_SHARE, dysenteryShareLines: DYSENTERY_SHARE, hepatitisShareLines: HEPATITIS_SHARE, filmCaptions };
 })(typeof window === 'object' ? window : globalThis);
