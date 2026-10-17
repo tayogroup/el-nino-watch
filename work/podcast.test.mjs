@@ -233,7 +233,7 @@ test('WhatsApp: CODKA or AUDIO opts in, JOOJI CODKA or STOP AUDIO opts out; only
 async function runPanel(answer, lang = 'en') {
   const node = () => ({hidden: true, textContent: '', innerHTML: '', attrs: {}, dataset: {}, paused: true, listeners: {},
     getAttribute(n) { return this.attrs[n] ?? null; }, setAttribute(n, v) { this.attrs[n] = v; }, addEventListener(type, fn) { this.listeners[type] = fn; }});
-  const nodes = Object.fromEntries(['podcast', 'podcast-audio', 'podcast-player', 'podcast-read', 'podcast-when', 'podcast-text', 'podcast-times', 'podcast-save', 'podcast-earlier', 'podcast-list'].map(id => [id, node()]));
+  const nodes = Object.fromEntries(['podcast', 'podcast-audio', 'podcast-player', 'podcast-read', 'podcast-when', 'podcast-text', 'podcast-times', 'podcast-save', 'podcast-earlier', 'podcast-list', 'podcast-switch'].map(id => [id, node()]));
   const dispatched = [];
   const window = {document: {getElementById: id => nodes[id] || null, addEventListener() {}}, fetch: async () => ({json: async () => answer}), SiteLanguage: {getLanguage: () => lang},
     CustomEvent: class { constructor(type, init) { this.type = type; this.detail = init?.detail; } }, dispatchEvent: event => dispatched.push({type: event.type, detail: {...event.detail}})};
@@ -283,9 +283,9 @@ test('the panel shows when the first bulletin is due, then the latest bulletin w
 test('the footer links to the audio bulletin, in Somali too', async () => {
   const index = await readFile(new URL('index.html', dist), 'utf8');
   const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
-  assert.ok(footer.includes('<a href="#podcast">Audio bulletin</a><a href="#diseases-panel">Diseases</a>'), 'beside the other in-page links');
+  assert.ok(footer.includes('<a href="#podcast-so">Audio bulletin, Somali</a><a href="#podcast-en">Audio bulletin, English</a><a href="#diseases-panel">Diseases</a>'), 'beside the other in-page links, one per language');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
-  assert.equal(catalog.messages['Audio bulletin'], 'Warbixinta codka');
+  assert.equal(catalog.messages['Audio bulletin, Somali'], 'Warbixinta codka, Af-Soomaali');
 });
 
 // ---- The enhancements of 2026-10-17: earlier bulletins, play counts, the news flash, the podcast feed ----
@@ -524,7 +524,7 @@ test('the sources page has the audio bulletin, with the player and both feeds, i
 test('WhatsApp: the audio bulletin has its own button on the Alerts tab and in the bulletin panel, AUDIO or CODKA ready to send', async () => {
   const index = await readFile(new URL('index.html', dist), 'utf8');
   assert.ok(index.includes('<a id="alerts-whatsapp-audio" class="whatsapp-link" href="https://wa.me/" target="_blank" rel="noopener" hidden>Get the audio bulletin on WhatsApp</a>'), 'beside the alerts button');
-  assert.ok(index.includes('<p class="podcast-times" id="podcast-times" data-i18n-skip></p><a id="podcast-whatsapp" class="podcast-save podcast-whatsapp" href="https://wa.me/" target="_blank" rel="noopener" hidden>Get it on WhatsApp</a>'), 'in the bulletin panel');
+  assert.ok(index.includes('<p class="podcast-times" id="podcast-times" data-i18n-skip></p><button type="button" id="podcast-switch" class="podcast-switch" hidden data-i18n-skip></button><a id="podcast-whatsapp" class="podcast-save podcast-whatsapp" href="https://wa.me/" target="_blank" rel="noopener" hidden>Get it on WhatsApp</a>'), 'in the bulletin panel');
   assert.match(index, /The audio bulletin button asks for the evening audio bulletin, in the language of this page\./);
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['Get the audio bulletin on WhatsApp'], 'Ku hel warbixinta codka WhatsApp');
@@ -554,4 +554,30 @@ test('WhatsApp LIST says whether the person takes the audio bulletin', async () 
     await wa.onMessage('252610000022', 'KU BIIR Galkayo'); await wa.onMessage('252610000022', 'LIISKA');
     assert.equal(sent.at(-1).text.body, 'Waxaad heleysaa digniinaha Galkayo. Ku jawaab JOOJI si aad u joojiso dhammaan digniinaha. Soo dir CODKA si aad u hesho warbixinta codka.');
   } finally { await rm(dataDir, {recursive: true, force: true}); }
+});
+
+test('readers can hear the bulletin in either language: a switch in the panel, and a footer link for each', async () => {
+  const en = {...bulletin('2026-10-17-midday-en', 'midday', 'Midday bulletin, Saturday 17 October', '2026-10-17T09:31:30Z'), lang: 'en'};
+  const so = {...THREE[0], lang: 'so'};
+  const data = {enabled: true, hold: false, slots: ['06:30', '12:30', '18:30'], items: [en, so]};
+  const page = await runPanel(data, 'en');
+  const toggle = page.nodes['podcast-switch'];
+  assert.equal(page.nodes['podcast-audio'].attrs.src, '/podcast/2026-10-17-midday-en.mp3', 'the page language first');
+  assert.equal(toggle.hidden, false); assert.equal(toggle.textContent, 'Listen in Somali'); assert.equal(toggle.attrs['data-listen'], 'so');
+  page.nodes.podcast.listeners.click({target: {closest: selector => selector === '#podcast-switch' ? toggle : null}});
+  assert.equal(page.nodes['podcast-audio'].attrs.src, '/podcast/2026-10-17-midday.mp3', 'switched to the Somali bulletin');
+  assert.equal(toggle.textContent, 'Listen in English', 'and offers English back');
+  const somaliPage = await runPanel(data, 'so');
+  assert.equal(somaliPage.nodes['podcast-switch'].textContent, 'Ku dhageyso Ingiriisi');
+  const onlyOne = await runPanel({...data, items: [so]}, 'so');
+  assert.equal(onlyOne.nodes['podcast-switch'].hidden, true, 'nothing to switch to');
+  const index = await readFile(new URL('index.html', dist), 'utf8');
+  const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
+  assert.ok(footer.includes('<a href="#podcast-so">Audio bulletin, Somali</a><a href="#podcast-en">Audio bulletin, English</a><a href="#diseases-panel">Diseases</a>'));
+  assert.ok(index.includes('<span class="podcast-anchor" id="podcast-so"></span><span class="podcast-anchor" id="podcast-en"></span>'), 'their targets, inside the panel');
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  assert.equal(catalog.messages['Audio bulletin, Somali'], 'Warbixinta codka, Af-Soomaali');
+  assert.equal(catalog.messages['Audio bulletin, English'], 'Warbixinta codka, Ingiriisi');
+  const script = await readFile(new URL('podcast.js', dist), 'utf8');
+  assert.match(script, /a\[href="#podcast-so"\], a\[href="#podcast-en"\]/, 'the footer links pick the language');
 });

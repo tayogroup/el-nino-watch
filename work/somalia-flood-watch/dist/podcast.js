@@ -17,8 +17,8 @@
   const esc = text => String(text ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
   const playable = item => !!item && /^\/podcast\/[\w-]+\.mp3$/.test(item.url || '');
   const WORDS = {
-    en: {recorded: at => `Recorded at ${at} EAT`, next: at => `next bulletin at ${at}`, nextTomorrow: at => `next bulletin tomorrow at ${at}`, first: at => `The first bulletin is at ${at} East Africa Time.`, firstTomorrow: at => `The first bulletin is tomorrow at ${at} East Africa Time.`, held: 'New bulletins are paused.', save: 'Save MP3'},
-    so: {recorded: at => `Waxaa la duubay ${at} (saacadda Bariga Afrika)`, next: at => `warbixinta xigta waa ${at}`, nextTomorrow: at => `warbixinta xigta waa berri ${at}`, first: at => `Warbixinta ugu horreysa waa ${at} saacadda Bariga Afrika.`, firstTomorrow: at => `Warbixinta ugu horreysa waa berri ${at} saacadda Bariga Afrika.`, held: 'Warbixinada cusub waa la hakiyay.', save: 'Kaydi MP3'}
+    en: {recorded: at => `Recorded at ${at} EAT`, next: at => `next bulletin at ${at}`, nextTomorrow: at => `next bulletin tomorrow at ${at}`, first: at => `The first bulletin is at ${at} East Africa Time.`, firstTomorrow: at => `The first bulletin is tomorrow at ${at} East Africa Time.`, held: 'New bulletins are paused.', save: 'Save MP3', listen: {so: 'Listen in Somali', en: 'Listen in English'}},
+    so: {recorded: at => `Waxaa la duubay ${at} (saacadda Bariga Afrika)`, next: at => `warbixinta xigta waa ${at}`, nextTomorrow: at => `warbixinta xigta waa berri ${at}`, first: at => `Warbixinta ugu horreysa waa ${at} saacadda Bariga Afrika.`, firstTomorrow: at => `Warbixinta ugu horreysa waa berri ${at} saacadda Bariga Afrika.`, held: 'Warbixinada cusub waa la hakiyay.', save: 'Kaydi MP3', listen: {so: 'Ku dhageyso Af-Soomaali', en: 'Ku dhageyso Ingiriisi'}}
   };
 
   // The next slot after this moment, in East Africa Time: {at: "12:30", tomorrow: false}.
@@ -42,13 +42,17 @@
   }
 
   let last = null, chosen = null;
+  // The bulletin language the reader picked (the panel's switch, the footer's two links, a #podcast-so or
+  // #podcast-en link); null follows the page language.
+  const fromHash = hash => (/^#podcast-(so|en)$/.exec(String(hash || '')) || [])[1] || null;
+  let listenLang = fromHash(root.location?.hash);
   const counted = new Set();
   const language = () => (root.SiteLanguage?.getLanguage?.() === 'so' ? 'so' : 'en');
   const byId = id => doc.getElementById(id);
 
   function draw(data) {
     // The page's language when there are bulletins in it (English ones once approved), otherwise Somali.
-    const all = (data?.items || []).filter(playable), mine = all.filter(other => (other.lang || 'so') === language());
+    const all = (data?.items || []).filter(playable), mine = all.filter(other => (other.lang || 'so') === (listenLang || language()));
     const items = mine.length ? mine : all.filter(other => (other.lang || 'so') === 'so'), latest = items[0];
     if (!data?.enabled && !latest) { section.hidden = true; return; }
     const item = items.find(other => other.id === chosen) || latest, w = WORDS[language()];
@@ -69,6 +73,13 @@
     if (text) text.textContent = item ? item.text || '' : '';
     // Before English bulletins exist, the English page says the one it plays is in Somali.
     if (times) times.textContent = describeTimes(data, Date.now(), language(), item) + (item && language() === 'en' && (item.lang || 'so') === 'so' ? ' · in Somali' : '');
+    // The other language, when it has bulletins: one tap switches the player to it.
+    const toggle = byId('podcast-switch'), other = (item?.lang || 'so') === 'so' ? 'en' : 'so';
+    if (toggle) {
+      toggle.hidden = !item || !all.some(entry => (entry.lang || 'so') === other);
+      toggle.textContent = w.listen[other];
+      toggle.setAttribute?.('data-listen', other);
+    }
     // Earlier bulletins: play here, or save to listen offline.
     const earlier = byId('podcast-earlier'), list = byId('podcast-list');
     const others = items.filter(other => other.id !== item?.id).slice(0, EARLIER);
@@ -82,8 +93,22 @@
     draw(last);
     return last;
   }
+  function listenIn(lang) {
+    listenLang = lang === 'en' ? 'en' : 'so';
+    chosen = null;
+    const audio = byId('podcast-audio');
+    if (audio) { audio.pause?.(); audio.removeAttribute?.('src'); }
+    if (last) draw(last);
+  }
+  // The footer's "Audio bulletin, Somali" and "Audio bulletin, English" (tabs.js brings the panel into view).
+  doc.addEventListener?.('click', event => {
+    const link = event.target?.closest?.('a[href="#podcast-so"], a[href="#podcast-en"]');
+    if (link) listenIn(fromHash(link.getAttribute('href')));
+  }, true);
   // Picking an earlier bulletin loads it into the player and plays it.
   section.addEventListener?.('click', event => {
+    const toggle = event.target?.closest?.('#podcast-switch');
+    if (toggle) { listenIn(toggle.getAttribute('data-listen')); return; }
     const button = event.target?.closest?.('[data-podcast-id]');
     if (!button || !last) return;
     chosen = button.getAttribute('data-podcast-id');
