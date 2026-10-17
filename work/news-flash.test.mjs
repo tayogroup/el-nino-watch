@@ -121,7 +121,7 @@ test('loading: each source on its own, SWALIM\'s HTTP 500 feed accepted, ReliefW
     return {ok: !url.startsWith(NEWS_SOURCES.swalim.url), status: url.startsWith(NEWS_SOURCES.swalim.url) ? 500 : 200, text: async () => text, json: async () => JSON.parse(text)};
   };
   const without = await loadNews({fetchImpl, now: NOW, reliefWebAppname: ''});
-  assert.deepEqual(without.items.map(item => item.title), [HEALTH_FLASH.title, FILM_FLASH.title, FILMS_FLASH.title, 'Digniinta fatahaadaha', 'El Niño flood warning'], 'the health flash and the films lead the headlines (the field videos are hidden for now)');
+  assert.deepEqual(without.items.map(item => item.title), [FIELD_FLASH.title, HEALTH_FLASH.title, FILM_FLASH.title, FILMS_FLASH.title, 'Digniinta fatahaadaha', 'El Niño flood warning'], 'the field videos, the health flash and the films lead the headlines');
   assert.equal(without.sources.find(source => source.id === 'googleElNino').available, false, 'a failing source is reported, not fatal');
   assert.match(without.sources.find(source => source.id === 'reliefweb').error, /RELIEFWEB_APPNAME/);
   assert.equal(requests.some(request => request.url.includes('reliefweb')), false, 'no ReliefWeb call without an appname');
@@ -188,27 +188,37 @@ test('the film flash: a standing item that opens the cholera film, in Somali too
   assert.equal(catalog.messages[FILM_FLASH.title], 'Daawo: sida qoyskaaga looga ilaaliyo daacuunka');
 });
 
-test('videos from the field: Cabudwaaq flooding and the Xingod sand dam, ready on the home page but hidden for now (owner, 2026-10-17)', async () => {
-  assert.equal(FIELD_VIDEOS_SHOWN, false, 'no news-flash item while hidden');
-  assert.deepEqual({...FIELD_FLASH}, {kind: 'app', key: 'field', label: 'Videos from the field', title: 'Watch: flooding in Cabudwaaq, and rain filling the Xingod sand dam', url: '#field-videos', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
+test('videos from the field: Cabudwaaq and Mudug flooding on the home page as thumbnails, without sound; the Xingod sand dam kept hidden (owner, 2026-10-17)', async () => {
+  assert.equal(FIELD_VIDEOS_SHOWN, true, 'the news-flash item is on');
+  assert.deepEqual({...FIELD_FLASH}, {kind: 'app', key: 'field', label: 'Videos from the field', title: 'Watch: flooding in Cabudwaaq and in Mudug', url: '#field-videos', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
   const index = await readFile(new URL('./somalia-flood-watch/dist/index.html', import.meta.url), 'utf8');
-  assert.ok(index.includes('</details></div><section class="panel field-videos" id="field-videos" data-site-tab="overview" aria-labelledby="field-videos-title" hidden>'), 'on the home page, straight after the audio bulletin, hidden');
-  assert.ok(index.includes('Xingod, Mudug: rain fills the sand dam'), 'a sand dam, as the owner calls it');
-  assert.ok(!/water dam/.test(index), 'no "water dam" left');
-  for (const name of ['cabudwaaq-flooding', 'xingod-water-dam']) {
-    assert.ok(index.includes(`poster="film/${name}.jpg" width="540" height="960"><source src="film/${name}.mp4" type="video/mp4">`), name);
-    const size = (await stat(new URL(`./somalia-flood-watch/dist/film/${name}.mp4`, import.meta.url))).size;
-    assert.ok(size < 8e6, `${name} stays small enough for a phone on mobile data (${size} bytes)`);
+  assert.ok(index.includes('</details></div><section class="panel field-videos" id="field-videos" data-site-tab="overview" aria-labelledby="field-videos-title"><div'), 'on the home page, straight after the audio bulletin, shown');
+  const section = index.slice(index.indexOf('id="field-videos"'), index.indexOf('</section>', index.indexOf('id="field-videos"')));
+  for (const [id, file, shown] of [['cabudwaaq-video', 'cabudwaaq-flooding', true], ['mudug-video', 'mudug-flooding', true], ['xingod-video', 'xingod-water-dam', false]]) {
+    assert.ok(section.includes(`<figure class="field-video" id="${id}"${shown ? '' : ' hidden'}><button type="button" class="film-thumb-img field-thumb" data-video="film/${file}.mp4" data-poster="film/${file}.jpg" aria-labelledby="${id}-title"><img src="film/thumb-${file}.jpg"`), `${id}: a thumbnail${shown ? '' : ', hidden'}`);
+    for (const ext of ['mp4', 'jpg']) assert.ok((await stat(new URL(`./somalia-flood-watch/dist/film/${file}.${ext}`, import.meta.url))).size > 0);
+    const thumb = (await stat(new URL(`./somalia-flood-watch/dist/film/thumb-${file}.jpg`, import.meta.url))).size;
+    assert.ok(thumb > 2000 && thumb < 40000, `thumb-${file}.jpg is a small thumbnail`);
+    const size = (await stat(new URL(`./somalia-flood-watch/dist/film/${file}.mp4`, import.meta.url))).size;
+    assert.ok(size < 8e6, `${file} stays small enough for a phone on mobile data (${size} bytes)`);
   }
-  assert.match(index, /Like community reports, they are unverified\./, 'marked unverified, like community reports');
+  // Without sound: the shown clips have no audio track (an MP4 audio track carries an 'mp4a' sample entry).
+  for (const file of ['cabudwaaq-flooding', 'mudug-flooding']) {
+    const bytes = await readFile(new URL(`./somalia-flood-watch/dist/film/${file}.mp4`, import.meta.url));
+    assert.equal(bytes.indexOf('mp4a'), -1, `${file} has no audio track`);
+  }
+  assert.ok(!section.includes('<video'), 'thumbnails, not players, until tapped');
+  assert.match(section, /without sound\. Like community reports, they are unverified\./, 'marked unverified, like community reports');
   const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
-  assert.ok(footer.includes('<a href="#field-videos" hidden>Field videos: Cabudwaaq and Xingod</a>'), 'its footer link hidden too');
+  assert.ok(footer.includes('<a href="#field-videos">Flood videos: Cabudwaaq and Mudug</a>'), 'its footer link, shown');
   const shell = await readFile(new URL('./somalia-flood-watch/dist/shell.css', import.meta.url), 'utf8');
   assert.match(shell, /main>#field-videos\{order:-1\}/, 'phone: under the bulletin');
-  assert.match(shell, /:has\(>#podcast:not\(\[hidden\]\)\):has\(>#field-videos:not\(\[hidden\]\)\)\{grid-template-areas:"nav pod pod" "nav field field" "nav films films" "nav disc disc"/, 'desktop: under the bulletin, only while shown');
-  assert.match(shell, /:has\(>#podcast:not\(\[hidden\]\)\)\{grid-template-areas:"nav pod pod" "nav films films" "nav disc disc"/, 'hidden: no empty row');
+  assert.match(shell, /:has\(>#podcast:not\(\[hidden\]\)\):has\(>#field-videos:not\(\[hidden\]\)\)\{grid-template-areas:"nav pod pod" "nav field field" "nav films films" "nav disc disc"/, 'desktop: under the bulletin');
+  // A tap puts a silent player in the thumbnail's place and starts it.
+  const alerts = await readFile(new URL('./somalia-flood-watch/dist/alerts.js', import.meta.url), 'utf8');
+  assert.match(alerts, /closest\?\.\('\.field-thumb\[data-video\]'\)[\s\S]{0,200}createElement\('video'\)[\s\S]{0,120}video\.muted = true[\s\S]{0,400}thumb\.replaceWith\(video\)/);
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
-  for (const text of [FIELD_FLASH.label, FIELD_FLASH.title, 'FROM THE FIELD · UNVERIFIED VIDEOS', 'Rain and flooding, October 2026', 'Cabudwaaq, Galgaduud: streets flooded', 'Xingod, Mudug: rain fills the sand dam', 'Videos shared with El Nino Watch. Like community reports, they are unverified.', 'Field videos: Cabudwaaq and Xingod']) {
+  for (const text of [FIELD_FLASH.label, FIELD_FLASH.title, 'FROM THE FIELD · UNVERIFIED VIDEOS', 'Rain and flooding, October 2026', 'Cabudwaaq, Galgaduud: streets flooded', 'Mudug: flood water rushes down a street', 'Shared October 2026; the town is not known. Do not walk or drive through moving water.', 'Videos shared with El Nino Watch, without sound. Like community reports, they are unverified.', 'Flood videos: Cabudwaaq and Mudug']) {
     assert.ok(catalog.messages[text], `Somali for: ${text}`);
   }
 });

@@ -788,12 +788,9 @@
     "Rain and flooding, October 2026": "Roob iyo fatahaad, Oktoobar 2026",
     "Cabudwaaq, Galgaduud: streets flooded": "Cabudwaaq, Galgaduud: waddooyinka oo biyo fatahaad ah",
     "16 October 2026. Flood water fills the streets and runs through the lanes between houses. Do not walk or drive through moving water.": "16 Oktoobar 2026. Biyaha fatahaadda ayaa buuxiyay waddooyinka, waxayna ku qulqulayaan luuqyada u dhexeeya guryaha. Ha ku dhex socon, hana ku dhex wadin gaari, biyo socda.",
-    "Videos shared with El Nino Watch. Like community reports, they are unverified.": "Muuqaallo lala wadaagay El Nino Watch. Sida warbixinaha bulshada, lama xaqiijin.",
     "Videos from the field": "Muuqaallo goob-joog ah",
-    "Field videos: Cabudwaaq and Xingod": "Muuqaallada goob-joogga: Cabudwaaq iyo Xingod",
     "Xingod, Mudug: rain fills the sand dam": "Xingod, Mudug: roobku wuxuu buuxinayaa biyo-xireenka ciidda",
     "October 2026. Rainwater pours into the sand dam. Keep stored water covered, and boil or treat it before drinking.": "Oktoobar 2026. Biyaha roobka ayaa ku shubmaya biyo-xireenka ciidda. Dabool biyaha la kaydiyo, oo karkari ama nadiifi ka hor intaadan cabbin.",
-    "Watch: flooding in Cabudwaaq, and rain filling the Xingod sand dam": "Daawo: fatahaadda Cabudwaaq, iyo roobka buuxinaya biyo-xireenka ciidda ee Xingod",
     "Films · Health": "Filimaan · Caafimaad",
     "El Nino Watch film · English; Somali coming": "Filimka El Nino Watch · Ingiriisi; Soomaali ayaa soo socota",
     "Film: Malaria, protect your family (2 min 2 s). Narrated in English, with English captions; the Somali version is coming.": "Filim: Ka hortagga duumada (2 daqiiqo iyo 2 ilbiriqsi). Cod Ingiriisi ah, qoraallo Ingiriisi ah; nooca Af-Soomaaliga ah wuu soo socdaa.",
@@ -818,7 +815,12 @@
     "Cholera": "Daacuunka",
     "Dysentery and typhoid": "Dhiig-shubanka iyo tiifowga",
     "Health films": "Filimada caafimaadka",
-    "Watch: short films on cholera, malaria, dysentery, typhoid and hepatitis": "Daawo: filimo gaagaaban oo ku saabsan daacuunka, duumada, dhiig-shubanka, tiifowga iyo cagaarshowga"
+    "Watch: short films on cholera, malaria, dysentery, typhoid and hepatitis": "Daawo: filimo gaagaaban oo ku saabsan daacuunka, duumada, dhiig-shubanka, tiifowga iyo cagaarshowga",
+    "Mudug: flood water rushes down a street": "Mudug: biyaha fatahaadda oo si xawli ah ugu qulqulaya waddo",
+    "Shared October 2026; the town is not known. Do not walk or drive through moving water.": "La wadaagay Oktoobar 2026; magaalada lama garanayo. Ha ku dhex socon, hana ku dhex wadin gaari, biyo socda.",
+    "Videos shared with El Nino Watch, without sound. Like community reports, they are unverified.": "Muuqaallo lala wadaagay El Nino Watch, cod la'aan. Sida warbixinaha bulshada, lama xaqiijin.",
+    "Flood videos: Cabudwaaq and Mudug": "Muuqaallada fatahaadda: Cabudwaaq iyo Mudug",
+    "Watch: flooding in Cabudwaaq and in Mudug": "Daawo: fatahaadda Cabudwaaq iyo Mudug"
   },
   "patterns": [
     {

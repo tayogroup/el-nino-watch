@@ -322,6 +322,19 @@
     }
   }
   root.document?.addEventListener?.('click', event => { if (event.target?.closest?.('[data-site-language]')) root.setTimeout(filmCaptions, 0); });
+  // The field videos on the home page (#field-videos) are thumbnails too; a tap puts the player in the
+  // thumbnail's place and starts it. They have no sound, so they may start without asking.
+  root.document?.addEventListener?.('click', event => {
+    const thumb = event.target?.closest?.('.field-thumb[data-video]');
+    if (!thumb || !root.document.createElement) return;
+    const video = root.document.createElement('video');
+    video.controls = true; video.muted = true; video.playsInline = true;
+    for (const [name, value] of [['playsinline', ''], ['poster', thumb.dataset.poster], ['width', '540'], ['height', '960'], ['aria-labelledby', thumb.getAttribute('aria-labelledby')]]) video.setAttribute(name, value);
+    video.src = thumb.dataset.video;
+    thumb.replaceWith(video);
+    video.focus?.();
+    const playing = video.play?.(); playing?.catch?.(() => {});
+  });
   // A thumbnail opens its film on the Diseases tab (tabs.js handles the link) and starts it: the tap is the
   // viewer's go-ahead to play. In the capture phase, like tabs.js, which stops the click there: this file
   // loads first, so its listener still runs.

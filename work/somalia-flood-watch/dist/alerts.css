@@ -114,6 +114,10 @@
 .field-video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,250px));gap:14px;margin:4px 0 10px}
 .field-video{margin:0;display:grid;gap:6px;align-content:start}
 .field-video video{display:block;width:100%;height:auto;aspect-ratio:9/16;border-radius:12px;background:#082448;object-fit:cover}
+.field-thumb{display:block;width:100%;aspect-ratio:9/16;padding:0;font:inherit;cursor:pointer}
+.field-thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.field-thumb:focus-visible{outline:3px solid #1473cf;outline-offset:2px}
+.field-video[hidden]{display:none}
 .field-video figcaption{display:grid;gap:3px;font-size:13px;line-height:1.4;color:var(--color-text-muted,#5f6b7a)}
 .field-video figcaption b{color:var(--color-text,#14233a);font-size:14px}
 .field-videos .note a{font-weight:700}

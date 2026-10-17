@@ -138,9 +138,10 @@ export const HEALTH_FLASH = Object.freeze({kind: 'app', key: 'health', label: 'P
 export const FILM_FLASH = Object.freeze({kind: 'app', key: 'film', label: 'Film · Cholera', title: 'Watch: how to protect your family from cholera', url: '#health-film', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
 
 // And to the videos from the field on the home page (owner, 2026-10-17): Cabudwaaq flooding, the Xingod sand dam.
-// Hidden for now (owner, 2026-10-17): to show them again, set this true, and remove `hidden` from #field-videos and its footer link.
-export const FIELD_VIDEOS_SHOWN = false;
-export const FIELD_FLASH = Object.freeze({kind: 'app', key: 'field', label: 'Videos from the field', title: 'Watch: flooding in Cabudwaaq, and rain filling the Xingod sand dam', url: '#field-videos', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
+// Shown again (owner, 2026-10-17: the Mudug flood video plus Cabudwaaq, without sound; Xingod stays hidden). To hide
+// them, set this false and put `hidden` back on #field-videos and its footer link.
+export const FIELD_VIDEOS_SHOWN = true;
+export const FIELD_FLASH = Object.freeze({kind: 'app', key: 'field', label: 'Videos from the field', title: 'Watch: flooding in Cabudwaaq and in Mudug', url: '#field-videos', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
 
 // And to the health films, by their thumbnails on the home page (#health-films; owner, 2026-10-17).
 export const FILMS_FLASH = Object.freeze({kind: 'app', key: 'films', label: 'Films · Health', title: 'Watch: short films on cholera, malaria, dysentery, typhoid and hepatitis', url: '#health-films', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
