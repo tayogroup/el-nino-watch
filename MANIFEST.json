@@ -414,6 +414,256 @@
       "sha256": "28166c5c9788ee56596d9c8507dbb42c4cbce2b8500f0412fbb245c3f50654f4"
     },
     {
+      "path": "work/film/audio/dysentery-typhoid/boil.json",
+      "bytes": 6232,
+      "sha256": "a9e5ece54cca225aa4d2ad9202cb174b10161a9fbda0464d49be4ff26fdc2f6e"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/boil.mp3",
+      "bytes": 307200,
+      "sha256": "2ae37cca74fdc8c938c8793b6f07b0e66d0046e244abb1143cea4af8fe2a6fa3"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/close.json",
+      "bytes": 4196,
+      "sha256": "ef63ee5fc0bb1f5c994b62951914a1c879bc0a173c18bd1a81b475da1255691b"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/close.mp3",
+      "bytes": 208320,
+      "sha256": "b2808984e4a9aac99e1c567b91f7b327cf80dc5fcd4a77f1077ceaad410a50b7"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/food.json",
+      "bytes": 4999,
+      "sha256": "ff76fbf6ba56bdeef7daafe046606b8254aa7cf1cee0ceb62273bc4553820a18"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/food.mp3",
+      "bytes": 275040,
+      "sha256": "ef750168c1b2120909f5351662cb2812eb245f830927aedd0a06ad0b5c4810a8"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/handwash.json",
+      "bytes": 7504,
+      "sha256": "e9cedbd32cb4b58870a83747af90efac59865c33c83183b0f2cf0d8f537b2a6b"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/handwash.mp3",
+      "bytes": 416160,
+      "sha256": "b31287931f8e322ac2682ed4051fbb1ddf92d0c4d00922204e12b92ceacda0d5"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/help.json",
+      "bytes": 11383,
+      "sha256": "39d4537d690b80e6864a42925307fff3679e85899a94123da0cdd0ca443a9fc6"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/help.mp3",
+      "bytes": 531360,
+      "sha256": "911b48ee127f9217811f33fa5f9dabaab88881e6bdc8b03610a78b7ffea7f8c5"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/latrine.json",
+      "bytes": 4543,
+      "sha256": "ebfcfb6aeec08d04f411c8fdef59bf0356e6da71010f17ac5f745819e3a2048b"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/latrine.mp3",
+      "bytes": 247200,
+      "sha256": "a7ebc3dfb9c06aee6cf3ce013052ba70ef3f1369a484c6c4e653e478518e82de"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/signs.json",
+      "bytes": 6098,
+      "sha256": "058643e3b76dfe813fe26f19ba02e6030c9fe9c561f0c5fecc063f353453a25e"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/signs.mp3",
+      "bytes": 322080,
+      "sha256": "65cd11307f2444d4a9485b3d5296813a21f3b914b2630770a2531555f0756bc6"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/spread.json",
+      "bytes": 5367,
+      "sha256": "bd722b3c76a9ae5f330352797d8e39b1627b6446403731b2cc4ff4159500dcdc"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/spread.mp3",
+      "bytes": 290400,
+      "sha256": "b873dedcd2e29121a69d4711f30fb824845e310553b125dde9667e1843af234d"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/title.json",
+      "bytes": 6888,
+      "sha256": "fc81f160475670d6045f021d60f022793e21e865c15d30304ee736cb6a9b3069"
+    },
+    {
+      "path": "work/film/audio/dysentery-typhoid/title.mp3",
+      "bytes": 305280,
+      "sha256": "b124eba0c74b4722a4a8e791ba58f3685c075fb074c786afe57db40c744a93be"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/boil.json",
+      "bytes": 6395,
+      "sha256": "650f85f52a49e3912a33da8e825b1a264e7c63c426d5d1b02ad55daf797750c4"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/boil.mp3",
+      "bytes": 300960,
+      "sha256": "549099f074adea1907421d1f8fc8e107ff84cc314d110872b9f8d3b1df51ea0d"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/close.json",
+      "bytes": 4074,
+      "sha256": "c76e4efad7214e1b61bff349992dc33d555b834d56859f89bf1f79c34e6431c5"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/close.mp3",
+      "bytes": 198240,
+      "sha256": "0184bac368e0ec8876112124640eed4979878dc2409084c6c866c276592f15d1"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/food.json",
+      "bytes": 3398,
+      "sha256": "ee41a708d99d1e760ae7871c9745e4c2008773e66fb4cfe82637e99bffd234c8"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/food.mp3",
+      "bytes": 178080,
+      "sha256": "05cf34b46583f97d57705be4efa3681afa095a8fd7820a6ff8328f01839ede37"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/handwash.json",
+      "bytes": 6784,
+      "sha256": "159d1b526765f9e2810c123e7e57dff03bd5eba5eb881e772c3f4fd98c7aff1c"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/handwash.mp3",
+      "bytes": 413280,
+      "sha256": "f8337cf5df096030762e6d8a1de19b6c33e7c50ac47fef5619f5c4bd060a5ad8"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/help.json",
+      "bytes": 9019,
+      "sha256": "41b467a019a041f56d386f6f90bb697714fbc454337bb61a8022b23ca6b19d6f"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/help.mp3",
+      "bytes": 454080,
+      "sha256": "6ed588b593b0f0e8182c82579f1b65743d7dd5ee87b328ac9294fef261a10f91"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/latrine.json",
+      "bytes": 4462,
+      "sha256": "7d53258bb0ad6f00b5d94a114192091809bf922319f8fc04b673dfc61a078909"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/latrine.mp3",
+      "bytes": 252000,
+      "sha256": "062afefc6a395826a4bd013be1089ee2ce6543f4f5106658899f087481a48ec9"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/signs.json",
+      "bytes": 7828,
+      "sha256": "cffc999eefc711e12d138cf028acf8e478b1e919052c57f0feed554703025fa4"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/signs.mp3",
+      "bytes": 470400,
+      "sha256": "5fe600afba76df8826d6bea4af260e02f2092a66ecf889678e498443e7b2722d"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/spread.json",
+      "bytes": 5382,
+      "sha256": "f1cac2725bb3898989cd484f7a852935506cac1cdaa0886326ad1bbce2281cda"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/spread.mp3",
+      "bytes": 285120,
+      "sha256": "e5c2f73042209e8a762e9b5f42f81ec81d2267c5e44cd382994a30851cb76d12"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/title.json",
+      "bytes": 5980,
+      "sha256": "54384fa91245097ba03745c062d92b1bfb79f01af49b48de178023ec295db342"
+    },
+    {
+      "path": "work/film/audio/hepatitis-a-e/title.mp3",
+      "bytes": 280320,
+      "sha256": "d2d9bb02efa4a11ae439c8a32d4c884e5f73b9e1973b5810c4e1336cfaf07c57"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/bites.json",
+      "bytes": 5519,
+      "sha256": "b0a4c8df55a3e4b2363a2e4f7d23f1f6fe216414dd72e174f0d19eba6039016e"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/bites.mp3",
+      "bytes": 297120,
+      "sha256": "719566c96256c9f11defa52a1c058c26bd9d4656fc0a750b830ee5d476a71672"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/close.json",
+      "bytes": 5190,
+      "sha256": "ec9a5ed1927250dcb8a272faadf1dc1d7e8e1c973b8f4c82e7a7a827d8e1d904"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/close.mp3",
+      "bytes": 244320,
+      "sha256": "2e6fe29f3e2a85709ef7c54925712b34bb4877d052044ca92f444f2c3d62203a"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/fever.json",
+      "bytes": 11231,
+      "sha256": "b8caed323d47498a4096b907d33da54b3963cfad42f29a8f5f569172a73f826b"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/fever.mp3",
+      "bytes": 507360,
+      "sha256": "5121710fd9e51c29a13b29b054d29f42e483e49969d039eacfc37f9744f45b1e"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/net.json",
+      "bytes": 6310,
+      "sha256": "464c449c9ed95d4e2c8d2158d7bf99dc8794b28dbaaf954efd02fc3bfc7d1570"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/net.mp3",
+      "bytes": 317280,
+      "sha256": "486305070a80377db3b7ee79411efb9294c444f3d5565087fd696a4e732e58f9"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/spread.json",
+      "bytes": 7548,
+      "sha256": "e35ed982f1deea47f64467c55f004e3382e7fbb10a892adc589c87e2c162cce5"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/spread.mp3",
+      "bytes": 372960,
+      "sha256": "09490ed4317e403a6c03445eaff7c3b3d9f925a7c93c4856afbfa2ea88b3df78"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/title.json",
+      "bytes": 6309,
+      "sha256": "c4997fc04969ec258beb06f20bdcaf920025d7b316b35721cc1a84f6084e1732"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/title.mp3",
+      "bytes": 294240,
+      "sha256": "e6140a715f8963ac15761dae64695728e96b253e26f55f7cbd2771228eca528b"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/water.json",
+      "bytes": 4813,
+      "sha256": "7e492d5a1e194a3374795119e1da0d3d32a508a55416704e1b94e118e98df506"
+    },
+    {
+      "path": "work/film/audio/malaria-prevention/water.mp3",
+      "bytes": 261120,
+      "sha256": "20c9fda0aae1b3cf65edbceba2439e1ff81643ba9b3c91582ee3da6e04544fe0"
+    },
+    {
       "path": "work/film/audio/waterborne-diseases/boil.json",
       "bytes": 6965,
       "sha256": "ac155f2caaf443a285418e94105edbae5af69866e7e0ce6cba6b40810b14c3ef"
@@ -514,9 +764,39 @@
       "sha256": "7d20a2daef3438cd638bb09a7f830fb3df8485d76fa252fbb0de227c56da52e4"
     },
     {
+      "path": "work/film/dysentery-typhoid-so.json",
+      "bytes": 8889,
+      "sha256": "b6074d0d38c7d1e810978a4a1db534befa7d83c86915a2e8e262179d60845f71"
+    },
+    {
+      "path": "work/film/dysentery-typhoid.json",
+      "bytes": 6697,
+      "sha256": "c42998e96c7b02d4f0b59c89e174615ca34dba1f2c2054dbe8571e5eefe9a558"
+    },
+    {
       "path": "work/film/film.html",
-      "bytes": 33052,
-      "sha256": "1df647050d7e1fc1af184f06da70398932143df36d53499011e0633f06ae7767"
+      "bytes": 55761,
+      "sha256": "f2b46ed78c3eb425b0a190a8f1a2e1c3919f5788eb6ef0ec76f24e2ee2da1175"
+    },
+    {
+      "path": "work/film/hepatitis-a-e-so.json",
+      "bytes": 8697,
+      "sha256": "c973eeed162bc8e0949b5edd58da4dd54e443e7d12d9b6049c61279062a75e5a"
+    },
+    {
+      "path": "work/film/hepatitis-a-e.json",
+      "bytes": 6379,
+      "sha256": "4567d818c9789719f006a38f61db82fda7cbf7fb38c23dd67db3bd6e3fb3f75c"
+    },
+    {
+      "path": "work/film/malaria-prevention-so.json",
+      "bytes": 7823,
+      "sha256": "b6875c5817b7bdc21e99595a605151f8f96b2c4eca629f43e9ea7131b7a46590"
+    },
+    {
+      "path": "work/film/malaria-prevention.json",
+      "bytes": 5324,
+      "sha256": "84cab37afd0b78821ac9f7f7200b75df7cf3b0fb741242add5ce579c2aa00d21"
     },
     {
       "path": "work/film/narrate-film.cjs",
@@ -565,8 +845,8 @@
     },
     {
       "path": "work/health-alert.test.mjs",
-      "bytes": 25877,
-      "sha256": "71bc561d645be63288edd90266386b8b8acf06015434bbb913ee938482861475"
+      "bytes": 29679,
+      "sha256": "19f0b3648677a6686386496bb0c933d39080b13f53dc32c49c4a039757c35fec"
     },
     {
       "path": "work/home-city.test.mjs",
@@ -585,8 +865,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 114289,
-      "sha256": "68272cf5a577b0a4b95e0c6ff6309d9b61f32483abfec5691e2103bfba8266b2"
+      "bytes": 118469,
+      "sha256": "11bb7f3365c92bfbacd240a131c333b48c0387cecb8c928c13d75913546e0202"
     },
     {
       "path": "work/i18n-weather.json",
@@ -650,8 +930,8 @@
     },
     {
       "path": "work/news-flash.test.mjs",
-      "bytes": 21054,
-      "sha256": "30a4e67c7d1887968c35fcd331218a0fa668faead816af7f94d81f45745a2188"
+      "bytes": 21087,
+      "sha256": "948fa5ae56a47d0730306bd5ae3efc63b64a5703038008447cc044dad885f412"
     },
     {
       "path": "work/observed-gfm-capabilities.xml",
@@ -760,13 +1040,13 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.css",
-      "bytes": 15667,
-      "sha256": "56b360870337ee4bfc36880817b12d1ef6a3c5361b46544b589da6b6d572d077"
+      "bytes": 15713,
+      "sha256": "dfdd548cbaad7dd12c5219f88a17813d2892bf172b920ff555d942e8306f46d1"
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.js",
-      "bytes": 28745,
-      "sha256": "19c5402f062dcdfcbfb7bab9bcf865e025c4943d41e3671de89aa0fede0d5fa9"
+      "bytes": 31205,
+      "sha256": "4be175dae42160025006bbe667a324ef0cf921cd8f0b17e8dc653bb2b438d4e5"
     },
     {
       "path": "work/somalia-flood-watch/dist/app.js",
@@ -815,8 +1095,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/el-nino-watch-sources.pdf",
-      "bytes": 151089,
-      "sha256": "d1888d8489462acbc96a66aa8ca1fb78054045ffbc7d9afd877492f6d11dde94"
+      "bytes": 160240,
+      "sha256": "1a459bf0773a9702427481a5662fe5342c93ee7591a3fd05170d7bedaea2ce37"
     },
     {
       "path": "work/somalia-flood-watch/dist/enhancements.css",
@@ -882,6 +1162,51 @@
       "path": "work/somalia-flood-watch/dist/film/cholera-prevention.vtt",
       "bytes": 3376,
       "sha256": "77ba7cb658bfee3ea55f84c1648f9455e4bbee07351184b2b7386420d9569577"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/dysentery-typhoid.jpg",
+      "bytes": 58404,
+      "sha256": "8ab2f127885d034818770776b3da0fadfa77c8b9594cb37b2343b65a857efe6e"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/dysentery-typhoid.mp4",
+      "bytes": 4611922,
+      "sha256": "4686543a276d57f6015be4732349539910e3a5341d50e0e9c0e3eda5ab2a0b8e"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/dysentery-typhoid.vtt",
+      "bytes": 3692,
+      "sha256": "2a3ff1e31e5f5b8fa7bec3690bed975095f426f7ef128b465498658ec007390e"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/hepatitis-a-e.jpg",
+      "bytes": 57744,
+      "sha256": "3954304378b6be5f3d6a3cf64ff94c0dbce7d458c46a03a7f4ad414814e9e3df"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/hepatitis-a-e.mp4",
+      "bytes": 4587166,
+      "sha256": "b568050614d32f48de0d5416be689c975252f0d5c482ed2bb2dc8d488781d486"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/hepatitis-a-e.vtt",
+      "bytes": 3447,
+      "sha256": "a57867051f7f247e0eae71af5d71ffbe0c4f5f72e86e095d1515d103a244785b"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/malaria-prevention.jpg",
+      "bytes": 57415,
+      "sha256": "e9878bac6df2168708885babb43f3b50791f8aff18dcd022df9586eeabe66fb0"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/malaria-prevention.mp4",
+      "bytes": 4069247,
+      "sha256": "97497797751fca14e47d0679aed38582f6d21fbc80a0471ed172f70a20df2728"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/malaria-prevention.vtt",
+      "bytes": 3056,
+      "sha256": "612096db73d490bca31e95a8d4e160eb34c9680dbd5c528d665cc12a246210df"
     },
     {
       "path": "work/somalia-flood-watch/dist/film/waterborne-diseases.jpg",
@@ -975,8 +1300,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 47586,
-      "sha256": "6ca8dd1d8438005980fd975de803714828ff9618ae8891ed7f9e1fc968a39d7e"
+      "bytes": 49256,
+      "sha256": "fded46cd2277eab516a12a43a766700c9c3ba4f9f87371d8214d91ffee046dc3"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
@@ -1065,8 +1390,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/sources.html",
-      "bytes": 35213,
-      "sha256": "8432e03dde452865dcfb07e23563cfe20754e281eb895a537ecaf9cc53a0a2f1"
+      "bytes": 37404,
+      "sha256": "3b862c9f4a416af7214ab2fe0197e2864c6f8d6108ea9c790f8dc7b038b4a8ea"
     },
     {
       "path": "work/somalia-flood-watch/dist/stats.html",
@@ -1105,8 +1430,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 231312,
-      "sha256": "0eb289bbc0623eed9cc7289da3a2a2c6705136a9d7c42c3af01eda429b18267b"
+      "bytes": 235384,
+      "sha256": "63fc353ba548055c7b3c986c2778cdcf0a1bb6c6fff44300dfc09fce4d942d8b"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",
@@ -1200,8 +1525,8 @@
     },
     {
       "path": "work/somalia-flood-watch/news-feed.mjs",
-      "bytes": 16933,
-      "sha256": "5080993ae2849f30301d311bcd1251b522815900a2d6ea4c24c272f55df010d2"
+      "bytes": 17331,
+      "sha256": "c3230f055afe91e171c45a08fefcd0f0a77e6de5bd85f1c282fb3cdeffa003b7"
     },
     {
       "path": "work/somalia-flood-watch/observed-flood.mjs",

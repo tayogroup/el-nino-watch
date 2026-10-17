@@ -1,0 +1,192 @@
+{
+  "id": "malaria-prevention-so",
+  "title": "Duumada: ilaali qoyskaaga",
+  "tag": "Caafimaadka bulshada · Duumo",
+  "brand": {
+    "name": "El Nino Watch"
+  },
+  "voice": {
+    "provider": "azure",
+    "voice": "so-SO-UbaxNeural",
+    "voice_name": "Ubax",
+    "rate": "0%",
+    "approved": "PENDING: voice approved by the owner 2026-10-16; the Somali script awaits the owner's review before narrate-film.cjs --go"
+  },
+  "captionReplace": [
+    [
+      "O R S",
+      "ORS"
+    ]
+  ],
+  "translationOf": "malaria-prevention",
+  "sources": [
+    "WHO, Malaria fact sheet: https://www.who.int/news-room/fact-sheets/detail/malaria",
+    "WHO, Floods: how to protect your health: https://www.who.int/news-room/q-a-detail/how-do-i-protect-my-health-in-a-flood",
+    "WHO, Global Public Health Situation Analysis, El Niño 2026 (malaria a high risk for Somalia): https://cdn.who.int/media/docs/default-source/meeting-reports/global-public-health-situation-analysis-el-nino-2026_.pdf",
+    "El Nino Watch public health alert (#health-alert): mosquito protection, from WHO"
+  ],
+  "words": {
+    "El Nino Watch · Public health": "El Nino Watch · Caafimaadka bulshada",
+    "Latrine": "Musqul",
+    "Well": "Ceel",
+    "Water and food": "Biyo iyo cunto",
+    "Rolling boil": "Karkar xoog leh",
+    "Cool with the lid on": "Daboolan ha qaboobaan",
+    "Tablet: as the": "Kiniin: sida",
+    "packet says": "baakadda ku qoran",
+    "Clean, with a lid": "Nadiif, dabool leh",
+    "Never dip hands in": "Gacan ha dhex galin",
+    "SOAP": "SAABUUN",
+    "Palms": "Calaacalaha",
+    "Backs": "Gadaasha gacmaha",
+    "Between the fingers": "Faraha dhexdooda",
+    "Under the nails": "Ciddiyaha hoostooda",
+    "Let them dry in the air": "Hawada ha ku engegaan",
+    "WHEN TO WASH": "GOORMA LA DHAQAA",
+    "Far from the well": "Ka fog ceelka",
+    "Not open ground": "Dhul bannaan aheyn",
+    "Children's faeces too": "Saxarada carruurta sidoo kale",
+    "Then wash hands": "Kadib gacmaha dhaq",
+    "Cook well, eat hot": "Kari, kuleyl ku cun",
+    "Wash and peel": "Dhaq oo diir",
+    "Keep food covered": "Cuntada dabool",
+    "1 packet": "1 baakad",
+    "Safe water": "Biyo nadiif ah",
+    "Small sips, often": "In yar, marar badan",
+    "Health facility": "Xarun caafimaad",
+    "Go at once if": "Isla markiiba tag haddii",
+    "Still water": "Biyo fadhiya",
+    "Bites at night": "Habeenkii ayay qaniintaa",
+    "Fever": "Qandho",
+    "10 to 15 days later": "10 ilaa 15 maalmood kadib",
+    "Every night": "Habeen kasta",
+    "Tucked in all round": "Dhinac kasta hoos loo geliyay",
+    "A hole": "Dalool",
+    "Mended": "La tolay",
+    "Lid on": "Dabool leh",
+    "Fill in puddles": "Buuxi godadka",
+    "Long sleeves": "Gacmo dheer",
+    "REPEL": "KANEECO",
+    "Repellent on bare skin": "Daawada kaneecada maqaarka mari",
+    "Spraying inside the house": "Buufinta gudaha guriga",
+    "Malaria test": "Baaritaanka duumada",
+    "All of the medicine": "Daawada oo dhan"
+  },
+  "fps": 24,
+  "width": 1280,
+  "height": 720,
+  "scenes": [
+    {
+      "id": "title",
+      "visual": "mtitle",
+      "heading": "Ka hortagga duumada: Qoyskaaga ilaali",
+      "sub": "Gogol kaneeco habeen kasta · biyo fadhiya ha jirin · qandhada degdeg u baar",
+      "narration": "Roobabka iyo fatahaadaha kadib, biyaha fadhiya waxay dhalaan kaneeco, kaneecaduna waxay faafisaa duumada. Duumadu way dili kartaa, gaar ahaan carruurta yaryar iyo haweenka uurka leh. Laakiin waa laga hortagi karaa, waana la daaweyn karaa. Waa kan sida aad u ilaalin karto qoyskaaga."
+    },
+    {
+      "id": "spread",
+      "visual": "mspread",
+      "at": [
+        0.02,
+        0.62,
+        0.8
+      ],
+      "heading": "Sida duumadu u faafto",
+      "steps": [
+        "Kaneecadu waxay ku dhalataa biyo fadhiya",
+        "Waxay qaniintaa fiidka ilaa subaxa",
+        "Qandhadu waxay timaaddaa hal ilaa laba toddobaad kadib"
+      ],
+      "narration": "Duumada waxaa faafiya qaniinyada kaneeco sidda cudurka. Kaneecadu waxay ukunteeda dhigtaa biyo fadhiya: godadka, jeexyada iyo weelasha aan daboolnayn ee roobka kadib haray. Kaneecada duumada sidda waxay inta badan qaniintaa fiidka ilaa subaxa. Qandhadu waxay caadi ahaan bilaabataa toban ilaa shan iyo toban maalmood qaniinyada kadib."
+    },
+    {
+      "id": "net",
+      "visual": "net",
+      "at": [
+        0.02,
+        0.52,
+        0.86
+      ],
+      "heading": "1. Seexo gogol kaneeco oo daawaysan",
+      "steps": [
+        "Habeen kasta, qoyska oo dhan",
+        "Hoos u geli dhinac kasta",
+        "Daloolada isla markiiba tol"
+      ],
+      "narration": "Marka hore, seexo gogol kaneeco oo daawaysan, habeen kasta. Carruurta yaryar iyo haweenka uurka leh ka hormari, laakiin qof kasta oo qoyska ka mid ah ha seexdo. Gogosha hoos ugu geli furaashka ama derinta, dhinac kasta, si aysan kaneeco u gelin. Dalool kasta isla markiiba tol."
+    },
+    {
+      "id": "water",
+      "visual": "water",
+      "at": [
+        0.02,
+        0.56,
+        0.73
+      ],
+      "tipAt": 0.26,
+      "heading": "2. Ka saar biyaha fadhiya",
+      "steps": [
+        "Toddobaad kasta faaruqi weelasha duugga ah",
+        "Weelasha biyaha dabool",
+        "Buuxi godadka guriga u dhow"
+      ],
+      "narration": "Marka labaad, ka saar biyaha ay kaneecadu ku dhalato. Toddobaad kasta, faaruqi oo foorari qasacadaha, taayirada iyo dheryaha duugga ah. Weelasha biyaha ku dabool dabool. Buuxi ama qalaji godadka iyo jeexyada guriga u dhow."
+    },
+    {
+      "id": "bites",
+      "visual": "bites",
+      "at": [
+        0.02,
+        0.38,
+        0.64
+      ],
+      "heading": "3. Iska ilaali qaniinyada",
+      "steps": [
+        "Fiidka isdabool",
+        "Daawada kaneecada maqaarka mari",
+        "U oggolow kooxda buufinta"
+      ],
+      "narration": "Marka saddexaad, iska ilaali qaniinyada. Fiidka, xiro dhar gacmo dheer, lugahana dabool. Maqaarka bannaan mari daawada kaneecada celisa, sida ku qoran. Haddii koox caafimaad ay u timaado inay gudaha gurigaaga ka buufiyaan kaneecada, u oggolow inay soo galaan."
+    },
+    {
+      "id": "fever",
+      "visual": "fever",
+      "at": [
+        0.02,
+        0.13,
+        0.3
+      ],
+      "signsAt": 0.55,
+      "heading": "Qandho? Isla maalintaas iska baar",
+      "steps": [
+        "Maanta tag xarun caafimaad",
+        "Weydii baaritaanka duumada",
+        "Qaado daawada oo dhan"
+      ],
+      "signs": [
+        "Qallal, ama hurdo badan",
+        "Aan cabbi karin, ama matag joogto ah",
+        "Neefsasho dhib ah"
+      ],
+      "narration": "Haddii qof qandho qabo, isla maalintaas u tag xarun caafimaad, oo weydii baaritaanka duumada. Baaritaanka degdegga ah wuxuu jawaabta bixiyaa daqiiqado gudahood. Haddii ay duumo tahay, qaado daawada oo dhan, sida shaqaalaha caafimaadku kuu sheego, xataa marka aad bilowdo inaad fiicnaato. Isla markiiba tag haddii qofku qallal qabo, aad u hurdo badan yahay, uusan cabbi karin, uu matag joogto ah qabo, ama uu neefsashada ku dhibaatoonayo. Ilmo yar oo duumo qaba wuxuu aad u xanuunsan karaa hal maalin gudaheed."
+    },
+    {
+      "id": "close",
+      "visual": "close",
+      "heading": "Gogol kaneeco habeen kasta. Biyo fadhiya ha jirin. Qandhada degdeg u baar.",
+      "items": [
+        "Gogol kaneeco habeen kasta",
+        "Biyo fadhiya ha jirin",
+        "Qandhada degdeg u baar"
+      ],
+      "icons": [
+        "net",
+        "water",
+        "test"
+      ],
+      "vaccine": "Uur leedahay? Goor hore tag daryeelka uurka: duumadu waa khatar hooyada iyo ilmaha",
+      "source": "Xigasho: Ururka Caafimaadka Adduunka (WHO)",
+      "narration": "Haddii aad uur leedahay, seexo gogol kaneeco, oo goor hore tag daryeelka uurka, sababtoo ah duumadu waa khatar hooyada iyo ilmaha. Gogol kaneeco habeen kasta, biyo fadhiya ha jirin, qandhada si degdeg ah u baar. La wadaag qoyskaaga."
+    }
+  ]
+}

@@ -249,6 +249,25 @@ Somali readers get the English film with the draft Somali captions
 (`waterborne-diseases.so.vtt`); adding an `so` entry to `FILMS['waterborne-film']`
 in `alerts.js` switches them to the Somali film.
 
+**Malaria, dysentery and typhoid, hepatitis A and E films** (owner, 2026-10-17:
+"create Malaria course similar to Cholera", then the other two): `#malaria-film`,
+`#dysentery-film`, `#hepatitis-film` on the Diseases tab after the cholera film
+(storyboards `work/film/malaria-prevention.json`, `dysentery-typhoid.json`,
+`hepatitis-a-e.json`), each with a Share row, a footer link and a Sources entry,
+and one standing news-flash item (`FILMS_FLASH`). English scripts and the Ava HD
+voice approved by the owner on 2026-10-17 and voiced (2:02, 2:34, 2:30). New
+drawings in `film.html`: `mtitle`, `mspread`, `net`, `water`, `bites`,
+`fever` (malaria), `cards2` (two sign cards) and `care` (one picture per step:
+`ors`, `clinic`, `meds`, `rest`, `nopills`); `close` takes `s.icons`. Their
+step timings (`at`, `signsAt`, `tipAt`) were measured from the recorded clips, so
+re-measure after re-voicing. **The Somali scripts (`*-so.json`, Ubax) await the
+owner's review: do not `--go` them before then.** The handwash scene, the
+hepatitis latrine and food scenes are the cholera Somali word for word, so copy
+those clips from `audio/cholera-prevention-so/` before voicing rather than buying
+them. Until the Somali is voiced the films are English with English captions on
+both pages; add an `so` entry to their `FILMS` rows in `alerts.js` then, and a
+`.so.vtt` for the English film (`render-film.cjs --translation`).
+
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
   ICPAC heavy-rain city count), then items from SoDMA, FAO SWALIM, ICRC (its own

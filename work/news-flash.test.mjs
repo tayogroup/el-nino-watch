@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile, stat} from 'node:fs/promises';
 import vm from 'node:vm';
-import {HEALTH_FLASH, FILM_FLASH, FIELD_FLASH, FIELD_VIDEOS_SHOWN, parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES, EXCLUDED_OUTLETS, excludedOutlet, isEventAnnouncement} from './somalia-flood-watch/news-feed.mjs';
+import {HEALTH_FLASH, FILM_FLASH, FILMS_FLASH, FIELD_FLASH, FIELD_VIDEOS_SHOWN, parseRss, itemsFrom, merge, appItems, classify, loadNews, NEWS_SOURCES, EXCLUDED_OUTLETS, excludedOutlet, isEventAnnouncement} from './somalia-flood-watch/news-feed.mjs';
 
 const NOW = Date.parse('2026-10-15T12:00:00Z');
 const day = n => new Date(NOW - n * 86400000).toUTCString();
@@ -121,7 +121,7 @@ test('loading: each source on its own, SWALIM\'s HTTP 500 feed accepted, ReliefW
     return {ok: !url.startsWith(NEWS_SOURCES.swalim.url), status: url.startsWith(NEWS_SOURCES.swalim.url) ? 500 : 200, text: async () => text, json: async () => JSON.parse(text)};
   };
   const without = await loadNews({fetchImpl, now: NOW, reliefWebAppname: ''});
-  assert.deepEqual(without.items.map(item => item.title), [HEALTH_FLASH.title, FILM_FLASH.title, 'Digniinta fatahaadaha', 'El Niño flood warning'], 'the health flash and the film lead the headlines (the field videos are hidden for now)');
+  assert.deepEqual(without.items.map(item => item.title), [HEALTH_FLASH.title, FILM_FLASH.title, FILMS_FLASH.title, 'Digniinta fatahaadaha', 'El Niño flood warning'], 'the health flash and the films lead the headlines (the field videos are hidden for now)');
   assert.equal(without.sources.find(source => source.id === 'googleElNino').available, false, 'a failing source is reported, not fatal');
   assert.match(without.sources.find(source => source.id === 'reliefweb').error, /RELIEFWEB_APPNAME/);
   assert.equal(requests.some(request => request.url.includes('reliefweb')), false, 'no ReliefWeb call without an appname');

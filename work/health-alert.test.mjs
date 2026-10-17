@@ -286,3 +286,41 @@ test('every tab calls out the cholera film', () => {
   for (const id of ['city-rankings-panel', 'map-panel', 'daily-panel', 'community-panel', 'source-panel']) assert.ok(panelOf(id).includes(callout), id);
   assert.equal(index.split(callout).length - 1, 5, 'once on each tab');
 });
+
+test('the malaria, dysentery and typhoid, and hepatitis A and E films: after the cholera film, English with English captions, each with a Share row, footer link and Sources entry', async () => {
+  const trainings = index.slice(index.indexOf('<section class="trainings"'), index.indexOf('</section></section>', index.indexOf('<section class="trainings"')));
+  const films = [['malaria-film', 'malaria-prevention', 'Malaria film'], ['dysentery-film', 'dysentery-typhoid', 'Dysentery and typhoid film'], ['hepatitis-film', 'hepatitis-a-e', 'Hepatitis A and E film']];
+  let last = trainings.indexOf('id="health-film"');
+  const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
+  const sources = await readFile(new URL('sources.html', dist), 'utf8');
+  const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
+  for (const [id, file, link] of films) {
+    const at = trainings.indexOf(`<video id="${id}" controls preload="metadata" playsinline poster="film/${file}.jpg" width="1280" height="720"><source src="film/${file}.mp4" type="video/mp4"><track kind="captions" src="film/${file}.vtt" srclang="en" label="English" default></video>`);
+    assert.ok(at > last, `${id} follows the film before it`);
+    last = at;
+    for (const ext of ['mp4', 'jpg', 'vtt']) assert.ok((await stat(new URL(`film/${file}.${ext}`, dist))).size > 0, `${file}.${ext}`);
+    assert.match(await readFile(new URL(`film/${file}.vtt`, dist), 'utf8'), /^WEBVTT/);
+    const caption = trainings.slice(at).match(/<figcaption>([^<]+)<\/figcaption>/)[1];
+    assert.ok(catalog.messages[caption], `Somali for: ${caption}`);
+    assert.ok(trainings.includes(`<div id="${id.replace('-film', '-share')}"></div></figure>`), `${id} has a Share row`);
+    assert.ok(footer.includes(`<a href="#${id}">${link}</a>`) && catalog.messages[link], `${id} in the footer, in Somali too`);
+    assert.ok(sources.includes(`href="/#${id}"`), `${id} on the Sources page`);
+  }
+  assert.ok(footer.includes('<a href="#health-film">Cholera film</a><a href="#malaria-film">Malaria film</a>'), 'the new films follow the cholera film in the footer');
+  const {FILMS_FLASH} = await import('./somalia-flood-watch/news-feed.mjs');
+  assert.equal(FILMS_FLASH.url, '#malaria-film');
+  assert.ok(catalog.messages[FILMS_FLASH.label] && catalog.messages[FILMS_FLASH.title], 'the flash item in Somali');
+  // Each film's Share row links to that film, and each storyboard records the owner's approval of the English.
+  const nodes = {'malaria-share': {innerHTML: ''}, 'dysentery-share': {innerHTML: ''}, 'hepatitis-share': {innerHTML: ''}};
+  const doc = {readyState: 'complete', title: '', body: {nodeType: 11, childNodes: []}, documentElement: {setAttribute() {}}, getElementById: id => nodes[id] || null, querySelectorAll: () => [], addEventListener() {}};
+  const win = {document: doc, location: {href: 'https://elninowatch.so/', protocol: 'https:'}, localStorage: {getItem: () => null, setItem() {}}, navigator: {}, setTimeout: fn => fn()};
+  const context = vm.createContext({window: win, URL, URLSearchParams, Date});
+  for (const file of ['translations-so.js', 'i18n.js', 'share.js', 'alerts.js']) vm.runInContext(await readFile(new URL(file, dist), 'utf8'), context);
+  for (const [id, file] of films) {
+    assert.match(nodes[id.replace('-film', '-share')].innerHTML, new RegExp(`data-share-tab="#${id}"`));
+    const sb = JSON.parse(await readFile(new URL(`./film/${file}.json`, import.meta.url), 'utf8'));
+    assert.match(sb.voice.approved, /^owner, 2026-10-17/);
+    const so = JSON.parse(await readFile(new URL(`./film/${file}-so.json`, import.meta.url), 'utf8'));
+    assert.match(so.voice.approved, /^PENDING/, 'the Somali script still awaits the owner');
+  }
+});

@@ -249,12 +249,23 @@
   const WATERBORNE_SHARE = [[{t: 'Watch: diseases from dirty water, and how to protect your family'}], [{t: 'A short film on cholera, dysentery, typhoid and hepatitis: how they spread and how to prevent them.'}], [{t: 'Health guidance from WHO, not an outbreak report.'}]];
   const waterborneShare = root.document?.getElementById?.('waterborne-share');
   if (waterborneShare && root.SiteShare?.row) waterborneShare.innerHTML = root.SiteShare.row(WATERBORNE_SHARE, '#waterborne-film', {t: 'Health guidance from WHO, not an outbreak report.'});
+  // The malaria, dysentery and typhoid, and hepatitis A and E films (owner, 2026-10-17): the same Share row each.
+  const MALARIA_SHARE = [[{t: 'Watch: how to protect your family from malaria'}], [{t: 'A short film on bed nets, standing water, stopping bites and testing a fever the same day.'}], [{t: 'Health guidance from WHO, not an outbreak report.'}]];
+  const malariaShare = root.document?.getElementById?.('malaria-share');
+  if (malariaShare && root.SiteShare?.row) malariaShare.innerHTML = root.SiteShare.row(MALARIA_SHARE, '#malaria-film', {t: 'Health guidance from WHO, not an outbreak report.'});
+  const DYSENTERY_SHARE = [[{t: 'Watch: how to protect your family from dysentery and typhoid'}], [{t: 'A short film on the signs, safe water, handwashing, safe food, latrines and getting the right medicine.'}], [{t: 'Health guidance from WHO, not an outbreak report.'}]];
+  const dysenteryShare = root.document?.getElementById?.('dysentery-share');
+  if (dysenteryShare && root.SiteShare?.row) dysenteryShare.innerHTML = root.SiteShare.row(DYSENTERY_SHARE, '#dysentery-film', {t: 'Health guidance from WHO, not an outbreak report.'});
+  const HEPATITIS_SHARE = [[{t: 'Watch: how to protect your family from hepatitis A and E'}], [{t: 'A short film on yellow eyes and other signs, the danger in pregnancy, safe water, handwashing and when to see a health worker.'}], [{t: 'Health guidance from WHO, not an outbreak report.'}]];
+  const hepatitisShare = root.document?.getElementById?.('hepatitis-share');
+  if (hepatitisShare && root.SiteShare?.row) hepatitisShare.innerHTML = root.SiteShare.row(HEPATITIS_SHARE, '#hepatitis-film', {t: 'Health guidance from WHO, not an outbreak report.'});
   // The health film plays in the page's language: Somali readers get the Somali film (narrated by Ubax),
   // everyone else the English one, which index.html loads; each shows captions in that language (the English
   // film also carries scene-timed Somali captions). Set on load, on each redraw, and after the EN/SO buttons,
   // without overriding a viewer's own choice in the player while the language stays the same.
   // The waterborne-diseases film has no Somali narration yet (its Somali script awaits the owner's review):
-  // Somali readers keep the English film, with its Somali captions on.
+  // Somali readers keep the English film, with its Somali captions on. The malaria, dysentery and typhoid, and
+  // hepatitis A and E films are English only until their Somali scripts are approved and voiced.
   const FILMS = {
     'health-film': {
       en: {src: 'film/cholera-prevention.mp4', poster: 'film/cholera-prevention.jpg', tracks: [['en', 'English', 'film/cholera-prevention.vtt'], ['so', 'Soomaali', 'film/cholera-prevention.so.vtt']]},
@@ -262,6 +273,15 @@
     },
     'waterborne-film': {
       en: {src: 'film/waterborne-diseases.mp4', poster: 'film/waterborne-diseases.jpg', tracks: [['en', 'English', 'film/waterborne-diseases.vtt'], ['so', 'Soomaali', 'film/waterborne-diseases.so.vtt']]}
+    },
+    'malaria-film': {
+      en: {src: 'film/malaria-prevention.mp4', poster: 'film/malaria-prevention.jpg', tracks: [['en', 'English', 'film/malaria-prevention.vtt']]}
+    },
+    'dysentery-film': {
+      en: {src: 'film/dysentery-typhoid.mp4', poster: 'film/dysentery-typhoid.jpg', tracks: [['en', 'English', 'film/dysentery-typhoid.vtt']]}
+    },
+    'hepatitis-film': {
+      en: {src: 'film/hepatitis-a-e.mp4', poster: 'film/hepatitis-a-e.jpg', tracks: [['en', 'English', 'film/hepatitis-a-e.vtt']]}
     }
   };
   const filmState = {};
@@ -291,5 +311,5 @@
   }
   root.document?.addEventListener?.('click', event => { if (event.target?.closest?.('[data-site-language]')) root.setTimeout(filmCaptions, 0); });
   filmCaptions();
-  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE, filmShareLines: FILM_SHARE, waterborneShareLines: WATERBORNE_SHARE, filmCaptions };
+  root.FloodAlerts = { build, render, shareLines, appliesBetween, healthShareLines: HEALTH_SHARE, filmShareLines: FILM_SHARE, waterborneShareLines: WATERBORNE_SHARE, malariaShareLines: MALARIA_SHARE, dysenteryShareLines: DYSENTERY_SHARE, hepatitisShareLines: HEPATITIS_SHARE, filmCaptions };
 })(typeof window === 'object' ? window : globalThis);

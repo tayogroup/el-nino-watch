@@ -57,6 +57,16 @@
   .cards4 b { font: 800 27px/1.15 "Segoe UI", Arial; color: var(--navy); }
   .cards4 span { font: 650 21px/1.3 "Segoe UI", Arial; color: var(--ink); }
   .cards4 em { font: 800 16px/1.2 "Segoe UI", Arial; font-style: normal; background: var(--danger); color: #fff; border-radius: 999px; padding: 7px 14px; }
+  .cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .cards2 > div { background: #fff; border: 3px solid #dfe9f4; border-radius: 28px; padding: 26px 26px 28px; display: grid; grid-template-columns: 150px 1fr; gap: 22px; align-items: start; box-shadow: 0 14px 40px rgba(8,36,72,.08); }
+  .cards2 > div.on { border-color: var(--blue); box-shadow: 0 18px 46px rgba(20,115,207,.22); }
+  .cards2 > div.done { border-color: #bfe0c8; }
+  .cards2 > div.warn { background: #fff3f1; border-color: #efb4ab; }
+  .cards2 > div.warn.on { border-color: var(--danger); }
+  .cards2 svg { width: 150px; height: 150px; }
+  .cards2 b { display: block; font: 800 32px/1.15 "Segoe UI", Arial; color: var(--navy); margin-bottom: 12px; }
+  .cards2 .warn b { color: var(--danger); }
+  .cards2 span { display: block; font: 650 25px/1.35 "Segoe UI", Arial; color: var(--ink); margin-top: 6px; }
   #cap { position: absolute; left: 90px; right: 90px; bottom: 34px; text-align: center; }
   #cap span { display: inline; font: 600 26px/1.5 "Segoe UI", Arial; color: #fff; background: rgba(8,36,72,.9); padding: 6px 14px; border-radius: 10px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
   #bar { position: absolute; left: 0; bottom: 0; height: 6px; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
@@ -290,8 +300,195 @@
       `<div class="${i === active ? 'on' : i < active ? 'done' : ''}" ${st(Math.max(.25, enter(p, s.at[i] - .02, .05)), 18)}><svg viewBox="0 0 120 120">${icons[i]}</svg><b>${esc(c.name)}</b><span>${esc(c.sign)}</span>${i === 3 && s.badge ? `<em style="opacity:${badge.toFixed(3)}">${esc(s.badge)}</em>` : ''}</div>`).join('')}</div></div>`;
   };
 
+  // ---- Malaria (owner, 2026-10-17): mosquitoes, nets, standing water, the fever test. ----
+  // A mosquito side-on, facing right, wings beating with t; Anopheles rests tail-up, so the body tilts.
+  function mosquito(x, y, s, t, rot) {
+    const w = .35 + Math.abs(Math.sin(t * 38 + x)) * .65;
+    const legs = [[-2, 4, -18, 26, -30, 44], [2, 5, -2, 30, -8, 50], [6, 4, 16, 28, 26, 46]].map(([a, b, c, d, e, g]) =>
+      `<path d="M${a} ${b}L${c} ${d}L${e} ${g}" fill="none" stroke="#3b2e24" stroke-width="2.2" stroke-linecap="round"/>`).join('');
+    return `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot == null ? -18 : rot)}) scale(${s})">${legs}
+      <ellipse cx="-30" cy="-6" rx="27" ry="6" fill="#5a4636" transform="rotate(-12 -30 -6)"/>${[-46, -36, -26, -16].map(b => `<path d="M${b} -11v10" stroke="#2e231a" stroke-width="2"/>`).join('')}
+      <ellipse cx="0" cy="0" rx="11" ry="9" fill="#4a3b2e"/><circle cx="14" cy="3" r="6.5" fill="#3b2e24"/>
+      <path d="M19 6 44 19" stroke="#3b2e24" stroke-width="2.6" stroke-linecap="round"/><path d="M18 1 34 -6M18 4 35 0" stroke="#3b2e24" stroke-width="1.6"/>
+      <ellipse cx="-16" cy="-15" rx="24" ry="${f(8 * w)}" fill="#d8ecfa" fill-opacity=".75" stroke="#9fc3e0" stroke-width="1.5" transform="rotate(-24 -2 -6)"/></g>`;
+  }
+  const flight = (i, t, cx, cy, rx, ry) => { const a = t * (1.1 + rand(i) * .6) + rand(i + 9) * 6.28; return [cx + Math.cos(a) * rx, cy + Math.sin(a * 1.7) * ry]; };
+  // A bed with a sleeping child; the net hangs from a ring above it (drop 0..1 lowers it, tuck 0..1 tucks it in).
+  function bed(x, y) {
+    return `<g transform="translate(${f(x)} ${f(y)})"><rect x="-150" y="0" width="300" height="34" rx="8" fill="#b0855a"/><rect x="-140" y="34" width="14" height="40" fill="#8a6440"/><rect x="126" y="34" width="14" height="40" fill="#8a6440"/>
+      <rect x="-146" y="-26" width="292" height="30" rx="12" fill="#fff" stroke="#d5dde6" stroke-width="3"/><rect x="-128" y="-46" width="70" height="26" rx="12" fill="#e8f1fa"/>
+      <circle cx="-92" cy="-48" r="20" fill="var(--skin)"/><path d="M-110 -56q18 -18 36 0" fill="#2b1d14"/><path d="M-70 -40h170q14 0 14 12v4H-74Z" fill="#f2a93b"/></g>`;
+  }
+  function net(cx, top, bottom, half, drop, tuck, o) {
+    const b = top + (bottom - top) * drop, w = half * (.25 + drop * .75), skirt = tuck * 22;
+    return `<g opacity="${f(o == null ? 1 : o)}"><defs><pattern id="mesh" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M9 0H0V9" fill="none" stroke="#7fa6c9" stroke-width="1.2"/></pattern></defs>
+      <circle cx="${cx}" cy="${top - 10}" r="12" fill="none" stroke="#7b8a99" stroke-width="5"/><path d="M${cx} ${top - 60}V${top - 22}" stroke="#7b8a99" stroke-width="4"/>
+      <path d="M${cx - 12} ${top}L${f(cx - w)} ${f(b - skirt)}Q${f(cx - w - 6)} ${f(b)} ${f(cx - w + 10 * tuck)} ${f(b + skirt * .4)}L${f(cx + w - 10 * tuck)} ${f(b + skirt * .4)}Q${f(cx + w + 6)} ${f(b)} ${f(cx + w)} ${f(b - skirt)}L${cx + 12} ${top}Z"
+        fill="url(#mesh)" stroke="#7fa6c9" stroke-width="3"/><path d="M${cx - 12} ${top}L${f(cx - w)} ${f(b - skirt)}L${f(cx + w)} ${f(b - skirt)}L${cx + 12} ${top}Z" fill="#eaf4fd" opacity=".35"/></g>`;
+  }
+  function puddle(x, y, rx, ry, o) { return `<g opacity="${f(o)}"><ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(rx)}" ry="${f(ry)}" fill="var(--water)" opacity=".7"/><ellipse cx="${f(x - rx * .25)}" cy="${f(y - ry * .3)}" rx="${f(rx * .35)}" ry="${f(ry * .25)}" fill="#fff" opacity=".35"/></g>`; }
+  function larva(x, y, t, i, o) { const b = Math.sin(t * 6 + i) * 4; return `<path d="M${f(x - 9)} ${f(y + b)}q5 -6 9 0t9 0" fill="none" stroke="#3b2e24" stroke-width="3" stroke-linecap="round" opacity="${f(o)}"/>`; }
+  function thermometer(x, y, s, level) {
+    return `<g transform="translate(${f(x)} ${f(y)}) scale(${s})"><rect x="-12" y="-80" width="24" height="96" rx="12" fill="#fff" stroke="var(--muted)" stroke-width="4"/><circle cx="0" cy="26" r="20" fill="var(--danger)"/>
+      <rect x="-6" y="${f(14 - level * 84)}" width="12" height="${f(10 + level * 84)}" rx="6" fill="var(--danger)"/>${[-62, -44, -26, -8].map(y2 => `<path d="M14 ${y2}h10" stroke="var(--muted)" stroke-width="3"/>`).join('')}</g>`;
+  }
+  // A rapid test: a white cassette whose two lines appear as it develops (0..1).
+  function testKit(x, y, s, dev) {
+    return `<g transform="translate(${f(x)} ${f(y)}) scale(${s})"><rect x="-90" y="-34" width="180" height="68" rx="16" fill="#fff" stroke="#9aa9b8" stroke-width="4"/><circle cx="-56" cy="0" r="14" fill="#e9eef3" stroke="#9aa9b8" stroke-width="3"/>
+      <rect x="-6" y="-16" width="76" height="32" rx="6" fill="#f4f7fa" stroke="#c9d6e3" stroke-width="2"/><rect x="14" y="-12" width="6" height="24" fill="var(--danger)" opacity="${f(dev)}"/><rect x="44" y="-12" width="6" height="24" fill="var(--danger)" opacity="${f(clamp(dev * 1.3 - .3))}"/>
+      <text x="17" y="-22" text-anchor="middle" font-size="13" font-weight="800" fill="var(--muted)">T</text><text x="47" y="-22" text-anchor="middle" font-size="13" font-weight="800" fill="var(--muted)">C</text></g>`;
+  }
+  function clinic(x, y, s, o) {
+    return `<g opacity="${f(o)}" transform="translate(${f(x)} ${f(y)}) scale(${s})"><rect x="-150" y="-50" width="300" height="230" rx="12" fill="#fff" stroke="#c9d6e3" stroke-width="4"/><path d="M-170 -40 0 -130 170 -40Z" fill="#1473cf"/>
+      <rect x="-30" y="70" width="60" height="110" rx="6" fill="#7b8a99"/><g transform="translate(0 10)"><rect x="-14" y="-40" width="28" height="80" rx="6" fill="var(--danger)"/><rect x="-40" y="-14" width="80" height="28" rx="6" fill="var(--danger)"/></g>
+      <text x="0" y="225" text-anchor="middle" font-size="22" font-weight="800" fill="var(--navy)">${esc(W("Health facility"))}</text></g>`;
+  }
+
+  V.mtitle = (s, p, t) => {
+    const bugs = Array.from({length: 4}, (_, i) => { const [x, y] = flight(i, t, 330, 170, 230, 70); return mosquito(x, y, .9, t, -18 + Math.sin(t * 3 + i) * 10); }).join('');
+    return `<div class="titlewrap"><div><p class="tag" style="position:static;margin:0 0 20px">${esc(W('El Nino Watch · Public health'))}</p>
+      <h1 ${st(enter(p, .02, .12))}>${esc(s.heading)}</h1><p class="sub" ${st(enter(p, .14, .12))}>${esc(s.sub)}</p></div>
+      <svg viewBox="0 0 640 480" ${st(enter(p, 0, .12), 40)}><circle cx="330" cy="260" r="210" fill="#dcecfb"/>${bed(330, 360)}${net(330, 120, 372, 170, 1, 1)}${bugs}</svg></div>`;
+  };
+
+  V.mspread = (s, p, t) => {
+    const at = s.at || [.02, .34, .66];
+    const night = ease(seg(p, at[1], at[1] + .1)), fever = enter(p, at[2], .08);
+    const cycle = (t * .35) % 1;   // eggs, then larvae, then a mosquito rising out of the water
+    const eggs = Array.from({length: 6}, (_, i) => `<ellipse cx="${f(130 + i * 16)}" cy="${f(398 + (i % 2) * 6)}" rx="5" ry="2.6" fill="#3b2e24" opacity="${f(cycle < .33 ? 1 : 0)}"/>`).join('');
+    const larvae = Array.from({length: 4}, (_, i) => larva(130 + i * 26, 404 + (i % 2) * 8, t, i, cycle >= .33 && cycle < .66 ? 1 : 0)).join('');
+    const rising = cycle >= .66 ? mosquito(170 + (cycle - .66) * 260, 390 - (cycle - .66) * 520, .9, t) : '';
+    const [bx, by] = night > .5 ? [470 + Math.sin(t * 2) * 30, 230 + Math.cos(t * 3) * 20] : [0, 0];
+    return `<div class="demo"><div>${steps(s, p, at)}</div><svg viewBox="0 0 640 480">
+      <rect x="0" y="0" width="640" height="372" fill="#0d2240" opacity="${f(night * .85)}"/>
+      <g opacity="${f(night)}"><circle cx="560" cy="70" r="30" fill="#f6edc4"/><circle cx="548" cy="62" r="30" fill="#0d2240" opacity=".85"/>${[[90, 60], [200, 40], [330, 90], [420, 30]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#fff"/>`).join('')}</g>
+      ${ground}${puddle(180, 405, 120, 26, 1)}${eggs}${larvae}${rising}
+      ${label(180, 455, W('Still water'), enter(p, .06, .05), 'var(--blue)')}
+      <g><rect x="400" y="240" width="190" height="140" rx="6" fill="#f3e2c4"/><path d="M385 245 495 175 605 245Z" fill="#c25d3c"/><rect x="480" y="300" width="36" height="80" fill="#8a5a3c"/>
+        <rect x="420" y="270" width="44" height="40" rx="4" fill="${night > .5 ? '#f6d77a' : '#9cc3e6'}"/></g>
+      ${night > .5 ? mosquito(bx, by, 1, t) : ''}
+      ${label(470, 140, W('Bites at night'), night * (1 - fever), 'var(--navy)')}
+      <g opacity="${f(fever)}"><rect x="330" y="40" width="270" height="170" rx="24" fill="#fff" stroke="#efb4ab" stroke-width="3"/>${thermometer(380, 132, .85, ease(seg(p, at[2] + .04, at[2] + .16)))}
+        <text x="490" y="110" text-anchor="middle" font-size="26" font-weight="800" fill="var(--danger)">${esc(W('Fever'))}</text><text x="490" y="148" text-anchor="middle" font-size="19" font-weight="700" fill="var(--navy)">${esc(W('10 to 15 days later'))}</text></g>
+    </svg></div>`;
+  };
+
+  V.net = (s, p, t) => {
+    const at = s.at || [.02, .4, .7];
+    const drop = ease(seg(p, .04, .3)), tuck = ease(seg(p, at[1], at[1] + .14)), holeO = enter(p, at[2], .05), patch = ease(seg(p, at[2] + .1, at[2] + .2));
+    // Outside the net mosquitoes circle; they turn back at its edge.
+    const bugs = Array.from({length: 3}, (_, i) => { const [x, y] = flight(i + 2, t, 330, 190, 250, 80); const inside = Math.abs(x - 330) < 120 && drop > .9; return mosquito(inside ? (x < 330 ? 190 : 470) : x, y, .8, t); }).join('');
+    return `<div class="demo"><div>${steps(s, p, at)}</div><svg viewBox="0 0 640 480">
+      <rect x="0" y="420" width="640" height="60" fill="#e7dcc8"/>${bed(330, 360)}${net(330, 90, 372, 170, drop, tuck)}
+      <g opacity="${f(holeO)}"><circle cx="420" cy="250" r="16" fill="#fff" stroke="var(--danger)" stroke-width="4" stroke-dasharray="5 4"/>
+        <rect x="${f(402)}" y="${f(232)}" width="36" height="36" rx="6" fill="#cfe1f3" stroke="#7fa6c9" stroke-width="3" opacity="${f(patch)}"/></g>
+      ${bugs}
+      ${label(330, 40, W('Every night'), enter(p, .06, .05) * (1 - seg(p, at[1] - .04, at[1])), 'var(--blue)')}
+      ${label(330, 455, W('Tucked in all round'), enter(p, at[1] + .04, .05) * (1 - seg(p, at[2] - .04, at[2])), 'var(--good)')}
+      ${label(470, 200, patch > .5 ? W('Mended') : W('A hole'), holeO, patch > .5 ? 'var(--good)' : 'var(--danger)')}
+    </svg></div>`;
+  };
+
+  V.water = (s, p, t) => {
+    const at = s.at || [.02, .38, .64];
+    const tipAt = s.tipAt == null ? .08 : s.tipAt, tip = ease(seg(p, tipAt, tipAt + .12)), lid = enter(p, at[1] + .04, .06), fillIn = ease(seg(p, at[2] + .04, at[2] + .24));
+    const spill = tip > .05 && tip < .99 ? Array.from({length: 8}, (_, i) => drop(140 + i * 10 + tip * 40, 380 + rand(i) * 30, .3)).join('') : '';
+    return `<div class="demo"><div>${steps(s, p, at)}</div><svg viewBox="0 0 640 480">
+      ${ground}
+      <g transform="translate(130 372) rotate(${f(tip * 100)})"><path d="M-40 -90h80v90h-80Z" fill="#9aa9b8" stroke="#6f7f8f" stroke-width="4"/><rect x="-36" y="-70" width="72" height="66" fill="var(--water)" opacity="${f(.75 * (1 - tip))}"/>
+        ${[0, 1, 2].map(i => larva(-14 + i * 14, -40 + (i % 2) * 14, t, i, 1 - tip)).join('')}</g>${spill}
+      ${tick(130, 220, enter(p, tipAt + .12, .05))}
+      <g transform="translate(330 0)">${jerrycan(0, 270, .8, lid > .5)}<rect x="22" y="${f(130 - (1 - lid) * 50)}" width="40" height="22" rx="7" fill="#1473cf" opacity="${f(lid)}"/></g>
+      ${label(330, 120, W('Lid on'), lid, 'var(--blue)')}
+      ${puddle(530, 420, 80 * (1 - fillIn * .9), 20 * (1 - fillIn * .9), 1 - fillIn * .6)}
+      <path d="M${f(450 + (1 - fillIn) * 40)} 404q80 ${f(-30 * fillIn)} 160 0Z" fill="#c9a66b" opacity="${f(fillIn)}"/>
+      ${label(530, 340, W('Fill in puddles'), enter(p, at[2], .05), 'var(--good)')}
+    </svg></div>`;
+  };
+
+  V.bites = (s, p, t) => {
+    const at = s.at || [.02, .34, .62];
+    const dusk = ease(seg(p, 0, .1)), spray = p > at[1] + .04 && p < at[2] ? 1 : 0, team = enter(p, at[2], .06);
+    const mist = Array.from({length: 10}, (_, i) => { const k = (t * 1.4 + rand(i)) % 1; return `<circle cx="${f(250 - k * 80)}" cy="${f(250 + (rand(i + 5) - .5) * 60 * k)}" r="${f(3 + k * 6)}" fill="#cfe8fa" opacity="${f(spray * (1 - k))}"/>`; }).join('');
+    const bug = mosquito(62 + Math.sin(t * 2) * 16, 120 + Math.cos(t * 3) * 14, .9, t);
+    const person = `<g><circle cx="170" cy="150" r="30" fill="var(--skin)"/><path d="M140 140q30 -40 60 0" fill="#2b1d14"/>
+      <path d="M120 200q50 -26 100 0l12 170h-124Z" fill="#3e7cbf"/><path d="M118 205 92 300M222 205 248 300" stroke="#3e7cbf" stroke-width="26" stroke-linecap="round"/>
+      <circle cx="90" cy="306" r="11" fill="var(--skin)"/><circle cx="250" cy="306" r="11" fill="var(--skin)"/><path d="M132 370v60M208 370v60" stroke="#2d4a6b" stroke-width="26"/></g>`;
+    return `<div class="demo"><div>${steps(s, p, at)}</div><svg viewBox="0 0 640 480">
+      <rect x="0" y="0" width="640" height="480" fill="#f4c27a" opacity="${f(dusk * .35)}"/><circle cx="560" cy="80" r="34" fill="#f39c12" opacity="${f(dusk * .8)}"/>
+      <rect x="0" y="430" width="640" height="50" fill="#e3d3b2"/>
+      <g opacity="${f(1 - team)}">${person}${label(170, 40, W('Long sleeves'), enter(p, .08, .05) * (1 - seg(p, at[1] - .03, at[1])), 'var(--blue)')}
+        <g opacity="${f(enter(p, at[1], .05))}"><rect x="290" y="220" width="46" height="90" rx="12" fill="#fff" stroke="var(--good)" stroke-width="4"/><rect x="300" y="200" width="26" height="24" rx="6" fill="var(--good)"/><text x="313" y="272" text-anchor="middle" font-size="13" font-weight="800" fill="var(--good)">${esc(W('REPEL'))}</text></g>${mist}
+        ${bug}${cross(70, 70, spray * .7)}${label(330, 380, W('Repellent on bare skin'), enter(p, at[1] + .02, .05) * (1 - seg(p, at[2] - .03, at[2])), 'var(--good)')}</g>
+      <g opacity="${f(team)}"><rect x="90" y="120" width="460" height="300" rx="10" fill="#f3e2c4" stroke="#c9a66b" stroke-width="4"/><path d="M70 130 320 30 570 130Z" fill="#c25d3c"/>
+        <g transform="translate(250 260)"><circle cx="0" cy="-70" r="24" fill="var(--skin)"/><rect x="-26" y="-44" width="52" height="110" rx="14" fill="#f2c94c"/><rect x="-60" y="-34" width="34" height="70" rx="10" fill="#9aa9b8"/>
+          <path d="M26 -20 90 -50" stroke="#5b6b7a" stroke-width="7" stroke-linecap="round"/>${Array.from({length: 8}, (_, i) => { const k = (t * 1.2 + rand(i + 30)) % 1; return `<circle cx="${f(95 + k * 140)}" cy="${f(-55 - k * 40 + (rand(i) - .5) * 50 * k)}" r="${f(4 + k * 8)}" fill="#fff" opacity="${f(1 - k)}"/>`; }).join('')}</g>
+        ${label(320, 455, W('Spraying inside the house'), team, 'var(--navy)')}</g>
+    </svg></div>`;
+  };
+
+  V.fever = (s, p, t) => {
+    const at = s.at || [.02, .2, .42];
+    const heat = ease(seg(p, 0, .12)), toClinic = enter(p, at[0] + .1, .06), dev = ease(seg(p, at[1] + .04, at[1] + .16)), meds = enter(p, at[2], .06);
+    const doses = Math.floor(ease(seg(p, at[2] + .06, at[2] + .3)) * 6.99);
+    return `<div class="demo"><div class="ors-left">${steps(s, p, at)}<div class="signs" ${st(enter(p, (s.signsAt || .62), .05), 14)}><b>${esc(W('Go at once if'))}</b>${s.signs.map(x => `<span>• ${esc(x)}</span>`).join('')}</div></div><svg viewBox="0 0 640 480">
+      <rect x="0" y="410" width="640" height="70" fill="#e7dcc8"/>
+      <g opacity="${f(1 - toClinic)}">${thermometer(320, 240, 2, heat)}${label(320, 60, W('Fever'), enter(p, .02, .05), 'var(--danger)')}</g>
+      ${clinic(320, 250, .8, toClinic * (1 - meds))}
+      <g opacity="${f(toClinic * (1 - meds))}">${testKit(320, 80, 1.1, dev)}${label(320, 150, W('Malaria test'), enter(p, at[1], .05), 'var(--navy)')}</g>
+      <g opacity="${f(meds)}"><rect x="170" y="150" width="300" height="170" rx="22" fill="#e9eef3" stroke="#9aa9b8" stroke-width="4"/>
+        ${Array.from({length: 6}, (_, i) => { const x = 215 + (i % 3) * 105, y = 200 + Math.floor(i / 3) * 75; return `<ellipse cx="${x}" cy="${y}" rx="30" ry="22" fill="${i < doses ? '#c9d6e3' : '#fff'}" stroke="#7b8a99" stroke-width="3"/>${i < doses ? tick(x, y, .55) : ''}`; }).join('')}
+        ${label(320, 370, W('All of the medicine'), meds, 'var(--good)')}</g>
+    </svg></div>`;
+  };
+
+  // ---- Dysentery and typhoid, hepatitis A and E (owner, 2026-10-17): two sign cards, and what to do. ----
+  const SIGN_ICONS = {
+    blood: () => `${drop(42, 76, 1)}${drop(80, 76, 1, 'var(--danger)')}`,
+    fever: (k) => thermometer(60, 70, .8, k),
+    eye: (k) => `<path d="M10 60Q60 14 110 60Q60 106 10 60Z" fill="#fff" stroke="var(--ink)" stroke-width="4"/><path d="M10 60Q60 14 110 60Q60 106 10 60Z" fill="#f2d14b" opacity="${f(k)}"/><circle cx="60" cy="60" r="20" fill="#6b4a2e"/><circle cx="60" cy="60" r="9" fill="#1b1b1b"/><circle cx="66" cy="53" r="4" fill="#fff"/>`,
+    pregnant: () => `<circle cx="56" cy="22" r="13" fill="var(--skin)"/><path d="M44 38h24l4 26q22 6 16 26-4 10-20 10H44l-4-30Z" fill="#c2569b"/><path d="M48 100v14M64 100v14" stroke="#6e4630" stroke-width="7" stroke-linecap="round"/>`
+  };
+  // s.cards: [{name, icon, lines[], warn?}], lit in turn at s.at; a warn card is drawn in red.
+  V.cards2 = (s, p, t) => {
+    let active = -1;
+    s.at.forEach((a, i) => { if (p >= a) active = i; });
+    return `<div class="diseases"><h2 ${st(enter(p, 0, .06))}>${esc(s.heading)}</h2><div class="cards2">${s.cards.map((c, i) => {
+      const k = ease(seg(p, s.at[i], s.at[i] + .14));
+      return `<div class="${i === active ? 'on' : i < active ? 'done' : ''}${c.warn ? ' warn' : ''}" ${st(Math.max(.25, enter(p, s.at[i] - .02, .05)), 18)}><svg viewBox="0 0 120 120">${SIGN_ICONS[c.icon](k)}</svg><div><b>${esc(c.name)}</b>${c.lines.map((x, j) => `<span ${st(enter(p, s.at[i] + .03 + j * .05, .04), 10)}>${esc(x)}</span>`).join('')}</div></div>`;
+    }).join('')}</div></div>`;
+  };
+  // What to do when someone is ill: one picture per step (s.panels: ors, clinic, meds, rest, nopills), and the danger signs.
+  const PANELS = {
+    ors: (t, k) => `<g transform="translate(320 100)"><rect x="-44" y="-56" width="88" height="112" rx="10" fill="#fff" stroke="#1473cf" stroke-width="4"/><text x="0" y="-8" text-anchor="middle" font-size="30" font-weight="800" fill="#1473cf">ORS</text></g>
+      <path d="M250 230h140l-10 150H260Z" fill="#fff" stroke="#9aa9b8" stroke-width="5"/><rect x="256" y="256" width="128" height="120" fill="var(--water)" opacity=".7"/>${label(320, 430, W('Start ORS straight away'), k, 'var(--blue)')}`,
+    clinic: (t, k) => clinic(320, 250, .8, 1),
+    meds: (t, k) => `<rect x="170" y="150" width="300" height="170" rx="22" fill="#e9eef3" stroke="#9aa9b8" stroke-width="4"/>${Array.from({length: 6}, (_, i) => { const x = 215 + (i % 3) * 105, y = 200 + Math.floor(i / 3) * 75, done = i < Math.floor(k * 6.99); return `<ellipse cx="${x}" cy="${y}" rx="30" ry="22" fill="${done ? '#c9d6e3' : '#fff'}" stroke="#7b8a99" stroke-width="3"/>${done ? tick(x, y, .55) : ''}`; }).join('')}${label(320, 370, W('All of the medicine'), 1, 'var(--good)')}`,
+    rest: (t, k) => `${bed(300, 330)}<g transform="translate(520 ${f(300 - Math.sin(t * 2) * 6)})"><path d="M-34 -40h68l-8 80h-52Z" fill="#fff" stroke="#9aa9b8" stroke-width="4"/><rect x="-28" y="-14" width="56" height="50" fill="var(--water)" opacity=".75"/></g>${label(320, 120, W('Rest and drink safe water'), k, 'var(--blue)')}`,
+    nopills: (t, k) => `<g transform="translate(320 230)"><rect x="-120" y="-60" width="240" height="120" rx="22" fill="#e9eef3" stroke="#9aa9b8" stroke-width="4"/>${[-70, 0, 70].map(x => `<ellipse cx="${x}" cy="0" rx="28" ry="20" fill="#fff" stroke="#7b8a99" stroke-width="3"/>`).join('')}</g>${cross(440, 150, 1.3 * k)}${label(320, 380, W('Only what a health worker gives'), k, 'var(--danger)')}`
+  };
+  V.care = (s, p, t) => {
+    const at = s.at || [.02, .3, .6];
+    let active = 0;
+    at.forEach((a, i) => { if (p >= a) active = i; });
+    const k = ease(seg(p, at[active], at[active] + .12));
+    return `<div class="demo"><div class="ors-left">${steps(s, p, at)}<div class="signs" ${st(enter(p, (s.signsAt || .7), .05), 14)}><b>${esc(W('Go at once if'))}</b>${s.signs.map(x => `<span>• ${esc(x)}</span>`).join('')}</div></div><svg viewBox="0 0 640 480">
+      <rect x="0" y="410" width="640" height="70" fill="#e7dcc8"/><g ${st(enter(p, at[active], .05), 20)}>${PANELS[s.panels[active]](t, k)}</g>
+    </svg></div>`;
+  };
+
+  // The closing trio: the cholera films' icons by default; a storyboard may name its own (s.icons).
+  const CLOSE_ICONS = {
+    net: () => `<svg viewBox="0 0 120 120"><g transform="translate(60 -6) scale(.36)">${net(0, 60, 330, 150, 1, 1)}</g><rect x="14" y="104" width="92" height="10" rx="5" fill="#b0855a"/></svg>`,
+    water: () => `<svg viewBox="0 0 120 120"><ellipse cx="60" cy="80" rx="44" ry="14" fill="var(--water)" opacity=".7"/><path d="M28 30 92 94" stroke="var(--danger)" stroke-width="9" stroke-linecap="round"/><circle cx="60" cy="62" r="40" fill="none" stroke="var(--danger)" stroke-width="9"/></svg>`,
+    test: () => `<svg viewBox="0 0 120 120">${testKit(60, 60, .55, 1)}${thermometer(100, 72, .45, .8)}</svg>`,
+    drop: () => `<svg viewBox="0 0 120 120">${drop(60, 70, 1.6)}</svg>`,
+    hands: () => `<svg viewBox="0 0 120 120"><g transform="translate(60 72) scale(.42)">${hand(-40, 0, false, 18)}${hand(40, 0, true, -18)}</g></svg>`,
+    food: () => `<svg viewBox="0 0 120 120"><ellipse cx="60" cy="92" rx="48" ry="11" fill="#e9eef3"/><circle cx="46" cy="80" r="15" fill="#e8b04a"/><circle cx="74" cy="83" r="12" fill="#d9772e"/><path d="M14 88a46 40 0 0 1 92 0Z" fill="#cfe1f3" stroke="#8fb3d6" stroke-width="4" opacity=".9"/></svg>`,
+    clinic: () => `<svg viewBox="0 0 120 120"><rect x="22" y="48" width="76" height="60" rx="6" fill="#fff" stroke="#c9d6e3" stroke-width="3"/><path d="M14 52 60 20 106 52Z" fill="#1473cf"/><rect x="54" y="58" width="12" height="32" rx="3" fill="var(--danger)"/><rect x="44" y="68" width="32" height="12" rx="3" fill="var(--danger)"/></svg>`
+  };
   V.close = (s, p, t) => {
-    const icons = [
+    const icons = s.icons ? s.icons.map(name => CLOSE_ICONS[name]()) : [
       `<svg viewBox="0 0 120 120">${drop(60, 70, 1.6)}</svg>`,
       `<svg viewBox="0 0 120 120"><g transform="translate(60 72) scale(.42)">${hand(-40, 0, false, 18).replace(/^<g transform="/, '<g transform="')}${hand(40, 0, true, -18)}</g></svg>`,
       `<svg viewBox="0 0 120 120"><path d="M30 30h60l-8 70H38Z" fill="#fff" stroke="#1473cf" stroke-width="5"/><rect x="36" y="56" width="48" height="40" fill="var(--water)" opacity=".75"/><text x="60" y="50" text-anchor="middle" font-size="16" font-weight="800" fill="#1473cf">ORS</text></svg>`

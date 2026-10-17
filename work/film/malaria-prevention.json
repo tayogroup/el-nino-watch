@@ -1,0 +1,138 @@
+{
+  "id": "malaria-prevention",
+  "title": "Malaria: protect your family",
+  "tag": "Public health · Malaria",
+  "brand": {
+    "name": "El Nino Watch"
+  },
+  "voice": {
+    "provider": "azure",
+    "voice": "en-US-Ava:DragonHDLatestNeural",
+    "voice_name": "Ava (HD)",
+    "rate": "0%",
+    "approved": "owner, 2026-10-17 (English script and voice)"
+  },
+  "sources": [
+    "WHO, Malaria fact sheet: https://www.who.int/news-room/fact-sheets/detail/malaria",
+    "WHO, Floods: how to protect your health: https://www.who.int/news-room/q-a-detail/how-do-i-protect-my-health-in-a-flood",
+    "WHO, Global Public Health Situation Analysis, El Niño 2026 (malaria a high risk for Somalia): https://cdn.who.int/media/docs/default-source/meeting-reports/global-public-health-situation-analysis-el-nino-2026_.pdf",
+    "El Nino Watch public health alert (#health-alert): mosquito protection, from WHO"
+  ],
+  "fps": 24,
+  "width": 1280,
+  "height": 720,
+  "scenes": [
+    {
+      "id": "title",
+      "visual": "mtitle",
+      "heading": "Malaria: protect your family",
+      "sub": "Nets every night · no standing water · test fever fast",
+      "narration": "After rain and floods, standing water breeds mosquitoes, and mosquitoes spread malaria. Malaria can kill, especially young children and pregnant women. But it can be prevented, and it can be treated. Here is how to protect your family."
+    },
+    {
+      "id": "spread",
+      "visual": "mspread",
+      "at": [
+        0.02,
+        0.62,
+        0.8
+      ],
+      "heading": "How malaria spreads",
+      "steps": [
+        "Mosquitoes breed in still water",
+        "They bite from evening to morning",
+        "Fever comes one to two weeks later"
+      ],
+      "narration": "Malaria is spread by the bite of an infected mosquito. Mosquitoes lay their eggs in still water: puddles, ditches and uncovered containers left after rain. The mosquitoes that carry malaria bite mostly from evening until morning. Fever usually starts ten to fifteen days after the bite."
+    },
+    {
+      "id": "net",
+      "visual": "net",
+      "at": [
+        0.02,
+        0.52,
+        0.86
+      ],
+      "heading": "1. Sleep under a treated net",
+      "steps": [
+        "Every night, the whole family",
+        "Tuck it in all round",
+        "Mend holes straight away"
+      ],
+      "narration": "First, sleep under an insecticide-treated mosquito net, every night. Young children and pregnant women first, but everyone in the family. Tuck the net in under the mattress or mat, all the way round, so no mosquito can get in. Mend any holes straight away."
+    },
+    {
+      "id": "water",
+      "visual": "water",
+      "at": [
+        0.02,
+        0.56,
+        0.73
+      ],
+      "tipAt": 0.26,
+      "heading": "2. Take away standing water",
+      "steps": [
+        "Empty old containers every week",
+        "Keep water stores covered",
+        "Fill in puddles near the house"
+      ],
+      "narration": "Second, take away the water mosquitoes breed in. Every week, empty and turn over old tins, tyres and pots. Keep water containers covered with a lid. Fill in or drain puddles and ditches near the house."
+    },
+    {
+      "id": "bites",
+      "visual": "bites",
+      "at": [
+        0.02,
+        0.38,
+        0.64
+      ],
+      "heading": "3. Stop the bites",
+      "steps": [
+        "Cover up in the evening",
+        "Repellent on bare skin",
+        "Let the spray team in"
+      ],
+      "narration": "Third, stop the bites. In the evening, wear long sleeves and cover your legs. Use mosquito repellent on bare skin, as the label says. If a health team comes to spray the inside of your house against mosquitoes, let them in."
+    },
+    {
+      "id": "fever",
+      "visual": "fever",
+      "at": [
+        0.02,
+        0.13,
+        0.3
+      ],
+      "signsAt": 0.55,
+      "heading": "Fever? Get tested the same day",
+      "steps": [
+        "Go to a health facility today",
+        "Ask for a malaria test",
+        "Take all of the medicine"
+      ],
+      "signs": [
+        "Convulsions, or very sleepy",
+        "Cannot drink, or keeps vomiting",
+        "Difficulty breathing"
+      ],
+      "narration": "If anyone has a fever, go to a health facility the same day, and ask for a malaria test. A rapid test gives the answer in minutes. If it is malaria, take all of the medicine, exactly as the health worker says, even when you start to feel better. Go at once if the person has convulsions, is very sleepy, cannot drink, keeps vomiting, or has difficulty breathing. A young child with malaria can become very ill within a day."
+    },
+    {
+      "id": "close",
+      "visual": "close",
+      "heading": "Nets every night. No standing water. Test fever fast.",
+      "items": [
+        "Nets every night",
+        "No standing water",
+        "Test fever fast"
+      ],
+      "icons": [
+        "net",
+        "water",
+        "test"
+      ],
+      "vaccine": "Pregnant? Go to antenatal care early: malaria is dangerous for mother and baby",
+      "source": "Source: World Health Organization",
+      "narration": "If you are pregnant, sleep under a net and go to antenatal care early, because malaria is dangerous for mother and baby. Nets every night, no standing water, test fever fast. Share this with your family."
+    }
+  ]
+}

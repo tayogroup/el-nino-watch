@@ -1,0 +1,211 @@
+{
+  "id": "hepatitis-a-e-so",
+  "title": "Cagaarshowga A iyo E: ilaali qoyskaaga",
+  "tag": "Caafimaadka bulshada · Cagaarshowga A iyo E",
+  "brand": {
+    "name": "El Nino Watch"
+  },
+  "voice": {
+    "provider": "azure",
+    "voice": "so-SO-UbaxNeural",
+    "voice_name": "Ubax",
+    "rate": "0%",
+    "approved": "PENDING: voice approved by the owner 2026-10-16; the Somali script awaits the owner's review before narrate-film.cjs --go"
+  },
+  "captionReplace": [
+    [
+      "O R S",
+      "ORS"
+    ]
+  ],
+  "translationOf": "hepatitis-a-e",
+  "sources": [
+    "WHO, Hepatitis A fact sheet (28 July 2026): https://www.who.int/news-room/fact-sheets/detail/hepatitis-a",
+    "WHO, Hepatitis E fact sheet (28 July 2026): https://www.who.int/news-room/fact-sheets/detail/hepatitis-e",
+    "WHO, Floods: how to protect your health: https://www.who.int/news-room/q-a-detail/how-do-i-protect-my-health-in-a-flood",
+    "El Nino Watch public health alert (#health-alert): the diseases flooding spreads, from WHO"
+  ],
+  "words": {
+    "El Nino Watch · Public health": "El Nino Watch · Caafimaadka bulshada",
+    "Latrine": "Musqul",
+    "Well": "Ceel",
+    "Water and food": "Biyo iyo cunto",
+    "Rolling boil": "Karkar xoog leh",
+    "Cool with the lid on": "Daboolan ha qaboobaan",
+    "Tablet: as the": "Kiniin: sida",
+    "packet says": "baakadda ku qoran",
+    "Clean, with a lid": "Nadiif, dabool leh",
+    "Never dip hands in": "Gacan ha dhex galin",
+    "SOAP": "SAABUUN",
+    "Palms": "Calaacalaha",
+    "Backs": "Gadaasha gacmaha",
+    "Between the fingers": "Faraha dhexdooda",
+    "Under the nails": "Ciddiyaha hoostooda",
+    "Let them dry in the air": "Hawada ha ku engegaan",
+    "WHEN TO WASH": "GOORMA LA DHAQAA",
+    "Far from the well": "Ka fog ceelka",
+    "Not open ground": "Dhul bannaan aheyn",
+    "Children's faeces too": "Saxarada carruurta sidoo kale",
+    "Then wash hands": "Kadib gacmaha dhaq",
+    "Cook well, eat hot": "Kari, kuleyl ku cun",
+    "Wash and peel": "Dhaq oo diir",
+    "Keep food covered": "Cuntada dabool",
+    "1 packet": "1 baakad",
+    "Safe water": "Biyo nadiif ah",
+    "Small sips, often": "In yar, marar badan",
+    "Health facility": "Xarun caafimaad",
+    "Go at once if": "Isla markiiba tag haddii",
+    "Rest and drink safe water": "Naso oo cab biyo nadiif ah",
+    "Only what a health worker gives": "Kaliya waxa shaqaalaha caafimaadku bixiyo"
+  },
+  "fps": 24,
+  "width": 1280,
+  "height": 720,
+  "scenes": [
+    {
+      "id": "title",
+      "visual": "title",
+      "heading": "Cagaarshowga A iyo E: Qoyskaaga ilaali",
+      "sub": "Biyo nadiif ah · gacmo nadiif ah · indho huruud ah? u tag shaqaalaha caafimaadka",
+      "narration": "Fatahaaddu waxay cagaarshowga A iyo cagaarshowga E gaarsiin kartaa biyaha la cabbo iyo cuntada. Fayrasyadani waxay weeraraan beerka. Dadka badankoodu way bogsadaan, laakiin cagaarshowga E aad ayuu khatar ugu yahay uurka. Waa kan sida aad u ilaalin karto qoyskaaga."
+    },
+    {
+      "id": "spread",
+      "visual": "spread",
+      "heading": "Sida ay u faafaan",
+      "steps": [
+        "Fayrasku wuxuu ku jiraa saxarada",
+        "Fatahaaddu waxay gaarsiisaa biyaha iyo cuntada",
+        "Gacmo wasakh ah ayaa gudbiya"
+      ],
+      "narration": "Labada fayras waxay ku jiraan saxarada dadka uu ku dhacay. Marka biyaha fatahaadda ama musqulaha buuxsamay ay gaaraan ceelasha, barkadaha, haamaha iyo cuntada, fayrasku wuu galayaa. Gacmaha wasakhda ahna way gudbiyaan, gaar ahaan hoyga ciriiriga ah."
+    },
+    {
+      "id": "signs",
+      "visual": "cards2",
+      "at": [
+        0.02,
+        0.67
+      ],
+      "heading": "Calaamadaha garo",
+      "cards": [
+        {
+          "name": "Calaamadaha",
+          "icon": "eye",
+          "lines": [
+            "Indho ama maqaar huruud ah",
+            "Kaadi madow, saxaro cad",
+            "Daal, lallabo, cunto-xumo"
+          ]
+        },
+        {
+          "name": "Uur leedahay?",
+          "icon": "pregnant",
+          "warn": true,
+          "lines": [
+            "Cagaarshowga E wuu dili karaa haweenka uurka leh",
+            "Calaamadahan haddii aad qabto, isla markiiba tag xarun caafimaad"
+          ]
+        }
+      ],
+      "narration": "Calaamaduhu waxay bilaabmi karaan toddobaadyo kadib marka fayrasku jirka galo: indho ama maqaar huruud ah, kaadi madow, saxaro cad, daal, lallabo, iyo cunto-xumo. Carruurta yaryar inta badan calaamado ma muujiyaan, laakiin weli way gudbin karaan fayraska. Haweeney uur leh oo calaamadahan qabta waa inay isla markiiba tagtaa xarun caafimaad, sababtoo ah cagaarshowga E wuu dili karaa haweenka uurka leh."
+    },
+    {
+      "id": "boil",
+      "visual": "boil",
+      "heading": "1. Biyaha ka dhig nadiif",
+      "steps": [
+        "Karkari ilaa ay si xoog leh u karkaraan",
+        "Ha qaboobaan iyagoo daboolan",
+        "Haddii aadan karkarin karin, isticmaal kiniiniga biyaha nadiifiya"
+      ],
+      "narration": "Marka hore, biyaha la cabbo ka dhig kuwo nadiif ah. Biyaha karkari ilaa ay si xoog leh u karkaraan, oo ay ka soo baxdo xumbo waaweyn, kadibna ha qaboobaan iyagoo daboolan, oo ku kaydi weel nadiif ah oo dabool leh. Haddii aadan karkarin karin, isticmaal kiniinnada nadiifinta biyaha adoo u isticmaalaya sida baakadda ku qoran."
+    },
+    {
+      "id": "handwash",
+      "visual": "handwash",
+      "heading": "2. Gacmaha ku dhaq saabuun",
+      "steps": [
+        "Qoy gacmaha",
+        "Saabuun mari",
+        "Meel kasta xoq",
+        "Biyo ku maydh",
+        "Hawo ku engeji"
+      ],
+      "times": [
+        "Musqusha ka dib",
+        "Ilmo nadiifinta ka dib",
+        "Cunto karinta ka hor",
+        "Cunto cunista ama quudinta ka hor"
+      ],
+      "narration": "Marka labaad, gacmaha ku dhaq saabuun iyo biyo nadiif ah. Gacmaha qoy, oo saabuun mari. Xoq meel kasta: calaacalaha, dhabarka gacmaha, faraha dhexdooda iyo ciddiyaha hoostooda. Biyo ku maydh, oo ha ku engegaan hawada. Samee marka aad musqusha ka soo baxdo, marka aad ilmo nadiifiso, ka hor karinta, iyo ka hor cunista ama quudinta ilmaha."
+    },
+    {
+      "id": "latrine",
+      "visual": "latrine",
+      "heading": "3. Saxarada ka fogee biyaha",
+      "steps": [
+        "Mar walba isticmaal musqul",
+        "Musqulaha ka fogee ceelasha",
+        "Saxarada carruurta sidoo kale fogee"
+      ],
+      "narration": "Marka saddexaad, saxarada ka fogee biyaha. Mar walba isticmaal musqul, weligaa dhul bannaan ha isticmaalin, musqulahana ka fogee ceelasha. Saxarada carruurta sidoo kale ku rid musqusha, kadibna gacmaha dhaq."
+    },
+    {
+      "id": "food",
+      "visual": "food",
+      "heading": "4. Cuntada nadiifi",
+      "steps": [
+        "Si fiican u kari, ayadoo kulul cun",
+        "Khudaarta dhaq oo diir",
+        "Cuntada dabool"
+      ],
+      "narration": "Marka afraad, cuntada ka dhig mid nadiif ah. Cuntada si fiican u kari, oo cun iyadoo kulul. Khudaarta ku dhaq biyo nadiif ah oo diir, cuntadana dabool."
+    },
+    {
+      "id": "help",
+      "visual": "care",
+      "at": [
+        0.02,
+        0.16,
+        0.44
+      ],
+      "signsAt": 0.69,
+      "heading": "Indho huruud ah? U tag shaqaalaha caafimaadka",
+      "panels": [
+        "clinic",
+        "rest",
+        "nopills"
+      ],
+      "steps": [
+        "U tag shaqaalaha caafimaadka",
+        "Naso, cun, cab biyo nadiif ah",
+        "Daawo qaado kaliya marka ay ku siiyaan"
+      ],
+      "signs": [
+        "Uur leh",
+        "Hurdo badan ama wareer",
+        "Dhiig bax, ama matag aan joogsan"
+      ],
+      "narration": "Haddii qof indhaha ama maqaarka uga huruud yihiin, u gee shaqaalaha caafimaadka. Ma jirto daawo gaar ah: jirku wuu bogsadaa marka la nasto, la cuno, oo biyo nadiif ah oo badan la cabbo. Ha siin daawooyin ama daaweyn kale haddii aanu shaqaalaha caafimaadku kuu sheegin, sababtoo ah waxay waxyeello u geysan karaan beerka. Isla markiiba tag haddii qofku uur leeyahay, aad u hurdo badan yahay ama wareersan yahay, dhiig ka imanayo, ama uusan joojin karin matagga."
+    },
+    {
+      "id": "close",
+      "visual": "close",
+      "heading": "Biyo nadiif ah. Gacmo nadiif ah. Indho huruud ah? U tag shaqaalaha caafimaadka.",
+      "items": [
+        "Biyo nadiif ah",
+        "Gacmo nadiif ah",
+        "U tag shaqaalaha caafimaadka"
+      ],
+      "icons": [
+        "drop",
+        "hands",
+        "clinic"
+      ],
+      "vaccine": "Tallaalka cagaarshowga A: qaado meesha shaqaalaha caafimaadku ku bixiyaan",
+      "source": "Xigasho: Ururka Caafimaadka Adduunka (WHO)",
+      "narration": "Meesha shaqaalaha caafimaadku ku bixiyaan tallaalka cagaarshowga A, qaado. Biyo nadiif ah, gacmo nadiif ah, indho huruud ahna, shaqaalaha caafimaadka. La wadaag qoyskaaga."
+    }
+  ]
+}

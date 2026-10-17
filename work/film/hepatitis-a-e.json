@@ -1,0 +1,171 @@
+{
+  "id": "hepatitis-a-e",
+  "title": "Hepatitis A and E: protect your family",
+  "tag": "Public health · Hepatitis A and E",
+  "brand": {
+    "name": "El Nino Watch"
+  },
+  "voice": {
+    "provider": "azure",
+    "voice": "en-US-Ava:DragonHDLatestNeural",
+    "voice_name": "Ava (HD)",
+    "rate": "0%",
+    "approved": "owner, 2026-10-17 (English script and voice)"
+  },
+  "sources": [
+    "WHO, Hepatitis A fact sheet (28 July 2026): https://www.who.int/news-room/fact-sheets/detail/hepatitis-a",
+    "WHO, Hepatitis E fact sheet (28 July 2026): https://www.who.int/news-room/fact-sheets/detail/hepatitis-e",
+    "WHO, Floods: how to protect your health: https://www.who.int/news-room/q-a-detail/how-do-i-protect-my-health-in-a-flood",
+    "El Nino Watch public health alert (#health-alert): the diseases flooding spreads, from WHO"
+  ],
+  "fps": 24,
+  "width": 1280,
+  "height": 720,
+  "scenes": [
+    {
+      "id": "title",
+      "visual": "title",
+      "heading": "Hepatitis A and E: protect your family",
+      "sub": "Safe water · clean hands · yellow eyes? see a health worker",
+      "narration": "Floods can carry hepatitis A and hepatitis E into drinking water and food. These viruses attack the liver. Most people get better, but hepatitis E can be very dangerous in pregnancy. Here is how to protect your family."
+    },
+    {
+      "id": "spread",
+      "visual": "spread",
+      "heading": "How they spread",
+      "steps": [
+        "The virus is in faeces",
+        "Floods carry it into water and food",
+        "Dirty hands pass it on"
+      ],
+      "narration": "Both viruses are passed in the faeces of infected people. When floodwater or overflowing latrines reach wells, tanks and food, the virus gets in. Dirty hands pass it on too, especially in crowded shelters."
+    },
+    {
+      "id": "signs",
+      "visual": "cards2",
+      "at": [
+        0.02,
+        0.67
+      ],
+      "heading": "Know the signs",
+      "cards": [
+        {
+          "name": "Signs",
+          "icon": "eye",
+          "lines": [
+            "Yellow eyes or skin",
+            "Dark urine, pale stools",
+            "Tired, sick, not hungry"
+          ]
+        },
+        {
+          "name": "Pregnant?",
+          "icon": "pregnant",
+          "warn": true,
+          "lines": [
+            "Hepatitis E can kill in pregnancy",
+            "With these signs, go to a health facility at once"
+          ]
+        }
+      ],
+      "narration": "Signs can start weeks after the virus gets in: yellow eyes or skin, dark urine, pale stools, tiredness, feeling sick, and not wanting to eat. Young children often show no signs, but they can still pass the virus on. A pregnant woman with these signs must go to a health facility at once, because hepatitis E can kill in pregnancy."
+    },
+    {
+      "id": "boil",
+      "visual": "boil",
+      "heading": "1. Make water safe",
+      "steps": [
+        "Bring it to a rolling boil",
+        "Let it cool with the lid on",
+        "No fuel? Use treatment tablets"
+      ],
+      "narration": "First, make drinking water safe. Bring the water to a rolling boil, with big bubbles, then let it cool with the lid on, and keep it in a clean, covered container. If you cannot boil it, use water treatment tablets exactly as the packet says."
+    },
+    {
+      "id": "handwash",
+      "visual": "handwash",
+      "heading": "2. Wash your hands with soap",
+      "steps": [
+        "Wet",
+        "Soap",
+        "Scrub everywhere",
+        "Rinse",
+        "Air dry"
+      ],
+      "times": [
+        "After the toilet",
+        "After cleaning a child",
+        "Before cooking",
+        "Before eating or feeding a child"
+      ],
+      "narration": "Second, wash your hands with soap and clean water. Wet your hands and rub in soap. Scrub every part: palms, backs, between the fingers and under the nails. Rinse, and let them dry in the air. Do it after the toilet, after cleaning a child, before cooking, and before eating or feeding a child."
+    },
+    {
+      "id": "latrine",
+      "visual": "latrine",
+      "heading": "3. Keep faeces away from water",
+      "steps": [
+        "Always use a latrine",
+        "Keep latrines far from wells",
+        "Children's faeces go in too"
+      ],
+      "narration": "Third, keep faeces away from water. Always use a latrine, never open ground, and keep latrines far from wells. Put children's faeces in the latrine too, and wash your hands afterwards."
+    },
+    {
+      "id": "food",
+      "visual": "food",
+      "heading": "4. Make food safe",
+      "steps": [
+        "Cook it well, eat it hot",
+        "Wash and peel fruit",
+        "Keep food covered"
+      ],
+      "narration": "Fourth, make food safe. Cook food well and eat it while it is hot. Wash fruit with safe water and peel it, and keep food covered."
+    },
+    {
+      "id": "help",
+      "visual": "care",
+      "at": [
+        0.02,
+        0.16,
+        0.44
+      ],
+      "signsAt": 0.69,
+      "heading": "Yellow eyes? See a health worker",
+      "panels": [
+        "clinic",
+        "rest",
+        "nopills"
+      ],
+      "steps": [
+        "See a health worker",
+        "Rest, eat, drink safe water",
+        "No medicines unless they give them"
+      ],
+      "signs": [
+        "Pregnant",
+        "Very sleepy or confused",
+        "Bleeding, or cannot stop vomiting"
+      ],
+      "narration": "If someone has yellow eyes or skin, take them to a health worker. There is no special medicine: the body heals itself with rest, food and plenty of safe water. Do not give medicines or other remedies unless a health worker says so, because they can harm the liver. Go at once if the person is pregnant, very sleepy or confused, bleeding, or cannot stop vomiting."
+    },
+    {
+      "id": "close",
+      "visual": "close",
+      "heading": "Safe water. Clean hands. Yellow eyes? See a health worker.",
+      "items": [
+        "Safe water",
+        "Clean hands",
+        "See a health worker"
+      ],
+      "icons": [
+        "drop",
+        "hands",
+        "clinic"
+      ],
+      "vaccine": "Hepatitis A vaccine: take it where health workers offer it",
+      "source": "Source: World Health Organization",
+      "narration": "Where health workers offer the hepatitis A vaccine, take it. Safe water, clean hands, and for yellow eyes, a health worker. Share this with your family."
+    }
+  ]
+}

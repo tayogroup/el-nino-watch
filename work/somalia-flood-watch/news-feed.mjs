@@ -142,6 +142,9 @@ export const FILM_FLASH = Object.freeze({kind: 'app', key: 'film', label: 'Film 
 export const FIELD_VIDEOS_SHOWN = false;
 export const FIELD_FLASH = Object.freeze({kind: 'app', key: 'field', label: 'Videos from the field', title: 'Watch: flooding in Cabudwaaq, and rain filling the Xingod sand dam', url: '#field-videos', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
 
+// And to the malaria, dysentery and typhoid, and hepatitis A and E films on the Diseases tab (owner, 2026-10-17).
+export const FILMS_FLASH = Object.freeze({kind: 'app', key: 'films', label: 'Films · Health', title: 'Watch: new films on malaria, dysentery and typhoid, and hepatitis', url: '#malaria-film', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
+
 // And to the Somali audio bulletin first on the home page (owner, 2026-10-17), only while bulletins are on.
 export const PODCAST_FLASH = Object.freeze({kind: 'app', key: 'podcast', label: 'Audio bulletin', title: 'Listen: El Niño and flood news, three times a day', url: '#podcast', publishedAt: null, source: 'El Nino Watch', group: 'app', language: 'en'});
 
@@ -195,5 +198,5 @@ export async function loadNews({app = {}, fetchImpl = fetch, now = Date.now(), r
   } else status.push({id: 'reliefweb', available: false, error: 'Not enabled: RELIEFWEB_APPNAME is not set.'});
   const news = merge(lists), flashes = appItems(app);
   if (!news.length && !flashes.length) throw new Error('No news source answered.');
-  return {items: [...flashes, ...(app.podcast ? [PODCAST_FLASH] : []), ...(FIELD_VIDEOS_SHOWN ? [FIELD_FLASH] : []), HEALTH_FLASH, FILM_FLASH, ...news], sources: status.sort((a, b) => a.id.localeCompare(b.id)), note: 'Headlines are shown as published by each organisation or outlet. Nothing here is an official warning.'};
+  return {items: [...flashes, ...(app.podcast ? [PODCAST_FLASH] : []), ...(FIELD_VIDEOS_SHOWN ? [FIELD_FLASH] : []), HEALTH_FLASH, FILM_FLASH, FILMS_FLASH, ...news], sources: status.sort((a, b) => a.id.localeCompare(b.id)), note: 'Headlines are shown as published by each organisation or outlet. Nothing here is an official warning.'};
 }
