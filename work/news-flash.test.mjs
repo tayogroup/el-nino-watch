@@ -197,10 +197,10 @@ test('videos from the field: Cabudwaaq and Mudug flooding on the home page as th
   // The silent Cabudwaaq clip has a new name: the CDN keeps a file for an hour and ignores query strings, so the
   // old name went on serving the copy with sound after the deploy.
   for (const [id, file, video, shown] of [['cabudwaaq-video', 'cabudwaaq-flooding', 'cabudwaaq-flooding-silent', true], ['mudug-video', 'mudug-flooding', 'mudug-flooding', true], ['xingod-video', 'xingod-water-dam', 'xingod-water-dam', false]]) {
-    assert.ok(section.includes(`<figure class="field-video" id="${id}"${shown ? '' : ' hidden'}><button type="button" class="film-thumb-img field-thumb" data-video="film/${video}.mp4" data-poster="film/${file}.jpg" aria-labelledby="${id}-title"><img src="film/thumb-${file}.jpg"`), `${id}: a thumbnail${shown ? '' : ', hidden'}`);
+    assert.ok(section.includes(`<figure class="field-video" id="${id}"${shown ? '' : ' hidden'}><button type="button" class="film-thumb-img field-thumb" data-video="film/${video}.mp4" data-poster="film/${file}.jpg" aria-labelledby="${id}-title"><img src="film/thumb-wide-${file}.jpg" alt="" width="480" height="270"`), `${id}: a 16:9 thumbnail, like the films${shown ? '' : ', hidden'}`);
     assert.ok((await stat(new URL(`./somalia-flood-watch/dist/film/${file}.jpg`, import.meta.url))).size > 0);
-    const thumb = (await stat(new URL(`./somalia-flood-watch/dist/film/thumb-${file}.jpg`, import.meta.url))).size;
-    assert.ok(thumb > 2000 && thumb < 40000, `thumb-${file}.jpg is a small thumbnail`);
+    const thumb = (await stat(new URL(`./somalia-flood-watch/dist/film/thumb-wide-${file}.jpg`, import.meta.url))).size;
+    assert.ok(thumb > 2000 && thumb < 40000, `thumb-wide-${file}.jpg is a small thumbnail`);
     const size = (await stat(new URL(`./somalia-flood-watch/dist/film/${video}.mp4`, import.meta.url))).size;
     assert.ok(size > 0 && size < 8e6, `${video} stays small enough for a phone on mobile data (${size} bytes)`);
   }

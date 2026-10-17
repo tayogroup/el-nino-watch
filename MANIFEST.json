@@ -930,8 +930,8 @@
     },
     {
       "path": "work/news-flash.test.mjs",
-      "bytes": 22700,
-      "sha256": "d03e9d033f259990fdc0f9c928b3daa4bae6025d83f0b1ae217e6ac9659e3f7f"
+      "bytes": 22768,
+      "sha256": "76007035c32a70fc3fe73032805090a5dae15aeb87e8c72c543ccfcf1aca5137"
     },
     {
       "path": "work/observed-gfm-capabilities.xml",
@@ -1040,8 +1040,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.css",
-      "bytes": 18064,
-      "sha256": "dd06cd0b499fc0f69ab8f681ae4b86f8fd3589a44fb24292928f4f6ad5504ec3"
+      "bytes": 17701,
+      "sha256": "39b4d79d4d3954ff098fea526000476fb6b2cdc63f29e3a5eb11e2c0e8892fde"
     },
     {
       "path": "work/somalia-flood-watch/dist/alerts.js",
@@ -1219,11 +1219,6 @@
       "sha256": "a8b9838b79e4c624887b541190b33b50a9de3cadcd8350765b59bbdea09b9028"
     },
     {
-      "path": "work/somalia-flood-watch/dist/film/thumb-cabudwaaq-flooding.jpg",
-      "bytes": 9923,
-      "sha256": "a92af2b79afc076303cd3f2ddccfc9be9f9c7f584778ba9cc892afe0692551f8"
-    },
-    {
       "path": "work/somalia-flood-watch/dist/film/thumb-cholera-prevention-so.jpg",
       "bytes": 12487,
       "sha256": "27bf9b8d0c3246dfcfdefd3753ab8d429d5400ca0b670ed6c17d396ccec60d11"
@@ -1249,19 +1244,24 @@
       "sha256": "f571494a1df20fb5776d1448ea896ef30e68baf6d0907da4c4799ab65b619169"
     },
     {
-      "path": "work/somalia-flood-watch/dist/film/thumb-mudug-flooding.jpg",
-      "bytes": 9184,
-      "sha256": "daacc022657ed39399cbad8c89a3cfc3fa6246df8e5cc6c3efee257fd42152ea"
-    },
-    {
       "path": "work/somalia-flood-watch/dist/film/thumb-waterborne-diseases.jpg",
       "bytes": 16234,
       "sha256": "fc517fe20a4312161267206de1cdb192528932864c4ff20d950fdfdc3778b9de"
     },
     {
-      "path": "work/somalia-flood-watch/dist/film/thumb-xingod-water-dam.jpg",
-      "bytes": 13935,
-      "sha256": "5b3974138dbd94c8d6acf450e07391307b74501a8e4c5633da5ee1dd7ed8b378"
+      "path": "work/somalia-flood-watch/dist/film/thumb-wide-cabudwaaq-flooding.jpg",
+      "bytes": 14835,
+      "sha256": "b84a3d1e2994061dda1bfe906a258169cc3d96decfabd6a7384d38e837836afd"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/thumb-wide-mudug-flooding.jpg",
+      "bytes": 8318,
+      "sha256": "a4179cb1fe9c3f3aceeb82c6861ff6cb6236b78e0a8bc5dd30b3c9c975d88752"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/thumb-wide-xingod-water-dam.jpg",
+      "bytes": 14049,
+      "sha256": "6a0184b1165fcda7bfdd05970e755812c9fb290088b6486ece3fc44a4ec371b7"
     },
     {
       "path": "work/somalia-flood-watch/dist/film/waterborne-diseases.jpg",
@@ -1355,8 +1355,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 52145,
-      "sha256": "02a3b028fbe276607db08a3eae66ad555d08860b989d1ea6f003dfa6407ba8e6"
+      "bytes": 52160,
+      "sha256": "4780ac81cfa6b33685293f5cdb323d0399510fc5d315e4ad03cc5122df1f2d74"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",

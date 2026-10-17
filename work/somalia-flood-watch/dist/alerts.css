@@ -111,17 +111,22 @@
 
 /* From the field: owner-supplied videos on the home page, two portrait clips side by side even on a phone. */
 #field-videos{scroll-margin-top:250px}
-.field-video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,250px));gap:14px;margin:4px 0 10px}
-.field-video{margin:0;display:grid;gap:6px;align-content:start}
-.field-video video{display:block;width:100%;height:auto;aspect-ratio:9/16;border-radius:12px;background:#082448;object-fit:cover}
-.field-thumb{display:block;width:100%;aspect-ratio:9/16;padding:0;font:inherit;cursor:pointer}
+/* The field videos (#field-videos) sit in the same grid and 16:9 tiles as the health films (owner, 2026-10-17: "the same size"). */
+.field-video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px;margin:6px 0 10px}
+@media (min-width:700px){.field-video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1100px){.field-video-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.field-video{margin:0;display:grid;gap:7px;align-content:start}
+.field-thumb{display:block;width:100%;aspect-ratio:16/9;padding:0;font:inherit;cursor:pointer}
 .field-thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.field-video figcaption{display:grid;gap:3px;font-size:13px;line-height:1.35;color:var(--color-text-muted,#5f6b7a)}
+.field-video figcaption b{color:var(--color-text,#14233a);font-size:14px;line-height:1.3}
+/* A tapped clip plays at portrait size, across two columns. */
+.field-video.playing{grid-column:span 2}
+.field-video.playing video{max-width:260px}
+.field-video video{display:block;width:100%;height:auto;aspect-ratio:9/16;border-radius:12px;background:#082448;object-fit:cover}
 .field-thumb:focus-visible{outline:3px solid #1473cf;outline-offset:2px}
 .field-video[hidden]{display:none}
-.field-video figcaption{display:grid;gap:3px;font-size:13px;line-height:1.4;color:var(--color-text-muted,#5f6b7a)}
-.field-video figcaption b{color:var(--color-text,#14233a);font-size:14px}
 .field-videos .note a{font-weight:700}
-@media (min-width:900px){.field-video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.field-video{grid-template-columns:190px minmax(0,1fr);gap:14px}.field-video figcaption{align-content:start;font-size:14px}.field-video figcaption b{font-size:16px}}
 
 /* Health films on the home page: a thumbnail per film, opening it on the Diseases tab. */
 #health-films{scroll-margin-top:250px}
@@ -137,10 +142,3 @@
 .film-thumb b{font-size:14px;line-height:1.3}
 .film-thumb:hover b{text-decoration:underline}.film-thumb:focus-visible{outline:none}.film-thumb:focus-visible .film-thumb-img{outline:3px solid #1473cf;outline-offset:2px}
 
-/* Field-video thumbnails at half size (owner, 2026-10-17), the caption beside them; a playing clip grows back. */
-.field-video-grid{grid-template-columns:minmax(0,1fr);gap:12px 18px}
-@media (min-width:700px){.field-video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.field-video{grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:start}
-.field-video.playing{grid-template-columns:minmax(0,260px)}
-.field-thumb::before{width:32px;height:32px}.field-thumb::after{border-width:7px 0 7px 11px}
-.field-thumb .film-thumb-time{right:5px;bottom:5px;font-size:11px;padding:3px 5px}
