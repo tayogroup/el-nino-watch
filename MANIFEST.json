@@ -40,8 +40,8 @@
     },
     {
       "path": "DEPLOYMENT.md",
-      "bytes": 21861,
-      "sha256": "a3796101dac04e8b12d76716451ba75c1190804f01d288e538edbd5a77c7f0bd"
+      "bytes": 22299,
+      "sha256": "df862c57028cb522941c68451bf439b3e3d6535a2e4fff9e2f8381120b4cf20d"
     },
     {
       "path": "Dockerfile",
@@ -185,8 +185,8 @@
     },
     {
       "path": "work/community-storage-startup.test.mjs",
-      "bytes": 4618,
-      "sha256": "739ff746d6ca218ce9c977c4ef5e6f04b729052753a990ea4706538a837251f0"
+      "bytes": 4794,
+      "sha256": "c8f25c7acc65731e3c06a2250a2965705976330802c66f02207d716b9633a70d"
     },
     {
       "path": "work/community-ui.test.mjs",
@@ -1004,6 +1004,11 @@
       "sha256": "58c882a0b19a91eea14e37d02229a20acf896446a53b8968c69d6a86d4919416"
     },
     {
+      "path": "work/security-headers.test.mjs",
+      "bytes": 3227,
+      "sha256": "1a942756d670373c54a4e61a73765423eacd74b06195857bbb559cda7ef44a8d"
+    },
+    {
       "path": "work/share.test.mjs",
       "bytes": 6814,
       "sha256": "fb11b0bd5dc668514611d83179b6a00c1d45f54d097f4ade154b8711525b4ed7"
@@ -1600,8 +1605,8 @@
     },
     {
       "path": "work/somalia-flood-watch/server.mjs",
-      "bytes": 12690,
-      "sha256": "8dcd147d1ee754b97c284e18ec89ecaf432a91971e9cf41162091552d05cc00e"
+      "bytes": 14443,
+      "sha256": "0ee84d71749fd739808ae8d21830b70b73765f1ff1e7e3c986beb00c2047d10a"
     },
     {
       "path": "work/somalia-flood-watch/Start-Live-App.ps1",

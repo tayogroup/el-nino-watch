@@ -270,6 +270,8 @@ them. Until the Somali is voiced the films are English with English captions on
 both pages; add an `so` entry to their `FILMS` rows in `alerts.js` then, and a
 `.so.vtt` for the English film (`render-film.cjs --translation`).
 
+**One address, security headers** (owner, 2026-10-18): `www.elninowatch.so` redirects to `elninowatch.so` and every response carries `SECURITY_HEADERS` (`server.mjs`; `security-headers.test.mjs`). The redirect is `no-store` because both hostnames share one CDN pull zone: a cached redirect would loop the apex. There is no script/style content-security policy, only `frame-ancestors`; adding one means listing every outside service the map, weather and feeds load from.
+
 **El Niño news flash** (`news-feed.mjs`, `dist/news-flash.js`, `/api/news`)
 - A bar above the header: the app's own flashes (NOAA's El Niño status, the
   ICPAC heavy-rain city count), then items from SoDMA, FAO SWALIM, ICRC (its own

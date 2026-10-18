@@ -16,9 +16,11 @@ async function request(server, url) {
     const deadline = setTimeout(() => reject(new Error(`Request timed out: ${url}`)), 2000);
     const res = {
       headersSent:false, writableEnded:false, statusCode:null, headers:{},
+      // Like Node's: headers set beforehand (the security headers) merge with writeHead's.
+      setHeader(name, value) { this.headers[name] = value; },
       writeHead(statusCode, headers) {
         this.statusCode = statusCode;
-        this.headers = headers;
+        this.headers = {...this.headers, ...headers};
         this.headersSent = true;
       },
       end(body) {

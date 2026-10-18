@@ -71,6 +71,25 @@ async function sendFilm(req, res, target, contentType) {
   createReadStream(target, {start, end}).on('error', () => res.destroy()).pipe(res);
 }
 
+// Security headers on every response (owner, 2026-10-18, after a browser add-on called www.elninowatch.so
+// unsafe): https only, no framing by other sites, a referrer policy, and no camera, microphone or payment
+// features (location stays on for the community report form). A full content-security policy is left out:
+// the map and data feeds load from about twenty outside services.
+export const SECURITY_HEADERS = Object.freeze({
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Content-Security-Policy': "frame-ancestors 'self'",
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self), payment=(), usb=()'
+});
+
+// One address: www.elninowatch.so sends visitors to elninowatch.so, path and query kept (the browser keeps the
+// #fragment). Only that exact hostname, so local runs and the container's own address are never redirected.
+export function canonicalRedirect(req) {
+  const host = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim().toLowerCase().replace(/:\d+$/, '');
+  return host === 'www.elninowatch.so' ? 'https://elninowatch.so' + (req.url || '/') : null;
+}
+
 function reply(res, status, body, contentType = 'text/plain; charset=utf-8', head = false) {
   const buffer = Buffer.isBuffer(body) ? body : Buffer.from(body);
   res.writeHead(status, {'Content-Type': contentType, 'Content-Length': buffer.length, 'X-Content-Type-Options': 'nosniff', 'Cache-Control': 'no-store'});
@@ -91,6 +110,14 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
     onPublished:(item, info) => whatsapp.sendBulletin(item, info)});
   const server = http.createServer(async (req, res) => {
     try {
+      for (const [name, value] of Object.entries(SECURITY_HEADERS)) res.setHeader(name, value);
+      const canonical = canonicalRedirect(req);
+      if (canonical) {
+        // Never stored: both hostnames share one CDN pull zone, so a cached redirect could be replayed to
+        // elninowatch.so itself and loop.
+        res.writeHead(['GET', 'HEAD'].includes(req.method) ? 301 : 308, {Location: canonical, 'Cache-Control': 'no-store', 'CDN-Cache-Control': 'no-store'});
+        return res.end();
+      }
       const url = new URL(req.url, 'http://127.0.0.1');
       if (await community(req,res,url)) return;
       if (await visits.handle(req,res,url)) return;
