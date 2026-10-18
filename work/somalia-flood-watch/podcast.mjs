@@ -398,14 +398,24 @@ export function createPodcast({dataDir, cities = [], config = podcastConfig(), s
     return {alerts, stations, enso, news, rain, now: at};
   }
 
+  // What a slot's bulletin compares with: today's last bulletin from an EARLIER slot. Once one language of
+  // the slot is published, state.facts is that slot's own, so the next language takes factsBefore: otherwise
+  // the English midday compared the midday with itself and always said nothing had changed (17 October 2026:
+  // Jowhar fell from 5.17 to 4.90 m, the Somali read it, the English said "not changed").
+  function previousFacts(due) {
+    const facts = state.facts;
+    if (!facts || facts.date !== due.date) return null;
+    if (facts.slot !== due.slot.id) return facts;
+    return state.factsBefore?.date === due.date ? state.factsBefore : null;
+  }
+
   const languageOf = item => item.lang || 'so';
   const languages = () => config.languages || ['so'];
   // Write, voice and publish one bulletin, in one language. data: the feeds, gathered once for the slot.
   async function publish(due, lang = 'so', data = null) {
     const at = now(), id = bulletinId(due.date, due.slot.id, lang);
     data ||= await gather(at);
-    const previous = state.facts?.date === due.date ? state.facts : null;
-    const script = buildScript({slotId: due.slot.id, previous, lang, ...data});
+    const script = buildScript({slotId: due.slot.id, previous: previousFacts(due), lang, ...data});
     const wav = await voice(script.text, config, fetchImpl);
     await mkdir(dir, {recursive: true});
     const wavFile = path.join(dir, `${id}.wav`), mp3File = path.join(dir, `${id}.mp3`);
@@ -414,8 +424,10 @@ export function createPodcast({dataDir, cities = [], config = podcastConfig(), s
     // bytes: the podcast feed's enclosure length.
     const item = {id, lang, slot: due.slot.id, date: due.date, title: script.title, text: script.text, seconds: Math.round(wavSeconds(wav)), publishedAt: new Date(at).toISOString(), file: `${id}.mp3`, bytes: (await stat(mp3File)).size};
     state.items = [item, ...state.items.filter(other => other.id !== item.id)];
-    // The facts are the same in both languages; the midday "what changed" compares against them.
-    state.facts = {date: due.date, ...script.facts};
+    // The facts are the same in both languages; the midday "what changed" compares against them. The first
+    // language of a slot moves the earlier slot's facts to factsBefore, so the second compares with the same.
+    if (state.facts?.slot !== due.slot.id || state.facts?.date !== due.date) state.factsBefore = state.facts;
+    state.facts = {date: due.date, slot: due.slot.id, ...script.facts};
     delete state.attempts[id];
     await prune();
     await save();

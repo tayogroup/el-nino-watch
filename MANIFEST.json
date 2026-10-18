@@ -970,8 +970,8 @@
     },
     {
       "path": "work/podcast.test.mjs",
-      "bytes": 52158,
-      "sha256": "99227b4c7b1f01863a808a3a80b57bddefadb5e318d2a52dd9ca3220d563e532"
+      "bytes": 54398,
+      "sha256": "8a37328c121fcdf4be9f2d8e3aac575c6ab40c536233e0c145fa0ddf799f953f"
     },
     {
       "path": "work/print-social-image.mjs",
@@ -1595,8 +1595,8 @@
     },
     {
       "path": "work/somalia-flood-watch/podcast.mjs",
-      "bytes": 38369,
-      "sha256": "b47c6d113a661a81d34a236d3d884b032e27dfadefc122e91f4da495d4e6d369"
+      "bytes": 39234,
+      "sha256": "a0a3168e4f6a688212f52ad84c83ea2ae2a1306da12412a90c025520ecdc0846"
     },
     {
       "path": "work/somalia-flood-watch/README.md",

@@ -473,6 +473,33 @@ test('with both languages on, each slot is voiced in Somali and English from one
   } finally { await rm(off, {recursive: true, force: true}); }
 });
 
+test('the midday bulletin compares with the morning in BOTH languages: the English does not compare the midday with the Somali midday just made', async () => {
+  // 17 October 2026: Jowhar fell from 5.17 to 4.90 m by midday. The Somali read it; the English, made seconds
+  // later, compared against the Somali midday's facts and said "not changed since this morning".
+  const pcm = Buffer.alloc(48000);
+  const fetchImpl = async url => String(url).startsWith('https://api.open-meteo.com/')
+    ? {ok: true, status: 200, json: async () => cities.map(() => ({daily: {time: ['2026-10-16', '2026-10-17'], precipitation_sum: [1, 2]}}))}
+    : {ok: true, status: 200, json: async () => ({steps: [{type: 'model_output', content: [{type: 'audio', data: pcm.toString('base64')}]}]})};
+  const config = {enabled: true, apiKey: 'key-not-real', model: 'gemini-3.8-flash-tts', voice: 'Puck', languages: ['so', 'en']};
+  const fell = {...STATIONS, stations: STATIONS.stations.map(s => s.name === 'Jowhar' ? {...s, levelM: 4.9} : s)};
+  for (const [label, middayStations, changed] of [['a river changed', fell, true], ['nothing changed', STATIONS, false]]) {
+    const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-podcast-midday-'));
+    let clock = MORNING, stations = STATIONS;
+    const service = createPodcast({dataDir, cities, config, fetchImpl, now: () => clock, log: quiet, encode: (wav, mp3) => copyFile(wav, mp3),
+      feeds: {alerts: async () => ALERTS, stations: async () => stations, enso: async () => ENSO, news: async () => NEWS}});
+    try {
+      await service.tick();
+      clock = MIDDAY; stations = middayStations;
+      await service.tick();
+      const text = id => service.state().items.find(item => item.id === id).text;
+      const so = text('2026-10-16-midday'), en = text('2026-10-16-midday-en');
+      assert.equal(so.includes('isma beddelin tan iyo subaxdii'), !changed, `${label}: Somali`);
+      assert.equal(en.includes('have not changed since this morning'), !changed, `${label}: English says the same as the Somali`);
+      if (changed) assert.ok(so.includes('4.90 mitir') && en.includes('4.90 metres'), 'both read the new level');
+    } finally { await rm(dataDir, {recursive: true, force: true}); }
+  }
+});
+
 test('WhatsApp: the bulletin in the language each subscriber signed up in, Somali for everyone until English is on', async () => {
   const dataDir = await mkdtemp(path.join(os.tmpdir(), 'elnino-podcast-wa-lang-'));
   const sent = [];
