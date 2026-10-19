@@ -37,7 +37,8 @@
 #map .map-city-label.is-selected span{transform:translate(16px,-50%);padding:2px 8px;background:var(--neutral-900);box-shadow:none;color:var(--neutral-0);font-size:var(--text-sm);font-weight:700}
 /* A city whose SWALIM gauge is not functional: say the river there is unknown, not quiet. */
 .gauge-down{margin:0 0 8px;padding:8px 10px;border:1px solid var(--color-border-strong);border-radius:var(--radius-sm);background:var(--color-surface-sunken);color:var(--color-text)}
-#gauge-count{color:var(--color-text-muted);font-size:var(--text-xs)}
+.livebar{flex-wrap:wrap;row-gap:2px;align-content:flex-start}
+#gauge-count{flex-basis:100%;order:3;color:var(--color-text-muted);font-size:var(--text-xs)}
 /* Map background switch on the map itself: simple bundled map, street map or satellite imagery. */
 .map-basemap-switch{display:flex;overflow:hidden;background:var(--color-surface);border-radius:var(--radius-sm)}
 .map-basemap-switch button{min-height:32px;padding:6px 10px;border:0;background:var(--color-surface);color:var(--color-text);font:600 var(--text-xs)/1.2 var(--font-sans);cursor:pointer}
