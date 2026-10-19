@@ -397,7 +397,6 @@
     "Location could not be obtained. Enter coordinates manually.": "Goobta lama heli karin. Gacanta ku geli isku-duwayaasha.",
     "Regional basemap unavailable. City positions and source hazard layers remain selectable.": "Khariidadda gobolka lama heli karo. Goobaha magaalooyinka iyo lakabyada halista ee ilaha xogta weli waa la dooran karaa.",
     "Natural Earth regional reference map · coastlines, boundaries and rivers. Generalized geography; no street-level detail. Blue river lines are not current floodwater.": "Khariidadda tixraaca gobolka ee Natural Earth · xeebaha, xuduudaha iyo webiyada. Waa khariidad guud oo aan lahayn faahfaahin heer waddo ah. Khadadka webiyada ee buluugga ahi ma aha biyaha fatahaadda ee hadda.",
-    "Regional reference geography · no satellite basemap requested.": "Khariidadda tixraaca gobolka · khariidad dayax-gacmeed lama codsan.",
     "Loading satellite basemap…": "Waxaa la soo qaadanayaa khariidadda dayax-gacmeedka…",
     "Esri World Imagery · imagery dates vary by location; this is background context, not current flooding.": "Esri World Imagery · taariikhaha sawirradu goob kasta way ku kala duwan yihiin; tani waa xog guud oo goobta ah, mana aha fatahaadda hadda.",
     "Satellite basemap unavailable. Regional reference map restored.": "Khariidadda dayax-gacmeedka lama heli karo. Khariidadda tixraaca gobolka ayaa dib loo soo celiyay.",
@@ -558,7 +557,6 @@
     "3-day flood map layers from the MODIS and VIIRS satellites.": "Lakabyada khariidadda fatahaadda ee 3-da maalmood ee dayax-gacmeedyada MODIS iyo VIIRS.",
     "The latest satellite pass over each city, with a link to view the image.": "Marka ugu dambeysay ee dayax-gacmeed uu dul maray magaalo kasta, iyo xiriir lagu daawado sawirka.",
     "Reference layers: terrain flood susceptibility (30 m), past flood areas 2013–2023, Shabelle riverbank breakages (August 2026 assessment) and Juba riverbank breakages (March 2026 assessment).": "Lakabyo tixraac: u nugulaanta fatahaadda ee dhulka (30 m), meelihii fatahaaddu gaartay 2013–2023, jabka qarka webiga Shabeelle (qiimeynta Agoosto 2026) iyo jabka qarka webiga Jubba (qiimeynta Maarso 2026).",
-    "Not listed: the base map and elevation services (Natural Earth, Esri World Imagery, Open-Meteo Elevation and place-name search), which draw the map but do not forecast or alert.": "Lagama darin: adeegyada khariidadda saldhigga iyo joogga dhulka (Natural Earth, Esri World Imagery, Open-Meteo Elevation iyo raadinta magacyada meelaha), kuwaas oo sawira khariidadda laakiin aan bixin saadaal ama digniin.",
     "Community reports in the app come from residents and are unverified.": "Warbixinnada bulshada ee abka waxay ka yimaadaan dadka deegaanka, lamana xaqiijin.",
     "About": "Faahfaahin",
     "Data": "Xog",
@@ -756,7 +754,6 @@
     "Watch: diseases from dirty water, and how to protect your family": "Daawo: cudurrada biyaha wasakhda ah iyo sida qoyskaaga looga ilaaliyo",
     "A short film on cholera, dysentery, typhoid and hepatitis: how they spread and how to prevent them.": "Filim gaaban oo ku saabsan daacuunka, dhiig-shubanka, tiifowga iyo cagaarshowga: sida ay u faafaan iyo sida looga hortago.",
     "If you sign up, your WhatsApp number, the cities you follow, your language and whether you asked for the audio bulletin are kept only to send those messages. Messages go through Meta's WhatsApp service. Replying STOP deletes them.": "Haddii aad isdiiwaangeliso, lambarka WhatsApp-kaaga, magaalooyinka aad la socoto, luqaddaada iyo haddii aad codsatay warbixinta codka waxaa loo hayaa oo keliya dirista fariimahaas. Fariimaha waxay maraan adeegga WhatsApp ee Meta. Ku jawaabidda JOOJI (STOP) way tirtirtaa.",
-    "Forecasts, alerts and news are fetched by the El Nino Watch server, so those services do not see you. The audio bulletins are written from those sources and voiced by Google's Gemini service; nothing about you is sent to it. The flood map's layers and the place-name search for added cities load directly from their publishers, who see your internet address as any website does. Share buttons contact X or Facebook only when you tap them. The site is hosted on bunny.net, which handles every request as any web host does.": "Saadaasha, digniinaha iyo wararka waxaa keena server-ka El Nino Watch, sidaas darteed adeegyadaas ma arkaan adiga. Warbixinada codka waxaa laga qoraa ilahaas, waxaana codeeya adeegga Gemini ee Google; wax xog ah oo adiga kugu saabsan looma diro. Lakabyada khariidadda fatahaadda iyo raadinta magacyada goobaha ee magaalooyinka la daro waxay si toos ah uga yimaadaan cidda daabacda, kuwaas oo arka cinwaanka internetkaaga sida bog kasta oo internet ah. Badhamada wadaagga waxay la xiriiraan X ama Facebook oo keliya marka aad riixdo. Bogga waxaa martigeliya bunny.net, oo u qabta codsi kasta sida martigeliye kasta oo internet ah.",
     "Not an official warning": "Ma aha digniin rasmi ah",
     "Read the bulletin": "Akhri warbixinta",
     "New bulletins at 06:30, 12:30 and 18:30 East Africa Time, written from this site's sources and read by a computer voice (Google Gemini). Official warnings come only from MOEWR.": "Warbixino cusub ayaa soo baxa 06:30, 12:30 iyo 18:30 saacadda Bariga Afrika. Waxaa laga qoraa ilaha boggan, waxaana akhriya cod kombiyuutar (Google Gemini). Digniinaha rasmiga ah waxay ka yimaadaan MOEWR oo keliya.",
@@ -778,7 +775,6 @@
     "Listen": "Dhageyso",
     "RSS, Somali": "RSS, Af-Soomaali",
     "RSS, English": "RSS, Ingiriisi",
-    "Checked against the app on 17 October 2026.": "Waxaa lagu hubiyay abka 17 Oktoobar 2026.",
     "Get the audio bulletin on WhatsApp": "Ku hel warbixinta codka WhatsApp",
     "The WhatsApp alerts button opens a message ready to send for the selected city. Alerts come from MOEWR, ICPAC and Google Flood Hub when one starts or gets worse, at most 3 a day. The audio bulletin button asks for the evening audio bulletin, in the language of this page. Your number is used only to send these messages. Reply STOP to stop the alerts, or STOP AUDIO to stop the bulletin.": "Badhanka digniinaha WhatsApp wuxuu furaa fariin diyaar u ah in loo diro magaalada la doortay. Digniinaha waxay ka yimaadaan MOEWR, ICPAC iyo Google Flood Hub marka mid bilaabmo ama uu sii xumaado, ugu badnaan 3 maalintii. Badhanka warbixinta codka wuxuu codsadaa warbixinta codka ee fiidka, luqadda boggan. Lambarkaaga waxaa loo isticmaalaa oo keliya dirista fariimahan. Ku jawaab JOOJI si aad u joojiso digniinaha, ama JOOJI CODKA si aad u joojiso warbixinta.",
     "Get it on WhatsApp": "Ku hel WhatsApp",
@@ -820,7 +816,34 @@
     "Shared October 2026; the town is not known. Do not walk or drive through moving water.": "La wadaagay Oktoobar 2026; magaalada lama garanayo. Ha ku dhex socon, hana ku dhex wadin gaari, biyo socda.",
     "Videos shared with El Nino Watch, without sound. Like community reports, they are unverified.": "Muuqaallo lala wadaagay El Nino Watch, cod la'aan. Sida warbixinaha bulshada, lama xaqiijin.",
     "Flood videos: Cabudwaaq and Mudug": "Muuqaallada fatahaadda: Cabudwaaq iyo Mudug",
-    "Watch: flooding in Cabudwaaq and in Mudug": "Daawo: fatahaadda Cabudwaaq iyo Mudug"
+    "Watch: flooding in Cabudwaaq and in Mudug": "Daawo: fatahaadda Cabudwaaq iyo Mudug",
+    "No working river gauge here": "Halkan ma jiro cabbir webi oo shaqaynaya",
+    "Street map": "Khariidadda waddooyinka",
+    "Simple": "Fudud",
+    "Streets": "Waddooyin",
+    "Satellite": "Dayax-gacmeed",
+    "Map background": "Asalka khariidadda",
+    "Loading street map…": "Waxaa la soo qaadanayaa khariidadda waddooyinka…",
+    "Street map © OpenStreetMap contributors · roads and place names are mapped by volunteers and can be incomplete. Background only, not current flooding.": "Khariidadda waddooyinka © OpenStreetMap contributors · waddooyinka iyo magacyada goobaha waxaa sawiray mutadawiciin, waxaana laga yaabaa inaysan dhammaystirnayn. Waa asal keliya, mana aha fatahaadda hadda.",
+    "Street map unavailable. Regional reference map restored.": "Khariidadda waddooyinka lama heli karo. Khariidadda tixraaca gobolka ayaa dib loo soo celiyay.",
+    "Regional reference geography · no street or satellite map requested.": "Khariidadda tixraaca gobolka · khariidad waddooyin ama dayax-gacmeed lama codsan.",
+    "Data under CC BY 4.0. The free API is for non-commercial use only, under 10,000 calls a day; commercial use needs a paid plan.": "Xogta waxay ku hoos jirtaa CC BY 4.0. API-ga bilaashka ah waxaa loogu talagalay isticmaal aan ganacsi ahayn oo keliya, kana yar 10,000 codsi maalintii; isticmaalka ganacsiga wuxuu u baahan yahay qorshe lacag ah.",
+    "GloFAS data from the Copernicus Emergency Management Service: free, full and open access with the source credited, and no warranty. Open-Meteo’s terms above also apply.": "Xogta GloFAS ee Adeegga Maaraynta Xaaladaha Degdegga ah ee Copernicus: helitaan bilaash ah, buuxa oo furan iyadoo isha la xusayo, dammaanad la’aan. Shuruudaha Open-Meteo ee kore sidoo kale way khuseeyaan.",
+    "ICPAC does not state a reuse licence for these products. It takes data requests through its data request page.": "ICPAC ma sheegin shati dib-u-isticmaal oo loogu talagalay alaabtan. Codsiyada xogta waxay ku qaadataa boggeeda codsiga xogta.",
+    "No licence is stated on the CPC page. NOAA treats information on its servers as public domain unless marked otherwise, and asks to be credited.": "Bogga CPC kuma qorna shati. NOAA waxay xogta ku jirta server-adeeda u aqoonsan tahay hanti dadweyne (public domain) haddii aan si kale loo calaamadin, waxayna codsataa in la xuso.",
+    "Used with the Ministry’s permission.": "Waxaa loo isticmaalaa ogolaanshaha Wasaaradda.",
+    "Data under CC BY 4.0.": "Xogta waxay ku hoos jirtaa CC BY 4.0.",
+    "Provided as is, without warranty; GDACS says its information is purely indicative and not for decision-making. No reuse licence is stated.": "Waxaa la bixiyaa sida ay tahay, dammaanad la’aan; GDACS waxay sheegtaa in xogteedu tahay tilmaan keliya oo aan loogu talagalin go’aan qaadasho. Shati dib-u-isticmaal lama sheegin.",
+    "SWALIM does not state a reuse licence: most records in its data catalogue list none. Ask FAO SWALIM before reusing the data elsewhere.": "SWALIM ma sheegin shati dib-u-isticmaal: inta badan diiwaannada kaydkeeda xogta midna kuma qorna. Weydii FAO SWALIM ka hor intaadan xogta meel kale dib ugu isticmaalin.",
+    "Copernicus Emergency Management Service terms: free and open access, commercial use included, with the service credited and no warranty.": "Shuruudaha Adeegga Maaraynta Xaaladaha Degdegga ah ee Copernicus: helitaan bilaash ah oo furan, oo uu ku jiro isticmaalka ganacsiga, iyadoo adeegga la xusayo, dammaanad la’aan.",
+    "NASA Earth science data carry no restrictions on use (data from NASA-led missions are CC0); NASA asks to be credited.": "Xogta sayniska dhulka ee NASA wax xaddidaad ah kuma laha isticmaalka (xogta hawlgallada NASA ay hoggaamiso waa CC0); NASA waxay codsataa in la xuso.",
+    "Copernicus Sentinel data: free, full and open access under EU law, without warranty, with Copernicus credited.": "Xogta Copernicus Sentinel: helitaan bilaash ah, buuxa oo furan sida uu dhigayo sharciga Midowga Yurub, dammaanad la’aan, iyadoo Copernicus la xusayo.",
+    "Terms:": "Shuruudaha:",
+    "Terms": "Shuruudaha",
+    "Checked against the app on 19 October 2026.": "Waxaa lagu hubiyay abka 19 Oktoobar 2026.",
+    "Not listed: the base map and elevation services (Natural Earth, OpenStreetMap, Esri World Imagery, Open-Meteo Elevation and place-name search), which draw the map but do not forecast or alert.": "Lagama darin: adeegyada khariidadda saldhigga iyo joogga dhulka (Natural Earth, OpenStreetMap, Esri World Imagery, Open-Meteo Elevation iyo raadinta magacyada meelaha), kuwaas oo sawira khariidadda laakiin aan bixin saadaal ama digniin.",
+    "Map backgrounds: Natural Earth is in the public domain. OpenStreetMap data are © OpenStreetMap contributors under the Open Database License, and its map tiles are used under the OpenStreetMap Foundation’s tile usage policy. Esri World Imagery is used under Esri’s terms.": "Asalka khariidadda: Natural Earth waa hanti dadweyne (public domain). Xogta OpenStreetMap waa © OpenStreetMap contributors, waxayna ku hoos jirtaa Open Database License; sawirrada khariidaddeeda waxaa loo isticmaalaa sida ay dhigayso siyaasadda isticmaalka ee OpenStreetMap Foundation. Esri World Imagery waxaa loo isticmaalaa shuruudaha Esri.",
+    "Forecasts, alerts and news are fetched by the El Nino Watch server, so those services do not see you. The audio bulletins are written from those sources and voiced by Google's Gemini service; nothing about you is sent to it. The flood map's background (OpenStreetMap or Esri), its layers and the place-name search for added cities load directly from their publishers, who see your internet address as any website does. Share buttons contact X or Facebook only when you tap them. The site is hosted on bunny.net, which handles every request as any web host does.": "Saadaasha, digniinaha iyo wararka waxaa keena server-ka El Nino Watch, sidaas darteed adeegyadaas ma arkaan adiga. Warbixinada codka waxaa laga qoraa ilahaas, waxaana codeeya adeegga Gemini ee Google; wax xog ah oo adiga kugu saabsan looma diro. Asalka khariidadda fatahaadda (OpenStreetMap ama Esri), lakabyadeeda iyo raadinta magacyada goobaha ee magaalooyinka la daro waxay si toos ah uga yimaadaan cidda daabacda, kuwaas oo arka cinwaanka internetkaaga sida bog kasta oo internet ah. Badhamada wadaagga waxay la xiriiraan X ama Facebook oo keliya marka aad riixdo. Bogga waxaa martigeliya bunny.net, oo u qabta codsi kasta sida martigeliye kasta oo internet ah."
   },
   "patterns": [
     {
@@ -1334,6 +1357,14 @@
     {
       "en": "Google Flood Hub river forecast: {0} gauges with a flood signal are more than 25 km from a monitored city; see Google Flood Hub for them.",
       "so": "Saadaasha webiga ee Google Flood Hub: {0} cabbir oo leh calaamad fatahaad ayaa in ka badan 25 km u jira magaalo la dabagalo; ka eeg Google Flood Hub."
+    },
+    {
+      "en": "SWALIM lists the {0} gauge as not functional, so river conditions here are unknown, not safe.",
+      "so": "SWALIM waxay sheegtay in xarunta cabbirka webiga {0} aysan shaqaynayn, markaa xaaladda webiga halkan lama garanayo. Taasi macnaheedu ma aha in ay ammaan tahay."
+    },
+    {
+      "en": "SWALIM river gauges with a reading: {0} of {1}",
+      "so": "Cabbirada webiyada SWALIM ee akhris leh: {0} ka mid ah {1}"
     }
   ]
 }

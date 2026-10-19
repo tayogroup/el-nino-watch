@@ -110,7 +110,7 @@
     return `<button type="button" class="mayor-day mayor-band-${row.band}${row.selected?' is-selected':''}${compact?' mayor-day-compact':''}" data-mayor-day="${esc(row.date)}" aria-pressed="${row.selected}"><span class="mayor-day-date">${esc(row.label)}</span><span class="mayor-day-rain">${row.rain===null?'—':row.rain.toFixed(1)} <small>mm</small></span><span class="mayor-rain-bar" aria-hidden="true"><i style="height:${row.barPercent??0}%"></i></span><span class="mayor-day-band">${esc(bandLabel(row.band))}</span>${compact?'':`<span class="mayor-day-detail">${row.probability===null?'Rain chance unknown':row.probability.toFixed(0)+'% rain chance'}<br>${row.maxTemperature===null?'Temperature unknown':row.maxTemperature.toFixed(0)+'°C daily high'}</span>`}</button>`;
   }
   function actionHtml(action) {
-    return `<li class="mayor-action${action.status==='done'?' is-done':''}"><span class="mayor-priority mayor-priority-${action.priority}">${esc(action.priority)} priority</span><div class="mayor-action-title"><strong>${esc(action.title)}</strong><button type="button" class="mayor-icon-button" data-edit-action="${esc(action.id)}" aria-label="Edit ${esc(action.title)}">Edit</button></div><p><span${action.owner?' class="mayor-action-owner-value" data-i18n-skip':''}>${esc(action.owner||'Owner not assigned')}</span> · ${action.dueDate?`Due ${esc(dateLabel(action.dueDate))}`:'No due date'}${action.overdue?' <b class="mayor-overdue">Overdue</b>':''}</p><div class="mayor-action-controls"><label>Status<select data-action-status="${esc(action.id)}" aria-label="Status for ${esc(action.title)}">${statuses.map(status=>`<option value="${status}"${action.status===status?' selected':''}>${statusLabels[status]}</option>`).join('')}</select></label><button type="button" class="mayor-delete" data-delete-action="${esc(action.id)}">Remove</button></div></li>`;
+    return `<li class="mayor-action${action.status==='done'?' is-done':''}"><span class="mayor-priority mayor-priority-${action.priority}">${esc(action.priority)} priority</span><div class="mayor-action-title"><strong>${esc(action.title)}</strong><button type="button" class="mayor-icon-button" data-edit-action="${esc(action.id)}" aria-label="Edit ${esc(action.title)}">Edit</button></div><p><span${action.owner?' class="mayor-action-owner-value" data-i18n-skip':''}>${esc(action.owner||'Owner not assigned')}</span> · ${action.dueDate?`Due ${esc(dateLabel(action.dueDate))}`:'No due date'}${action.overdue?' <b class="mayor-overdue">Overdue</b>':''}</p><div class="mayor-action-controls"><label>Status<select data-action-status="${esc(action.id)}" aria-label="Status for ${esc(action.title)}">${statuses.map(status=>`<option value="${status}"${action.status===status?' selected':''}>${statusLabels[status]}</option>`).join('')}</select></label><button type="button" class="mayor-delete" data-delete-action="${esc(action.id)}">Remove</button></div>${closeHtml(action)}</li>`;
   }
   function reportHtml(report) {
     return `<article class="mayor-report"><div class="mayor-report-heading"><span class="mayor-report-kind">${esc(({flood:'Flooding',rain:'Rainfall',damage:'Flood impact'})[report.category]||'Community report')}</span><span class="mayor-unverified">Unverified public report</span></div><time datetime="${esc(report.observedAt)}">Observed ${esc(report.observedLabel)}</time><p class="mayor-report-description">${esc(report.description)}</p><div class="mayor-report-counts"><span><b>${count(report.deaths)}</b> deaths reported</span><span><b>${count(report.injuries)}</b> injuries reported</span><span><b>${count(report.damagedProperties)}</b> properties reported damaged</span></div><div class="mayor-report-links"><button type="button" data-open-report="${esc(report.id)}">Open report${report.mediaCount?' · '+report.mediaCount+' media':''}</button>${report.coordinates?`<button type="button" data-report-map="${esc(report.id)}">View reported point ↗</button>`:'<span>Coordinates not supplied</span>'}${report.sourceUrl?`<a href="${esc(report.sourceUrl)}" target="_blank" rel="noopener">Source link ↗</a>`:''}</div><label class="mayor-review">Local review stage<select data-review-report="${esc(report.id)}" aria-label="Local review stage for report ${esc(report.id)}">${reviewStatuses.map(status=>`<option value="${status}"${report.review===status?' selected':''}>${statusLabels[status]}</option>`).join('')}</select></label><small class="mayor-report-id">Report ${esc(report.id)}</small></article>`;
@@ -150,9 +150,16 @@
     }
     return lines.join('\n');
   }
+  function closeHtml(action) {
+    const id=esc(action.id),earlier=(action.history||[]).filter(entry=>entry.status==='done').length-(action.status==='done'?1:0);
+    if(closingAction===currentModel?.cityId+':'+action.id)return `<div class="mayor-close-form"><p><b>Close this action</b><br>Delivery or a message saying it is fixed is not enough. Record what shows the job is actually done.</p><label>What shows it is done<textarea data-close-evidence="${id}" rows="2" maxlength="500" placeholder="For example: water point checked on 20 Oct, water flowing"></textarea></label><label>Reason for closing<textarea data-close-reason="${id}" rows="2" maxlength="500"></textarea></label><p class="mayor-close-error" data-close-error="${id}" role="alert"></p><div class="mayor-close-buttons"><button type="button" class="mayor-primary" data-confirm-close="${id}">Close action</button><button type="button" class="mayor-text-button" data-cancel-close="${id}">Keep open</button></div></div>`;
+    const closed=action.status==='done'&&action.evidence?`<p class="mayor-closed-note"><b>Evidence:</b> <span data-i18n-skip>${esc(action.evidence)}</span><br><b>Reason:</b> <span data-i18n-skip>${esc(action.closeReason)}</span></p>`:'';
+    return closed+(earlier>0?`<p class="mayor-closed-note">${esc(`Closed before and reopened ${earlier} ${earlier===1?'time':'times'}; earlier reasons are in the CSV export.`)}</p>`:'');
+  }
   function csvText(model) {
     const cell = value => { const text=String(value??''); return '"'+(/^(?:\s*[=+\-@]|[\t\r])/.test(text)?"'":'')+text.replace(/"/g,'""')+'"'; };
-    const rows = [['city','title','owner','due_date','priority','status','created_at','updated_at'],...model.actions.map(action=>[model.cityName,action.title,action.owner,action.dueDate,action.priority,action.status,action.createdAt,action.updatedAt])];
+    const history = action => (action.history||[]).map(entry=>`${entry.at} ${entry.status}${entry.reason?': '+entry.reason:''}${entry.evidence?' (evidence: '+entry.evidence+')':''}`).join(' | ');
+    const rows = [['city','title','owner','due_date','priority','status','created_at','updated_at','evidence','close_reason','close_and_reopen_history'],...model.actions.map(action=>[model.cityName,action.title,action.owner,action.dueDate,action.priority,action.status,action.createdAt,action.updatedAt,action.evidence||'',action.closeReason||'',history(action)])];
     return rows.map(row=>row.map(cell).join(',')).join('\r\n');
   }
   function download(content,name,type) {
@@ -165,11 +172,13 @@
     const store=global.CityManagerStore;if(typeof store?.[method]!=='function')throw Error('Local action storage is unavailable.');
     const result=store[method](...args);if(result===false||result?.ok===false)throw Error(result?.error||'The local change could not be saved.');return result;
   }
+  // The action being closed: choosing Done opens a short form asking what shows the job is done and why it can close.
+  let closingAction = null;
   function repaint() { if(lastInput)render(lastInput); }
   function attributeTarget(target,name) { return target?.closest?.('['+name+']') || (target?.getAttribute?.(name)!==null && target?.getAttribute?.(name)!==undefined?target:null); }
   function handleClick(event) {
     if(!currentModel)return;
-    for(const attr of ['data-open-section','data-mayor-day','data-open-report','data-report-map','data-edit-action','data-delete-action','data-cancel-action','data-export-briefing','data-export-actions']){
+    for(const attr of ['data-open-section','data-mayor-day','data-open-report','data-report-map','data-edit-action','data-delete-action','data-cancel-action','data-export-briefing','data-export-actions','data-confirm-close','data-cancel-close']){
       const target=attributeTarget(event.target,attr);if(!target)continue;const value=target.getAttribute(attr);
       if(attr==='data-open-section')config.onOpenSection?.(value);
       else if(attr==='data-mayor-day')config.onDay?.(value);
@@ -183,6 +192,11 @@
       }else if(attr==='data-cancel-action'){drafts.set(currentModel.cityId,blankDraft());repaint();}
       else if(attr==='data-export-briefing')download(briefingText(currentModel),`${currentModel.cityId}-${currentModel.today}-briefing.txt`,'text/plain;charset=utf-8');
       else if(attr==='data-export-actions')download(csvText(currentModel),`${currentModel.cityId}-local-actions.csv`,'text/csv;charset=utf-8');
+      else if(attr==='data-cancel-close'){closingAction=null;repaint();}
+      else if(attr==='data-confirm-close'){
+        const field=name=>global.document?.querySelector?.('['+name+'="'+value+'"]')?.value||'';
+        try{storeCall('update',currentModel.cityId,value,{status:'done',evidence:field('data-close-evidence'),reason:field('data-close-reason')});closingAction=null;notice('Action closed with its evidence and reason, saved on this device.');repaint();}catch(error){notice(error.message);const shown=global.document?.querySelector?.('[data-close-error="'+value+'"]');if(shown)shown.textContent=error.message;}
+      }
       return;
     }
   }
@@ -190,7 +204,7 @@
     if(!currentModel)return;const target=event.target;
     if(attributeTarget(target,'data-mayor-city')){const value=Number(target.value);if(Number.isInteger(value)&&currentModel.cities[value])config.onSelectCity?.(value);}
     else if(attributeTarget(target,'data-mayor-date')){if(currentModel.days.includes(target.value))config.onDay?.(target.value);}
-    else if(attributeTarget(target,'data-action-status')){try{storeCall('update',currentModel.cityId,target.getAttribute('data-action-status'),{status:target.value});notice('Local action stage updated.');repaint();}catch(error){notice(error.message);}}
+    else if(attributeTarget(target,'data-action-status')){const id=target.getAttribute('data-action-status'),action=currentModel.actions.find(item=>item.id===id);if(target.value==='done'&&action&&action.status!=='done'){closingAction=currentModel.cityId+':'+id;repaint();global.document?.querySelector?.('[data-close-evidence="'+id+'"]')?.focus?.();return;}try{storeCall('update',currentModel.cityId,id,{status:target.value});notice('Local action stage updated.');repaint();}catch(error){notice(error.message);}}
     else if(attributeTarget(target,'data-review-filter')){reviewFilter=reviewStatuses.includes(target.value)?target.value:'all';repaint();global.document?.querySelector?.('[data-review-filter]')?.focus?.();}
     else if(attributeTarget(target,'data-review-report')){try{storeCall('review',currentModel.cityId,target.getAttribute('data-review-report'),target.value);notice('Review stage saved on this device. The public report remains unverified.');repaint();}catch(error){notice(error.message);}}
     else handleInput(event);

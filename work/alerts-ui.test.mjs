@@ -59,7 +59,9 @@ assert.equal(build({ ...gaugeInput, stationFeed: feed({ stations: [{ ...station,
 assert.equal(build({ ...gaugeInput, stationFeed: { ...gaugeInput.stationFeed, error: 'old source' } }).counts.gauges, 0);
 assert.equal(build({ ...gaugeInput, stationFeed: feed({ stations: [{ ...station, levelM: 0 }] }) }).counts.gauges, 0);
 assert.equal(build({ ...gaugeInput, stationFeed: feed({ stations: [{ ...station, highM: 5 }] }) }).counts.gauges, 0, 'Invalid threshold ordering does not create a stage alert');
-assert.ok(build(gaugeInput).alerts.find(a => a.basis === 'observed-gauge').timingLabel.includes('source gives date only'), 'Date-only measurements do not invent an observation time');
+const gaugeTiming = build(gaugeInput).alerts.find(a => a.basis === 'observed-gauge').timingLabel;
+assert.ok(gaugeTiming.startsWith('SWALIM last update 2026-10-13 (date only; not when the river was measured)'), 'The date-only SWALIM Last Update is not presented as an observation time');
+assert.ok(!/^Observed/.test(gaugeTiming));
 const missingWeather = structuredClone(weather); missingWeather[0].daily.precipitation_sum[0] = null;
 assert.equal(build({ ...input, weatherFeed: feed(missingWeather) }).weatherCoverage[0].complete, false);
 let selectedScope, selectedType;

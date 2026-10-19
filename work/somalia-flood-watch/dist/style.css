@@ -35,3 +35,13 @@
 #map[data-labels=all] .map-city-label,#map .map-city-label.is-selected{display:block}
 #map .map-city-label span{position:absolute;left:0;top:0;transform:translate(11px,-50%);white-space:nowrap;padding:1px 6px;border-radius:var(--radius-xs);background:rgba(255,255,255,.9);box-shadow:0 0 0 1px rgba(29,54,86,.12);color:var(--neutral-800);font:600 var(--text-xs)/1.4 var(--font-sans)}
 #map .map-city-label.is-selected span{transform:translate(16px,-50%);padding:2px 8px;background:var(--neutral-900);box-shadow:none;color:var(--neutral-0);font-size:var(--text-sm);font-weight:700}
+/* A city whose SWALIM gauge is not functional: say the river there is unknown, not quiet. */
+.gauge-down{margin:0 0 8px;padding:8px 10px;border:1px solid var(--color-border-strong);border-radius:var(--radius-sm);background:var(--color-surface-sunken);color:var(--color-text)}
+#gauge-count{color:var(--color-text-muted);font-size:var(--text-xs)}
+/* Map background switch on the map itself: simple bundled map, street map or satellite imagery. */
+.map-basemap-switch{display:flex;overflow:hidden;background:var(--color-surface);border-radius:var(--radius-sm)}
+.map-basemap-switch button{min-height:32px;padding:6px 10px;border:0;background:var(--color-surface);color:var(--color-text);font:600 var(--text-xs)/1.2 var(--font-sans);cursor:pointer}
+.map-basemap-switch button+button{border-left:1px solid var(--color-border)}
+.map-basemap-switch button:hover{background:var(--color-surface-sunken)}
+.map-basemap-switch button[aria-pressed="true"]{background:var(--neutral-900);color:var(--neutral-0)}
+@media (pointer:coarse){.map-basemap-switch button{min-height:44px;padding:8px 12px}}

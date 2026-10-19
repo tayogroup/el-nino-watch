@@ -168,7 +168,7 @@ test('machine action CSV retains identical English schema, statuses and raw reco
   const somali = h.api.csvText(model);
   assert.equal(somali, english, 'Machine export is independent of presentation language');
   const rows = readCsv(somali);
-  assert.deepEqual(rows[0], ['city', 'title', 'owner', 'due_date', 'priority', 'status', 'created_at', 'updated_at']);
+  assert.deepEqual(rows[0], ['city', 'title', 'owner', 'due_date', 'priority', 'status', 'created_at', 'updated_at', 'evidence', 'close_reason', 'close_and_reopen_history']);
   assert.deepEqual(rows.slice(1).map(row => row[5]), ['in-progress', 'todo', 'blocked', 'done']);
   assert.deepEqual(rows.slice(1).map(row => row[4]), ['high', 'normal', 'low', 'normal']);
   assert.deepEqual(rows.slice(1).map(row => row[1]), ['Refresh', '14 Oct 2026', 'Unknown', 'Forecast']);

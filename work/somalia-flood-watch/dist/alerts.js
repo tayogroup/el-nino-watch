@@ -2,7 +2,8 @@
 (function (root) {
   'use strict';
   const MAX_FEED_AGE = 2 * 60 * 60 * 1000, MAX_GAUGE_AGE = 2 * 86400000;
-  const GAUGE_CITY = { SH001: 'Beledweyne', SH004: 'Jowhar', SH006: 'Afgooye', JB001: 'Luuq' };
+  // SWALIM gauges and the monitored city each one stands for. SH006 (Afgoi) is listed as not functional, so it never raises an alert.
+  const GAUGE_CITY = { SH001: 'Beledweyne', SH002: 'Buulobarde', SH004: 'Jowhar', SH006: 'Afgooye', JB001: 'Luuq', JB009: 'Doolow' };
   const valid = value => typeof value === 'number' && Number.isFinite(value);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const url = value => { try { const u = new URL(value); return /^https?:$/.test(u.protocol) ? u.href : null; } catch { return null; } };
@@ -117,7 +118,7 @@
         alerts.push({ id: `gauge:${s.code}:${s.observedAt}`, kind: 'source', basis: 'observed-gauge', cityNames: [name], severity: threshold[2],
           title: `${name} · river ${threshold[0]} threshold reached`, source: 'FAO SWALIM river observation', sourceKey: 'swalim', sourceUrl: url(s.sourceUrl), issuedAt: observedAt,
           badge: 'SWALIM observation · station threshold', scopeLabel: `${name} · ${s.name || s.code} gauge`,
-          timingLabel: `Observed ${dateOnly ? s.observedAt + ' (source gives date only)' : time(observedAt)} · retrieved ${time(stations.lastSuccess)}`,
+          timingLabel: dateOnly ? `SWALIM last update ${s.observedAt} (date only; not when the river was measured) · retrieved ${time(stations.lastSuccess)}` : `Observed ${time(observedAt)} · retrieved ${time(stations.lastSuccess)}`,
           description: `${s.name || s.code}: ${s.levelM.toFixed(2)} m; published ${threshold[0]} threshold ${threshold[1].toFixed(2)} m. A gauge threshold is a river risk indicator, not a measured flood footprint.`,
           guidance: 'Follow SWALIM and local authority updates. Review routes away from the river; confirm any inundation with current mapped or field evidence.',
           notificationKey: `gauge:${s.code}:${s.observedAt}:${threshold[0]}` });

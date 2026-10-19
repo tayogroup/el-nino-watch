@@ -496,8 +496,8 @@
   },
   "patterns": [
     {
-      "en": "Observed {0} (source gives date only)",
-      "so": "La cabbiray {0} (isha waxay bixisaa taariikh oo keliya)"
+      "en": "SWALIM last update {0} (date only; not when the river was measured)",
+      "so": "Cusboonaysiinta ugu dambaysay ee SWALIM {0} (taariikh keliya; ma aha waqtiga webiga la cabbiray)"
     },
     {
       "en": "Forecast day {0}",
@@ -622,8 +622,8 @@
       ]
     },
     {
-      "en": "Matched gauge: {0} · {1} m · observed {2}. Gauge stage is not flood depth at this city or map point.",
-      "so": "Cabbirka webiga ee ku habboon goobtan: {0} · {1} m · la cabbiray {2}. Heerka biyaha webigu ma aha qoto-dheeraanta fatahaadda ee magaaladan ama barta khariidadda."
+      "en": "Matched gauge: {0} · {1} m · SWALIM last update {2}. Gauge stage is not flood depth at this city or map point.",
+      "so": "Cabbirka webiga ee ku habboon goobtan: {0} · {1} m · cusboonaysiinta ugu dambaysay ee SWALIM {2}. Heerka biyaha webigu ma aha qoto-dheeraanta fatahaadda ee magaaladan ama barta khariidadda."
     },
     {
       "en": "{0} · OLD OBSERVATION",
@@ -947,8 +947,8 @@
       "so": "{0} · xarunta cabbirka webiga {1}"
     },
     {
-      "en": "Observed {0} (source gives date only) · retrieved {1}",
-      "so": "La cabbiray {0} (isha waxay bixisaa taariikh oo keliya) · xogta la helay {1}"
+      "en": "SWALIM last update {0} (date only; not when the river was measured) · retrieved {1}",
+      "so": "Cusboonaysiinta ugu dambaysay ee SWALIM {0} (taariikh keliya; ma aha waqtiga webiga la cabbiray) · xogta la helay {1}"
     },
     {
       "en": "Observed {0} · retrieved {1}",
@@ -1061,23 +1061,23 @@
       "so": "{0} · cabbirka webiga ee la arkay, kana duwan saadaasha."
     },
     {
-      "en": "Today’s measured level {0} m · source thresholds could not be applied",
-      "so": "Heerka biyaha ee maanta la cabbiray {0} m · xuduudaha isha lama dabaqi karin"
+      "en": "Level on SWALIM’s update today {0} m · source thresholds could not be applied",
+      "so": "Heerka biyaha ee cusboonaysiinta SWALIM ee maanta {0} m · xuduudaha isha lama dabaqi karin"
     },
     {
-      "en": "Today’s measured level {0} m · no usable source thresholds supplied",
-      "so": "Heerka biyaha ee maanta la cabbiray {0} m · lama bixin xuduudo isha ah oo la adeegsan karo"
+      "en": "Level on SWALIM’s update today {0} m · no usable source thresholds supplied",
+      "so": "Heerka biyaha ee cusboonaysiinta SWALIM ee maanta {0} m · lama bixin xuduudo isha ah oo la adeegsan karo"
     },
     {
-      "en": "Today’s measured level {0} m · source threshold reached: {1}",
-      "so": "Heerka biyaha ee maanta la cabbiray {0} m · xadka isha ee la gaaray: {1}",
+      "en": "Level on SWALIM’s update today {0} m · source threshold reached: {1}",
+      "so": "Heerka biyaha ee cusboonaysiinta SWALIM ee maanta {0} m · xadka isha ee la gaaray: {1}",
       "translate": [
         1
       ]
     },
     {
-      "en": "Today’s measured level {0} m · no supplied source threshold reached",
-      "so": "Heerka biyaha ee maanta la cabbiray {0} m · xuduudaha isha ee la bixiyey midna lama gaarin"
+      "en": "Level on SWALIM’s update today {0} m · no supplied source threshold reached",
+      "so": "Heerka biyaha ee cusboonaysiinta SWALIM ee maanta {0} m · xuduudaha isha ee la bixiyey midna lama gaarin"
     },
     {
       "en": "{0} Observed thresholds are not forecast river heights.",
@@ -1180,8 +1180,8 @@
       ]
     },
     {
-      "en": "Today’s measured level {0} m",
-      "so": "Heerka biyaha ee maanta la cabbiray {0} m"
+      "en": "Level on SWALIM’s update today {0} m",
+      "so": "Heerka biyaha ee cusboonaysiinta SWALIM ee maanta {0} m"
     },
     {
       "en": "{0} · current day, coverage incomplete",

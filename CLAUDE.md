@@ -300,6 +300,15 @@ both pages; add an `so` entry to their `FILMS` rows in `alerts.js` then, and a
 - Headlines are shown as published, labelled Government / UN / Humanitarian /
   Media. The bar never claims official status.
 
+**Evidence and map fixes** (Kahin, 2026-10-19, from Musa's research review; in effect once the owner merges the pull request):
+- Community uploads are cleaned before they are stored (`media-metadata.mjs`): GPS, device and owner details are removed from JPEG, PNG, WebP and GIF files and MP4 location boxes are blanked; the JPEG orientation is kept. A file that cannot be read safely is refused (415). `media-metadata.test.mjs`.
+- SWALIM's "Last Update" column is shown as "SWALIM last update … (date only; not when the river was measured)", never as an observation time. Gauge levels and thresholds show two decimals.
+- City gauges (`CITY_GAUGES` in `app.js`, `GAUGE_CITY` in `alerts.js`): Doolow uses JB009 Dollow and Buulobarde SH002 Bulo Burti (both working); Afgooye (SH006) and Bardera (JB002) are not functional, so their cards say the river there is unknown, not safe. The status bar shows how many SWALIM gauges have a reading.
+- The 14-day flood outlook CSV names its weather and river sources, the city point, the model river cell the flood API used, and the export time; formula-like text is neutralised without changing numbers.
+- City manager actions close only with evidence that the job is done and a reason (enforced in `mayor-store.js`); reopening keeps the earlier closure in the action's history, which the CSV export includes.
+- Map background: on the hosted site the street map (OpenStreetMap tiles, under its tile usage policy) is the default, with a Simple / Streets / Satellite switch on the map; pages opened from a file keep the bundled map, and the bundled map returns if tiles cannot load. To make the bundled map the default again, set `DEFAULT_BASEMAP` in `map.js` to `'reference'`.
+- `/sources` gives each data source's terms, checked 19 October 2026.
+
 **Visits and stats**: every page load is counted (not unique visitors),
 cookieless. The public `/stats` page stays hidden until 1,000 visits (lowered
 from 3,000 on 2026-10-16); until then it shows only the all-time total as

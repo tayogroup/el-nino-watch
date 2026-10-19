@@ -4,6 +4,7 @@
   const KEY = 'somalia-city-manager-v1';
   const ACTION_LIMIT = 200;
   const REVIEW_LIMIT = 1000;
+  const HISTORY_LIMIT = 20;
   const MAX_BYTES = 8 * 1024 * 1024;
   const actionStatuses = new Set(['todo', 'in-progress', 'blocked', 'done']);
   const priorities = new Set(['low', 'normal', 'high']);
@@ -61,6 +62,12 @@
     return value;
   }
   const now = () => new Date().toISOString();
+  // Each close and reopen is kept, so an earlier closing reason and its evidence survive a reopened action.
+  function savedHistory(value) {
+    if (value === undefined) return [];
+    if (!Array.isArray(value) || value.length > HISTORY_LIMIT) fail('Saved action history is invalid.');
+    return value.map(entry => { object(entry, ['status', 'at', 'evidence', 'reason'], 'Saved action history'); return {status: choice(entry.status, actionStatuses, 'action status'), at: timestamp(entry.at), evidence: text(entry.evidence, 'Evidence', 500, true), reason: text(entry.reason, 'Reason', 500, true)}; });
+  }
   function bucket(id) { return state.cities[id] || (state.cities[id] = {actions: [], reviews: []}); }
   function reviewCount() { return Object.values(state.cities).reduce((sum, city) => sum + city.reviews.length, 0); }
   function hasActionId(id) { return Object.values(state.cities).some(city => city.actions.some(action => action.id === id)); }
@@ -105,14 +112,14 @@
       if (totalReviews > REVIEW_LIMIT) fail('Saved dashboard contains too many reviews.');
       const reviewIds = new Set();
       const actions = value.actions.map(action => {
-        object(action, ['id', 'cityId', 'title', 'owner', 'dueDate', 'priority', 'status', 'createdAt', 'updatedAt'], 'Saved action');
+        object(action, ['id', 'cityId', 'title', 'owner', 'dueDate', 'priority', 'status', 'createdAt', 'updatedAt', 'evidence', 'closeReason', 'history'], 'Saved action');
         const actionId = recordId(action.id);
         if (ids.has(actionId) || action.cityId !== id) fail('Saved action identity is invalid.');
         ids.add(actionId);
         const createdAt = timestamp(action.createdAt);
         const updatedAt = timestamp(action.updatedAt);
         if (updatedAt < createdAt) fail('Saved action timestamps are invalid.');
-        return {id: actionId, cityId: id, title: text(action.title, 'Action', 160), owner: text(action.owner, 'Owner', 100, true), dueDate: dueDate(action.dueDate), priority: choice(action.priority, priorities, 'priority'), status: choice(action.status, actionStatuses, 'action status'), createdAt, updatedAt};
+        return {id: actionId, cityId: id, title: text(action.title, 'Action', 160), owner: text(action.owner, 'Owner', 100, true), dueDate: dueDate(action.dueDate), priority: choice(action.priority, priorities, 'priority'), status: choice(action.status, actionStatuses, 'action status'), createdAt, updatedAt, ...(owns(action, 'evidence') ? {evidence: text(action.evidence, 'Evidence', 500, true)} : {}), ...(owns(action, 'closeReason') ? {closeReason: text(action.closeReason, 'Reason', 500, true)} : {}), ...(owns(action, 'history') ? {history: savedHistory(action.history)} : {})};
       });
       const reviews = value.reviews.map(review => {
         object(review, ['reportId', 'status', 'updatedAt'], 'Saved report review');
@@ -151,7 +158,7 @@
       const fields = {title: text(input.title, 'Action', 160), owner: text(input.owner, 'Owner', 100, true), dueDate: dueDate(input.dueDate), priority: choice(owns(input, 'priority') ? input.priority : 'normal', priorities, 'priority')};
       if ((state.cities[id]?.actions.length || 0) >= ACTION_LIMIT) fail(`This city has reached its ${ACTION_LIMIT}-action limit. Remove completed actions to add more.`);
       const time = now();
-      const action = {id: newId(), cityId: id, ...fields, status: 'todo', createdAt: time, updatedAt: time};
+      const action = {id: newId(), cityId: id, ...fields, status: 'todo', createdAt: time, updatedAt: time, evidence: '', closeReason: '', history: []};
       bucket(id).actions.unshift(action);
       persist();
       return {...action};
@@ -159,7 +166,7 @@
     update(city, actionId, patch) {
       const id = cityId(city);
       recordId(actionId);
-      object(patch, ['title', 'owner', 'dueDate', 'priority', 'status'], 'Action update');
+      object(patch, ['title', 'owner', 'dueDate', 'priority', 'status', 'evidence', 'reason'], 'Action update');
       const action = state.cities[id]?.actions.find(item => item.id === actionId);
       if (!action) fail('This action was not found in the selected city.');
       const next = {...action};
@@ -169,6 +176,16 @@
       if (owns(patch, 'priority')) next.priority = choice(patch.priority, priorities, 'priority');
       if (owns(patch, 'status')) next.status = choice(patch.status, actionStatuses, 'action status');
       next.updatedAt = now();
+      // An action is only marked done with the evidence that the job was done and a reason. Delivery or a claim
+      // alone is not enough; the person closing says what they saw. Reopening keeps the earlier closure in history.
+      if (next.status === 'done' && action.status !== 'done') {
+        next.evidence = text(patch.evidence ?? '', 'Evidence that the job is done', 500);
+        next.closeReason = text(patch.reason ?? '', 'Reason for closing', 500);
+        next.history = [...(action.history || []), {status: 'done', at: next.updatedAt, evidence: next.evidence, reason: next.closeReason}].slice(-HISTORY_LIMIT);
+      } else if (action.status === 'done' && next.status !== 'done') {
+        next.history = [...(action.history || []), {status: next.status, at: next.updatedAt, evidence: '', reason: text(patch.reason, 'Reason for reopening', 500, true)}].slice(-HISTORY_LIMIT);
+        next.evidence = ''; next.closeReason = '';
+      } else if (owns(patch, 'evidence') || owns(patch, 'reason')) fail('Evidence and a reason are recorded only when an action is closed or reopened.');
       Object.assign(action, next);
       persist();
       return {...action};

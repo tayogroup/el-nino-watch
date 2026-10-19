@@ -40,7 +40,7 @@ function mapHarness(options = {}) {
   const document = { getElementById: id => elements.get(id) || null };
   const window = { L, document,REGIONAL_BASEMAP:options.basemapMissing?undefined:baseHolder.REGIONAL_BASEMAP };
   const context = vm.createContext({ window, document, L, console, URL, Date, Number, String, Object, Array, Set, Map,
-    location: { protocol: 'http:' }, AbortSignal: { timeout: () => undefined },
+    location: { protocol: options.protocol || 'http:' }, AbortSignal: { timeout: () => undefined },
     fetch: async url => { requests.push(String(url));
       if (url === 'hazard-sources.json') { if (options.configError) throw new Error(options.configError); return { ok: true, json: async () => structuredClone(config) }; }
       const point = options.pointResponse ? await options.pointResponse(String(url)) : { elevationM: 18, susceptibility: { label: 'High potential' }, historical: { intersects: false }, sourceNote: 'Fixture terrain screening; not observed flooding.' };
@@ -74,12 +74,27 @@ await test('map has 30 geographic city markers and marker click selects the matc
   assert.equal(h.map.zoom, 11);
 });
 
-await test('bundled geography draws without any blocked OSM or other basemap tile requests',async()=>{const h=mapHarness();await h.init();assert.equal(h.layers.filter(l=>l.type==='base').length,0);assert.equal(h.layers.filter(l=>l.type==='geography').length,2);assert.equal(h.snapshot().basemap.ready,true);assert.ok(h.layers.find(l=>l.type==='geography').data.features.some(f=>f.properties.ADMIN==='Somalia'));assert.match(h.get('basemap-status').textContent,/no street-level detail/);assert.ok(!mapSource.includes('tile.openstreetmap.org'));assert.ok(!h.requests.some(u=>u.includes('tile.openstreetmap.org')))});
+await test('pages opened from a file draw the bundled geography without any tile requests',async()=>{const h=mapHarness({protocol:'file:'});await h.init();assert.equal(h.layers.filter(l=>l.type==='base').length,0);assert.equal(h.layers.filter(l=>l.type==='geography').length,2);assert.equal(h.snapshot().basemap.ready,true);assert.equal(h.snapshot().basemap.mode,'regional-reference');assert.ok(h.layers.find(l=>l.type==='geography').data.features.some(f=>f.properties.ADMIN==='Somalia'));assert.match(h.get('basemap-status').textContent,/no street-level detail/);assert.ok(!h.requests.some(u=>u.includes('tile.openstreetmap.org')))});
+
+await test('hosted pages open on the street map and return to the bundled map when its tiles are blocked',async()=>{
+  const h=mapHarness();await h.init();
+  const streets=h.layers.find(l=>l.type==='base');
+  assert.ok(streets.url.startsWith('https://tile.openstreetmap.org/'));assert.ok(h.map.currentLayers.has(streets));
+  assert.equal(h.snapshot().basemap.mode,'street-context');assert.equal(h.get('basemap-select').value,'streets');
+  assert.equal(h.map.getPane('riverReferencePane').style.display,'none','OpenStreetMap rivers replace the generalised Natural Earth lines');
+  assert.match(streets.settings.attribution,/OpenStreetMap/);
+  streets.events.tileerror();
+  assert.equal(h.snapshot().basemap.mode,'regional-reference');assert.ok(!h.map.currentLayers.has(streets));
+  assert.equal(h.map.getPane('riverReferencePane').style.display,'');assert.match(h.get('map-imagery-status').textContent,/Street map unavailable/);
+  const loaded=mapHarness();await loaded.init();const tiles=loaded.layers.find(l=>l.type==='base');tiles.events.load();tiles.events.tileerror();
+  assert.equal(loaded.snapshot().basemap.mode,'street-context','one missing tile after the map has loaded does not drop the street map');
+  assert.match(loaded.get('map-imagery-status').textContent,/volunteers/);
+});
 
 await test('missing local geography leaves city navigation and hazard overlays usable',async()=>{const h=mapHarness({basemapMissing:true});await h.init();assert.equal(h.snapshot().basemap.ready,false);assert.equal(h.markerLayers.length,30);assert.ok(h.layers.some(l=>l.type==='wms'));assert.match(h.get('basemap-status').textContent,/unavailable/)});
 
 await test('satellite context is opt-in and returns to the regional reference when tiles fail', async () => {
-  const h = mapHarness(); await h.init();
+  const h = mapHarness({ protocol: 'file:' }); await h.init();
   assert.equal(h.layers.filter(layer => layer.type === 'base').length, 0);
   h.get('basemap-select').onchange({ target: { value: 'satellite' } });
   const imagery = h.layers.find(layer => layer.type === 'base');

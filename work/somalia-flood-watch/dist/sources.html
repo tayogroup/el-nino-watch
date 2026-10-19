@@ -42,6 +42,8 @@ h2{font-size:21px;margin:0;color:var(--navy)}
 .tag{display:inline-block;margin-left:6px;padding:0 8px;border-radius:999px;background:var(--soft);color:var(--blue);font-size:11px;font-weight:700;line-height:1.7;vertical-align:1px}
 .detail{min-width:0;display:grid;gap:8px}
 .use{margin:0}
+.terms{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.terms b{color:var(--ink)}
 .links{list-style:none;margin:0;padding:0;display:grid;gap:4px}
 .links li{display:flex;gap:8px;align-items:baseline;min-width:0}
 .kind{flex:none;min-width:7.5em;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
@@ -95,7 +97,7 @@ footer p{margin:0}
       <a class="no-print" href="/" data-keep-language>← Back to El Nino Watch</a>
       <a class="no-print" href="/el-nino-watch-sources.pdf" download>Download PDF (English)</a>
       <a class="no-print" href="#privacy">Privacy notice ↓</a>
-      <span class="meta">Checked against the app on 17 October 2026.</span>
+      <span class="meta">Checked against the app on 19 October 2026.</span>
     </div>
   </div>
 
@@ -111,9 +113,11 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>Open-Meteo Weather Forecast API</span><span class="org" data-i18n-skip>Open-Meteo</span></div>
         <div class="detail">
           <p class="use">Daily and hourly rainfall forecasts for all 30 cities. The app's server fetches them once and shares them with every visitor. These are computer model estimates, not station measurements.</p>
+          <p class="terms"><b>Terms:</b> Data under CC BY 4.0. The free API is for non-commercial use only, under 10,000 calls a day; commercial use needs a paid plan.</p>
           <ul class="links">
             <li><span class="kind">About</span><a data-i18n-skip href="https://open-meteo.com/en/docs" target="_blank" rel="noopener">https://open-meteo.com/en/docs</a></li>
             <li><span class="kind" data-i18n-skip>API</span><a data-i18n-skip href="https://api.open-meteo.com/v1/forecast" target="_blank" rel="noopener">https://api.open-meteo.com/v1/forecast</a></li>
+            <li><span class="kind">Terms</span><a data-i18n-skip href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">https://open-meteo.com/en/terms</a></li>
           </ul>
         </div>
       </li>
@@ -121,9 +125,11 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>Open-Meteo Flood API</span><span class="org" data-i18n-skip>GloFAS river discharge, via Open-Meteo</span></div>
         <div class="detail">
           <p class="use">River discharge forecast for each city.</p>
+          <p class="terms"><b>Terms:</b> GloFAS data from the Copernicus Emergency Management Service: free, full and open access with the source credited, and no warranty. Open-Meteo’s terms above also apply.</p>
           <ul class="links">
             <li><span class="kind">About</span><a data-i18n-skip href="https://open-meteo.com/en/docs/flood-api" target="_blank" rel="noopener">https://open-meteo.com/en/docs/flood-api</a></li>
             <li><span class="kind" data-i18n-skip>API</span><a data-i18n-skip href="https://flood-api.open-meteo.com/v1/flood" target="_blank" rel="noopener">https://flood-api.open-meteo.com/v1/flood</a></li>
+            <li><span class="kind">Terms</span><a data-i18n-skip href="https://ewds.climate.copernicus.eu/licences/cems-floods" target="_blank" rel="noopener">https://ewds.climate.copernicus.eu/licences/cems-floods</a></li>
           </ul>
         </div>
       </li>
@@ -131,11 +137,13 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>ICPAC Weekly Exceptional Rainfall Forecast</span><span class="tag">Also alerts</span><span class="org" data-i18n-skip>IGAD Climate Prediction and Applications Centre</span></div>
         <div class="detail">
           <p class="use">Heavy, very heavy and extremely heavy rainfall forecasts for the week (above the 90th, 95th and 99th percentiles for that week of the year). Drives the Alerts tab and the rainfall layers on the flood map.</p>
+          <p class="terms"><b>Terms:</b> ICPAC does not state a reuse licence for these products. It takes data requests through its data request page.</p>
           <ul class="links">
             <li><span class="kind">About</span><a data-i18n-skip href="https://www.icpac.net/weekly-forecast/" target="_blank" rel="noopener">https://www.icpac.net/weekly-forecast/</a></li>
             <li><span class="kind">Portal</span><a data-i18n-skip href="https://eahazardswatch.icpac.net/" target="_blank" rel="noopener">https://eahazardswatch.icpac.net/</a></li>
             <li><span class="kind">Data</span><a data-i18n-skip href="https://eahazardswatch.icpac.net/api/datasets/" target="_blank" rel="noopener">https://eahazardswatch.icpac.net/api/datasets/</a></li>
             <li><span class="kind">Map layers</span><a data-i18n-skip href="https://eahazardswatch.icpac.net/mapserver/" target="_blank" rel="noopener">https://eahazardswatch.icpac.net/mapserver/</a></li>
+            <li><span class="kind">Terms</span><a data-i18n-skip href="https://www.icpac.net/data-request/" target="_blank" rel="noopener">https://www.icpac.net/data-request/</a></li>
           </ul>
         </div>
       </li>
@@ -143,8 +151,10 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>ENSO Diagnostic Discussion</span><span class="org" data-i18n-skip>NOAA Climate Prediction Center</span></div>
         <div class="detail">
           <p class="use">The current El Niño status and outlook.</p>
+          <p class="terms"><b>Terms:</b> No licence is stated on the CPC page. NOAA treats information on its servers as public domain unless marked otherwise, and asks to be credited.</p>
           <ul class="links">
             <li><span class="kind">About</span><a data-i18n-skip href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml" target="_blank" rel="noopener">https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml</a></li>
+            <li><span class="kind">Terms</span><a data-i18n-skip href="https://gml.noaa.gov/about/disclaimer.html" target="_blank" rel="noopener">https://gml.noaa.gov/about/disclaimer.html</a></li>
           </ul>
         </div>
       </li>
@@ -152,8 +162,10 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>Weekly Niño sea-surface temperature index</span><span class="org" data-i18n-skip>NOAA Climate Prediction Center</span></div>
         <div class="detail">
           <p class="use">Weekly El Niño ocean temperatures.</p>
+          <p class="terms"><b>Terms:</b> No licence is stated on the CPC page. NOAA treats information on its servers as public domain unless marked otherwise, and asks to be credited.</p>
           <ul class="links">
             <li><span class="kind">Data</span><a data-i18n-skip href="https://www.cpc.ncep.noaa.gov/data/indices/wksst9120.for" target="_blank" rel="noopener">https://www.cpc.ncep.noaa.gov/data/indices/wksst9120.for</a></li>
+            <li><span class="kind">Terms</span><a data-i18n-skip href="https://gml.noaa.gov/about/disclaimer.html" target="_blank" rel="noopener">https://gml.noaa.gov/about/disclaimer.html</a></li>
           </ul>
         </div>
       </li>
@@ -171,6 +183,7 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>Somali National Hydrological Services</span><span class="tag">Official</span><span class="org" data-i18n-skip>Ministry of Energy and Water Resources (MOEWR)</span></div>
         <div class="detail">
           <p class="use">The official national flood forecast: each region's daily flood level (advisory, watch or warning) for the active rainy season, with anticipatory-action pre-activation and activation. Shown as official alerts for the cities in each region.</p>
+          <p class="terms"><b>Terms:</b> Used with the Ministry’s permission.</p>
           <ul class="links">
             <li><span class="kind">Portal</span><a data-i18n-skip href="https://hydro.tekhub.so/" target="_blank" rel="noopener">https://hydro.tekhub.so/</a></li>
           </ul>
@@ -180,6 +193,7 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>Google Flood Hub</span><span class="org" data-i18n-skip>Google Research · Flood Forecasting API</span></div>
         <div class="detail">
           <p class="use">River flood forecasts at river gauges, from Google's AI model. A gauge forecast at Flood Hub's Warning, Danger or Extreme level within 25 km of a monitored city becomes an alert for that city. A model forecast, not an official warning. Used once Google approves the app's access to the API; the data is under the CC BY 4.0 licence.</p>
+          <p class="terms"><b>Terms:</b> Data under CC BY 4.0.</p>
           <ul class="links">
             <li><span class="kind">Portal</span><a data-i18n-skip href="https://sites.research.google/floods/" target="_blank" rel="noopener">https://sites.research.google/floods/</a></li>
             <li><span class="kind" data-i18n-skip>API</span><a data-i18n-skip href="https://floodforecasting.googleapis.com/v1/" target="_blank" rel="noopener">https://floodforecasting.googleapis.com/v1/</a></li>
@@ -191,10 +205,12 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>GDACS</span><span class="org" data-i18n-skip>Global Disaster Alert and Coordination System</span></div>
         <div class="detail">
           <p class="use">Flood and other disaster events affecting Somalia, shown as event monitoring.</p>
+          <p class="terms"><b>Terms:</b> Provided as is, without warranty; GDACS says its information is purely indicative and not for decision-making. No reuse licence is stated.</p>
           <ul class="links">
             <li><span class="kind">About</span><a data-i18n-skip href="https://www.gdacs.org/" target="_blank" rel="noopener">https://www.gdacs.org/</a></li>
             <li><span class="kind" data-i18n-skip>API</span><a data-i18n-skip href="https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH" target="_blank" rel="noopener">https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH</a></li>
             <li><span class="kind">Guide</span><a data-i18n-skip href="https://gdacs.org/Documents/2025/GDACS_API_quickstart_v1.pdf" target="_blank" rel="noopener">https://gdacs.org/Documents/2025/GDACS_API_quickstart_v1.pdf</a></li>
+            <li><span class="kind">Terms</span><a data-i18n-skip href="https://gdacs.org/About/termofuse.aspx" target="_blank" rel="noopener">https://gdacs.org/About/termofuse.aspx</a></li>
           </ul>
         </div>
       </li>
@@ -218,6 +234,7 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>SWALIM river stations</span><span class="org" data-i18n-skip>FAO Somalia Water and Land Information Management</span></div>
         <div class="detail">
           <p class="use">Observed river levels on the Juba and Shabelle, compared with flood thresholds.</p>
+          <p class="terms"><b>Terms:</b> SWALIM does not state a reuse licence: most records in its data catalogue list none. Ask FAO SWALIM before reusing the data elsewhere.</p>
           <ul class="links">
             <li><span class="kind">Stations</span><a data-i18n-skip href="https://snrfa.faoswalim.org/stations/" target="_blank" rel="noopener">https://snrfa.faoswalim.org/stations/</a></li>
             <li><span class="kind" data-i18n-skip>FRRIMS</span><a data-i18n-skip href="https://frrims.faoswalim.org/" target="_blank" rel="noopener">https://frrims.faoswalim.org/</a></li>
@@ -228,9 +245,11 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>Global Flood Monitoring (GFM)</span><span class="org" data-i18n-skip>Copernicus Emergency Management Service</span></div>
         <div class="detail">
           <p class="use">Flood extent mapped from Sentinel-1 radar.</p>
+          <p class="terms"><b>Terms:</b> Copernicus Emergency Management Service terms: free and open access, commercial use included, with the service credited and no warranty.</p>
           <ul class="links">
             <li><span class="kind">About</span><a data-i18n-skip href="https://extwiki.eodc.eu/GFM/PUM" target="_blank" rel="noopener">https://extwiki.eodc.eu/GFM/PUM</a></li>
             <li><span class="kind">Map layers</span><a data-i18n-skip href="https://geoserver.gfm.eodc.eu/geoserver/gfm/wms" target="_blank" rel="noopener">https://geoserver.gfm.eodc.eu/geoserver/gfm/wms</a></li>
+            <li><span class="kind">Terms</span><a data-i18n-skip href="https://extwiki.eodc.eu/GFM/Terms_and_conditions" target="_blank" rel="noopener">https://extwiki.eodc.eu/GFM/Terms_and_conditions</a></li>
           </ul>
         </div>
       </li>
@@ -238,9 +257,11 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>Global Flood Product</span><span class="org" data-i18n-skip>NASA, served through NASA GIBS</span></div>
         <div class="detail">
           <p class="use">3-day flood map layers from the MODIS and VIIRS satellites.</p>
+          <p class="terms"><b>Terms:</b> NASA Earth science data carry no restrictions on use (data from NASA-led missions are CC0); NASA asks to be credited.</p>
           <ul class="links">
             <li><span class="kind">About</span><a data-i18n-skip href="https://www.earthdata.nasa.gov/global-flood-product" target="_blank" rel="noopener">https://www.earthdata.nasa.gov/global-flood-product</a></li>
             <li><span class="kind">Map layers</span><a data-i18n-skip href="https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml" target="_blank" rel="noopener">https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml</a></li>
+            <li><span class="kind">Terms</span><a data-i18n-skip href="https://www.earthdata.nasa.gov/learn/use-data/data-use-policy" target="_blank" rel="noopener">https://www.earthdata.nasa.gov/learn/use-data/data-use-policy</a></li>
           </ul>
         </div>
       </li>
@@ -248,10 +269,12 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>Copernicus Data Space Ecosystem</span><span class="org" data-i18n-skip>Sentinel-1 and Sentinel-2 imagery</span></div>
         <div class="detail">
           <p class="use">The latest satellite pass over each city, with a link to view the image.</p>
+          <p class="terms"><b>Terms:</b> Copernicus Sentinel data: free, full and open access under EU law, without warranty, with Copernicus credited.</p>
           <ul class="links">
             <li><span class="kind">Browser</span><a data-i18n-skip href="https://browser.dataspace.copernicus.eu/" target="_blank" rel="noopener">https://browser.dataspace.copernicus.eu/</a></li>
             <li><span class="kind">Catalogue</span><a data-i18n-skip href="https://stac.dataspace.copernicus.eu/v1/" target="_blank" rel="noopener">https://stac.dataspace.copernicus.eu/v1/</a></li>
             <li><span class="kind">Guide</span><a data-i18n-skip href="https://documentation.dataspace.copernicus.eu/APIs/STAC.html" target="_blank" rel="noopener">https://documentation.dataspace.copernicus.eu/APIs/STAC.html</a></li>
+            <li><span class="kind">Terms</span><a data-i18n-skip href="https://sentinels.copernicus.eu/web/sentinel/-/free-access-to-copernicus-sentinel-satellite-data" target="_blank" rel="noopener">https://sentinels.copernicus.eu/web/sentinel/-/free-access-to-copernicus-sentinel-satellite-data</a></li>
           </ul>
         </div>
       </li>
@@ -259,6 +282,7 @@ footer p{margin:0}
         <div class="name"><span data-i18n-skip>SWALIM flood maps</span><span class="org" data-i18n-skip>FAO SWALIM spatial data catalogue</span></div>
         <div class="detail">
           <p class="use">Reference layers: terrain flood susceptibility (30 m), past flood areas 2013–2023, Shabelle riverbank breakages (August 2026 assessment) and Juba riverbank breakages (March 2026 assessment).</p>
+          <p class="terms"><b>Terms:</b> SWALIM does not state a reuse licence: most records in its data catalogue list none. Ask FAO SWALIM before reusing the data elsewhere.</p>
           <ul class="links">
             <li><span class="kind">Susceptibility</span><a data-i18n-skip href="https://spatial.faoswalim.org/catalogue/#/dataset/609" target="_blank" rel="noopener">https://spatial.faoswalim.org/catalogue/#/dataset/609</a></li>
             <li><span class="kind">Past floods</span><a data-i18n-skip href="https://spatial.faoswalim.org/catalogue/#/dataset/295" target="_blank" rel="noopener">https://spatial.faoswalim.org/catalogue/#/dataset/295</a></li>
@@ -438,13 +462,14 @@ footer p{margin:0}
       <li><b>Community reports</b><p>Reports and comments are public: what you write, the name or alias you give (or Anonymous), any location you add, and photos or videos exactly as uploaded, which may contain location data. Your internet address is held in memory for up to 10 minutes to limit abuse, and is never saved. Only the browser that sent a report can delete it, using a receipt kept in that browser.</p></li>
       <li><b>WhatsApp alerts</b><p>If you sign up, your WhatsApp number, the cities you follow, your language and whether you asked for the audio bulletin are kept only to send those messages. Messages go through Meta's WhatsApp service. Replying STOP deletes them.</p></li>
       <li><b>Saved in your browser</b><p>Your language, home city, added cities, report receipts, alerts already shown, city manager review stages and private notes are saved in your own browser, not sent to El Nino Watch. Clearing the site's data in your browser removes them.</p></li>
-      <li><b>Other services</b><p>Forecasts, alerts and news are fetched by the El Nino Watch server, so those services do not see you. The audio bulletins are written from those sources and voiced by Google's Gemini service; nothing about you is sent to it. The flood map's layers and the place-name search for added cities load directly from their publishers, who see your internet address as any website does. Share buttons contact X or Facebook only when you tap them. The site is hosted on bunny.net, which handles every request as any web host does.</p></li>
+      <li><b>Other services</b><p>Forecasts, alerts and news are fetched by the El Nino Watch server, so those services do not see you. The audio bulletins are written from those sources and voiced by Google's Gemini service; nothing about you is sent to it. The flood map's background (OpenStreetMap or Esri), its layers and the place-name search for added cities load directly from their publishers, who see your internet address as any website does. Share buttons contact X or Facebook only when you tap them. The site is hosted on bunny.net, which handles every request as any web host does.</p></li>
     </ul>
     <p class="section-note">Questions about privacy: <a href="mailto:contact@mandekconsulting.com" data-i18n-skip>contact@mandekconsulting.com</a></p>
   </section>
 
   <footer>
-    <p>Not listed: the base map and elevation services (Natural Earth, Esri World Imagery, Open-Meteo Elevation and place-name search), which draw the map but do not forecast or alert.</p>
+    <p>Not listed: the base map and elevation services (Natural Earth, OpenStreetMap, Esri World Imagery, Open-Meteo Elevation and place-name search), which draw the map but do not forecast or alert.</p>
+    <p>Map backgrounds: Natural Earth is in the public domain. OpenStreetMap data are © OpenStreetMap contributors under the Open Database License, and its map tiles are used under the OpenStreetMap Foundation’s tile usage policy. Esri World Imagery is used under Esri’s terms.</p>
     <p>Community reports in the app come from residents and are unverified.</p>
   </footer>
 </main>

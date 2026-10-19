@@ -44,7 +44,7 @@ function harness({saved, values = new Map(), crypto = {randomUUID}, readFails = 
   const updated = h.store.update('galkayo', action.id, {status: 'in-progress', owner: null, dueDate: null, priority: 'normal'});
   check(plain({status: updated.status, owner: updated.owner, dueDate: updated.dueDate, priority: updated.priority}), {status: 'in-progress', owner: '', dueDate: '', priority: 'normal'});
   check(updated.createdAt, action.createdAt);
-  for (const status of ['blocked', 'done', 'todo']) check(h.store.update('galkayo', action.id, {status}).status, status);
+  for (const status of ['blocked', 'done', 'todo']) check(h.store.update('galkayo', action.id, status === 'done' ? {status, evidence: 'Checked on site', reason: 'Work finished'} : {status}).status, status);
   const reportId = '01856394-79e5-4812-9b8a-74d1bf1361da';
   check(h.store.reviewStatus('galkayo', reportId), 'unreviewed');
   for (const status of ['checking', 'checked', 'escalated', 'unreviewed']) {
@@ -161,7 +161,8 @@ function harness({saved, values = new Map(), crypto = {randomUUID}, readFails = 
     check(h.store.update(city, action.id, {status: 'in-progress'}).status, 'in-progress', 'replacement cities support normal actions');
     check(h.store.reviewStatus(city, `archived-${retired[replacements.indexOf(city)]}-report`), 'unreviewed', 'archived reviews are not reassigned');
   }
-  h.store.update('galkayo', 'existing-galkayo-action', {status: 'done'});
+  reject(() => h.store.update('galkayo', 'existing-galkayo-action', {status: 'done'}), /Evidence that the job is done/);
+  h.store.update('galkayo', 'existing-galkayo-action', {status: 'done', evidence: 'Drain inspected on site; water flowing away', reason: 'Inspection done'});
   const persisted = JSON.parse(h.values.get(KEY));
   for (const city of retired) check(persisted.cities[city], saved.cities[city], 'adding or updating active actions preserves each original archived bucket');
   const reload = harness({values: h.values});
@@ -196,6 +197,25 @@ function harness({saved, values = new Map(), crypto = {randomUUID}, readFails = 
   check(harness({values: noCrypto.values}).store.list('galkayo').length, 200, 'bounded records remain valid after reload');
   const throwingCrypto = harness({crypto: {randomUUID() { throw new Error('Unavailable'); }}});
   check(throwingCrypto.store.add('galkayo', {title: 'Fallback action'}).id.startsWith('local-'), true, 'crypto failures still allow a local action');
+}
+
+{
+  // Closing needs evidence and a reason; reopening keeps the earlier closure in history.
+  const h = harness();
+  const action = h.store.add('jowhar', {title: 'Repair the water point pump'});
+  reject(() => h.store.update('jowhar', action.id, {status: 'done'}), /Evidence that the job is done must contain 1 to 500/);
+  reject(() => h.store.update('jowhar', action.id, {status: 'done', evidence: 'Materials delivered'}), /Reason for closing must contain 1 to 500/);
+  reject(() => h.store.update('jowhar', action.id, {status: 'done', evidence: '   ', reason: 'x'}), /Evidence that the job is done/);
+  check(h.store.list('jowhar')[0].status, 'todo', 'a refused close changes nothing');
+  reject(() => h.store.update('jowhar', action.id, {status: 'in-progress', evidence: 'x'}), /only when an action is closed or reopened/);
+  const closed = h.store.update('jowhar', action.id, {status: 'done', evidence: 'Water flowing at the pump on 20 Oct', reason: 'Pump repaired and tested'});
+  check(plain({status: closed.status, evidence: closed.evidence, closeReason: closed.closeReason, history: closed.history.length}), {status: 'done', evidence: 'Water flowing at the pump on 20 Oct', closeReason: 'Pump repaired and tested', history: 1});
+  const reopened = h.store.update('jowhar', action.id, {status: 'in-progress', reason: 'Pump failed again'});
+  check(plain({status: reopened.status, evidence: reopened.evidence, history: reopened.history.map(entry => [entry.status, entry.reason, entry.evidence])}), {status: 'in-progress', evidence: '', history: [['done', 'Pump repaired and tested', 'Water flowing at the pump on 20 Oct'], ['in-progress', 'Pump failed again', '']]}, 'the earlier closure survives a reopen');
+  const reload = harness({values: h.values});
+  check(reload.store.list('jowhar')[0].history.length, 2, 'history is saved on the device');
+  const tampered = JSON.parse(h.values.get(KEY)); tampered.cities.jowhar.actions[0].history[0].note = 'x';
+  check(harness({saved: JSON.stringify(tampered)}).store.storageStatus().error !== null, true, 'unknown history fields are refused');
 }
 
 console.log(`City manager local store passed ${checks} checks.`);

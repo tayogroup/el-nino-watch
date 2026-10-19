@@ -353,7 +353,21 @@
     "Weekly regional model forecast · not an official warning": "Saadaal moodeel gobol oo toddobaadle ah · ma aha digniin rasmi ah",
     "Review stage": "Marxaladda dib-u-eegista",
     "All stages": "Dhammaan marxaladaha",
-    "No reports at this review stage.": "Ma jiraan warbixinno marxaladdan dib-u-eegista ah."
+    "No reports at this review stage.": "Ma jiraan warbixinno marxaladdan dib-u-eegista ah.",
+    "Close this action": "Xir hawshan",
+    "Delivery or a message saying it is fixed is not enough. Record what shows the job is actually done.": "Keenista qalabka ama fariin sheegaysa in la hagaajiyey kuma filna. Qor waxa muujinaya in shaqada runtii la dhammaystiray.",
+    "What shows it is done": "Maxaa muujinaya in la dhammaystiray",
+    "Reason for closing": "Sababta loo xirayo",
+    "Close action": "Xir hawsha",
+    "Keep open": "Ha furnaato",
+    "Evidence:": "Caddayn:",
+    "Reason:": "Sabab:",
+    "For example: water point checked on 20 Oct, water flowing": "Tusaale: barta biyaha waa la hubiyey 20 Oct, biyuhu way socdaan",
+    "Action closed with its evidence and reason, saved on this device.": "Hawsha waa la xiray iyadoo leh caddayn iyo sabab, waxaana lagu kaydiyey qalabkan.",
+    "Evidence and a reason are recorded only when an action is closed or reopened.": "Caddaynta iyo sababta waxaa la diiwaangeliyaa oo keliya marka hawl la xirayo ama dib loo furayo.",
+    "Evidence that the job is done must contain 1 to 500 characters.": "Caddaynta in shaqada la dhammaystiray waa inay ka kooban tahay 1 ilaa 500 xaraf.",
+    "Reason for closing must contain 1 to 500 characters.": "Sababta loo xirayo waa inay ka kooban tahay 1 ilaa 500 xaraf.",
+    "Reason for reopening must contain at most 500 characters.": "Sababta dib loogu furayo waa inay ka kooban tahay ugu badnaan 500 xaraf."
   },
   "patterns": [
     {
@@ -678,6 +692,14 @@
       "translate": [
         0
       ]
+    },
+    {
+      "en": "Closed before and reopened {0} time; earlier reasons are in the CSV export.",
+      "so": "Hore ayaa loo xiray oo dib loo furay {0} jeer; sababihii hore waxay ku jiraan faylka CSV ee la soo dejiyo."
+    },
+    {
+      "en": "Closed before and reopened {0} times; earlier reasons are in the CSV export.",
+      "so": "Hore ayaa loo xiray oo dib loo furay {0} jeer; sababihii hore waxay ku jiraan faylka CSV ee la soo dejiyo."
     }
   ]
 }

@@ -119,7 +119,7 @@ test('dynamic patterns preserve people, filenames, IDs and numbers while transla
   assert.match(t('Open report · 17 media'),/17/);assert.ok(!t('Open report · 17 media').includes(' media'));
   assert.equal(t('Report ID_A_101'),'Warbixinta ID_A_101');
   const title='Edit 14 October 2026';assert.equal(t(title),'Wax ka beddel 14 October 2026');
-  const gauge=t('Matched gauge: 14 Oct 2026 · 3.50 m · observed 14 Oct 2026. Gauge stage is not flood depth at this city or map point.');
+  const gauge=t('Matched gauge: 14 Oct 2026 · 3.50 m · SWALIM last update 14 Oct 2026. Gauge stage is not flood depth at this city or map point.');
   assert.ok(gauge.includes('14 Oct 2026 · 3.50 m'),'Date-looking station name remains original');assert.ok(gauge.includes('14 Oktoobar 2026'),'Generated observation date is localized');
   assert.equal(t('6.76970, 47.43080'),'6.76970, 47.43080');assert.equal(t('3.50 m³/s'),'3.50 m³/s');assert.equal(t('—'),'—');
 });

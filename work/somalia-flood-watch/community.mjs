@@ -2,6 +2,7 @@ import path from 'node:path';
 import {mkdir, readFile, writeFile, rename, unlink, stat} from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
 import {randomUUID, randomBytes, createHash, timingSafeEqual} from 'node:crypto';
+import {stripMetadata, MediaMetadataError} from './media-metadata.mjs';
 
 const MAX_MEDIA = 50 * 1024 * 1024;
 const MAX_BODY = MAX_MEDIA + 128 * 1024;
@@ -137,8 +138,12 @@ function multipart(body, contentType) {
       const type = (headers['content-type'] || '').toLowerCase();
       if (!MIME[type]) fail(415, 'Supported uploads: JPEG, PNG, WebP, GIF, MP4 and WebM.');
       if (!validMagic(bytes, type)) fail(415, 'Upload contents do not match the declared image or video type.');
+      // Remove the GPS position, device and owner details phones store inside photos and videos.
+      let clean;
+      try { clean = stripMetadata(bytes, type); }
+      catch (error) { if (error instanceof MediaMetadataError) fail(415, 'This photo or video could not be read safely. Try another file.'); throw error; }
       const name = path.basename(fields.filename.replaceAll('\\', '/')).replace(/[\u0000-\u001f\u007f]/g, '').slice(0, 120) || `upload.${MIME[type]}`;
-      files.push({bytes, type, name});
+      files.push({bytes:clean, type, name});
     } else fail(400, 'Unknown multipart field. Use payload and media.');
     position = end + delimiter.length;
     if (body.subarray(position, position + 2).toString() === '--') {

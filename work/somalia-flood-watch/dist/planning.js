@@ -62,7 +62,7 @@
       `Forecast retrieved: ${input.forecastRetrievedAt || 'retrieval timestamp unavailable'}.`
     ];
     if (station && finite(station.levelM)) {
-      evidence.push(`Matched gauge: ${station.name || 'name unavailable'} · ${number(station.levelM)} m · observed ${observedAt || 'date unavailable'}${ageDays !== null && ageDays > 2 ? ' · OLD OBSERVATION' : ''}${ageDays !== null && ageDays < 0 ? ' · FUTURE-DATED OBSERVATION' : ''}${input.stationFeedStale ? ' · FEED STALE / last known response' : ''}. Gauge stage is not flood depth at this city or map point.`);
+      evidence.push(`Matched gauge: ${station.name || 'name unavailable'} · ${number(station.levelM)} m · SWALIM last update ${observedAt || 'date unavailable'}${ageDays !== null && ageDays > 2 ? ' · OLD OBSERVATION' : ''}${ageDays !== null && ageDays < 0 ? ' · FUTURE-DATED OBSERVATION' : ''}${input.stationFeedStale ? ' · FEED STALE / last known response' : ''}. Gauge stage is not flood depth at this city or map point.`);
       if (stationReliableHigh) evidence.push(`The recent gauge reading is at or above the source high-risk threshold (${number(station.highM)} m). Contact local authorities to verify the latest situation; this app does not issue a flood warning.`);
       else if (!stationReliable) evidence.push('Gauge freshness is insufficient to confirm present river conditions. Obtain a current dated reading and local advice.');
     } else evidence.push('Matched river observation: unavailable. River-rise conditions cannot be confirmed from this evidence.');

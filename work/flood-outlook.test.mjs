@@ -103,3 +103,14 @@ test('renderer and binding use date callbacks and enable local dialog selection 
   const local={innerHTML:''},model=h.api.build(input());h.api.bind(local,model);local.onclick({target:{closest:selector=>selector==='[data-flood-day]'?dayNode:null}});
   assert.equal(model.selectedDate,dates[8]);assert.match(local.innerHTML,/Selected forecast day 9 · lower confidence/);assert.match(local.innerHTML,new RegExp('data-flood-day="'+dates[8]+'" aria-pressed="true"'));
 });
+
+test('CSV rows name their sources, the requested point, the model river cell and the export time',()=>{
+  const model=api.build(input({cityName:'=HYPERLINK("x")',cityPoint:{lat:2.7809,lon:45.5005},riverCell:{lat:2.775,lon:45.525},weatherRows:dates.map((date,index)=>({date,rain:1,probability:10,maxTemperature:30})),riverRows:dates.map((date,index)=>({date,discharge:100-index}))}));
+  const text=api.csv(model),rows=text.split('\r\n'),header=rows[0].split(','),cells=rows[2].split('","');
+  for (const field of ['weather_source','river_source','city_lat','city_lon','river_model_cell_lat','river_model_cell_lon','exported_at']) assert.ok(header.includes(`"${field}"`),field);
+  assert.match(text,/Open-Meteo forecast API/);assert.match(text,/GloFAS river discharge model via the Open-Meteo flood API/);assert.match(text,/not a gauge reading/);
+  assert.match(rows[1],/"2\.7809","45\.5005","2\.775","45\.525","2026-10-13T09:00:00\.000Z"$/);
+  assert.match(rows[1],/^"'=HYPERLINK\(""x""\)"/,'formula-like text is neutralised');
+  assert.ok(cells.includes('-1'),'a negative river change stays a plain number');
+  const unknownCell=api.csv(api.build(input({})));assert.match(unknownCell.split('\r\n')[1],/"","","","","2026-10-13T09:00:00\.000Z"$/,'missing points stay blank, never zero');
+});

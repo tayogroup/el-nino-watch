@@ -33,3 +33,13 @@ body.mayor-view main:has(.mayor-active-tool)>.site-footer{order:2}
 /* Polish: on the narrowest phones the four action counts sit two by two, so long Somali words
    (La dhammaystiray) fit whole. */
 @media(max-width:400px){.mayor-workflow-counts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Closing an action asks for evidence and a reason; the note keeps them visible on the closed action. */
+.mayor-close-form{display:grid;gap:10px;margin-top:12px;padding:12px 14px;border:1px solid var(--color-border-strong);border-radius:var(--radius-md);background:var(--color-surface-sunken)}
+.mayor-close-form p{margin:0;font-size:var(--text-sm);color:var(--color-text)}
+.mayor-close-form label{display:grid;gap:4px;font-size:var(--text-sm);font-weight:600;color:var(--color-text-strong)}
+.mayor-close-form textarea{width:100%;min-width:0;font:inherit;font-weight:400;padding:8px 10px;border:1px solid var(--color-border-strong);border-radius:var(--radius-sm);background:var(--color-surface);color:var(--color-text)}
+.mayor-close-buttons{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mayor-closed-note{margin:8px 0 0;font-size:var(--text-sm);color:var(--color-text-muted);overflow-wrap:anywhere}
+.mayor-closed-note b{color:var(--color-text-strong)}
+.mayor-close-error{margin:0;font-size:var(--text-sm);font-weight:600;color:var(--red-700)}
+.mayor-close-error:empty{display:none}
