@@ -127,6 +127,10 @@
 .field-video.wide.playing{grid-column:1/-1}
 .field-video.wide video{aspect-ratio:16/9}
 .field-video.wide.playing video{max-width:720px}
+/* A square clip (.square) plays across the row too, 1:1. */
+.field-video.square.playing{grid-column:1/-1}
+.field-video.square video{aspect-ratio:1/1}
+.field-video.square.playing video{max-width:480px}
 .field-video video{display:block;width:100%;height:auto;aspect-ratio:9/16;border-radius:12px;background:#082448;object-fit:cover}
 .field-thumb:focus-visible{outline:3px solid #1473cf;outline-offset:2px}
 .field-video[hidden]{display:none}
