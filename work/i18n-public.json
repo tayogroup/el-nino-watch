@@ -786,8 +786,6 @@
     "Audio bulletin, English": "Warbixinta codka, Ingiriisi",
     "FROM THE FIELD · UNVERIFIED VIDEOS": "GOOB-JOOG · MUUQAALLO AAN LA XAQIIJIN",
     "Rain and flooding, October 2026": "Roob iyo fatahaad, Oktoobar 2026",
-    "Cabudwaaq, Galgaduud: streets flooded": "Cabudwaaq, Galgaduud: waddooyinka oo biyo fatahaad ah",
-    "16 October 2026. Flood water fills the streets and runs through the lanes between houses. Do not walk or drive through moving water.": "16 Oktoobar 2026. Biyaha fatahaadda ayaa buuxiyay waddooyinka, waxayna ku qulqulayaan luuqyada u dhexeeya guryaha. Ha ku dhex socon, hana ku dhex wadin gaari, biyo socda.",
     "Videos from the field": "Muuqaallo goob-joog ah",
     "Xingod, Mudug: rain fills the sand dam": "Xingod, Mudug: roobku wuxuu buuxinayaa biyo-xireenka ciidda",
     "October 2026. Rainwater pours into the sand dam. Keep stored water covered, and boil or treat it before drinking.": "Oktoobar 2026. Biyaha roobka ayaa ku shubmaya biyo-xireenka ciidda. Dabool biyaha la kaydiyo, oo karkari ama nadiifi ka hor intaadan cabbin.",
@@ -820,7 +818,9 @@
     "Shared October 2026; the town is not known. Do not walk or drive through moving water.": "La wadaagay Oktoobar 2026; magaalada lama garanayo. Ha ku dhex socon, hana ku dhex wadin gaari, biyo socda.",
     "Videos shared with El Nino Watch, without sound. Like community reports, they are unverified.": "Muuqaallo lala wadaagay El Nino Watch, cod la'aan. Sida warbixinaha bulshada, lama xaqiijin.",
     "Flood videos: Cabudwaaq and Mudug": "Muuqaallada fatahaadda: Cabudwaaq iyo Mudug",
-    "Watch: flooding in Cabudwaaq and in Mudug": "Daawo: fatahaadda Cabudwaaq iyo Mudug"
+    "Watch: flooding in Cabudwaaq and in Mudug": "Daawo: fatahaadda Cabudwaaq iyo Mudug",
+    "Cabudwaaq, Galgaduud: homes under water": "Cabudwaaq, Galgaduud: guryo biyo galeen",
+    "17 October 2026. Video: Af-hayeenka Umada Soomaaliyeed, via Facebook. Do not walk or drive through moving water.": "17 Oktoobar 2026. Muuqaal: Af-hayeenka Umada Soomaaliyeed, Facebook. Ha ku dhex socon, hana ku dhex wadin gaari, biyo socda."
   },
   "patterns": [
     {
