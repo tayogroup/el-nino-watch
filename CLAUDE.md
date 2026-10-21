@@ -394,3 +394,10 @@ columns of 22. Open-Meteo counts each city as a call, so the shared forecasts no
 records are private to its link and never public. A partner's "Checked by us" is its own review stage: nothing in a
 workspace is ever marked verified, and there is no "verified" stage. Only a hash of each link key is stored.
 `partners.json` is backed up as a latest copy next to `visits.json` (`backup.mjs`, `LATEST`).
+
+**Light page** (owner, 2026-10-21): `/lite` (`lite.mjs`) is rendered on the server for slow connections: alerts
+(MOEWR first and marked official), the 44 cities sorted by their wettest forecast day with the 10 and 25 mm screen,
+and the river gauges. No map, pictures, fonts or scripts; about 13 KB, 3 KB compressed. It reads the same cached
+forecast as the main page (`forecast-relay.mjs` `handle.get`), so it adds no Open-Meteo calls. `?lang=so` gives
+Somali from translations-so.js, so its English strings need catalogue entries like any other page. The main page links
+to it from a skip link and the footer.

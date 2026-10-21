@@ -92,7 +92,7 @@ export function createForecastRelay({cities, fetchImpl = (...args) => fetch(...a
     try { return await request; } finally { pending.delete(key); }
   }
 
-  return async function handle(req, res, url) {
+  async function handle(req, res, url) {
     const match = /^\/api\/open-meteo\/(forecast|flood)$/.exec(url.pathname);
     if (!match) return false;
     const send = (status, body, extra = {}) => {
@@ -109,5 +109,8 @@ export function createForecastRelay({cities, fetchImpl = (...args) => fetch(...a
       send(error.status || 502, JSON.stringify({error: error.status === 400 ? error.message : `Forecast relay unavailable: ${error.message}`}));
     }
     return true;
-  };
+  }
+  // The server's own pages (the light page, lite.mjs) read through the same cache.
+  handle.get = async (endpoint, search) => JSON.parse((await upstream(endpoint, canonicalQuery(endpoint, search, {cities, now: now()}))).body);
+  return handle;
 }

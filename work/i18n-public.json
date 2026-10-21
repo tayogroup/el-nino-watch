@@ -1078,7 +1078,22 @@
     "Description": "Sharraxaad",
     "Observed time": "Waqtiga la arkay",
     "Corrects": "Wuxuu saxayaa",
-    "Name": "Magaca"
+    "Name": "Magaca",
+    "El Nino Watch · Light version": "El Nino Watch · Nooca fudud",
+    "A light page for slow connections: rainfall for the 44 cities, river levels and alerts, with no map or pictures.": "Bog fudud oo loogu talagalay internet-ka gaabiska ah: roobka 44-ta magaalo, heerarka webiyada iyo digniinaha, khariidad iyo sawirro la’aan.",
+    "Light version for slow connections": "Nooca fudud ee internet-ka gaabiska ah",
+    "Full site": "Bogga oo dhan",
+    "Forecasts are computer model estimates, not official warnings. Only MOEWR issues official flood warnings.": "Saadaashu waa qiyaaso moodel kombiyuutar, ma aha digniino rasmi ah. MOEWR oo keliya ayaa bixisa digniinaha rasmiga ah ee fatahaadda.",
+    "Alerts are unavailable right now.": "Digniinaha hadda lama heli karo.",
+    "No active alerts.": "Ma jiraan digniino socda.",
+    "Rain in the next 14 days": "Roobka 14-ka maalmood ee soo socda",
+    "Wettest first. The screen uses the wettest single day: under 10 mm, 10 mm or more, 25 mm or more.": "Kuwa ugu roobka badan ayaa ugu horreeya. Qiimeyntu waxay adeegsataa maalinta keliya ee ugu roobka badan: ka yar 10 mm, 10 mm ama ka badan, 25 mm ama ka badan.",
+    "14 days": "14 maalmood",
+    "River gauges": "Cabbirada webiyada",
+    "River": "Webiga",
+    "Below moderate": "Ka hooseeya dhexdhexaad",
+    "River gauge readings are unavailable right now.": "Akhrinta cabbirada webiyada hadda lama heli karo.",
+    "Sources: Open-Meteo forecasts, SWALIM river gauges, MOEWR, ICPAC, GDACS and other feeds listed on the Sources page.": "Ilaha: saadaasha Open-Meteo, cabbirada webiyada SWALIM, MOEWR, ICPAC, GDACS iyo ilaha kale ee ku qoran bogga Ilaha."
   },
   "patterns": [
     {

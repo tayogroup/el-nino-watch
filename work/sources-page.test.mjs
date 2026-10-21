@@ -25,7 +25,7 @@ test('the app links the page and the PDF from the Sources tab and the footer', (
   const panel = index.slice(index.indexOf('id="source-panel"'), index.indexOf('</section>', index.indexOf('id="source-panel"')));
   assert.match(panel, /<a href="\/sources" data-keep-language>Full list of forecast and alert sources →<\/a>/);
   assert.match(panel, /<a href="\/el-nino-watch-sources\.pdf" download>Download PDF \(English\)<\/a>/);
-  assert.match(index, /<a href="\/sources" data-keep-language>Forecast and alert sources<\/a><a href="\/stats" id="visitor-stats-link" hidden>/);
+  assert.match(index, /<a href="\/sources" data-keep-language>Forecast and alert sources<\/a><a href="\/lite" data-keep-language>Light version for slow connections<\/a><a href="\/stats" id="visitor-stats-link" hidden>/);
   assert.match(page, /<a class="no-print" href="\/" data-keep-language>← Back to El Nino Watch<\/a>/);
 });
 

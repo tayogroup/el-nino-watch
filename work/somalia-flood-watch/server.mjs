@@ -7,6 +7,7 @@ import {loadEnso, loadStations, SOURCES} from './feeds.mjs';
 import {loadHazardPoint} from './hazards.mjs';
 import {createCommunityHandler, reviewKeysFrom} from './community.mjs';
 import {createPartners} from './partners.mjs';
+import {renderLite, liteForecastQuery} from './lite.mjs';
 import {loadOfficialAlerts, ALERT_SOURCES} from './alerts-feed.mjs';
 import {loadObservedFlood, loadRadarPoint, OBSERVED_SOURCE_URL} from './observed-flood.mjs';
 import {loadCopernicusCity} from './copernicus.mjs';
@@ -129,6 +130,12 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
       if (await whatsapp.handle(req,res,url)) return;
       if (await podcast.handle(req,res,url)) return;
       if (!['GET', 'HEAD'].includes(req.method)) return reply(res, 405, 'Only GET and HEAD are supported.');
+      if (url.pathname === '/lite') {
+        // The light page: each source on its own, so one failing source leaves the rest of the page.
+        const [forecast, stations, alerts] = await Promise.all([forecasts.get('forecast', liteForecastQuery(CITY_DATA)).catch(() => null), feed('/api/stations'), feed('/api/alerts')]);
+        const html = renderLite({cities:CITY_DATA, forecast, stations, alerts, language:url.searchParams.get('lang') === 'so' ? 'so' : 'en'});
+        return reply(res, 200, html, 'text/html; charset=utf-8', req.method === 'HEAD');
+      }
       if (url.pathname === '/api/copernicus') {
         const cityId = url.searchParams.get('city') || 'mogadishu';
         const index = COMMUNITY_CITIES.findIndex(city => city.id === cityId);
