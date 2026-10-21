@@ -492,7 +492,8 @@
     "Regional model forecast for this week, not an official warning. Check local conditions and follow local authority advice.": "Tani waa saadaal moodeel gobol ah oo toddobaadkan ah, ma aha digniin rasmi ah. Hubi xaaladda deegaanka oo raac talada maamulka deegaanka.",
     "heavy rainfall": "roob xooggan",
     "very heavy rainfall": "roob aad u xooggan",
-    "extremely heavy rainfall": "roob aad iyo aad u xooggan"
+    "extremely heavy rainfall": "roob aad iyo aad u xooggan",
+    "Column guide": "Hagaha tiirarka"
   },
   "patterns": [
     {

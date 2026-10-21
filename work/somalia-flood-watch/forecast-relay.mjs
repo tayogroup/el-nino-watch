@@ -1,3 +1,4 @@
+import {openMeteoUrl} from './open-meteo.mjs';
 // Server relay for the Open-Meteo forecasts every visitor's browser used to fetch
 // itself: the 30-city daily forecast, the 30-city GloFAS river discharge, and the
 // detailed hourly forecast of one city. Open-Meteo's free service limits requests
@@ -68,7 +69,7 @@ export function canonicalQuery(endpoint, search, {cities, now = Date.now()}) {
   return [...params.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
 }
 
-export function createForecastRelay({cities, fetchImpl = (...args) => fetch(...args), now = () => Date.now(), maxEntries = 100} = {}) {
+export function createForecastRelay({cities, fetchImpl = (...args) => fetch(...args), now = () => Date.now(), maxEntries = 100, env = process.env} = {}) {
   if (!Array.isArray(cities) || !cities.length) throw new Error('The relay needs the monitored cities.');
   const cache = new Map(), pending = new Map();
 
@@ -77,7 +78,7 @@ export function createForecastRelay({cities, fetchImpl = (...args) => fetch(...a
     if (hit && now() - hit.at < UPSTREAM[endpoint].ttl) return {...hit, cache: 'hit'};
     if (pending.has(key)) return pending.get(key);
     const request = (async () => {
-      const response = await fetchImpl(`${UPSTREAM[endpoint].url}?${query}`, {signal: AbortSignal.timeout(25000), headers: {'User-Agent': 'ElNinoWatch/1.0'}});
+      const response = await fetchImpl(openMeteoUrl(endpoint, query, env), {signal: AbortSignal.timeout(25000), headers: {'User-Agent': 'ElNinoWatch/1.0'}});
       if (!response.ok) { const error = new Error(`Open-Meteo returned HTTP ${response.status}.`); error.status = 502; throw error; }
       const body = await response.text();
       try { JSON.parse(body); } catch { const error = new Error('Open-Meteo returned invalid JSON.'); error.status = 502; throw error; }

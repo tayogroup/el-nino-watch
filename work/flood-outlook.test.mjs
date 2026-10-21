@@ -114,3 +114,11 @@ test('CSV rows name their sources, the requested point, the model river cell and
   assert.ok(cells.includes('-1'),'a negative river change stays a plain number');
   const unknownCell=api.csv(api.build(input({})));assert.match(unknownCell.split('\r\n')[1],/"","","","","2026-10-13T09:00:00\.000Z"$/,'missing points stay blank, never zero');
 });
+
+test('the column guide describes every export column, in order',()=>{
+  const header=api.csv(api.build(input({}))).split('\r\n')[0].split(',').map(cell=>cell.replace(/"/g,''));
+  const guide=api.columnGuide().split('\r\n');assert.equal(guide[0],'"column","meaning"');
+  assert.deepEqual(guide.slice(1).map(line=>line.split('","')[0].replace(/"/g,'')),header);
+  assert.ok(guide.every(line=>!/^"[^"]*",""$/.test(line)),'no column is left without a meaning');
+  assert.match(api.html(api.build(input({}))),/data-flood-guide>Column guide<\/button>/);
+});

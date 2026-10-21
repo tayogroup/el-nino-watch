@@ -9,13 +9,14 @@ import {ALERT_SOURCES} from './somalia-flood-watch/alerts-feed.mjs';
 import {SOURCES} from './somalia-flood-watch/feeds.mjs';
 import {OBSERVED_SOURCE_URL} from './somalia-flood-watch/observed-flood.mjs';
 import {COPERNICUS_SOURCE_URL} from './somalia-flood-watch/copernicus.mjs';
+import {OPEN_METEO} from './somalia-flood-watch/open-meteo.mjs';
 
 const dist = new URL('./somalia-flood-watch/dist/', import.meta.url);
 const page = await readFile(new URL('sources.html', dist), 'utf8');
 const index = await readFile(new URL('index.html', dist), 'utf8');
 
 test('the sources page lists every source URL the server reads from', () => {
-  const used = [...Object.values(ALERT_SOURCES), ...Object.values(SOURCES), OBSERVED_SOURCE_URL, COPERNICUS_SOURCE_URL, 'https://api.open-meteo.com/v1/forecast', 'https://flood-api.open-meteo.com/v1/flood'];
+  const used = [...Object.values(ALERT_SOURCES), ...Object.values(SOURCES), OBSERVED_SOURCE_URL, COPERNICUS_SOURCE_URL, OPEN_METEO.forecast.free, OPEN_METEO.forecast.paid, OPEN_METEO.flood.free, OPEN_METEO.flood.paid];
   for (const url of used) assert.ok(page.includes(`href="${url}"`), `sources.html is missing ${url}`);
   for (const [, href] of page.matchAll(/<a[^>]*href="(https:[^"]+)"/g)) assert.match(href, /^https:\/\/[a-z0-9.-]+\//, `not a plain https link: ${href}`);
 });

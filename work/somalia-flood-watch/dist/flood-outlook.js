@@ -123,7 +123,7 @@
   }
   function html(input = {}) {
     const model=build(input);
-    return `<section class="flood-outlook"><header class="flood-outlook-heading"><div><p class="flood-outlook-eyebrow">Two-week readiness</p><h2>14-day flood planning outlook</h2><p><span data-i18n-skip>${esc(model.cityName)}</span> · <span data-i18n-skip>${esc(model.region)}</span> · ${esc(dayLabel(model.dates[0]))}–${esc(dayLabel(model.dates.at(-1)))}</p></div><button type="button" class="flood-outlook-export" data-flood-export${!model.weather.available&&!model.river.available?' disabled':''}>Export 14 days</button></header><p class="flood-outlook-purpose">Daily rainfall and modeled river flow support planning. This outlook does not predict flood extent, depth, casualties or the probability of flooding.</p><div class="flood-outlook-feeds">${feedHtml('Rainfall',model.weather)}${feedHtml('River model',model.river)}</div><div class="flood-outlook-weeks">${model.weeks.map(weekHtml).join('')}</div><div class="flood-outlook-legend"><span><i class="flood-outlook-key is-rain"></i>Rainfall</span><span><i class="flood-outlook-key is-watch"></i>≥10 mm/day</span><span><i class="flood-outlook-key is-elevated"></i>≥25 mm/day</span><span><i class="flood-outlook-key is-river"></i>Modeled river flow</span><span>? Missing rainfall</span></div><div class="flood-outlook-chart-wrap">${graph(model)}</div>${selectionHtml(model)}<div class="flood-outlook-days" aria-label="Select a forecast date">${model.daily.map(dayHtml).join('')}</div>${gaugeHtml(model.gauge)}<details class="flood-outlook-details"><summary>Daily values & how to interpret this outlook</summary>${tableHtml(model)}<p>Rain chance is a weather probability, not flood probability. Rainfall colours are app screening levels: below 10, 10–24.9 and ≥25 mm/day; they are not official warnings. River arrows compare modeled discharge with the first forecast day only, without city-wide flood thresholds.</p><p>The approximately 5 km river grid may not represent the correct river channel or local drainage. EAT rainfall days and UTC river days are shown under their source calendar dates and cover different 24-hour periods. Retrieval times are when data were fetched, not model-run times. Days 8–14 have lower forecast confidence.</p><p>Use current observations, drainage checks and local authority advice to plan access, shelter and response. For emergency help, contact your local government or relevant authority.</p><p>Sources: <a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener noreferrer">Open-Meteo weather</a> · <a href="https://open-meteo.com/en/docs/flood-api" target="_blank" rel="noopener noreferrer">GloFAS river model via Open-Meteo</a>.</p></details></section>`;
+    return `<section class="flood-outlook"><header class="flood-outlook-heading"><div><p class="flood-outlook-eyebrow">Two-week readiness</p><h2>14-day flood planning outlook</h2><p><span data-i18n-skip>${esc(model.cityName)}</span> · <span data-i18n-skip>${esc(model.region)}</span> · ${esc(dayLabel(model.dates[0]))}–${esc(dayLabel(model.dates.at(-1)))}</p></div><button type="button" class="flood-outlook-export" data-flood-export${!model.weather.available&&!model.river.available?' disabled':''}>Export 14 days</button><button type="button" class="flood-outlook-guide" data-flood-guide>Column guide</button></header><p class="flood-outlook-purpose">Daily rainfall and modeled river flow support planning. This outlook does not predict flood extent, depth, casualties or the probability of flooding.</p><div class="flood-outlook-feeds">${feedHtml('Rainfall',model.weather)}${feedHtml('River model',model.river)}</div><div class="flood-outlook-weeks">${model.weeks.map(weekHtml).join('')}</div><div class="flood-outlook-legend"><span><i class="flood-outlook-key is-rain"></i>Rainfall</span><span><i class="flood-outlook-key is-watch"></i>≥10 mm/day</span><span><i class="flood-outlook-key is-elevated"></i>≥25 mm/day</span><span><i class="flood-outlook-key is-river"></i>Modeled river flow</span><span>? Missing rainfall</span></div><div class="flood-outlook-chart-wrap">${graph(model)}</div>${selectionHtml(model)}<div class="flood-outlook-days" aria-label="Select a forecast date">${model.daily.map(dayHtml).join('')}</div>${gaugeHtml(model.gauge)}<details class="flood-outlook-details"><summary>Daily values & how to interpret this outlook</summary>${tableHtml(model)}<p>Rain chance is a weather probability, not flood probability. Rainfall colours are app screening levels: below 10, 10–24.9 and ≥25 mm/day; they are not official warnings. River arrows compare modeled discharge with the first forecast day only, without city-wide flood thresholds.</p><p>The approximately 5 km river grid may not represent the correct river channel or local drainage. EAT rainfall days and UTC river days are shown under their source calendar dates and cover different 24-hour periods. Retrieval times are when data were fetched, not model-run times. Days 8–14 have lower forecast confidence.</p><p>Use current observations, drainage checks and local authority advice to plan access, shelter and response. For emergency help, contact your local government or relevant authority.</p><p>Sources: <a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener noreferrer">Open-Meteo weather</a> · <a href="https://open-meteo.com/en/docs/flood-api" target="_blank" rel="noopener noreferrer">GloFAS river model via Open-Meteo</a>.</p></details></section>`;
   }
   function csv(input = {}) {
     // Each row carries where its numbers came from, so a forwarded file can be traced: the source and product,
@@ -132,6 +132,28 @@
     const city=model.cityPoint||{},cell=model.riverCell||{};
     const rows=[fields,...model.daily.map(row=>[model.cityName,model.region,row.date,row.rain??'',row.probability??'',row.maxTemperature??'',row.discharge??'',bandLabel(row.band),row.lowerConfidence?'lower':'days 1-7',model.weather.lastSuccess||'',model.weather.stale,model.river.lastSuccess||'',model.river.stale,row.flowChange??'',WEATHER_SOURCE,RIVER_SOURCE,city.lat??'',city.lon??'',cell.lat??'',cell.lon??'',model.now])];
     return rows.map(row=>row.map(csvCell).join(',')).join('\r\n');
+  }
+  // What each export column means, as its own small CSV so the export itself stays one clean table.
+  const COLUMNS = [
+    ['city','Monitored city name.'],['region','Region of the city.'],['date','Forecast day. Rainfall days run in East Africa Time; river days run in UTC.'],
+    ['rain_mm_EAT','Forecast rainfall for the day in millimetres (Open-Meteo model estimate, not a station measurement). Blank means unknown, never zero.'],
+    ['rain_probability_percent','Chance of rain from the weather model. Not a flood probability.'],['daily_high_c','Forecast daily high temperature, °C.'],
+    ['river_discharge_m3_s_UTC','Modelled river flow (GloFAS) at the model river cell, cubic metres per second. Not a gauge reading or a flood threshold.'],
+    ['rainfall_screen',"The app's own rainfall screening level (below 10, 10 to 24.9, 25 or more mm a day). Not an official warning."],
+    ['confidence','Days 1 to 7, or lower confidence for days 8 to 14.'],['weather_retrieved_at','When the app last fetched the weather forecast (UTC). Not the model run time.'],
+    ['weather_stale','true if the weather forecast is older than the app allows.'],['river_retrieved_at','When the app last fetched the river forecast (UTC).'],
+    ['river_stale','true if the river forecast is older than the app allows.'],['river_change_vs_first_forecast_day_m3_s',"Modelled flow minus the first forecast day's flow."],
+    ['weather_source','Where the rainfall, rain chance and temperature come from.'],['river_source','Where the river flow comes from.'],
+    ['city_lat','Latitude of the city point the forecast was asked for.'],['city_lon','Longitude of the city point.'],
+    ['river_model_cell_lat','Latitude of the model river cell the flood service answered with; it can differ from the city point.'],['river_model_cell_lon','Longitude of that model river cell.'],
+    ['exported_at','When this file was made (UTC). Not when any value was observed.']
+  ];
+  function columnGuide() { return [['column','meaning'],...COLUMNS].map(row=>row.map(csvCell).join(',')).join('\r\n'); }
+  function saveFile(content,name) {
+    const document=global.document || (typeof globalThis.document!=='undefined'?globalThis.document:null);
+    if(!document || typeof Blob==='undefined' || typeof URL?.createObjectURL!=='function')return content;
+    const blob=new Blob(['\ufeff'+content],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');
+    link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return blob;
   }
   function download(input) {
     const model=build(input), document=global.document || (typeof globalThis.document!=='undefined'?globalThis.document:null);
@@ -155,6 +177,7 @@
       }
       const button=event.target?.closest?.('[data-flood-export]');
       if(button){if(model.onExport)model.onExport(csv(model),model);else download(model);}
+      if(event.target?.closest?.('[data-flood-guide]'))saveFile(columnGuide(),'14-day-flood-outlook-columns.csv');
     };
   }
   function render(input = {}) {
@@ -162,5 +185,5 @@
     const model=build(input);if(!container)return model;
     container.innerHTML=html(model);bind(container,model);return model;
   }
-  global.FloodOutlook={build,html,render,bind,csv,download};
+  global.FloodOutlook={build,html,render,bind,csv,download,columnGuide};
 })(typeof window!=='undefined'?window:globalThis);

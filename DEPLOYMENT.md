@@ -70,6 +70,7 @@ Setup: create a Storage zone (Delivery > Storage > Add Storage Zone, e.g. `el-ni
 Two optional sources need a key of their own, and each is switched off until it is set on the container:
 
 - `GOOGLE_FLOOD_API_KEY`: Google Flood Hub river forecasts in Alerts. Join the waitlist at https://developers.google.com/flood-forecasting; once Google approves it, reply with a Google Cloud project ID, enable the Flood Forecasting API in that project and create an API key there (restrict it to that API).
+- `OPEN_METEO_API_KEY`: a paid Open-Meteo plan (https://open-meteo.com/en/pricing). Open-Meteo's free API is for non-commercial use only, so set this before the site is used commercially (for example, a paid NGO pilot). With it, the weather, river and elevation requests go to Open-Meteo's customer hosts with the key; without it nothing changes. Open-Meteo takes the key as a URL parameter, so the server never logs those URLs.
 - `RELIEFWEB_APPNAME`: ReliefWeb items in the news flash, an appname ReliefWeb has approved (https://apidoc.reliefweb.int/parameters#appname).
 
 To set them, add each as a secret of the `bunny-settings` environment (GitHub: Settings > Environments > bunny-settings > Add environment secret), then run **Actions > Bunny settings** with mode `source-keys` and approve the run. It copies the ones that are set onto the container and prints their names only.

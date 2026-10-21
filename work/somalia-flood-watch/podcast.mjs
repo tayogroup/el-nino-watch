@@ -18,6 +18,7 @@ import path from 'node:path';
 import {execFile} from 'node:child_process';
 import {randomBytes, timingSafeEqual} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import {OPEN_METEO, openMeteoUrl} from './open-meteo.mjs';
 
 export const TEMPLATE_VERSION = '2026-10-16';
 // The template version the owner approved; anything else, and nothing is voiced or published. Approved by the
@@ -287,13 +288,13 @@ export function buildScript({slotId, now, alerts, stations, enso, news, rain, pr
 // ---- Rain, from Open-Meteo -------------------------------------------------------------------------
 
 export async function loadRain(cities, fetchImpl = fetch) {
-  const url = new URL('https://api.open-meteo.com/v1/forecast');
+  const url = new URL(OPEN_METEO.forecast.free);
   url.searchParams.set('latitude', cities.map(c => c[2]).join(','));
   url.searchParams.set('longitude', cities.map(c => c[3]).join(','));
   url.searchParams.set('daily', 'precipitation_sum');
   url.searchParams.set('forecast_days', '3');
   url.searchParams.set('timezone', 'Africa/Mogadishu');
-  const response = await fetchImpl(url, {signal: AbortSignal.timeout(30000), redirect: 'error'});
+  const response = await fetchImpl(openMeteoUrl('forecast', url.searchParams), {signal: AbortSignal.timeout(30000), redirect: 'error'});
   if (!response.ok) throw new Error(`Open-Meteo returned HTTP ${response.status}.`);
   const data = await response.json();
   const rows = Array.isArray(data) ? data : [data];
