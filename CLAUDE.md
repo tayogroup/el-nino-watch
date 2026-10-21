@@ -388,3 +388,9 @@ from GeoNames (Open-Meteo place search); Ceel Waaq, Ceelburde and Sablaale are n
 OpenStreetMap. Bu'aale reads SWALIM gauge JB010. Every MOEWR region now has a monitored city. The watchlist shows two
 columns of 22. Open-Meteo counts each city as a call, so the shared forecasts now use about 5,300 free calls a day
 (DEPLOYMENT.md).
+
+**Partner workspaces** (owner, 2026-10-21): `partners.mjs`, `dist/partners.html` (owner, STATS_KEY) and
+`dist/partner.html` (one private link per organisation; see DEPLOYMENT.md). A partner's sites, review notes and field
+records are private to its link and never public. A partner's "Checked by us" is its own review stage: nothing in a
+workspace is ever marked verified, and there is no "verified" stage. Only a hash of each link key is stored.
+`partners.json` is backed up as a latest copy next to `visits.json` (`backup.mjs`, `LATEST`).

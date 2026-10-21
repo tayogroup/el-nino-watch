@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#082448">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Partner links | El Nino Watch</title>
+<link rel="stylesheet" href="private-pages.css">
+</head>
+<body>
+<header class="private-head"><div><a href="/">El Nino Watch</a><small>PARTNER LINKS</small></div><div class="lang" role="group" aria-label="Language / Luqad" data-i18n-skip><button type="button" id="language-en" data-site-language="en" lang="en" aria-pressed="true">EN</button><button type="button" id="language-so" data-site-language="so" lang="so" aria-pressed="false">SO</button></div><span id="language-status" class="sr-only" role="status" aria-live="polite"></span></header>
+<main>
+  <h1>Partner links</h1>
+  <p class="lede">Make one private link for each partner organisation. The link opens a workspace only that organisation can see: its own sites, its review notes on community reports, and its field records. Nothing in a workspace is public.</p>
+  <form id="key-form" class="panel row" autocomplete="off">
+    <label class="field">Owner key<input type="password" id="owner-key" autocomplete="current-password" required></label>
+    <label><input type="checkbox" id="remember"> Remember on this device</label>
+    <button type="submit">Show partners</button>
+    <p class="hint">The same key as the private statistics page (STATS_KEY).</p>
+  </form>
+  <p id="msg" class="msg" role="status" aria-live="polite"></p>
+  <section id="owner-view" hidden>
+    <form id="create-form" class="panel">
+      <h2>New partner</h2>
+      <div class="row"><label class="field">Organisation name<input id="partner-name" maxlength="80" required></label><button type="submit" class="primary">Make a private link</button></div>
+    </form>
+    <div id="new-link" class="notice" hidden><p>Copy this link now and send it to the partner privately. It is shown only once; if it is lost, make a new link.</p><p><code id="new-link-text" data-i18n-skip></code></p><button type="button" id="copy-link">Copy link</button></div>
+    <section class="panel">
+      <h2>Partners</h2>
+      <div class="table-wrap"><table><thead><tr><th>Organisation</th><th>Link made</th><th>Sites</th><th>Review notes</th><th>Field records</th><th>Link</th><th></th></tr></thead><tbody id="partner-rows"></tbody></table></div>
+      <p class="hint">A new link stops the old one at once. Stop link keeps the workspace but closes it until you make a new link. Delete removes the workspace and everything in it.</p>
+    </section>
+  </section>
+  <p class="note"><a href="/">← Back to El Nino Watch</a></p>
+</main>
+<script src="translations-so.js"></script>
+<script src="i18n.js"></script>
+<script>
+(function () {
+  'use strict';
+  const STORE = 'elnino-stats-key';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+  const t = text => window.SiteLanguage?.translateText?.(text) || text;
+  const day = iso => String(iso || '').slice(0, 10);
+  let key = ''; try { key = localStorage.getItem(STORE) || ''; } catch {}
+  const message = (text, error = false) => { $('msg').textContent = text; $('msg').className = 'msg' + (error ? ' error' : ''); };
+  async function call(path, body) {
+    const response = await fetch(path, {method: body ? 'POST' : 'GET', cache: 'no-store', headers: {'X-Stats-Key': key, ...(body ? {'Content-Type': 'application/json'} : {})}, body: body ? JSON.stringify(body) : undefined});
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || 'The partner service is unavailable. Try again later.');
+    return data;
+  }
+  function showLink(linkKey) {
+    $('new-link-text').textContent = location.origin + '/partner#key=' + linkKey;
+    $('new-link').hidden = false;
+  }
+  function render(partners) {
+    $('partner-rows').innerHTML = partners.length ? partners.map(p => `<tr data-id="${esc(p.id)}" data-name="${esc(p.name)}"><td data-i18n-skip><b>${esc(p.name)}</b></td><td data-i18n-skip>${esc(day(p.linkMadeAt))}</td><td>${p.sites}</td><td>${p.reviews}</td><td>${p.fieldRecords}</td><td><span class="badge">${p.revokedAt ? 'Stopped' : 'Active'}</span></td>
+      <td><div class="row"><button type="button" data-action="new-link">New link</button>${p.revokedAt ? '' : '<button type="button" data-action="revoke">Stop link</button>'}<button type="button" class="danger" data-action="delete">Delete</button></div></td></tr>`).join('')
+      : '<tr><td colspan="7">No partners yet.</td></tr>';
+  }
+  async function load() {
+    if (!key) return;
+    try { const data = await call('/api/partners'); render(data.partners); $('owner-view').hidden = false; message(''); }
+    catch (error) { $('owner-view').hidden = true; message(error.message, true); }
+  }
+  $('key-form').addEventListener('submit', event => {
+    event.preventDefault(); key = $('owner-key').value.trim(); $('owner-key').value = '';
+    if ($('remember').checked) { try { localStorage.setItem(STORE, key); } catch {} }
+    load();
+  });
+  $('create-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    try { const data = await call('/api/partners', {name: $('partner-name').value}); $('partner-name').value = ''; showLink(data.key); message('Link made.'); await load(); }
+    catch (error) { message(error.message, true); }
+  });
+  $('copy-link').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText($('new-link-text').textContent); message('Link copied.'); } catch { message('Select the link and copy it.', true); }
+  });
+  $('partner-rows').addEventListener('click', async event => {
+    const button = event.target.closest('[data-action]'); if (!button) return;
+    const row = button.closest('[data-id]'), action = button.dataset.action, body = {action};
+    if (action === 'revoke' && !confirm(t('Stop this link? The partner cannot open the workspace until you make a new link.'))) return;
+    if (action === 'new-link' && !confirm(t('Make a new link? The old link stops working at once.'))) return;
+    if (action === 'delete') {
+      const typed = prompt(t('Type the organisation name to delete its workspace and everything in it.'));
+      if (typed === null) return; body.confirmName = typed.trim();
+    }
+    try {
+      const data = await call('/api/partners/' + encodeURIComponent(row.dataset.id), body);
+      if (data.key) showLink(data.key); else $('new-link').hidden = true;
+      message(action === 'delete' ? 'Workspace deleted.' : action === 'revoke' ? 'Link stopped.' : 'Link made.');
+      await load();
+    } catch (error) { message(error.message, true); }
+  });
+  load();
+})();
+</script>
+</body>
+</html>

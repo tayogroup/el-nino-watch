@@ -74,6 +74,17 @@ New community reports wait for review before anyone else sees them (owner, 2026-
 - After 20 wrong keys from one address in a day, that address is refused until the next day.
 - With no key set, new reports still wait; nobody can approve them until a key is set.
 
+### Partner workspaces (/partners and /partner)
+
+The owner makes one private link per partner organisation at `/partners`, opened with `STATS_KEY` (owner, 2026-10-21). Each link opens `/partner`, a workspace only that link can read:
+
+- **Our sites**: camps, clinics, schools and other places the partner looks after, each with Open-Meteo's 7-day rainfall forecast screened at 10 and 25 mm a day (fetched from the visitor's browser, like additional cities).
+- **Community reports**: the public reports, with the partner's own review stage (Not reviewed, Checking, Checked by us, Could not confirm) and note, shared with everyone holding that link and never shown publicly.
+- **Field records**: observations entered one at a time or imported from a CSV of up to 500 rows. A KoboToolbox or ODK form whose questions use the column names in the page's field guide (record_id, corrects, observed_at, category, site, city, latitude, longitude, water_depth_cm, households_affected, people_displaced, road_access, description, reporter) exports a CSV that imports as it is; Kobo's semicolons, group prefixes, `_uuid` and geopoint columns are understood. A repeated record_id, or the same place, category and description within an hour, is skipped as a duplicate. A row whose corrects column names an earlier record replaces it, and the earlier one is kept marked "Replaced by a correction". Every record stays unverified.
+- **Export**: CSVs of the sites, review notes and field records, only from the workspace.
+
+Only a SHA-256 hash of each link key is stored (in `partners.json` on the data volume, backed up with the visit counts), so a lost link cannot be shown again: make a new one, which stops the old one at once. **Stop link** closes a workspace without deleting it; **Delete** removes it and everything in it. The key travels after `#` in the link and then in a request header, never in an address the server logs. After 20 wrong keys from one address in a day, that address is refused until the next day. Limits per workspace: 200 sites, 2,000 review notes, 5,000 field records; at most 50 partners.
+
 ### Data-source keys (Google Flood Hub, ReliefWeb)
 
 Two optional sources need a key of their own, and each is switched off until it is set on the container:

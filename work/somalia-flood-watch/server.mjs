@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {loadEnso, loadStations, SOURCES} from './feeds.mjs';
 import {loadHazardPoint} from './hazards.mjs';
 import {createCommunityHandler, reviewKeysFrom} from './community.mjs';
+import {createPartners} from './partners.mjs';
 import {loadOfficialAlerts, ALERT_SOURCES} from './alerts-feed.mjs';
 import {loadObservedFlood, loadRadarPoint, OBSERVED_SOURCE_URL} from './observed-flood.mjs';
 import {loadCopernicusCity} from './copernicus.mjs';
@@ -101,6 +102,8 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
   // New reports wait for the owner (STATS_KEY) or a reviewer (REVIEW_KEYS) at /review.
   const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES, onChange:() => backup?.soon?.(), reviewers:reviewKeysFrom({statsKey, reviewKeys})});
   const visits = createVisits({dataDir, cities:CITY_DATA, statsKey});
+  // Private partner workspaces: the owner makes links at /partners, partners work at /partner.
+  const partners = createPartners({dataDir, statsKey, onChange:() => backup?.soon?.()});
   const forecasts = createForecastRelay({cities:CITY_DATA});
   // WhatsApp alerts (whatsapp.mjs): off until the WHATSAPP_* settings are present.
   const whatsapp = createWhatsApp({dataDir, cities:CITY_DATA, config:whatsappSettings, alerts:() => feed('/api/alerts')});
@@ -121,6 +124,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
       }
       const url = new URL(req.url, 'http://127.0.0.1');
       if (await community(req,res,url)) return;
+      if (await partners(req,res,url)) return;
       if (await visits.handle(req,res,url)) return;
       if (await whatsapp.handle(req,res,url)) return;
       if (await podcast.handle(req,res,url)) return;
@@ -157,7 +161,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
         const audio = podcast.audioFile(url.pathname);
         return audio ? sendFilm(req, res, audio, 'audio/mpeg') : reply(res, 404, 'File not found.');
       }
-      const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname === '/stats' ? '/stats.html' : url.pathname === '/review' ? '/review.html' : url.pathname === '/sources' ? '/sources.html' : url.pathname);
+      const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname === '/stats' ? '/stats.html' : url.pathname === '/review' ? '/review.html' : url.pathname === '/partner' ? '/partner.html' : url.pathname === '/partners' ? '/partners.html' : url.pathname === '/sources' ? '/sources.html' : url.pathname);
       if (requested.includes('\0')) return reply(res, 400, 'Invalid path.');
       // A backslash is a separator on Windows but a filename character on Linux;
       // refuse it everywhere so traversal attempts get the same 403 on both.

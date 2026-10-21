@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#082448">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Partner workspace | El Nino Watch</title>
+<link rel="stylesheet" href="private-pages.css">
+</head>
+<body>
+<header class="private-head"><div><a href="/">El Nino Watch</a><small>PARTNER WORKSPACE</small></div><div class="lang" role="group" aria-label="Language / Luqad" data-i18n-skip><button type="button" id="language-en" data-site-language="en" lang="en" aria-pressed="true">EN</button><button type="button" id="language-so" data-site-language="so" lang="so" aria-pressed="false">SO</button></div><span id="language-status" class="sr-only" role="status" aria-live="polite"></span></header>
+<main>
+  <h1 id="org-title">Partner workspace</h1>
+  <p class="lede">Private to your organisation. Only people with your organisation's link can see this page. Records here stay unverified; "checked" is your own review, not an official confirmation.</p>
+  <form id="key-form" class="panel row" autocomplete="off" hidden>
+    <label class="field">Partner link or key<input type="password" id="partner-key" autocomplete="off" required></label>
+    <button type="submit">Open the workspace</button>
+    <p class="hint">Open the private link the site owner sent you, or paste it here.</p>
+  </form>
+  <p id="msg" class="msg" role="status" aria-live="polite"></p>
+  <section id="workspace" hidden>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="sites" aria-selected="true">Our sites</button>
+      <button type="button" role="tab" data-tab="reports" aria-selected="false">Community reports</button>
+      <button type="button" role="tab" data-tab="field" aria-selected="false">Field records</button>
+      <button type="button" role="tab" data-tab="export" aria-selected="false">Export</button>
+    </div>
+
+    <section data-panel="sites">
+      <div class="panel">
+        <h2>Our sites</h2>
+        <p class="hint">Camps, clinics, schools and other places you look after. Rainfall is Open-Meteo's model forecast for each point over the next 7 days, screened at 10 mm and 25 mm a day. It is not an official warning.</p>
+        <div class="table-wrap"><table><thead><tr><th>Site</th><th>Type</th><th>Location</th><th>Rain, next 7 days</th><th>Wettest day</th><th>Note</th><th></th></tr></thead><tbody id="site-rows"></tbody></table></div>
+      </div>
+      <form id="site-form" class="panel">
+        <h3>Add a site</h3>
+        <div class="row">
+          <label class="field">Site name<input name="name" maxlength="80" required></label>
+          <label class="field">Type<select name="kind">
+            <option value="camp">Camp for displaced people</option><option value="clinic">Health facility</option><option value="school">School</option><option value="water">Water point</option><option value="market">Market</option><option value="road">Road</option><option value="bridge">Bridge</option><option value="office">Office</option><option value="warehouse">Warehouse</option><option value="other">Other</option>
+          </select></label>
+          <label class="field">Latitude<input name="latitude" inputmode="decimal" placeholder="2.0469" required></label>
+          <label class="field">Longitude<input name="longitude" inputmode="decimal" placeholder="45.3182" required></label>
+          <label class="field wide">Note (optional)<input name="note" maxlength="500"></label>
+          <button type="submit" class="primary">Save site</button>
+        </div>
+      </form>
+    </section>
+
+    <section data-panel="reports" hidden>
+      <div class="panel">
+        <h2>Community reports</h2>
+        <p class="hint">Public reports from residents, after the site's review. Your stage and note are shared only with your organisation and do not change the public report.</p>
+        <div class="row">
+          <label class="field">City<select id="report-city"><option value="">All cities</option></select></label>
+          <label><input type="checkbox" id="near-sites"> Within 25 km of our sites</label>
+          <button type="button" id="reports-refresh">Refresh</button>
+        </div>
+        <p id="reports-count" class="hint"></p>
+        <div id="report-list" class="cards"></div>
+      </div>
+    </section>
+
+    <section data-panel="field" hidden>
+      <form id="field-form" class="panel">
+        <h2>Field records</h2>
+        <p class="hint">Observations your teams collect. Use the form for one record, or import a CSV from ODK or KoboToolbox. Each record stays unverified.</p>
+        <p id="correcting" class="notice" hidden></p>
+        <input type="hidden" name="corrects">
+        <div class="row">
+          <label class="field">Observed (East Africa Time)<input name="observed_at" type="datetime-local" required></label>
+          <label class="field">Category<select name="category">
+            <option value="flood">Flooding</option><option value="rain">Rainfall</option><option value="damage">Flood impact</option><option value="displacement">Displacement</option><option value="access">Road access</option><option value="other">Other</option>
+          </select></label>
+          <label class="field">Site<select name="site"><option value="">No site</option></select></label>
+          <label class="field">City<input name="city" maxlength="80" list="city-names"></label>
+          <label class="field">Latitude<input name="latitude" inputmode="decimal"></label>
+          <label class="field">Longitude<input name="longitude" inputmode="decimal"></label>
+          <label class="field">Water depth (cm)<input name="water_depth_cm" inputmode="decimal"></label>
+          <label class="field">Households affected<input name="households_affected" inputmode="numeric"></label>
+          <label class="field">People displaced<input name="people_displaced" inputmode="numeric"></label>
+          <label class="field">Road access<select name="road_access"><option value="unknown">Unknown</option><option value="open">Open</option><option value="limited">Limited</option><option value="closed">Closed</option></select></label>
+          <label class="field">Reporter (optional)<input name="reporter" maxlength="80"></label>
+          <label class="field wide">What was seen<textarea name="description" maxlength="2000" required></textarea></label>
+          <button type="submit" class="primary">Save record</button>
+          <button type="button" id="cancel-correction" hidden>Cancel correction</button>
+        </div>
+        <datalist id="city-names"></datalist>
+      </form>
+      <div class="panel">
+        <h3>Import a CSV</h3>
+        <p class="hint">Up to 500 rows at a time. Columns are matched by name; KoboToolbox group prefixes and its _uuid column are understood. A row with the same record_id, or the same place, category and description within an hour, is skipped as a duplicate. Put an earlier record_id in the corrects column to correct it.</p>
+        <div class="row"><input type="file" id="csv-file" accept=".csv,text/csv"><button type="button" id="csv-template">Download CSV template</button></div>
+        <details><summary>Form field guide</summary><div class="table-wrap"><table><thead><tr><th>Column</th><th>What to put in it</th></tr></thead><tbody id="field-guide"></tbody></table></div></details>
+        <div id="import-result"></div>
+      </div>
+      <div class="panel">
+        <h3>Records</h3>
+        <div id="field-list" class="cards"></div>
+      </div>
+    </section>
+
+    <section data-panel="export" hidden>
+      <div class="panel">
+        <h2>Export</h2>
+        <p class="hint">Downloads for your organisation only. Every row keeps its unverified status.</p>
+        <div class="row"><button type="button" data-export="sites">Sites CSV</button><button type="button" data-export="reviews">Review notes CSV</button><button type="button" data-export="field">Field records CSV</button></div>
+      </div>
+    </section>
+    <p><button type="button" id="forget">Forget this link on this device</button></p>
+  </section>
+  <p class="note"><a href="/">← Back to El Nino Watch</a></p>
+</main>
+<script src="cities.js"></script>
+<script src="translations-so.js"></script>
+<script src="i18n.js"></script>
+<script>
+(function () {
+  'use strict';
+  const STORE = 'elnino-partner-key';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+  const t = text => window.SiteLanguage?.translateText?.(text) || text;
+  const cities = window.SOMALIA_CITIES || [];
+  const KIND = {camp: 'Camp for displaced people', clinic: 'Health facility', school: 'School', water: 'Water point', market: 'Market', road: 'Road', bridge: 'Bridge', office: 'Office', warehouse: 'Warehouse', other: 'Other'};
+  const CATEGORY = {flood: 'Flooding', rain: 'Rainfall', damage: 'Flood impact', displacement: 'Displacement', access: 'Road access', other: 'Other'};
+  const STAGE = {unreviewed: 'Not reviewed', checking: 'Checking', checked: 'Checked by us', 'not-confirmed': 'Could not confirm'};
+  const ACCESS = {open: 'Open', limited: 'Limited', closed: 'Closed', unknown: 'Unknown'};
+  const GUIDE = [
+    ['record_id', 'Your own ID for the record, such as ODK or Kobo\'s instance ID. Used to skip duplicates.'],
+    ['corrects', 'The record_id of an earlier record this one corrects. Leave empty for a new record.'],
+    ['observed_at', 'When it was seen: 2026-10-21 08:30 (East Africa Time) or a full date and time with its time zone.'],
+    ['category', 'flood, rain, damage, displacement, access or other.'],
+    ['site', 'The name of one of your sites, exactly as saved here.'],
+    ['city', 'The town or city.'],
+    ['latitude', 'Decimal degrees, such as 2.0469. Leave empty if unknown.'],
+    ['longitude', 'Decimal degrees, such as 45.3182. Leave empty if unknown.'],
+    ['water_depth_cm', 'Water depth in centimetres, if measured.'],
+    ['households_affected', 'A whole number, if counted.'],
+    ['people_displaced', 'A whole number, if counted.'],
+    ['road_access', 'open, limited, closed or unknown.'],
+    ['description', 'What was seen, in any language. Required.'],
+    ['reporter', 'Who recorded it (optional).']
+  ];
+  let key = '', data = null, reports = [], rain = new Map();
+
+  const fromLink = /^#key=(.+)$/.exec(location.hash);
+  if (fromLink) { key = decodeURIComponent(fromLink[1]); history.replaceState(null, '', location.pathname + location.search); try { localStorage.setItem(STORE, key); } catch {} }
+  if (!key) { try { key = localStorage.getItem(STORE) || ''; } catch {} }
+  const message = (text, error = false) => { $('msg').textContent = text; $('msg').className = 'msg' + (error ? ' error' : ''); };
+  async function call(path, body, method) {
+    const response = await fetch(path, {method: method || (body ? 'POST' : 'GET'), cache: 'no-store', headers: {'X-Partner-Key': key, ...(body ? {'Content-Type': 'application/json'} : {})}, body: body ? JSON.stringify(body) : undefined});
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || 'The partner service is unavailable. Try again later.');
+    return result;
+  }
+  const when = iso => { const time = Date.parse(iso); return Number.isFinite(time) ? new Date(time + 3 * 3600000).toISOString().slice(0, 16).replace('T', ' ') + ' EAT' : ''; };
+  const km = (a, b) => { const r = Math.PI / 180, x = (b.longitude - a.longitude) * r * Math.cos((a.latitude + b.latitude) * r / 2), y = (b.latitude - a.latitude) * r; return Math.sqrt(x * x + y * y) * 6371; };
+  const screen = mm => mm === null ? '' : mm >= 25 ? '<span class="badge elevated">25+ mm</span>' : mm >= 10 ? '<span class="badge watch">10+ mm</span>' : '<span class="badge lower">Under 10 mm</span>';
+  const stageSelect = stage => `<select data-stage>${Object.entries(STAGE).map(([value, label]) => `<option value="${value}"${value === stage ? ' selected' : ''}>${label}</option>`).join('')}</select>`;
+
+  // ---- Sites and their 7-day rain outlook (Open-Meteo, from the browser, like the additional cities).
+  async function loadRain() {
+    rain = new Map();
+    const sites = data.sites;
+    if (!sites.length) return;
+    try {
+      const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + sites.map(s => s.latitude).join(',') + '&longitude=' + sites.map(s => s.longitude).join(',') + '&daily=precipitation_sum&forecast_days=7&timezone=Africa%2FMogadishu';
+      const response = await fetch(url); if (!response.ok) throw new Error();
+      const body = await response.json(), list = Array.isArray(body) ? body : [body];
+      list.forEach((item, index) => {
+        const days = item?.daily?.precipitation_sum, dates = item?.daily?.time;
+        if (!Array.isArray(days) || days.some(v => typeof v !== 'number')) return;
+        const peak = Math.max(...days);
+        rain.set(sites[index].id, {total: days.reduce((a, b) => a + b, 0), peak, peakDay: dates?.[days.indexOf(peak)] || ''});
+      });
+    } catch { message('The rainfall forecast could not be loaded. Site details are still shown.', true); }
+  }
+  function renderSites() {
+    $('site-rows').innerHTML = data.sites.length ? data.sites.map(site => {
+      const r = rain.get(site.id);
+      return `<tr data-id="${esc(site.id)}"><td data-i18n-skip><b>${esc(site.name)}</b></td><td>${KIND[site.kind] || 'Other'}</td>
+        <td><a data-i18n-skip href="https://www.openstreetmap.org/?mlat=${site.latitude}&amp;mlon=${site.longitude}#map=14/${site.latitude}/${site.longitude}" target="_blank" rel="noopener noreferrer">${site.latitude}, ${site.longitude} ↗</a></td>
+        <td>${r ? `<span data-i18n-skip>${r.total.toFixed(1)} mm</span>` : '<span>Unavailable</span>'}</td><td>${r ? `${screen(r.peak)} <span data-i18n-skip>${esc(r.peakDay)}</span>` : ''}</td>
+        <td data-i18n-skip>${esc(site.note || '')}</td><td><button type="button" class="danger" data-delete-site>Delete</button></td></tr>`;
+    }).join('') : '<tr><td colspan="7">No sites yet. Add the places you look after below.</td></tr>';
+    $('field-form').elements.site.innerHTML = '<option value="">No site</option>' + data.sites.map(site => `<option value="${esc(site.name)}" data-i18n-skip>${esc(site.name)}</option>`).join('');
+  }
+  $('site-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    const form = event.currentTarget, body = Object.fromEntries(new FormData(form));
+    try { await call('/api/partner/sites', body); form.reset(); message('Site saved.'); await load(); }
+    catch (error) { message(error.message, true); }
+  });
+  $('site-rows').addEventListener('click', async event => {
+    if (!event.target.closest('[data-delete-site]')) return;
+    const row = event.target.closest('[data-id]');
+    if (!confirm(t('Delete this site?'))) return;
+    try { await call('/api/partner/sites/' + row.dataset.id, null, 'DELETE'); message('Site deleted.'); await load(); }
+    catch (error) { message(error.message, true); }
+  });
+
+  // ---- Community reports with this organisation's shared review notes.
+  async function loadReports() {
+    try {
+      const response = await fetch('/api/community/reports?limit=500', {cache: 'no-store'});
+      const body = await response.json(); if (!response.ok) throw new Error(body.error);
+      reports = body.reports || [];
+      const names = [...new Set(reports.map(r => r.cityName))].sort();
+      const select = $('report-city'), chosen = select.value;
+      select.innerHTML = '<option value="">All cities</option>' + names.map(name => `<option value="${esc(name)}" data-i18n-skip>${esc(name)}</option>`).join('');
+      select.value = names.includes(chosen) ? chosen : '';
+    } catch { reports = []; message('Community reports could not be loaded.', true); }
+  }
+  function renderReports() {
+    const city = $('report-city').value, near = $('near-sites').checked;
+    const shown = reports.filter(r => (!city || r.cityName === city) && (!near || (Number.isFinite(r.latitude) && data.sites.some(site => km(site, r) <= 25))));
+    $('reports-count').innerHTML = `<span data-i18n-skip>${shown.length}</span> <span>shown</span> · <span data-i18n-skip>${shown.filter(r => data.reviews[r.id]).length}</span> <span>with our notes</span>`;
+    $('report-list').innerHTML = shown.length ? shown.map(r => {
+      const review = data.reviews[r.id] || {stage: 'unreviewed', note: ''};
+      return `<article class="card" data-id="${esc(r.id)}"><div><span class="badge">${CATEGORY[r.category] || 'Other'}</span> <b data-i18n-skip>${esc(r.cityName)}${r.district ? ' · ' + esc(r.district) : ''}</b> <span class="meta" data-i18n-skip>${esc(when(r.observedAt))}</span></div>
+        <p class="text" data-i18n-skip>${esc(r.description)}</p>
+        <div class="review-line">${stageSelect(review.stage)}<input data-note maxlength="1000" value="${esc(review.note || '')}" aria-label="Our note" placeholder="Our note"><button type="button" data-save-review>Save</button></div>
+        ${review.updatedAt ? `<p class="meta"><span>Last saved</span> <span data-i18n-skip>${esc(when(review.updatedAt))}${review.by ? ' · ' + esc(review.by) : ''}</span></p>` : ''}</article>`;
+    }).join('') : '<p class="hint">No reports match.</p>';
+  }
+  $('report-city').addEventListener('change', renderReports);
+  $('near-sites').addEventListener('change', renderReports);
+  $('reports-refresh').addEventListener('click', async () => { await loadReports(); renderReports(); });
+  $('report-list').addEventListener('click', async event => {
+    if (!event.target.closest('[data-save-review]')) return;
+    const card = event.target.closest('[data-id]');
+    try {
+      const result = await call('/api/partner/reviews/' + card.dataset.id, {stage: card.querySelector('[data-stage]').value, note: card.querySelector('[data-note]').value});
+      if (result.review.stage === 'unreviewed' && !result.review.note) delete data.reviews[card.dataset.id]; else data.reviews[card.dataset.id] = result.review;
+      message('Note saved.'); renderReports();
+    } catch (error) { message(error.message, true); }
+  });
+
+  // ---- Field records: the form, CSV import, review stage and corrections.
+  const eatInput = date => new Date(date.getTime() + 3 * 3600000).toISOString().slice(0, 16);
+  function resetFieldForm() {
+    const form = $('field-form'); form.reset(); form.elements.corrects.value = ''; form.elements.observed_at.value = eatInput(new Date());
+    $('correcting').hidden = true; $('cancel-correction').hidden = true;
+  }
+  function renderField() {
+    const list = [...data.field].sort((a, b) => b.receivedAt.localeCompare(a.receivedAt));
+    $('field-list').innerHTML = list.length ? list.map(record => {
+      const counts = [['Water depth (cm)', record.waterDepthCm], ['Households affected', record.householdsAffected], ['People displaced', record.peopleDisplaced]].filter(([, n]) => n !== null && n !== undefined);
+      const place = [record.site, record.city, record.latitude !== null ? `${record.latitude}, ${record.longitude}` : ''].filter(Boolean).join(' · ');
+      return `<article class="card${record.correctedBy ? ' replaced' : ''}" data-id="${esc(record.id)}">
+        <div><span class="badge">${CATEGORY[record.category] || 'Other'}</span> <b data-i18n-skip>${esc(place)}</b> <span class="meta" data-i18n-skip>${esc(when(record.observedAt))}</span> <span class="badge">Unverified</span>${record.correctedBy ? ' <span class="badge">Replaced by a correction</span>' : ''}${record.corrects ? ' <span class="badge">Correction</span>' : ''}</div>
+        <p class="text" data-i18n-skip>${esc(record.description)}</p>
+        <p class="meta">${counts.map(([label, n]) => `<span>${label}</span>: <span data-i18n-skip>${n}</span>`).join(' · ')}${counts.length ? ' · ' : ''}<span>Road access</span>: <span>${ACCESS[record.roadAccess] || 'Unknown'}</span>${record.reporter ? ` · <span>Reporter</span>: <span data-i18n-skip>${esc(record.reporter)}</span>` : ''}${record.recordId ? ` · <span data-i18n-skip>record_id ${esc(record.recordId)}</span>` : ''}</p>
+        <div class="review-line">${stageSelect(record.stage)}<input data-note maxlength="1000" value="${esc(record.note || '')}" aria-label="Our note" placeholder="Our note"><button type="button" data-save-field>Save</button>${record.correctedBy ? '' : '<button type="button" data-correct>Correct this record</button>'}</div></article>`;
+    }).join('') : '<p class="hint">No field records yet.</p>';
+  }
+  $('field-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    const form = event.currentTarget, record = Object.fromEntries(new FormData(form));
+    if (record.observed_at) record.observed_at = record.observed_at.replace('T', ' ');
+    try {
+      const result = await call('/api/partner/field', {records: [record]});
+      if (result.errors.length) throw new Error(result.errors[0].message);
+      if (result.duplicates.length) { message('This record looks like one already saved, so it was not added again.', true); return; }
+      message(record.corrects ? 'Correction saved.' : 'Record saved.'); resetFieldForm(); await load();
+    } catch (error) { message(error.message, true); }
+  });
+  $('cancel-correction').addEventListener('click', resetFieldForm);
+  $('field-list').addEventListener('click', async event => {
+    const card = event.target.closest('[data-id]'); if (!card) return;
+    const record = data.field.find(item => item.id === card.dataset.id);
+    if (event.target.closest('[data-save-field]')) {
+      try { const result = await call('/api/partner/field/' + record.id, {stage: card.querySelector('[data-stage]').value, note: card.querySelector('[data-note]').value}); Object.assign(record, result.record); message('Note saved.'); renderField(); }
+      catch (error) { message(error.message, true); }
+    }
+    if (event.target.closest('[data-correct]')) {
+      const form = $('field-form'), e = form.elements;
+      e.corrects.value = record.recordId || record.id;
+      e.observed_at.value = eatInput(new Date(record.observedAt)); e.category.value = record.category; e.site.value = record.site || ''; e.city.value = record.city || '';
+      e.latitude.value = record.latitude ?? ''; e.longitude.value = record.longitude ?? ''; e.water_depth_cm.value = record.waterDepthCm ?? ''; e.households_affected.value = record.householdsAffected ?? '';
+      e.people_displaced.value = record.peopleDisplaced ?? ''; e.road_access.value = record.roadAccess; e.reporter.value = record.reporter || ''; e.description.value = record.description;
+      $('correcting').textContent = t('Correcting the record from {0}. Saving keeps the earlier one, marked as replaced.').replace('{0}', when(record.observedAt));
+      $('correcting').hidden = false; $('cancel-correction').hidden = false; form.scrollIntoView({behavior: 'smooth'});
+    }
+  });
+
+  // CSV: comma, semicolon (KoboToolbox's default) or tab; quoted fields; a byte-order mark is ignored.
+  function parseCsv(text) {
+    text = text.replace(/^﻿/, '');
+    const first = text.split(/\r?\n/, 1)[0], counts = [',', ';', '\t'].map(d => [d, first.split(d).length]);
+    const delimiter = counts.sort((a, b) => b[1] - a[1])[0][0];
+    const rows = []; let row = [], cell = '', quoted = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (quoted) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else quoted = false; } else cell += c; }
+      else if (c === '"') quoted = true;
+      else if (c === delimiter) { row.push(cell); cell = ''; }
+      else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; }
+      else cell += c;
+    }
+    if (cell || row.length) { row.push(cell); rows.push(row); }
+    return rows.filter(r => r.some(value => value.trim() !== ''));
+  }
+  // Column names: lower case, without a KoboToolbox group prefix ("group_site/water_depth_cm").
+  // Kobo's _uuid or meta/instanceID stand in for record_id, and a geopoint's _x_latitude / _x_longitude for the location.
+  function recordsFrom(rows) {
+    const header = rows[0].map(name => name.trim().toLowerCase().split('/').pop());
+    return rows.slice(1).map(cells => {
+      const raw = {}; header.forEach((name, index) => { raw[name] = (cells[index] ?? '').trim(); });
+      const record = {};
+      for (const column of data.columns) if (raw[column] !== undefined) record[column] = raw[column];
+      if (!record.record_id) record.record_id = raw._uuid || raw.instanceid || '';
+      if (!record.latitude) { const lat = Object.keys(raw).find(name => /_latitude$/.test(name)); if (lat) record.latitude = raw[lat]; }
+      if (!record.longitude) { const lon = Object.keys(raw).find(name => /_longitude$/.test(name)); if (lon) record.longitude = raw[lon]; }
+      return record;
+    });
+  }
+  $('csv-file').addEventListener('change', async event => {
+    const file = event.target.files[0]; event.target.value = ''; if (!file) return;
+    try {
+      const rows = parseCsv(await file.text());
+      if (rows.length < 2) throw new Error(t('The file has no rows to import.'));
+      const records = recordsFrom(rows);
+      if (records.length > data.limits.importRows) throw new Error(t('Import at most 500 records at a time.'));
+      const result = await call('/api/partner/field', {records});
+      const problems = [...result.duplicates.map(d => ({row: d.row, message: t('Duplicate, skipped.')})), ...result.errors].sort((a, b) => a.row - b.row);
+      $('import-result').innerHTML = `<p class="notice"><span data-i18n-skip>${result.added.length}</span> <span>added</span> · <span data-i18n-skip>${result.duplicates.length}</span> <span>duplicates skipped</span> · <span data-i18n-skip>${result.errors.length}</span> <span>rows with problems</span></p>`
+        + (problems.length ? `<div class="table-wrap"><table><thead><tr><th>Row</th><th>Problem</th></tr></thead><tbody>${problems.slice(0, 100).map(p => `<tr><td data-i18n-skip>${p.row + 1}</td><td>${esc(p.message)}</td></tr>`).join('')}</tbody></table></div><p class="hint">Row numbers count the header as row 1.</p>` : '');
+      await load();
+    } catch (error) { message(error.message, true); }
+  });
+
+  // ---- CSV downloads: a cell starting with = + - @ is prefixed so a spreadsheet does not run it.
+  const cell = value => { let text = value === null || value === undefined ? '' : String(value); if (/^[=+\-@\t\r]/.test(text)) text = "'" + text; return /[",\n\r;]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text; };
+  const csv = rows => '﻿' + rows.map(row => row.map(cell).join(',')).join('\r\n') + '\r\n';
+  function save(name, text) {
+    const url = URL.createObjectURL(new Blob([text], {type: 'text/csv;charset=utf-8'})), a = document.createElement('a');
+    a.href = url; a.download = name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  const stamp = () => new Date().toISOString().slice(0, 10);
+  $('csv-template').addEventListener('click', () => save('field-records-template.csv', csv([data.columns, ['', '', '2026-10-21 08:30', 'flood', data.sites[0]?.name || 'Camp A', 'Jowhar', '2.7809', '45.5005', '40', '12', '', 'limited', 'Water at the camp entrance.', 'Amina']])));
+  document.querySelector('[data-panel="export"]').addEventListener('click', event => {
+    const kind = event.target.closest('[data-export]')?.dataset.export; if (!kind) return;
+    const org = data.partner.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    if (kind === 'sites') save(`${org}-sites-${stamp()}.csv`, csv([['name', 'type', 'latitude', 'longitude', 'note', 'rain_next_7_days_mm', 'wettest_day_mm', 'wettest_day', 'forecast_source', 'exported_at'],
+      ...data.sites.map(s => { const r = rain.get(s.id); return [s.name, s.kind, s.latitude, s.longitude, s.note, r ? r.total.toFixed(1) : '', r ? r.peak.toFixed(1) : '', r?.peakDay || '', 'Open-Meteo model forecast', new Date().toISOString()]; })]));
+    if (kind === 'reviews') save(`${org}-review-notes-${stamp()}.csv`, csv([['report_id', 'city', 'district', 'category', 'observed_at', 'status', 'description', 'our_stage', 'our_note', 'noted_by', 'noted_at'],
+      ...Object.entries(data.reviews).map(([id, review]) => { const r = reports.find(item => item.id === id) || {}; return [id, r.cityName, r.district, r.category, r.observedAt, 'unverified', r.description, review.stage, review.note, review.by, review.updatedAt]; })]));
+    if (kind === 'field') save(`${org}-field-records-${stamp()}.csv`, csv([['id', ...data.columns, 'status', 'our_stage', 'our_note', 'replaced_by', 'received_at'],
+      ...data.field.map(f => [f.id, f.recordId, f.corrects, f.observedAt, f.category, f.site, f.city, f.latitude, f.longitude, f.waterDepthCm, f.householdsAffected, f.peopleDisplaced, f.roadAccess, f.description, f.reporter, f.status, f.stage, f.note, f.correctedBy, f.receivedAt])]));
+  });
+
+  // ---- Tabs, sign-in and loading.
+  document.querySelector('.tabs').addEventListener('click', event => {
+    const tab = event.target.closest('[data-tab]'); if (!tab) return;
+    document.querySelectorAll('[data-tab]').forEach(item => item.setAttribute('aria-selected', String(item === tab)));
+    document.querySelectorAll('[data-panel]').forEach(panel => { panel.hidden = panel.dataset.panel !== tab.dataset.tab; });
+  });
+  $('field-guide').innerHTML = GUIDE.map(([column, meaning]) => `<tr><td><code data-i18n-skip>${column}</code></td><td>${meaning}</td></tr>`).join('');
+  $('city-names').innerHTML = cities.map(city => `<option value="${esc(city[0])}">`).join('');
+  async function load() {
+    if (!key) { $('key-form').hidden = false; return; }
+    try {
+      data = await call('/api/partner');
+      $('org-title').textContent = data.partner.name; $('org-title').setAttribute('data-i18n-skip', '');
+      $('key-form').hidden = true; $('workspace').hidden = false;
+      await Promise.all([loadRain(), loadReports()]);
+      renderSites(); renderReports(); renderField();
+    } catch (error) { $('workspace').hidden = true; $('key-form').hidden = false; message(error.message, true); }
+  }
+  $('key-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const value = $('partner-key').value.trim(), link = /#key=(.+)$/.exec(value);
+    key = link ? decodeURIComponent(link[1]) : value; $('partner-key').value = '';
+    try { localStorage.setItem(STORE, key); } catch {}
+    load();
+  });
+  $('forget').addEventListener('click', () => {
+    try { localStorage.removeItem(STORE); } catch {}
+    key = ''; data = null; $('workspace').hidden = true; $('key-form').hidden = false; $('org-title').textContent = t('Partner workspace');
+    message('This device no longer keeps the link.');
+  });
+  resetFieldForm();
+  load();
+})();
+</script>
+</body>
+</html>
