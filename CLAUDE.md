@@ -129,9 +129,7 @@ messages.
   a report's public status.
 
 **Alerts tab filters**: Coverage, City (all-cities coverage only; a city also
-keeps Somalia-wide notices), Signal, Severity (four levels by `rank()`,
-labelled with the badge words: High, severe or warning / Moderate, elevated or
-national watch / Minor, rainfall watch or advisory / Not stated), Source (MOEWR,
+keeps Somalia-wide notices), Signal, Level (each source's own level words, never merged into shared bands: MOEWR Warning / Watch / Advisory, Flood Hub Extreme / Danger / Warning level, ICPAC extremely heavy / very heavy / heavy rain, GDACS red / orange / green, SWALIM gauge bank full / high-risk / moderate-risk, the app rain screen 25+ / 10+ mm, and level not stated; changed 2026-10-21, replacing the four Severity bands), Source (MOEWR,
 Google Flood Hub once its key is set, ICPAC, GDACS, SWALIM gauges, the app's
 Open-Meteo screen) and an "Applies from / to" date range (an alert shows when the days it
 applies to touch the range). Browser notifications follow the selected filters.
@@ -308,6 +306,8 @@ both pages; add an `so` entry to their `FILMS` rows in `alerts.js` then, and a
 - City manager actions close only with evidence that the job is done and a reason (enforced in `mayor-store.js`); reopening keeps the earlier closure in the action's history, which the CSV export includes.
 - Map background: on the hosted site the street map (OpenStreetMap tiles, under its tile usage policy) is the default, with a Simple / Streets / Satellite switch on the map; pages opened from a file keep the bundled map, and the bundled map returns if tiles cannot load. To make the bundled map the default again, set `DEFAULT_BASEMAP` in `map.js` to `'reference'`.
 - `/sources` gives each data source's terms, checked 19 October 2026.
+
+**App rainfall screen wording** (2026-10-21): visitors read plain amounts (Under 10 mm, 10+ mm, 25+ mm, River high), never "Watch" or "Elevated", so the app's own screen does not borrow an agency's level word. The internal codes (Lower, Watch, Elevated, High) are unchanged (`SCREEN_WORD` in `app.js`).
 
 **Visits and stats**: every page load is counted (not unique visitors),
 cookieless. The public `/stats` page stays hidden until 1,000 visits (lowered

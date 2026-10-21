@@ -82,7 +82,7 @@
   }
   function rainInfo(value) {
     if (!isNumber(value)) return {label:'Rainfall unavailable',level:'unknown'};
-    return value >= 25 ? {label:'Elevated daily rainfall',level:'elevated'} : value >= 10 ? {label:'Watch daily rainfall',level:'watch'} : {label:'Lower daily rainfall',level:'lower'};
+    return value >= 25 ? {label:'25+ mm daily rainfall',level:'elevated'} : value >= 10 ? {label:'10+ mm daily rainfall',level:'watch'} : {label:'Under 10 mm daily rainfall',level:'lower'};
   }
   function metric(title, value, note) {
     return '<div class="hour-metric"><span>'+escape(title)+'</span><strong>'+value+'</strong>'+(note ? '<small>'+escape(note)+'</small>' : '')+'</div>';

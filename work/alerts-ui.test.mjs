@@ -93,27 +93,29 @@ assert.ok(nodes['alerts-status'].innerHTML.includes('new API retrieval is not a 
 const noDom = { window: {}, Date, URL };
 vm.runInNewContext(fs.readFileSync(new URL('./somalia-flood-watch/dist/alerts.js', import.meta.url), 'utf8'), noDom);
 assert.equal(noDom.window.FloodAlerts.build(input).alerts.length, 4, 'Pure build works without a document or browser APIs');
-// Severity filter: four levels across the sources' different words; together they cover every alert.
-const levelOf = severity => ({ extreme: 'high', severe: 'high', high: 'high', moderate: 'medium', elevated: 'medium', minor: 'low', watch: 'low' })[severity] || 'unknown';
+// Level filter: each source's own level words, never merged into shared bands; together they cover every alert once.
+const LEVEL_VALUES = ['moewr:warning', 'moewr:watch', 'moewr:advisory', 'floodhub:extreme', 'floodhub:danger', 'floodhub:warning', 'icpac:extremely heavy', 'icpac:very heavy', 'icpac:heavy', 'gdacs:red', 'gdacs:orange', 'gdacs:green', 'swalim:bank full', 'swalim:high-risk', 'swalim:moderate-risk', 'open-meteo:25', 'open-meteo:10', 'unknown'];
 const everyAlert = build(input).alerts;
 assert.equal(build(input).severity, 'all');
-let coveredBySeverity = 0;
-for (const level of ['high', 'medium', 'low', 'unknown']) {
+let coveredByLevel = 0;
+for (const level of LEVEL_VALUES) {
   const shown = build({ ...input, severity: level });
   assert.equal(shown.severity, level);
-  assert.ok(shown.alerts.every(a => levelOf(a.severity) === level), `only ${level} alerts`);
-  coveredBySeverity += shown.alerts.length;
+  if (level !== 'unknown') assert.ok(shown.alerts.every(a => a.sourceKey === level.split(':')[0]), `only ${level.split(':')[0]} alerts under ${level}`);
+  coveredByLevel += shown.alerts.length;
 }
-assert.equal(coveredBySeverity, everyAlert.length, 'the four levels together show every alert once');
-assert.ok(new Set(everyAlert.map(a => levelOf(a.severity))).size > 1, 'the test alerts span more than one level');
+assert.equal(coveredByLevel, everyAlert.length, 'the levels together show every alert once');
+for (const old of ['high', 'medium', 'low']) assert.equal(build({ ...input, severity: old }).severity, 'all', 'the old merged bands are gone');
 assert.equal(build({ ...input, severity: '__proto__' }).severity, 'all', 'an unknown value shows everything');
-assert.equal(build({ ...input, severity: 'high', type: 'screen' }).alerts.every(a => a.kind === 'screen' && levelOf(a.severity) === 'high'), true, 'severity and signal combine');
+assert.equal(build({ ...input, severity: 'open-meteo:25', type: 'screen' }).alerts.every(a => a.kind === 'screen' && a.severity === 'elevated'), true, 'level and signal combine');
+const pageHtml = fs.readFileSync(new URL('./somalia-flood-watch/dist/index.html', import.meta.url), 'utf8');
+for (const value of LEVEL_VALUES) assert.ok(pageHtml.includes(`<option value="${value}"`), `the Level menu offers ${value}`);
 const severityNode = { value: '', onchange: null }, severityChoices = [];
 nodes['alerts-severity'] = severityNode;
-render({ ...input, severity: 'medium', onSeverity: value => severityChoices.push(value) });
-assert.equal(severityNode.value, 'medium', 'the dropdown shows the active level');
-severityNode.onchange({ target: { value: 'high' } });
-assert.deepEqual(severityChoices, ['high']);
+render({ ...input, severity: 'icpac:heavy', onSeverity: value => severityChoices.push(value) });
+assert.equal(severityNode.value, 'icpac:heavy', 'the dropdown shows the active level');
+severityNode.onchange({ target: { value: 'moewr:warning' } });
+assert.deepEqual(severityChoices, ['moewr:warning']);
 assert.ok(nodes['alerts-status'].innerHTML.includes('· the selected filters ·'), 'notifications say they follow the filters');
 delete nodes['alerts-severity'];
 

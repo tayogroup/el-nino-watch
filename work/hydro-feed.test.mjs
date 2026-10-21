@@ -83,7 +83,7 @@ test('on the Alerts tab: official badge and level word, region-only alerts kept 
   assert.equal(window.FloodAlerts.build({...input, scope: 'city'}).alerts.map(alert => alert.title.split(' ')[0]).join(), 'Mudug', 'Middle Juba is not shown as a Somalia-wide notice for Galkayo');
   assert.equal(window.FloodAlerts.build({...input, city: 'Galkayo'}).alerts.length, 1);
   assert.equal(window.FloodAlerts.build({...input, source: 'moewr'}).alerts.length, 2);
-  assert.equal(window.FloodAlerts.build({...input, severity: 'high'}).alerts.map(alert => alert.title.split(' ')[0]).join(), 'Middle', 'warning is the top severity level');
+  assert.equal(window.FloodAlerts.build({...input, severity: 'moewr:warning'}).alerts.map(alert => alert.title.split(' ')[0]).join(), 'Middle', 'the MOEWR Warning level shows only national warnings');
   window.FloodAlerts.render(input);
   assert.match(nodes['alerts-list'].innerHTML, /<span class="badge">Watch<\/span>/, 'the card shows the national level word');
   assert.match(nodes['alerts-summary'].innerHTML, /<b>2<\/b> National flood forecasts \(MOEWR\)/);

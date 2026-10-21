@@ -146,11 +146,11 @@ test('on the Alerts tab: Flood Hub badge, gauge place line, source filter offere
   assert.equal(card.severityLabel, 'Danger level'); assert.equal(card.official, false);
   assert.equal(window.FloodAlerts.build({...input, source: 'floodhub'}).alerts.length, 1);
   assert.equal(window.FloodAlerts.build({...input, source: 'moewr'}).alerts.length, 0);
-  assert.equal(window.FloodAlerts.build({...input, severity: 'high'}).alerts.length, 1, 'Danger is the top severity level');
+  assert.equal(window.FloodAlerts.build({...input, severity: 'floodhub:danger'}).alerts.length, 1, 'Flood Hub Danger level has its own option');
   const warning = {...floodHubAlert(status('bw', 'ABOVE_NORMAL'), null, beledweyne)};
   const warningInput = {...input, officialFeed: {...input.officialFeed, data: {...input.officialFeed.data, alerts: [warning]}}};
-  assert.equal(window.FloodAlerts.build({...warningInput, severity: 'low'}).alerts.length, 1, 'Flood Hub\'s Warning level is in the Minor group, not with MOEWR\'s national warning');
-  assert.equal(window.FloodAlerts.build({...warningInput, severity: 'high'}).alerts.length, 0);
+  assert.equal(window.FloodAlerts.build({...warningInput, severity: 'floodhub:warning'}).alerts.length, 1, 'Flood Hub Warning level is its own option, not MOEWR national warning');
+  assert.equal(window.FloodAlerts.build({...warningInput, severity: 'moewr:warning'}).alerts.length, 0);
   assert.equal(window.FloodAlerts.build({...input, selectedCity: 0}).alerts.length, 0, 'not shown for another city');
   window.FloodAlerts.render(input);
   assert.equal(option.hidden, false, 'the source option appears once the server has the key');

@@ -44,7 +44,7 @@ h.get('search').value = '';
 h.get('search').oninput();
 h.setTime(BASE + 121 * 60000);
 h.evaluate('render()');
-assert.match(h.get('rows-secondary').innerHTML, /Watch · stale/, 'old forecasts retain their stale label');
+assert.match(h.get('rows-secondary').innerHTML, /10\+ mm · stale/, 'old forecasts retain their stale label');
 const csv = h.evaluate('exportForecast()');
 const exported = (await csv.text()).trim().split(/\r?\n/);
 assert.equal(exported.length, 421, 'both groups still export all 420 city/day records plus a header');

@@ -23,7 +23,14 @@
   function rank(severity) {
     return ({ extreme: 4, severe: 3, high: 3, moderate: 2, elevated: 2, minor: 1, watch: 1 })[String(severity || '').toLowerCase()] || 0;
   }
-  const SEVERITY_LEVELS = { high: 3, medium: 2, low: 1, unknown: 0 };
+  // The Level filter keeps each source's own level words apart. A MOEWR Watch, an ICPAC Very heavy rainfall
+  // forecast and a Flood Hub Warning level are different scales, so they are never merged into a shared band.
+  const LEVELS = ['moewr:warning', 'moewr:watch', 'moewr:advisory', 'floodhub:extreme', 'floodhub:danger', 'floodhub:warning', 'icpac:extremely heavy', 'icpac:very heavy', 'icpac:heavy', 'gdacs:red', 'gdacs:orange', 'gdacs:green', 'swalim:bank full', 'swalim:high-risk', 'swalim:moderate-risk', 'open-meteo:25', 'open-meteo:10', 'unknown'];
+  function levelKey(a) {
+    if (a.sourceKey === 'open-meteo') return a.severity === 'elevated' ? 'open-meteo:25' : a.severity === 'watch' ? 'open-meteo:10' : 'unknown';
+    const key = `${a.sourceKey}:${String(a.severityText || '').toLowerCase().replace(/\s+level$/, '').trim()}`;
+    return LEVELS.includes(key) ? key : 'unknown';
+  }
   const SOURCE_KEYS = ['moewr', 'floodhub', 'icpac', 'gdacs', 'swalim', 'open-meteo'];
   // Date range: whole days in East Africa Time. An alert applies from its start (or, without one, its
   // issue or observation time) to its expiry: an ICPAC or GDACS validity period, the app screen's
@@ -37,7 +44,6 @@
     const end = Number.isFinite(epoch(a.endsAt)) ? epoch(a.endsAt) : start;
     return (!fromDay || end >= Date.parse(fromDay + 'T00:00:00+03:00')) && (!toDay || start < Date.parse(toDay + 'T00:00:00+03:00') + DAY_MS);
   }
-  const severityLevel = severity => Math.min(rank(severity), 3);
   function css(severity) { return rank(severity) >= 3 ? 'alert-high' : rank(severity) === 2 ? 'alert-warning' : rank(severity) === 1 ? 'alert-watch' : 'alert-info'; }
   // Styling hook for the card's source tier; only MOEWR is official.
   function tier(alert) { return alert.official ? 'is-official' : alert.basis === 'observed-gauge' ? 'is-observed' : alert.basis === 'rainfall-screen' ? 'is-screening' : 'is-regional'; }
@@ -91,10 +97,10 @@
           if (rain < 10) continue;
           const severity = rain >= 25 ? 'elevated' : 'watch';
           alerts.push({ id: `rain:${normalized(name)}:${date}`, kind: 'screen', basis: 'rainfall-screen', cityNames: [name],
-            title: `${name} · ${severity === 'elevated' ? 'Elevated rainfall' : 'Rainfall watch'}`, severity,
+            title: `${name} · ${severity === 'elevated' ? '25+ mm rain forecast' : '10+ mm rain forecast'}`, severity,
             source: 'Open-Meteo weather forecast', sourceKey: 'open-meteo', sourceUrl: 'https://open-meteo.com/en/docs', issuedAt: weather.lastSuccess,
             startsAt: date + 'T00:00:00+03:00', endsAt: date + 'T23:59:59+03:00',
-            description: `${rain.toFixed(1)} mm forecast for ${date} (daily total). App screening thresholds: Watch ≥10 mm/day; Elevated ≥25 mm/day. These are screening rules, not flood probabilities or official warning thresholds.`,
+            description: `${rain.toFixed(1)} mm forecast for ${date} (daily total). App screening thresholds: 10 mm or more a day, and 25 mm or more a day. These are screening rules, not flood probabilities or official warning thresholds.`,
             badge: 'App rainfall screening', scopeLabel: name, timingLabel: `Forecast day ${date} · retrieved ${time(weather.lastSuccess)}`,
             guidance: 'Check low points, drains and safe routes. Flooding also depends on rainfall intensity, terrain, upstream flow and drainage capacity.',
             notificationKey: `rain:${normalized(name)}:${date}:${severity}` });
@@ -115,7 +121,7 @@
         const thresholds = [['bank full', s.bankFullM, 'high'], ['high-risk', s.highM, 'high'], ['moderate-risk', s.moderateM, 'elevated']];
         const threshold = thresholds.find(([, value]) => valid(value) && value > 0 && s.levelM >= value);
         if (!threshold) continue;
-        alerts.push({ id: `gauge:${s.code}:${s.observedAt}`, kind: 'source', basis: 'observed-gauge', cityNames: [name], severity: threshold[2],
+        alerts.push({ id: `gauge:${s.code}:${s.observedAt}`, kind: 'source', basis: 'observed-gauge', cityNames: [name], severity: threshold[2], severityText: threshold[0],
           title: `${name} · river ${threshold[0]} threshold reached`, source: 'FAO SWALIM river observation', sourceKey: 'swalim', sourceUrl: url(s.sourceUrl), issuedAt: observedAt,
           badge: 'SWALIM observation · station threshold', scopeLabel: `${name} · ${s.name || s.code} gauge`,
           timingLabel: dateOnly ? `SWALIM last update ${s.observedAt} (date only; not when the river was measured) · retrieved ${time(stations.lastSuccess)}` : `Observed ${time(observedAt)} · retrieved ${time(stations.lastSuccess)}`,
@@ -125,13 +131,13 @@
       }
     }
     const relevant = alerts.filter(a => scope === 'all' || (!a.cityNames.length && !a.regionOnly) || a.cityNames.some(n => normalized(n) === normalized(selected)));
-    const severity = Object.hasOwn(SEVERITY_LEVELS, input.severity) ? input.severity : 'all';
+    const severity = LEVELS.includes(input.severity) ? input.severity : 'all';
     const sourceFilter = SOURCE_KEYS.includes(input.source) ? input.source : 'all';
     const cityOptions = scope === 'all' ? [...new Map(relevant.flatMap(a => a.cityNames).map(n => [normalized(n), n])).values()].sort((a, b) => a.localeCompare(b)) : [];
     const cityFilter = cityOptions.find(n => normalized(n) === normalized(input.city)) || 'all';
     let dateFrom = validDay(input.from), dateTo = validDay(input.to);
     if (dateFrom && dateTo && dateFrom > dateTo) [dateFrom, dateTo] = [dateTo, dateFrom];
-    const visible = relevant.filter(a => appliesBetween(a, dateFrom, dateTo) && (cityFilter === 'all' || (!a.cityNames.length && !a.regionOnly) || a.cityNames.some(n => normalized(n) === normalized(cityFilter))) && (sourceFilter === 'all' || a.sourceKey === sourceFilter) && (type === 'all' || a.kind === type) && (severity === 'all' || severityLevel(a.severity) === SEVERITY_LEVELS[severity])).sort((a, b) => rank(b.severity) - rank(a.severity) || epoch(b.issuedAt) - epoch(a.issuedAt));
+    const visible = relevant.filter(a => appliesBetween(a, dateFrom, dateTo) && (cityFilter === 'all' || (!a.cityNames.length && !a.regionOnly) || a.cityNames.some(n => normalized(n) === normalized(cityFilter))) && (sourceFilter === 'all' || a.sourceKey === sourceFilter) && (type === 'all' || a.kind === type) && (severity === 'all' || levelKey(a) === severity)).sort((a, b) => rank(b.severity) - rank(a.severity) || epoch(b.issuedAt) - epoch(a.issuedAt));
     const count = basis => relevant.filter(a => a.basis === basis).length;
     return { alerts: visible, allAlerts: relevant, selectedCity: selected, scope, type, severity, sourceFilter, cityFilter, cityOptions, dateFrom, dateTo, now: new Date(now).toISOString(),
       forecastDates, weatherCoverage, messages: [...new Set(messages)],
@@ -226,6 +232,7 @@
     // Google Flood Hub is offered only once the server has its key (floodhub-feed.mjs).
     const floodHubOption = sourceSelect?.querySelector?.('option[value="floodhub"]');
     if (floodHubOption) floodHubOption.hidden = !model.floodHubEnabled;
+    doc?.querySelectorAll?.('#alerts-severity [data-floodhub-level]').forEach(option => { option.hidden = !model.floodHubEnabled; });
     if (summary) summary.innerHTML = `<div class="alert-metrics"><span><b>${model.counts.national}</b> National flood forecasts (MOEWR)</span>${model.floodHubEnabled ? `<span><b>${model.counts.rivers}</b> River forecasts (Google Flood Hub)</span>` : ''}<span><b>${model.counts.regional}</b> ICPAC forecasts</span><span><b>${model.counts.events}</b> Source event signals</span><span><b>${model.counts.gauges}</b> River thresholds</span><span><b>${model.counts.screens}</b> App rainfall screens</span></div><p class="note">${esc(model.scopeLabel)} · next 3 forecast days: ${model.forecastDates[0]}–${model.forecastDates[2]} (including full today). Source signals and app screening are distinct.</p>`;
     if (list) list.innerHTML = model.alerts.length ? model.alerts.map(a => `<article class="alert-card ${css(a.severity)} ${tier(a)}"><div class="alert-card-head"><span class="badge">${esc(a.badge)}</span><span class="badge">${esc(a.severityLabel || a.severity)}</span></div><h3${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.title)}</h3><p class="alert-scope">${esc(a.scopeLabel)}</p><p${['model-event','event-monitoring'].includes(a.basis)?' data-i18n-skip lang="und"':''}>${esc(a.description || 'Read the source notice for details.')}</p><small>${esc(a.timingLabel)} · ${esc(a.source)}</small><p class="alert-guidance">${esc(a.guidance)}</p>${a.sourceUrl ? `<a href="${esc(a.sourceUrl)}" target="_blank" rel="noopener">${esc(a.linkLabel || 'Read source ↗')}</a>` : ''}${root.SiteShare?.row ? root.SiteShare.row(shareLines(a), 'alerts', a.official ? {t: 'Official forecast (MOEWR).'} : undefined) : ''}</article>`).join('') : `<div class="alert-card alert-info"><h3>No active signals returned for this view</h3><p>${model.messages.length ? 'Some feeds are unavailable or stale; check the status below.' : 'No matching source notice or app threshold is present in the fresh responses.'} This does not confirm that an area is safe or free from flooding.</p></div>`;
     notificationButton(button);

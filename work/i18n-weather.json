@@ -493,7 +493,12 @@
     "heavy rainfall": "roob xooggan",
     "very heavy rainfall": "roob aad u xooggan",
     "extremely heavy rainfall": "roob aad iyo aad u xooggan",
-    "Column guide": "Hagaha tiirarka"
+    "Column guide": "Hagaha tiirarka",
+    "Under 10 mm daily rainfall": "Roobka maalinta oo ka yar 10 mm",
+    "10+ mm daily rainfall": "Roobka maalinta oo ah 10 mm ama ka badan",
+    "25+ mm daily rainfall": "Roobka maalinta oo ah 25 mm ama ka badan",
+    "25+ mm rain forecast": "Saadaal roob 25 mm ama ka badan",
+    "10+ mm rain forecast": "Saadaal roob 10 mm ama ka badan"
   },
   "patterns": [
     {
@@ -929,8 +934,8 @@
       "so": "{0} · La socodka roobka"
     },
     {
-      "en": "{0} mm forecast for {1} (daily total). App screening thresholds: Watch ≥10 mm/day; Elevated ≥25 mm/day. These are screening rules, not flood probabilities or official warning thresholds.",
-      "so": "{0} mm ayaa la saadaaliyey {1} (wadarta maalinta). Xuduudaha qiimeynta hordhaca ah ee abka: La socod ≥10 mm/day; Sare ≥25 mm/day. Kuwani waa xeerar qiimeyn hordhac ah, ma aha suurtagalnimada fatahaadda ama xuduudaha digniinaha rasmiga ah."
+      "en": "{0} mm forecast for {1} (daily total). App screening thresholds: 10 mm or more a day, and 25 mm or more a day. These are screening rules, not flood probabilities or official warning thresholds.",
+      "so": "{0} mm ayaa la saadaaliyey {1} (wadarta maalinta). Xuduudaha qiimeynta hordhaca ah ee abka: 10 mm ama ka badan maalintii, iyo 25 mm ama ka badan maalintii. Kuwani waa xeerar qiimeyn hordhac ah, ma aha suurtagalnimada fatahaadda ama xuduudaha digniinaha rasmiga ah."
     },
     {
       "en": "Forecast day {0} · retrieved {1}",
@@ -1209,6 +1214,14 @@
         0,
         1
       ]
+    },
+    {
+      "en": "{0} · 25+ mm rain forecast",
+      "so": "{0} · Saadaal roob 25 mm ama ka badan"
+    },
+    {
+      "en": "{0} · 10+ mm rain forecast",
+      "so": "{0} · Saadaal roob 10 mm ama ka badan"
     }
   ]
 }
