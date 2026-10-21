@@ -6,7 +6,7 @@ Guidance for Claude Code when working in this repository.
 
 El Nino Watch: English/Somali weather awareness, the official national flood
 forecast (MOEWR), regional rainfall forecasts and alerts, satellite flood
-observations and community flood reporting for 30 Somali cities. A plain Node.js server (no npm dependencies) serving a static frontend.
+observations and community flood reporting for 44 Somali cities. A plain Node.js server (no npm dependencies) serving a static frontend.
 
 - `work/somalia-flood-watch/` — the app. `server.mjs` and the other `*.mjs`
   files are the server and its data relays; `dist/` is the frontend and is
@@ -376,3 +376,11 @@ repository-level secret.
 "Miiska qorsheynta magaalada") everywhere a visitor reads it, not "Mayor dashboard", because it is an independent
 planning view and not a mayor's or government office. Only visible text changed: code names (`mayor.js`,
 `mayor-store.js`, `.mayor-*` classes), the `#view=mayor` address and the `somalia-*` storage keys stay as they were.
+
+**44 monitored cities** (owner, 2026-10-21): the 14 priority districts that SODMA or IOM coverage missed
+(Afmadow, Baraawe, Bu'aale, Ceel Waaq, Ceelburde, Diinsoor, Garbahaarey, Jalalaqsi, Jamaame, Jilib, Kurtunwaarey,
+Qansaxdheere, Saakow, Sablaale) were added after the original 30, so indices 0 to 29 did not move. Coordinates come
+from GeoNames (Open-Meteo place search); Ceel Waaq, Ceelburde and Sablaale are not in GeoNames and come from
+OpenStreetMap. Bu'aale reads SWALIM gauge JB010. Every MOEWR region now has a monitored city. The watchlist shows two
+columns of 22. Open-Meteo counts each city as a call, so the shared forecasts now use about 5,300 free calls a day
+(DEPLOYMENT.md).

@@ -33,7 +33,7 @@ try {
   let response = await nativeFetch(origin + '/'); equal(response.status, 200);
   const html = await response.text(); ok(html.includes('El Nino Watch'));
   response = await nativeFetch(origin + '/cities.json'); equal(response.status, 200);
-  const cities = await response.json(); equal(cities.length, 30); ok(cities.some(city => city[0] === 'Laasqoray'));
+  const cities = await response.json(); equal(cities.length, 44); ok(cities.some(city => city[0] === 'Laasqoray'));
   response = await nativeFetch(origin + '/community.js'); equal(response.status, 200); ok(response.headers.get('content-type').startsWith('text/javascript'));
   let result = await api('/api/community/reports'); equal(result.response.status, 200); equal(result.body.total, 0); equal(upstreamRequests, 0);
   const payload = {cityId:'laasqoray', category:'rain', observedAt:new Date(Date.now()-60000).toISOString(), description:'Integration test only: rainfall visible over local roads.', latitude:11.1595, longitude:48.1994, deaths:null, injuries:null, damagedProperties:null};
@@ -61,7 +61,7 @@ try {
   result = await api(`/api/community/reports/${report.id}`, {method:'DELETE', headers:{Origin:origin, 'Content-Type':'application/json'}, body:JSON.stringify({receipt:receiptToken})}); equal(result.response.status, 200); equal(result.body.removed, true);
   result = await api('/api/community/reports'); equal(result.body.total, 0); equal((await readdir(path.join(dataDir,'media'))).length, 0);
   response = await nativeFetch(origin + report.media[0].url); equal(response.status, 404);
-  console.log(`Integrated community server: ${checks} checks passed (30-city API, real multipart/media/comments/deletion, persistence, private storage, static routes, and feed outage isolation).`);
+  console.log(`Integrated community server: ${checks} checks passed (44-city API, real multipart/media/comments/deletion, persistence, private storage, static routes, and feed outage isolation).`);
 } finally {
   globalThis.fetch = nativeFetch;
   if (server) await stop();

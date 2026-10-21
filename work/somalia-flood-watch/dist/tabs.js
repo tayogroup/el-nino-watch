@@ -160,7 +160,7 @@
       nextFrame(() => target.scrollIntoView({behavior: 'instant', block: 'start'}));
     }
   }
-  // Back to the public page, the way its "All 30 cities" link does it (app.js wires that link).
+  // Back to the public page, the way its "All 44 cities" link does it (app.js wires that link).
   function leaveMayor() { doc.querySelector('[data-dashboard-view="public"]')?.click(); }
   doc.addEventListener('click', event => {
     if (event.defaultPrevented) return;

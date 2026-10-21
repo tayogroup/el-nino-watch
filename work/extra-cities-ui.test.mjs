@@ -69,9 +69,9 @@ function fill(h,{name = 'Hobyo',region = 'Mudug',lat = '5.3505',lon = '48.526'} 
   for (const [key,value] of Object.entries({name,region,lat,lon})) h.node('extra-city-'+key).value = value;
 }
 
-test('dialog opens, closes and restores focus without modifying the 30 cities',() => {
+test('dialog opens, closes and restores focus without modifying the 44 cities',() => {
   const h = harness(), before = JSON.stringify(h.core); assert.equal(h.api.open(),true); assert.equal(h.node('extra-cities-dialog').open,true); assert.equal(h.doc.activeElement.id,'extra-cities-close');
-  h.api.close(); assert.equal(h.node('extra-cities-dialog').hidden,true); assert.equal(h.doc.activeElement.id,'extra-cities-open'); assert.equal(JSON.stringify(h.core),before); assert.equal(h.core.length,30);
+  h.api.close(); assert.equal(h.node('extra-cities-dialog').hidden,true); assert.equal(h.doc.activeElement.id,'extra-cities-open'); assert.equal(JSON.stringify(h.core),before); assert.equal(h.core.length,44);
   assert.match(h.node('extra-cities-list').innerHTML,/No additional cities yet/); assert.match(h.node('extra-cities-root').innerHTML,/aria-labelledby="extra-cities-title"/);
 });
 
@@ -86,7 +86,7 @@ test('name-only additions remain unknown until paired coordinates are saved',asy
   const h = harness(); fill(h,{lat:'',lon:''}); const city = h.api.submit({preventDefault(){}}); assert.notEqual(city,false,h.node('extra-cities-message').textContent); assert.equal(city.name,'Hobyo'); assert.equal(city.lat,null); assert.equal(city.lon,null);
   assert.match(h.node('extra-cities-list').innerHTML,/Coordinates not supplied/); assert.match(h.node('extra-cities-list').innerHTML,/Add coordinates to load an outlook/); assert.equal(await h.api.loadForecast(city.id),false); assert.equal(h.calls.length,0);
   h.api.edit(city.id); assert.equal(h.node('extra-city-add').textContent,'Save changes'); h.node('extra-city-lat').value = '5.3505'; assert.equal(h.api.submit({preventDefault(){}}),false); assert.match(h.node('extra-cities-message').textContent,/both latitude and longitude/);
-  h.node('extra-city-lon').value = '48.526'; const updated = h.api.submit({preventDefault(){}}); assert.equal(updated.id,city.id); assert.equal(updated.lat,5.3505); assert.equal(h.store.list().length,1); assert.equal(h.core.length,30);
+  h.node('extra-city-lon').value = '48.526'; const updated = h.api.submit({preventDefault(){}}); assert.equal(updated.id,city.id); assert.equal(updated.lat,5.3505); assert.equal(h.store.list().length,1); assert.equal(h.core.length,44);
 });
 
 test('duplicate aliases and nearby coordinates produce friendly errors and retain drafts',() => {

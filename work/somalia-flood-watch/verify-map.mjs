@@ -63,10 +63,10 @@ function planningHarness() {
   return window.FloodPlanning;
 }
 
-await test('map has 30 geographic city markers and marker click selects the matching city', async () => {
+await test('map has 44 geographic city markers and marker click selects the matching city', async () => {
   const h = mapHarness(); await h.init();
-  assert.equal(h.markerLayers.length, 30);
-  assert.equal(h.map.bounds.length, 30);
+  assert.equal(h.markerLayers.length, 44);
+  assert.equal(h.map.bounds.length, 44);
   h.markerLayers[6].events.click();
   assert.deepEqual(h.selected, [6]);
   h.api.focus(6);
@@ -91,7 +91,7 @@ await test('hosted pages open on the street map and return to the bundled map wh
   assert.match(loaded.get('map-imagery-status').textContent,/volunteers/);
 });
 
-await test('missing local geography leaves city navigation and hazard overlays usable',async()=>{const h=mapHarness({basemapMissing:true});await h.init();assert.equal(h.snapshot().basemap.ready,false);assert.equal(h.markerLayers.length,30);assert.ok(h.layers.some(l=>l.type==='wms'));assert.match(h.get('basemap-status').textContent,/unavailable/)});
+await test('missing local geography leaves city navigation and hazard overlays usable',async()=>{const h=mapHarness({basemapMissing:true});await h.init();assert.equal(h.snapshot().basemap.ready,false);assert.equal(h.markerLayers.length,44);assert.ok(h.layers.some(l=>l.type==='wms'));assert.match(h.get('basemap-status').textContent,/unavailable/)});
 
 await test('satellite context is opt-in and returns to the regional reference when tiles fail', async () => {
   const h = mapHarness({ protocol: 'file:' }); await h.init();
@@ -127,7 +127,7 @@ await test('located community reports are separate unverified pins and their lay
   assert.ok(h.map.currentLayers.has(report));
   h.get('layer-community').checked = false; h.get('layer-community').onchange();
   assert.ok(!h.map.currentLayers.has(report));
-  assert.equal(h.markerLayers.length, 31, 'city and community markers remain distinct');
+  assert.equal(h.markerLayers.length, 45, 'city and community markers remain distinct');
   h.api.communityReports([]);
   assert.equal(h.snapshot().communityPins, 0);
 });
@@ -142,7 +142,7 @@ await test('selected-date marker colors and popup values follow live city states
   assert.match(h.markerLayers[6].popup, /7\.0 mm/);
   assert.match(h.markerLayers[6].popup, /Scenarios do not change these live source values/);
   assert.equal(h.snapshot().scenario, 'heavy-rain');
-  assert.equal((h.get('citynav').innerHTML.match(/data-city=/g) || []).length, 30);
+  assert.equal((h.get('citynav').innerHTML.match(/data-city=/g) || []).length, 44);
 });
 
 await test('official overlays retain provider layers, dated legends and visible tile-failure states', async () => {

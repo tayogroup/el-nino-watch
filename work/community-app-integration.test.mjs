@@ -1,7 +1,7 @@
 import {harness,assert} from './somalia-flood-watch/verify.mjs';
 let config;const cityUpdates=[],contextUpdates=[];
 const h=harness({explorerMock:{},windowGlobals:{CommunityReports:{init:options=>{config=options},refresh:async()=>{},selectCity:index=>cityUpdates.push(index)},MapContext:{render:input=>contextUpdates.push(input)}}});
-await h.settle();assert.equal(config.cities.length,30);assert.equal(config.selectedCity,0);
+await h.settle();assert.equal(config.cities.length,44);assert.equal(config.selectedCity,0);
 assert.equal(h.get('reports').textContent,'—');
 const record={id:'fixture-report',cityId:'laasqoray',latitude:11.16,longitude:48.2,category:'flood',description:'Unverified fixture report'};
 config.onChange([record],{available:true});assert.equal(Number(h.get('reports').textContent),1);
@@ -10,4 +10,4 @@ config.onChange([],{available:false});assert.equal(h.get('reports').textContent,
 h.evaluate('selectCity(29)');await h.settle();assert.equal(cityUpdates.at(-1),29);assert.equal(contextUpdates.at(-1).city[0],'Laasqoray');assert.equal(contextUpdates.at(-1).date,'2026-10-13');
 h.get('map-panel').scrollIntoView=()=>{};
 config.onLocation({cityId:'jowhar',latitude:2.78,longitude:45.5});await h.settle();assert.equal(h.evaluate('selected'),7);assert.ok(h.moduleCalls.some(c=>c.method==='focusPoint'&&c.args[0]===2.78&&c.args[1]===45.5));
-console.log('Community controller integration passed: 30-city form, unavailable-count handling, report pins, date context and reported-city location navigation.');
+console.log('Community controller integration passed: 44-city form, unavailable-count handling, report pins, date context and reported-city location navigation.');

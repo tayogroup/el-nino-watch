@@ -104,7 +104,7 @@ test('the app\'s own flashes: NOAA\'s El Niño status and how many cities ICPAC 
     alerts: {available: true, sources: [{id: 'icpac', available: true, fetchedAt: '2026-10-15T10:00:00Z', forecast: {weekLabel: '13 Oct–20 Oct'}}], alerts: [{sourceId: 'icpac', scope: {cities: ['Baidoa']}}, {sourceId: 'icpac', scope: {cities: ['Jowhar']}}, {sourceId: 'icpac', scope: {cities: ['Baidoa']}}, {sourceId: 'gdacs', scope: {cities: ['Kismayo']}}]}
   });
   assert.equal(items[0].title, 'El Niño Advisory: El Niño continues to strengthen.');
-  assert.equal(items[1].title, '2 of 30 cities have a heavy-rainfall forecast for 13 Oct–20 Oct');
+  assert.equal(items[1].title, '2 of 44 cities have a heavy-rainfall forecast for 13 Oct–20 Oct');
   assert.equal(items[1].url, '#tab=alerts');
   assert.equal(appItems({enso: {available: false}, alerts: {available: false}}).length, 0, 'nothing from a feed that is down');
 });
@@ -143,8 +143,8 @@ test('the bar: headlines as published and escaped, links open safely, the app\'s
   assert.match(headline, /href="https:\/\/example\.org\/story" target="_blank" rel="noopener"/);
   assert.match(headline, /news-flash-humanitarian">Humanitarian</);
   assert.equal(safeUrl('javascript:alert(1)'), null); assert.equal(safeUrl('#tab=alerts'), '#tab=alerts'); assert.equal(safeUrl('#tab=x"y'), null);
-  const icpac = itemHtml({kind: 'app', key: 'icpac', label: 'Rainfall forecast · ICPAC', title: '16 of 30 cities have a heavy-rainfall forecast for 13 Oct–20 Oct', url: '#tab=alerts', source: 'ICPAC', group: 'app'});
-  assert.match(icpac, /<span class="news-flash-title">16 of 30 cities/, 'translated through the catalogue pattern');
+  const icpac = itemHtml({kind: 'app', key: 'icpac', label: 'Rainfall forecast · ICPAC', title: '16 of 44 cities have a heavy-rainfall forecast for 13 Oct–20 Oct', url: '#tab=alerts', source: 'ICPAC', group: 'app'});
+  assert.match(icpac, /<span class="news-flash-title">16 of 44 cities/, 'translated through the catalogue pattern');
   assert.ok(!icpac.includes('target="_blank"'), 'an in-app link stays in the page');
 });
 

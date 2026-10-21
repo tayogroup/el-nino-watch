@@ -4,9 +4,9 @@ const replacements=[{index:27,old:'Badhan',next:'Adado'},{index:28,old:'Zeila',n
 const slug=name=>name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
 const plain=value=>JSON.parse(JSON.stringify(value));
 
-test('all 30-city selectors, weather requests, route selection and map city data use replacement identities',async()=>{
+test('all 44-city selectors, weather requests, route selection and map city data use replacement identities',async()=>{
  const h=harness({explorerMock:{}});await h.settle();
- assert.equal(citiesFixture.length,30);assert.equal(new Set(citiesFixture.map(c=>c[0])).size,30);
+ assert.equal(citiesFixture.length,44);assert.equal(new Set(citiesFixture.map(c=>c[0])).size,44);
  for(const {index,old,next}of replacements){
   for(const id of ['city','daily-city','reportcity']){assert.ok(h.get(id).innerHTML.includes('>'+next+'</option>'));assert.ok(!h.get(id).innerHTML.includes('>'+old+'</option>'));}
   assert.equal(h.snapshot('cities')[index][0],next);

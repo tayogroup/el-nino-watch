@@ -119,7 +119,7 @@ assert.deepEqual(severityChoices, ['moewr:warning']);
 assert.ok(nodes['alerts-status'].innerHTML.includes('· the selected filters ·'), 'notifications say they follow the filters');
 delete nodes['alerts-severity'];
 
-// City filter (All 30 cities coverage): the cities the alerts name; a city keeps its own alerts and Somalia-wide notices.
+// City filter (All 44 cities coverage): the cities the alerts name; a city keeps its own alerts and Somalia-wide notices.
 const allCoverage = build({ ...input, scope: 'all' });
 assert.ok(allCoverage.cityOptions.length > 1, 'the test alerts name more than one city');
 assert.deepEqual([...allCoverage.cityOptions], [...allCoverage.cityOptions].sort((a, b) => a.localeCompare(b)), 'listed alphabetically');

@@ -108,7 +108,7 @@ function setup(){
   form.reset=()=>{for(const input of inputs){input.value='';input.checked=false;}};
   return {context,root,doc,language,api,form,cities,calls,confirms,storage,node:id=>doc.getElementById(id),setReports:value=>{reports=value;},setFailure:value=>{fail=value;},apply:()=>language.apply(doc.body)};
 }
-const sample={id:'report-1',cityId:'mogadishu',category:'flood',author:'Weather',description:'All 30 cities',observedAt:'2026-10-14T07:00:00Z',receivedAt:'2026-10-14T08:00:00Z',deaths:null,injuries:0,damagedProperties:2,latitude:2.04,longitude:45.31,sourceUrl:'https://example.org/Unknown?label=Weather',media:[{url:'/api/community/media/photo-test.jpg',type:'image/jpeg',name:'Unknown'},{url:'/api/community/media/video-test.mp4',type:'video/mp4',name:'Rainfall'}],comments:[{id:'comment-1',author:'Alerts',body:'Rainfall',receivedAt:'2026-10-14T08:00:00Z'}]};
+const sample={id:'report-1',cityId:'mogadishu',category:'flood',author:'Weather',description:'All 44 cities',observedAt:'2026-10-14T07:00:00Z',receivedAt:'2026-10-14T08:00:00Z',deaths:null,injuries:0,damagedProperties:2,latitude:2.04,longitude:45.31,sourceUrl:'https://example.org/Unknown?label=Weather',media:[{url:'/api/community/media/photo-test.jpg',type:'image/jpeg',name:'Unknown'},{url:'/api/community/media/video-test.mp4',type:'video/mp4',name:'Rainfall'}],comments:[{id:'comment-1',author:'Alerts',body:'Rainfall',receivedAt:'2026-10-14T08:00:00Z'}]};
 
 test('generated report form translates labels, placeholders, impact, privacy and public consent completely',async t=>{
   const h=setup();await h.api.refresh();coverage(h.node('community-root'),h.language,'Report form');

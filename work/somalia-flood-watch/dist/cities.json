@@ -208,5 +208,103 @@
     11.1595,
     48.1967,
     "Coastal / flash runoff"
+  ],
+  [
+    "Afmadow",
+    "Lower Juba",
+    0.51265,
+    42.07962,
+    "Inland / seasonal channels"
+  ],
+  [
+    "Baraawe",
+    "Lower Shabelle",
+    1.1132,
+    44.0297,
+    "Coastal / lower Shabelle region"
+  ],
+  [
+    "Bu'aale",
+    "Middle Juba",
+    1.08333,
+    42.58333,
+    "Juba river corridor"
+  ],
+  [
+    "Ceel Waaq",
+    "Gedo",
+    2.79248,
+    41.01329,
+    "Inland / seasonal channels"
+  ],
+  [
+    "Ceelburde",
+    "Bakool",
+    4.82821,
+    43.65993,
+    "Inland / seasonal channels"
+  ],
+  [
+    "Diinsoor",
+    "Bay",
+    2.4085,
+    42.9771,
+    "Inland / flash runoff"
+  ],
+  [
+    "Garbahaarey",
+    "Gedo",
+    3.32892,
+    42.22091,
+    "Inland / seasonal channels"
+  ],
+  [
+    "Jalalaqsi",
+    "Hiraan",
+    3.3766,
+    45.5996,
+    "Shabelle river corridor"
+  ],
+  [
+    "Jamaame",
+    "Lower Juba",
+    0.06968,
+    42.74497,
+    "Juba river corridor"
+  ],
+  [
+    "Jilib",
+    "Middle Juba",
+    0.48829,
+    42.78535,
+    "Juba river corridor"
+  ],
+  [
+    "Kurtunwaarey",
+    "Lower Shabelle",
+    1.61044,
+    44.33289,
+    "Shabelle river corridor"
+  ],
+  [
+    "Qansaxdheere",
+    "Bay",
+    2.89212,
+    42.93186,
+    "Inland / flash runoff"
+  ],
+  [
+    "Saakow",
+    "Middle Juba",
+    1.63668,
+    42.4519,
+    "Juba river corridor"
+  ],
+  [
+    "Sablaale",
+    "Lower Shabelle",
+    1.24945,
+    43.80448,
+    "Shabelle river corridor"
   ]
 ]

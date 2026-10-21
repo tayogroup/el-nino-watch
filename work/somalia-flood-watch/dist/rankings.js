@@ -24,7 +24,7 @@
   }
   function knownCities(input) {
     const seen = new Set(), result = [];
-    (Array.isArray(input) ? input : []).slice(0,30).forEach((city,index)=>{
+    (Array.isArray(input) ? input : []).slice(0,44).forEach((city,index)=>{
       const name = String(Array.isArray(city) ? city[0] ?? '' : city?.name ?? '').trim(), id = slug(name);
       if (!name || !id || seen.has(id)) return;
       seen.add(id);result.push({index,id,name,region:String(Array.isArray(city) ? city[1] ?? '' : city?.region ?? '')});

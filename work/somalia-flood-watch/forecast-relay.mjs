@@ -1,6 +1,6 @@
 import {openMeteoUrl} from './open-meteo.mjs';
 // Server relay for the Open-Meteo forecasts every visitor's browser used to fetch
-// itself: the 30-city daily forecast, the 30-city GloFAS river discharge, and the
+// itself: the 44-city daily forecast, the 44-city GloFAS river discharge, and the
 // detailed hourly forecast of one city. Open-Meteo's free service limits requests
 // per internet address, and many Somali mobile users share one; here one cached
 // copy serves everyone.

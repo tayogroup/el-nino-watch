@@ -39,7 +39,7 @@ test('the evening bulletin: official first, rivers to the centimetre, tomorrow\'
   assert.ok(text.includes('Webiga Shabeelle ee Jowhar wuxuu marayaa 5.17 mitir, oo ka sarreeya heerka dhexdhexaadka ah, kuna dhow heerka sare ee 5.25 mitir.'));
   assert.ok(!text.includes('Beledweyne wuxuu') && !text.includes('ee Beledweyne wuxuu marayaa'), 'a gauge below its flood levels is not read out');
   assert.ok(text.includes('Roobka berri: roobka ugu badan waxaa laga filayaa Gaalkacyo 23 milimitir iyo Cadaado 16 milimitir. Kani waa saadaal moodeel.'));
-  assert.ok(text.includes('Saadaasha toddobaadkan ee ICPAC waxay muujinaysaa roob xooggan 2 ka mid ah 30-ka magaalo, oo ay ku jiraan Beledweyne iyo Baydhabo. Taasi waa saadaal moodeel, ma aha digniin rasmi ah.'));
+  assert.ok(text.includes('Saadaasha toddobaadkan ee ICPAC waxay muujinaysaa roob xooggan 2 ka mid ah 44-ta magaalo, oo ay ku jiraan Beledweyne iyo Baydhabo. Taasi waa saadaal moodeel, ma aha digniin rasmi ah.'));
   assert.ok(text.includes('Warar: NOAA waxay sheegtay 8 Oktoobar in El Niño uu socdo. SoDMA ayaa sheegtay: War-bixinta toddobaadlaha ee digniinaha.'));
   assert.doesNotMatch(text, /Hudur|FTL/, 'English-language news is not read in a Somali bulletin');
   assert.ok(TIPS.some(tip => text.includes(tip)), 'one tip');
@@ -62,7 +62,7 @@ test('a source that is down is said to be unavailable, never read from older fig
   const none = {...ALERTS, alerts: ALERTS.alerts.filter(a => a.sourceId !== 'moewr')};
   assert.ok(buildScript({slotId: 'morning', now: MORNING, ...DATA, alerts: none}).text.includes('hadda ma jirto digniin fatahaadeed oo rasmi ah'));
   const dry = buildScript({slotId: 'morning', now: MORNING, ...DATA, rain: rainFor()}).text;
-  assert.ok(dry.includes('Roob xooggan, 10 milimitir ama ka badan, looma filayo maanta 30-ka magaalo midkoodna.'), 'the morning reads today\'s rain');
+  assert.ok(dry.includes('Roob xooggan, 10 milimitir ama ka badan, looma filayo maanta 44-ta magaalo midkoodna.'), 'the morning reads today\'s rain');
 });
 
 test('midday says so when nothing has changed since the morning, and reads the change when something has', () => {
@@ -417,7 +417,7 @@ test('the English bulletin: the same sections and rules, in English, with Englis
   assert.ok(text.includes('Official flood warnings from the Ministry of Energy and Water Resources. Flood warning: Galgaduud; anticipatory action has been activated. Flood watch: Bakool. Flood advisory: Bay.'));
   assert.ok(text.includes('The Shabelle at Jowhar is at 5.17 metres, above its moderate flood level, and close to its high level of 5.25 metres.'));
   assert.ok(text.includes('Rain tomorrow: the most rain is expected in Galkayo, 23 millimetres and Adado, 16 millimetres. This is a model forecast.'));
-  assert.ok(text.includes("ICPAC's forecast for this week shows heavy rain in 2 of the 30 cities, including Beledweyne and Baidoa. That is a model forecast, not an official warning."));
+  assert.ok(text.includes("ICPAC's forecast for this week shows heavy rain in 2 of the 44 cities, including Beledweyne and Baidoa. That is a model forecast, not an official warning."));
   assert.ok(text.includes('News: NOAA said on 8 October that El Niño is under way. FTL Somalia reports: Flash floods in Hudur affect 37 households.'), 'English items only');
   assert.doesNotMatch(text, /SoDMA ayaa|WAR-BIXINTA/, 'the Somali item is not read in English');
   assert.ok(text.endsWith('Follow the instructions of local authorities and SoDMA. More at elninowatch.so. This is El Nino Watch.'));

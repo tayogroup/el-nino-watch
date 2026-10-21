@@ -49,7 +49,7 @@ function harness({stored,href='http://127.0.0.1:4173/?coverage=all#city=Galkayo&
   input.value='Rainfall today';input.selectionStart=3;input.selectionEnd=8;
   const textarea=new Element('textarea',{placeholder:'Name or team','aria-label':'City'}).append('Rainfall today');textarea.value='Unknown';
   const select=new Element('select',{'data-scope':'all'});select.value='all';
-  const option=new Element('option',{value:'all'}).append('All 30 cities');select.append(option);
+  const option=new Element('option',{value:'all'}).append('All 44 cities');select.append(option);
   const protectedText=new Element('p',{'data-i18n-skip':'',lang:'und'}).append('Rainfall today');
   const brand=new Element('b',{class:'brand-title'}).append('El Nino Watch');
   body.append(heading,unavailable,input,textarea,select,protectedText,brand);

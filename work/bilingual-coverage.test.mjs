@@ -111,7 +111,7 @@ test('dates, amounts, identifiers and raw source captures are preserved without 
   assert.ok(h.translate('Detailed weather refresh failed: '+raw).endsWith(raw),'raw failure capture remains intact');
   assert.equal(h.translate('S1_IW_GRDH_20261012T150823_COG'),'S1_IW_GRDH_20261012T150823_COG');
   assert.equal(h.translate('https://example.org/Unknown?city=Galkayo'),'https://example.org/Unknown?city=Galkayo');
-  h.api.setLanguage('en');assert.equal(h.api.translateText('All 30 cities'),'All 30 cities');
+  h.api.setLanguage('en');assert.equal(h.api.translateText('All 44 cities'),'All 44 cities');
 });
 
 test('14-day planning outlook covers fresh, stale, missing and partial model values',()=>{
@@ -197,7 +197,7 @@ test('City planning desk and additional-city dialog labels remain bilingual with
   const added=h.root.ExtraCitiesStore.add({name:'Hobyo',region:'Mudug',lat:5.3505,lon:48.5268});assert.equal(added.name,'Hobyo');
   h.root.ExtraCities.init();h.root.ExtraCities.open();assertCoverage(h.node('extra-cities-root').innerHTML,h.translate,'Additional cities');
   for(const id of ['extra-cities-list','extra-cities-storage','extra-cities-count'])assertCoverage(h.node(id).innerHTML||h.node(id).textContent,h.translate,`Additional city ${id}`);
-  assert.equal(h.root.SOMALIA_CITIES.length,30);assert.equal(h.root.ExtraCitiesStore.list()[0].name,'Hobyo');
+  assert.equal(h.root.SOMALIA_CITIES.length,44);assert.equal(h.root.ExtraCitiesStore.list()[0].name,'Hobyo');
   assertCoverage(h.node('mayor-root').innerHTML,h.translate,'Mayor interface');
 });
 

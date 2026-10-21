@@ -48,11 +48,11 @@ test('the additional-city trigger is shared across both views and the dialog rem
   assert.ok(host < html.indexOf('class="mobile-bottom-nav"'), 'dialog host is mounted before the mobile navigation');
 });
 
-test('adding an extra city leaves the main 30-city selectors, network batch and 420-row forecast export unchanged', async () => {
+test('adding an extra city leaves the main 44-city selectors, network batch and 616-row forecast export unchanged', async () => {
   const s = await setup({hash: ''}), h = s.h;
   assert.equal(h.evaluate('dashboardView'), 'public', 'adding a city works from the default all-city overview');
   assert.equal(h.get('mayor-panel').hidden, true);
-  assert.equal(s.initCalls[0].cities.length, 30);
+  assert.equal(s.initCalls[0].cities.length, 44);
   assert.ok(s.extraCalls.some(call => call.method === 'init'), 'extra-city dialog initializes');
   const original = h.snapshot('cities');
   h.evaluate('window.localStorage = localStorage');
@@ -69,23 +69,23 @@ test('adding an extra city leaves the main 30-city selectors, network batch and 
   h.evaluate('render()');
   assert.deepEqual(h.snapshot('cities'), original, 'app city array is unchanged after local addition');
   assert.equal(h.evaluate('cities === window.SOMALIA_CITIES'), true);
-  assert.equal(h.evaluate('cities.length'), 30);
+  assert.equal(h.evaluate('cities.length'), 44);
   assert.equal(h.evaluate('selected'), 0, 'adding a city does not change the main selected city');
   for (const id of ['city', 'daily-city', 'reportcity']) {
-    assert.equal((h.get(id).innerHTML.match(/<option\b/g) || []).length, 30);
+    assert.equal((h.get(id).innerHTML.match(/<option\b/g) || []).length, 44);
     assert.ok(!h.get(id).innerHTML.includes('Ceel Buur'), 'extra city is not silently appended to ' + id);
   }
-  assert.equal((await exportedRows(h)).length, 420);
+  assert.equal((await exportedRows(h)).length, 616);
   const request = h.requests.find(url => url.includes('api.open-meteo.com/v1/forecast') && !new URL(url).searchParams.has('hourly'));
   assert.deepEqual(new URL(request).searchParams.get('latitude').split(',').map(Number), citiesFixture.map(city => city[2]));
   assert.deepEqual(new URL(request).searchParams.get('longitude').split(',').map(Number), citiesFixture.map(city => city[3]));
   assert.equal(s.calls.length, 0, 'the additional-city dialog does not open or repaint the mayor view');
-  assert.equal(s.initCalls[0].cities.length, 30);
+  assert.equal(s.initCalls[0].cities.length, 44);
 });
 
 test('mayor flood outlook aligns rainfall and river discharge by source calendar date rather than response position', async () => {
   const weather = weatherFixture(), river = riverFixture();
-  for (let city = 0; city < 30; city++) {
+  for (let city = 0; city < 44; city++) {
     weather[city].daily.precipitation_sum = days().map((_, day) => city * 10 + day);
     for (const values of Object.values(weather[city].daily)) values.reverse();
     river[city].daily.time = days(BASE - DAY);

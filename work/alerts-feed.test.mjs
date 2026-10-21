@@ -88,15 +88,15 @@ assert.deepEqual(loaded.alerts.map(alert => alert.scope.cities[0]).sort(), ['Bel
 assert.equal(loaded.regionalForecastAvailable, true);
 assert.equal(loaded.sources[0].id, 'icpac');
 assert.equal(loaded.sources[0].publishedAt, week.issuedAt);
-assert.equal(loaded.sources[0].returnedCount, 30);
+assert.equal(loaded.sources[0].returnedCount, 44);
 assert.equal(loaded.sources[0].cityForecasts.find(item => item.city === 'Laasqoray').totalMm, null);
 assert.match(loaded.coverageNote, /not an official warning/);
-assert.match(loaded.coverageNote, /30 of 30 cities checked for 13 Oct–20 Oct/);
+assert.match(loaded.coverageNote, /44 of 44 cities checked for 13 Oct–20 Oct/);
 assert.match(loaded.coverageNote, /does not mean there is no flood risk/);
 assert.ok(live.calls.find(url => url.includes('fromdate=2026-09-14') && url.includes('todate=2026-10-14')), 'GDACS search dates come from retrieval date');
-assert.equal(live.calls.filter(url => url.startsWith(ALERT_SOURCES.icpacWms)).length, 30, 'one point request per city');
+assert.equal(live.calls.filter(url => url.startsWith(ALERT_SOURCES.icpacWms)).length, 44, 'one point request per city');
 await loadOfficialAlerts({now: NOW_IN_WEEK, fetchImpl: live.fetchImpl, cities});
-assert.equal(live.calls.filter(url => url.startsWith(ALERT_SOURCES.icpacWms)).length, 30, 'the same forecast week is not asked again');
+assert.equal(live.calls.filter(url => url.startsWith(ALERT_SOURCES.icpacWms)).length, 44, 'the same forecast week is not asked again');
 
 const gap = await loadOfficialAlerts({now: NOW_IN_WEEK, fetchImpl: icpacFetch({failCity: 'Mogadishu'}).fetchImpl, cities});
 assert.equal(gap.sources[0].available, true);

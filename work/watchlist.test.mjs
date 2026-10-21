@@ -10,10 +10,10 @@ weather[16].daily.precipitation_sum.fill(1);
 const h = harness({ weather });
 await h.settle();
 
-assert.deepEqual(indices(h.get('rows').innerHTML), Array.from({ length: 15 }, (_, index) => index));
-assert.deepEqual(indices(h.get('rows-secondary').innerHTML), Array.from({ length: 15 }, (_, index) => index + 15));
+assert.deepEqual(indices(h.get('rows').innerHTML), Array.from({ length: 22 }, (_, index) => index));
+assert.deepEqual(indices(h.get('rows-secondary').innerHTML), Array.from({ length: 22 }, (_, index) => index + 22));
 const all = [...indices(h.get('rows').innerHTML), ...indices(h.get('rows-secondary').innerHTML)];
-assert.equal(new Set(all).size, 30, 'every city appears once across the two fixed columns');
+assert.equal(new Set(all).size, 44, 'every city appears once across the two fixed columns');
 
 assert.equal(h.evaluate('summary(0).risk'), 'Lower');
 assert.equal(h.evaluate('summary(1).risk'), 'Watch');
@@ -24,12 +24,12 @@ assert.equal(h.evaluate('summary(4).total'), null, 'missing daily rainfall canno
 assert.equal(h.evaluate('summary(4).riskWatch'), false, 'incomplete forecasts cannot contribute to the threshold count');
 assert.equal(h.evaluate('summary(16).risk'), 'Lower', '14-day total exceeding 10 mm does not satisfy a daily threshold');
 assert.equal(h.get('elevated').textContent, 4, '10 and 24.9 mm/day qualify alongside elevated days');
-assert.equal(h.get('coverage').textContent, '≥10 mm/day · 29/30 complete forecasts');
+assert.equal(h.get('coverage').textContent, '≥10 mm/day · 43/44 complete forecasts');
 
 h.get('search').value = 'Shabelle';
 h.get('search').oninput();
-assert.deepEqual(indices(h.get('rows').innerHTML), [7, 8, 9]);
-assert.deepEqual(indices(h.get('rows-secondary').innerHTML), [17], 'Cabudwaaq replaced Wanlaweyn and belongs to Galgaduud, not Shabelle');
+assert.deepEqual(indices(h.get('rows').innerHTML), [7, 8, 9, 17], 'Cabudwaaq (18) replaced Wanlaweyn and belongs to Galgaduud, not Shabelle');
+assert.deepEqual(indices(h.get('rows-secondary').innerHTML), [31, 40, 43], 'Baraawe, Kurtunwaarey and Sablaale are in Lower Shabelle');
 h.get('search').value = ' Laasqoray ';
 h.get('search').oninput();
 assert.deepEqual(indices(h.get('rows').innerHTML), []);
@@ -44,15 +44,15 @@ h.get('search').value = '';
 h.get('search').oninput();
 h.setTime(BASE + 121 * 60000);
 h.evaluate('render()');
-assert.match(h.get('rows-secondary').innerHTML, /10\+ mm · stale/, 'old forecasts retain their stale label');
+assert.match(h.get('rows').innerHTML, /10\+ mm · stale/, 'old forecasts retain their stale label');
 const csv = h.evaluate('exportForecast()');
 const exported = (await csv.text()).trim().split(/\r?\n/);
-assert.equal(exported.length, 421, 'both groups still export all 420 city/day records plus a header');
+assert.equal(exported.length, 617, 'both groups still export all 616 city/day records plus a header');
 
 const unavailable = harness({ weatherError: 'offline' });
 await unavailable.settle();
 assert.equal(unavailable.get('elevated').textContent, '—');
-assert.equal(unavailable.get('coverage').textContent, '≥10 mm/day · 0/30 complete forecasts');
+assert.equal(unavailable.get('coverage').textContent, '≥10 mm/day · 0/44 complete forecasts');
 assert.match(unavailable.get('rows').innerHTML, /Unavailable/);
 assert.match(unavailable.get('rows-secondary').innerHTML, /Unavailable/);
 // One line per city, "Mogadishu, Banaadir", and tighter rows (owner, 2026-10-16). The rows keep the button + small markup;
@@ -70,4 +70,4 @@ assert.match(h.get('rows').innerHTML, /<td><button data-city="\d+"[^>]*>[^<]+<\/
   const catalog = JSON.parse(readFileSync(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['City impacts unavailable'], 'Xog saameyn lama hayo');
 }
-console.log('PASS watchlist: two groups of 15, searching/selection, daily threshold boundaries, missing/stale data, and 420-row export.');
+console.log('PASS watchlist: two groups of 22, searching/selection, daily threshold boundaries, missing/stale data, and 420-row export.');

@@ -47,7 +47,7 @@ const LEVELS = {
 };
 const percent = value => Number.isFinite(value) ? `${(value * 100).toFixed(value < 0.1 ? 1 : 0)}%` : null;
 
-// One region's alert, for the monitored cities in it (none for Middle Juba: shown for all cities only).
+// One region's alert, for the monitored cities in it (a region with none is shown for all cities only).
 export function hydroAlert(row, run, cities) {
   const level = effectiveLevel(row), meta = LEVELS[level], region = HYDRO_REGIONS[row?.region_id];
   if (!meta || !region) return null;

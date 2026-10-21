@@ -1,4 +1,4 @@
-/* Optional cities stay on this device and never change the 30-city watchlist. */
+/* Optional cities stay on this device and never change the 44-city watchlist. */
 (function (root) {
   'use strict';
   const KEY = 'somalia-extra-cities-v1';
@@ -16,7 +16,7 @@
   let storage = null;
   let persisted = false;
   let storageError = null;
-  let warning = core.length === 30 ? null : 'The 30-city watchlist has not loaded. Reload the page before adding a city.';
+  let warning = core.length === 44 ? null : 'The 44-city watchlist has not loaded. Reload the page before adding a city.';
   let sequence = 0;
 
   function fail(message) { throw new Error(message); }
@@ -36,7 +36,12 @@
     ['Zeila', 'Zeylac', 'Saylac'], ['Laasqoray', 'Las Qoray', 'Laas Qoray', 'Las Khorey'],
     ['Adado', 'Cadaado', 'Adaado'], ['Guriceel', 'Guri Ceel', 'Guri El', 'Guriel'],
     ['Cabudwaaq', 'Caabudwaaq', 'Cabuud Waaq', 'Cabud Waaq', 'Abudwak', 'Abudwaq', 'Abudwaaq'],
-    ['Buulobarde', 'Buulo Burde', 'Buloburde', 'Buulo Barde', 'Bulo Burti', 'Bulo Burte']
+    ['Buulobarde', 'Buulo Burde', 'Buloburde', 'Buulo Barde', 'Bulo Burti', 'Bulo Burte'],
+    ['Afmadow', 'Afmadoow', 'Afmadu'], ['Baraawe', 'Barawe', 'Barawa', 'Brava', 'Brawa'], ["Bu'aale", 'Bu’aale', 'Buaale', 'Bualle', 'Bu Aale'],
+    ['Ceel Waaq', 'Ceelwaaq', 'El Waq', 'Elwaq'], ['Ceelburde', 'Ceel Barde', 'Ceelbarde', 'El Barde', 'Elbarde'], ['Diinsoor', 'Dinsoor', 'Dinsor', 'Diinsor'],
+    ['Garbahaarey', 'Garbahaarrey', 'Garbaharey', 'Garbahare', 'Garba Harre'], ['Jalalaqsi', 'Jalalaqsiy', 'Jalalassi'], ['Jamaame', 'Jamame', 'Jamaameh'],
+    ['Jilib'], ['Kurtunwaarey', 'Kurtunwarey', 'Kurtun Waarey'], ['Qansaxdheere', 'Qansax Dheere', 'Qansahdhere', 'Kansahdere'],
+    ['Saakow', 'Sakow', 'Saakoow'], ['Sablaale', 'Sablale']
   ];
   for (const group of aliasGroups) for (const name of group) aliases.set(lexical(name), lexical(group[0]));
   function normalizeName(value) {
@@ -72,7 +77,7 @@
   }
   function duplicate(candidate, extras = records) {
     const key = normalizeName(candidate.name);
-    for (const [cities, label] of [[core, '30-city watchlist'], [extras, 'additional-city list']]) {
+    for (const [cities, label] of [[core, '44-city watchlist'], [extras, 'additional-city list']]) {
       for (const city of cities) {
         if (normalizeName(city.name) === key) return `${city.name} is already in the ${label}.`;
         if (Number.isFinite(candidate.lat) && Number.isFinite(candidate.lon) && Number.isFinite(city.lat) && Number.isFinite(city.lon) && distanceKm(candidate, city) <= 2) return `These coordinates are within 2 km of ${city.name}, which is already in the ${label}. Choose its existing entry or check the location.`;
@@ -140,7 +145,7 @@
       }
       records = clean;
       persisted = true;
-      if (skipped) warning = `${skipped} invalid or duplicate saved ${skipped === 1 ? 'city was' : 'cities were'} skipped. Review this additional-city list; the 30-city watchlist is unchanged.`;
+      if (skipped) warning = `${skipped} invalid or duplicate saved ${skipped === 1 ? 'city was' : 'cities were'} skipped. Review this additional-city list; the 44-city watchlist is unchanged.`;
     } catch (_) {
       persisted = false;
       storageError = 'The saved additional-city list could not be read. New entries will remain in memory until browser storage can save them.';
@@ -150,7 +155,7 @@
   root.ExtraCitiesStore = Object.freeze({
     list() { return records.map(city => ({...city})); },
     add(input) {
-      if (core.length !== 30) fail('The 30-city watchlist has not loaded. Reload the page before adding a city.');
+      if (core.length !== 44) fail('The 44-city watchlist has not loaded. Reload the page before adding a city.');
       object(input, ['name', 'region', 'lat', 'lon'], 'City');
       const city = {name: text(input.name, 'City name'), region: text(input.region, 'Region', true), ...coordinates(input.lat, input.lon)};
       const reason = duplicate(city);
@@ -163,7 +168,7 @@
       return {...record};
     },
     update(value, patch) {
-      if (core.length !== 30) fail('The 30-city watchlist has not loaded. Reload the page before editing a city.');
+      if (core.length !== 44) fail('The 44-city watchlist has not loaded. Reload the page before editing a city.');
       id(value);
       object(patch, ['name', 'region', 'lat', 'lon'], 'City update');
       const index = records.findIndex(city => city.id === value);

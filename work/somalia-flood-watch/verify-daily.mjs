@@ -25,7 +25,7 @@ await test('Mogadishu opens with a single-city 14-day EAT hourly request and a s
   for (const field of ['temperature_2m', 'precipitation', 'precipitation_probability', 'wind_speed_10m', 'wind_direction_10m', 'relative_humidity_2m', 'cloud_cover', 'weather_code']) {
     assert.ok(u.searchParams.get('hourly').split(',').includes(field), `${field} requested`);
   }
-  assert.ok(h.requests.some(url => url.includes('api.open-meteo.com/v1/forecast') && !new URL(url).searchParams.has('hourly')), '30-city outlook still requested independently');
+  assert.ok(h.requests.some(url => url.includes('api.open-meteo.com/v1/forecast') && !new URL(url).searchParams.has('hourly')), '44-city outlook still requested independently');
   assert.ok(render.loadedAt);
 });
 
@@ -48,17 +48,17 @@ await test('city and date controls pass the matching forecast and EAT day to det
 
 await test('an added city uses its own coordinates and hourly forecast without changing the original city order', async () => {
   const h = harnessDaily(); await h.settle();
-  assert.equal(citiesFixture.length, 30);
+  assert.equal(citiesFixture.length, 44);
   assert.equal(citiesFixture[6][0], 'Beledweyne');
-  h.get('daily-city').onchange({ target: { value: '29' } }); await h.settle();
-  const render = lastRender(h), u = new URL(detailRequests(h).at(-1)), city = citiesFixture[29];
+  h.get('daily-city').onchange({ target: { value: '43' } }); await h.settle();
+  const render = lastRender(h), u = new URL(detailRequests(h).at(-1)), city = citiesFixture[43];
   assert.equal(render.city.name, city[0]);
   assert.equal(render.forecast.latitude, city[2]);
   assert.equal(render.forecast.longitude, city[3]);
   assert.equal(Number(u.searchParams.get('latitude')), city[2]);
   assert.equal(Number(u.searchParams.get('longitude')), city[3]);
   assert.equal(render.forecast.hourly.time.length, 336);
-  assert.equal(h.evaluate('selected'), 29);
+  assert.equal(h.evaluate('selected'), 43);
 });
 
 await test('null hourly values and unavailable later days remain missing in the selected-city response', async () => {
@@ -178,7 +178,7 @@ await test('an unavailable initial detailed feed cannot invent hourly conditions
   assert.equal(lastRender(h).forecast, null);
   assert.equal(lastRender(h).loadedAt, null);
   assert.match(lastRender(h).error, /unavailable/);
-  assert.equal(h.evaluate('feeds.weather.data.length'), 30, 'other live feeds remain independent');
+  assert.equal(h.evaluate('feeds.weather.data.length'), 44, 'other live feeds remain independent');
 });
 
 await test('midnight moves selected details to the new EAT day and bypasses yesterday’s cache', async () => {

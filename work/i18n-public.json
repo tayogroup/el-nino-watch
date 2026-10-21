@@ -1,12 +1,12 @@
 {
   "messages": {
-    "Skip to 30-city watchlist": "U gudub liiska dabagalka 30-ka magaalo",
+    "Skip to 44-city watchlist": "U gudub liiska dabagalka 44-ta magaalo",
     "El Nino Watch home": "Bogga hore ee El Nino Watch",
     "El Nino Watch logo": "Astaanta El Nino Watch",
     "WEATHER & FLOOD WATCH": "DABAGALKA CIMILADA IYO FATAHAADDA",
     "Main navigation": "Hagaha ugu weyn",
-    "All 30 cities": "Dhammaan 30-ka magaalo",
-    "30 cities": "30 magaalo",
+    "All 44 cities": "Dhammaan 44-ta magaalo",
+    "44 cities": "44 magaalo",
     "Weather": "Cimilada",
     "Flood map": "Khariidadda fatahaadda",
     "Alerts": "Digniino",
@@ -22,7 +22,7 @@
     "LIVE DATA · SOMALIA": "XOG CUSUB · SOOMAALIYA",
     "Stay informed.": "La soco xogta.",
     "Be better prepared": "Si wanaagsan u diyaargarow",
-    "Your view of rainfall, river conditions and flood water across 30 cities. Explore the next 14 days and share what is happening on the ground.": "La soco roobka, xaaladda webiyada iyo biyaha fatahaadda ee 30 magaalo. Eeg saadaasha 14-ka maalmood ee soo socda, kuna soo gudbi waxa ka dhacaya deegaanka.",
+    "Your view of rainfall, river conditions and flood water across 44 cities. Explore the next 14 days and share what is happening on the ground.": "La soco roobka, xaaladda webiyada iyo biyaha fatahaadda ee 44 magaalo. Eeg saadaasha 14-ka maalmood ee soo socda, kuna soo gudbi waxa ka dhacaya deegaanka.",
     "Explore flood map": "Eeg khariidadda fatahaadda",
     "Share a local report": "Soo gudbi warbixin deegaanka ah",
     "Share a local report ↗": "Soo gudbi warbixin deegaanka ah ↗",
@@ -35,7 +35,7 @@
     "Read latest NOAA advisory ↗": "Akhri ogeysiiska ugu dambeeyay ee NOAA ↗",
     "Connecting to live sources…": "Waxaa lala xiriirayaa ilaha xogta cusub…",
     "Automatic refresh every 15 minutes": "Si toos ah ayaa loo cusboonaysiiyaa 15-kii daqiiqoba",
-    "30 monitored cities": "30 magaalo oo la dabagalo",
+    "44 monitored cities": "44 magaalo oo la dabagalo",
     "＋ Additional cities": "＋ Magaalooyin dheeraad ah",
     "Preparing the city leadership briefing…": "Waxaa la diyaarinayaa warbixinta maamulka magaalada…",
     "CITIES MONITORED": "MAGAALOOYINKA LA DABAGALO",
@@ -80,7 +80,7 @@
     "Retrieval time means when this app received a source response, not a new model run. Providers update at different intervals. Older observations and failed refreshes are labeled.": "Waqtiga soo qaadashadu waa markii abkani jawaab ka helay isha xogta, mana aha waqtiga moodellada dib loo xisaabiyay. Bixiyayaasha xogtu waxay cusboonaysiiyaan waqtiyo kala duwan. Xogta hore iyo cusboonaysiinta fashilantay waa la calaamadiyaa.",
     "EXPLORE CITIES, TERRAIN & SITUATIONS": "EEG MAGAALOOYINKA, DHULKA IYO XAALADAHA",
     "Flood water & areas at risk": "Biyaha fatahaadda iyo meelaha halista ku jira",
-    "↗ All 30 cities": "↗ Dhammaan 30-ka magaalo",
+    "↗ All 44 cities": "↗ Dhammaan 44-ta magaalo",
     "SITUATION": "XAALADDA",
     "Live outlook": "Saadaasha ku salaysan xogta cusub",
     "Heavy rain exercise": "Layliga roob culus",
@@ -160,12 +160,12 @@
     "City planning guidance": "Hagaha qorsheynta magaalada",
     "↓ Download plan": "↓ Soo dejiso qorshaha",
     "COMPARATIVE OUTLOOK": "ISBARBARDHIGGA SAADAASHA",
-    "30-city watchlist": "Liiska dabagalka 30-ka magaalo",
+    "44-city watchlist": "Liiska dabagalka 44-ta magaalo",
     "Find a city…": "Raadi magaalo…",
     "Search cities": "Raadi magaalooyinka",
     "↓ Export forecast CSV": "↓ Soo dejiso saadaasha CSV",
-    "Cities 1–15": "Magaalooyinka 1–15",
-    "Cities 16–30": "Magaalooyinka 16–30",
+    "Cities 1–22": "Magaalooyinka 1–22",
+    "Cities 23–44": "Magaalooyinka 23–44",
     "City / region": "Magaalada / gobolka",
     "14-day rain": "Roobka 14 maalmood",
     "Peak day": "Maalinta roobku ugu badan yahay",
@@ -260,7 +260,7 @@
     "Forecasts & alerts / ICPAC + GDACS": "Saadaal iyo digniino / ICPAC + GDACS",
     "Satellite flood observations": "Xogta fatahaadda ee dayax-gacmeedka",
     "Live sources connected. Auto-refresh is active.": "Ilaha xogta cusub waa xiriirsan yihiin. Cusboonaysiinta tooska ahi way shaqaynaysaa.",
-    "Source response did not include all 30 cities": "Jawaabta isha xogtu ma wada darin 30-ka magaalo",
+    "Source response did not include all 44 cities": "Jawaabta isha xogtu ma wada darin 44-ta magaalo",
     "Invalid daily forecast response": "Jawaabta saadaasha maalinlaha ahi waa khaldan tahay",
     "Source unavailable": "Isha xogta lama heli karo",
     "Source timed out; last known data retained.": "Waqtigii loo qabtay isha xogta ayaa dhammaaday; xogtii ugu dambaysay ee la hayay waa la sii hayaa.",
@@ -538,7 +538,7 @@
     "5 sources": "5 ilood",
     "2 sources": "2 ilood",
     "What has actually been measured or seen from satellites, used to check forecasts and alerts against conditions on the ground.": "Waxa dhab ahaan la cabbiray ama laga arkay dayax-gacmeedyada, oo loo isticmaalo in saadaasha iyo digniinaha lagu hubiyo xaaladda dhulka.",
-    "Daily and hourly rainfall forecasts for all 30 cities. The app's server fetches them once and shares them with every visitor. These are computer model estimates, not station measurements.": "Saadaasha roobka maalinlaha iyo saacadlaha ah ee dhammaan 30-ka magaalo. Server-ka abku hal mar ayuu soo qaataa, kadibna booqde kasta ayuu la wadaagaa. Kuwani waa qiyaaso moodel kombiyuutar, ma aha cabbirro saldhig.",
+    "Daily and hourly rainfall forecasts for all 44 cities. The app's server fetches them once and shares them with every visitor. These are computer model estimates, not station measurements.": "Saadaasha roobka maalinlaha iyo saacadlaha ah ee dhammaan 44-ta magaalo. Server-ka abku hal mar ayuu soo qaataa, kadibna booqde kasta ayuu la wadaagaa. Kuwani waa qiyaaso moodel kombiyuutar, ma aha cabbirro saldhig.",
     "River discharge forecast for each city.": "Saadaasha qulqulka webiga ee magaalo kasta.",
     "Heavy, very heavy and extremely heavy rainfall forecasts for the week (above the 90th, 95th and 99th percentiles for that week of the year). Drives the Alerts tab and the rainfall layers on the flood map.": "Saadaasha toddobaadka ee roob culus, aad u culus iyo si xad-dhaaf ah u culus (ka sarreeya boqolleyda 90aad, 95aad iyo 99aad ee toddobaadkaas sanadka). Waxay quudisaa qaybta Digniinaha iyo lakabyada roobka ee khariidadda fatahaadda.",
     "The current El Niño status and outlook.": "Xaaladda hadda ee El Niño iyo saadaasheeda.",
@@ -767,7 +767,7 @@
     "A short spoken bulletin at 06:30, 12:30 and 18:30 East Africa Time, in Somali and English, first on the home page. It is written by a fixed template from the sources on this page and read by a computer voice (Google Gemini). It is not an official warning: official flood warnings come only from MOEWR.": "Warbixin gaaban oo cod ah oo soo baxda 06:30, 12:30 iyo 18:30 saacadda Bariga Afrika, Af-Soomaali iyo Ingiriisi, kuna jirta bogga hore ugu horreyn. Waxaa lagu qoraa qaab go'an iyadoo laga soo qaado ilaha boggan, waxaana akhriya cod kombiyuutar (Google Gemini). Ma aha digniin rasmi ah: digniinaha rasmiga ah ee fatahaadda waxay ka yimaadaan MOEWR oo keliya.",
     "Audio": "Cod",
     "El Nino Watch · read by Google Gemini (voice Puck)": "El Nino Watch · waxaa akhriya Google Gemini (codka Puck)",
-    "Built from MOEWR's official flood levels, SWALIM's Juba and Shabelle river gauges, Open-Meteo's rain forecast for the 30 cities, ICPAC's weekly heavy-rain outlook, NOAA's El Niño status and news items in the bulletin's own language, with the source named. Nothing is machine-translated. The last seven days of bulletins are kept, and each can be saved as MP3.": "Waxaa laga dhisay heerarka rasmiga ah ee fatahaadda ee MOEWR, cabbirada webiyada Jubba iyo Shabeelle ee SWALIM, saadaasha roobka ee Open-Meteo ee 30-ka magaalo, saadaasha toddobaadlaha ah ee roobka xooggan ee ICPAC, xaaladda El Niño ee NOAA iyo wararka ku qoran luqadda warbixinta, iyadoo isha la sheegayo. Wax lama turjumo mashiin. Warbixinada toddobadii maalmood ee ugu dambeysay waa la hayaa, mid kastana waxaa loo kaydin karaa MP3.",
+    "Built from MOEWR's official flood levels, SWALIM's Juba and Shabelle river gauges, Open-Meteo's rain forecast for the 44 cities, ICPAC's weekly heavy-rain outlook, NOAA's El Niño status and news items in the bulletin's own language, with the source named. Nothing is machine-translated. The last seven days of bulletins are kept, and each can be saved as MP3.": "Waxaa laga dhisay heerarka rasmiga ah ee fatahaadda ee MOEWR, cabbirada webiyada Jubba iyo Shabeelle ee SWALIM, saadaasha roobka ee Open-Meteo ee 44-ta magaalo, saadaasha toddobaadlaha ah ee roobka xooggan ee ICPAC, xaaladda El Niño ee NOAA iyo wararka ku qoran luqadda warbixinta, iyadoo isha la sheegayo. Wax lama turjumo mashiin. Warbixinada toddobadii maalmood ee ugu dambeysay waa la hayaa, mid kastana waxaa loo kaydin karaa MP3.",
     "Listen": "Dhageyso",
     "RSS, Somali": "RSS, Af-Soomaali",
     "RSS, English": "RSS, Ingiriisi",
@@ -880,7 +880,8 @@
     "Skip to city planning desk": "U gudub miiska qorsheynta magaalada",
     "City planning desk tools": "Qalabka miiska qorsheynta magaalada",
     "← City planning desk": "← Miiska qorsheynta magaalada",
-    "City planning desk": "Miiska qorsheynta magaalada"
+    "City planning desk": "Miiska qorsheynta magaalada",
+    "Middle Juba": "Jubbada Dhexe"
   },
   "patterns": [
     {
@@ -936,16 +937,16 @@
       "so": "Saadaasha toddobaadlaha ah ee roobka aan caadiga ahayn ee ICPAC: saadaashii ugu dambaysay ee toddobaadlaha ahayd ee ICPAC ({0}) way dhammaatay, mid cusubna weli lama daabicin. Daboolitaanku ma dhammaystirna."
     },
     {
-      "en": "El Nino Watch | All 30 cities",
-      "so": "El Nino Watch | Dhammaan 30-ka magaalo"
+      "en": "El Nino Watch | All 44 cities",
+      "so": "El Nino Watch | Dhammaan 44-ta magaalo"
     },
     {
       "en": "City planning desk | El Nino Watch",
       "so": "Miiska qorsheynta magaalada | El Nino Watch"
     },
     {
-      "en": "El Nino Watch: live weather forecasts, regional rainfall alerts, satellite flood observations and community reports for 30 Somali cities.",
-      "so": "El Nino Watch: saadaasha cimilada ee cusub, digniinaha roobka ee heer gobol, xogta fatahaadda ee dayax-gacmeedka iyo warbixinnaha bulshada ee 30 magaalo oo Soomaaliya ah."
+      "en": "El Nino Watch: live weather forecasts, regional rainfall alerts, satellite flood observations and community reports for 44 Somali cities.",
+      "so": "El Nino Watch: saadaasha cimilada ee cusub, digniinaha roobka ee heer gobol, xogta fatahaadda ee dayax-gacmeedka iyo warbixinnaha bulshada ee 44 magaalo oo Soomaaliya ah."
     },
     {
       "en": "Lower rainfall · stale",
@@ -1327,8 +1328,8 @@
       "so": "Dhammaan wararka ({0})"
     },
     {
-      "en": "{0} of 30 cities have a heavy-rainfall forecast for {1}",
-      "so": "{0} ka mid ah 30 magaalo ayaa leh saadaal roob culus {1}"
+      "en": "{0} of 44 cities have a heavy-rainfall forecast for {1}",
+      "so": "{0} ka mid ah 44 magaalo ayaa leh saadaal roob culus {1}"
     },
     {
       "en": "{0} · Google Flood Hub: river forecast at Extreme level",

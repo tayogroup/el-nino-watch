@@ -158,7 +158,7 @@ export function appItems({enso, alerts} = {}) {
   const icpacAlerts = (alerts?.alerts || []).filter(alert => alert.sourceId === 'icpac' || alert.basis === 'regional-forecast');
   if (alerts?.available && icpac?.available && icpac.forecast?.weekLabel) {
     const cities = new Set(icpacAlerts.flatMap(alert => alert.scope?.cities || []));
-    items.push({kind: 'app', key: 'icpac', label: 'Rainfall forecast · ICPAC', title: `${cities.size} of 30 cities have a heavy-rainfall forecast for ${icpac.forecast.weekLabel}`, url: '#tab=alerts', publishedAt: icpac.fetchedAt || null, source: 'ICPAC', group: 'app', language: 'en'});
+    items.push({kind: 'app', key: 'icpac', label: 'Rainfall forecast · ICPAC', title: `${cities.size} of 44 cities have a heavy-rainfall forecast for ${icpac.forecast.weekLabel}`, url: '#tab=alerts', publishedAt: icpac.fetchedAt || null, source: 'ICPAC', group: 'app', language: 'en'});
   }
   return items;
 }

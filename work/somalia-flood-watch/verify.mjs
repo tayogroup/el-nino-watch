@@ -141,20 +141,20 @@ async function csv(h) {
 async function regressionTests() {
   const checks = [];
   const test = async (name, fn) => { await fn(); checks.push(name); console.log(`PASS ${name}`); };
-  await test('30 cities and a 14-day EAT forecast export produce 420 unique rows', async () => {
+  await test('44 cities and a 14-day EAT forecast export produce 616 unique rows', async () => {
     const h = harness(); await h.settle();
-    assert.equal(h.evaluate('cities.length'), 30);
+    assert.equal(h.evaluate('cities.length'), 44);
     assert.deepEqual(h.snapshot('expectedDays()'), days());
-    assert.equal(h.evaluate('feeds.weather.data.length'), 30);
+    assert.equal(h.evaluate('feeds.weather.data.length'), 44);
     assert.equal(h.evaluate('summary(0).total'), 14);
     const rows = await csv(h);
-    assert.equal(rows.length, 420);
-    assert.equal(new Set(rows.map(row => `${row.city}:${row.date}`)).size, 420);
+    assert.equal(rows.length, 616);
+    assert.equal(new Set(rows.map(row => `${row.city}:${row.date}`)).size, 616);
     assert.ok(rows.every(row => row.weather_fetched_at && row.river_fetched_at));
     assert.equal(rows[0].date, '2026-10-13');
     assert.equal(rows[13].date, '2026-10-26');
-    assert.equal(rows.at(-1).city, citiesFixture[29][0]);
-    assert.equal(rows.at(-1).rain_mm, '30');
+    assert.equal(rows.at(-1).city, citiesFixture[43][0]);
+    assert.equal(rows.at(-1).rain_mm, '44');
     const outlook = h.requests.find(url => url.includes('api.open-meteo.com/v1/forecast') && !new URL(url).searchParams.has('hourly'));
     assert.deepEqual(new URL(outlook).searchParams.get('latitude').split(',').map(Number), citiesFixture.map(city => city[2]));
     assert.deepEqual(new URL(outlook).searchParams.get('longitude').split(',').map(Number), citiesFixture.map(city => city[3]));
@@ -164,7 +164,7 @@ async function regressionTests() {
     const old = h.snapshot('({weather:feeds.weather.lastSuccess,river:feeds.river.lastSuccess})');
     h.setTime(BASE + 16 * 60000); h.setErrors('network offline', null);
     await h.evaluate('load()'); await h.settle();
-    assert.equal(h.evaluate('feeds.weather.data.length'), 30);
+    assert.equal(h.evaluate('feeds.weather.data.length'), 44);
     assert.equal(h.snapshot('feeds.weather.lastSuccess'), old.weather);
     assert.notEqual(h.snapshot('feeds.river.lastSuccess'), old.river);
     assert.ok(h.evaluate('feeds.weather.error'));
@@ -208,7 +208,7 @@ async function regressionTests() {
     h.evaluate('selectCity(0)'); await h.settle();
     assert.equal(h.evaluate('summary(0).total'), null);
     const rows = await csv(h);
-    assert.equal(rows.length, 420);
+    assert.equal(rows.length, 616);
     assert.equal(rows[6].rain_mm, '');
     assert.ok(!h.get('bars').innerHTML.includes('NaN'));
   });
@@ -253,7 +253,7 @@ async function regressionTests() {
   await test('invalid multi-city response cannot advance the successful weather timestamp', async () => {
     const h = harness(); await h.settle();
     const old = h.snapshot('feeds.weather.lastSuccess');
-    h.setTime(BASE + 16 * 60000); h.setFeeds(weatherFixture().slice(0, 29), riverFixture());
+    h.setTime(BASE + 16 * 60000); h.setFeeds(weatherFixture().slice(0, 43), riverFixture());
     await h.evaluate('load()'); await h.settle();
     assert.equal(h.snapshot('feeds.weather.lastSuccess'), old);
     assert.ok(h.evaluate('feeds.weather.error'));

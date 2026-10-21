@@ -6,6 +6,7 @@ import {activeSeason, effectiveLevel, hydroAlert, loadHydroAlerts, HYDRO_REGIONS
 
 const dist = new URL('./somalia-flood-watch/dist/', import.meta.url);
 const cities = JSON.parse(await readFile(new URL('cities.json', dist), 'utf8'));
+const withoutMiddleJuba = cities.filter(city => city[1] !== 'Middle Juba');
 const run = {folder: '20261015T00', label: '15 Oct 2026 00:00 UTC', season: 'Deyr', publishedAt: '2026-10-15T11:41:00.000Z', startsAt: '2026-10-15T00:00:00Z', endsAt: '2026-10-19T23:59:59.000Z'};
 const row = (region_id, level, extra = {}) => ({region_id, season: 'Deyr', run_folder: '20261015T00', run_date_label: '15 Oct 2026 00:00 UTC', best_model: 'ecmwf', frac_d1: 0.0190794, frac_d1_d3: 0.0245684, frac_d2_d5: 0.0247007, level, aa_pre_signal: false, aa_pre_active: false, aa_act_active: false, published_at: '2026-10-15T11:41:00.857278+00:00', ...extra});
 
@@ -27,7 +28,7 @@ test('the active season is Gu in March to June and Deyr otherwise (East Africa T
 test('a regional level becomes an alert for the monitored cities in that region', () => {
   const warning = hydroAlert(row('bakool', 'warning', {aa_act_active: true}), run, cities);
   assert.equal(warning.title, 'Bakool region · national flood warning · anticipatory action activated');
-  assert.deepEqual(warning.scope.cities, ['Hudur']);
+  assert.deepEqual(warning.scope.cities, ['Hudur', 'Ceelburde']);
   assert.equal(warning.severity, 'severe'); assert.equal(warning.severityText, 'Warning');
   assert.equal(warning.basis, 'national-hydrological-forecast'); assert.equal(warning.sourceId, 'moewr');
   assert.equal(warning.description, 'Bakool region: national flood warning for the Deyr season. Forecast flooded share of the region: 1.9% tomorrow, 2.5% over days 1–3, 2.5% over days 2–5.');
@@ -36,7 +37,8 @@ test('a regional level becomes an alert for the monitored cities in that region'
   assert.equal(hydroAlert(row('hiraan', 'advisory'), run, cities).severity, 'minor');
   assert.equal(hydroAlert(row('banadir', 'clear'), run, cities), null, 'clear regions are not alerts');
   assert.deepEqual(hydroAlert(row('woqooyi-galbeed', 'watch'), run, cities).scope.cities, ['Hargeisa', 'Berbera'], 'Sahil (Berbera) is part of Woqooyi Galbeed');
-  assert.deepEqual(hydroAlert(row('middle-juba', 'watch'), run, cities).scope.cities, [], 'Middle Juba has no monitored city');
+  assert.deepEqual(hydroAlert(row('middle-juba', 'watch'), run, cities).scope.cities, ["Bu'aale", 'Jilib', 'Saakow'], 'Middle Juba gained monitored cities (owner, 2026-10-21)');
+  assert.deepEqual(hydroAlert(row('middle-juba', 'watch'), run, withoutMiddleJuba).scope.cities, [], 'a region with no monitored city names none');
   assert.equal(hydroAlert(row('atlantis', 'warning'), run, cities), null, 'unknown regions are ignored');
   assert.equal(Object.keys(HYDRO_REGIONS).length, 18);
   const covered = new Set(Object.values(HYDRO_REGIONS).flatMap(([, regions]) => regions));
@@ -72,6 +74,8 @@ test('on the Alerts tab: official badge and level word, region-only alerts kept 
   vm.runInContext(await readFile(new URL('share.js', dist), 'utf8'), context);
   vm.runInContext(await readFile(new URL('alerts.js', dist), 'utf8'), context);
   const now = '2026-10-15T15:00:00Z';
+  // Every region has a monitored city now; a list without the Middle Juba towns keeps the region-only case covered.
+  const cities = withoutMiddleJuba;
   const national = [hydroAlert(row('mudug', 'watch', {aa_pre_active: true}), run, cities), hydroAlert(row('middle-juba', 'warning'), run, cities)];
   const input = {cities, selectedCity: cities.findIndex(city => city[0] === 'Galkayo'), now, scope: 'all', officialFeed: {data: {alerts: national.map(alert => ({...alert})), sources: [{id: 'moewr', available: true, fetchedAt: now}]}, lastSuccess: now, fetchedAt: now}, weatherFeed: null, stationFeed: null};
   const all = window.FloodAlerts.build(input);

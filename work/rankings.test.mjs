@@ -103,9 +103,9 @@ test('verified-only is the default and leaves both flood rankings unavailable wi
   const model=api.build(supplied),html=api.html(model);assert.equal(model.floodMode,'verified');assert.match(html,/Verified flooded-area ranking/);assert.match(html,/Verified flood forecast/);assert.match(html,/calibrated city flood-extent or severity forecast is not available/);assert.ok(!html.includes('data-ranking-kind="watch"'));assert.ok(!html.includes('data-ranking-kind="reports"'));assert.match(html,/data-ranking-map/);
 });
 
-test('city duplication never generates duplicate ranks or more than the original thirty city slots',()=>{
-  const supplied=input({cities:[...cities,cities[0],...Array.from({length:30},(_,i)=>['Other '+i,''])],weatherRowsByCity:Array.from({length:40},()=>rows([1,2,2,2,2,2,2,2]))});
-  const model=api.build(supplied);assert.equal(model.totalCities,29);assert.equal(new Set(Array.from(model.rainToday.rows,r=>r.id)).size,model.rainToday.rows.length);assert.ok(model.rainToday.rows.every(r=>r.index<30));
+test('city duplication never generates duplicate ranks or more than the 44 monitored city slots',()=>{
+  const supplied=input({cities:[...cities,cities[0],...Array.from({length:44},(_,i)=>['Other '+i,''])],weatherRowsByCity:Array.from({length:60},()=>rows([1,2,2,2,2,2,2,2]))});
+  const model=api.build(supplied);assert.equal(model.totalCities,43);assert.equal(new Set(Array.from(model.rainToday.rows,r=>r.id)).size,model.rainToday.rows.length);assert.ok(model.rainToday.rows.every(r=>r.index<44));
 });
 
 test('all source text and city names are escaped and rank binding validates index/kind pairs',()=>{

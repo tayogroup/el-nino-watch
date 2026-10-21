@@ -49,7 +49,7 @@ async function setup(hash = '') {
   };
 }
 
-await test('bare home defaults to the original 30-city overview with all-city coverage and map extent', async () => {
+await test('bare home defaults to the original 44-city overview with all-city coverage and map extent', async () => {
   const s = await setup();
   assert.equal(s.h.evaluate('dashboardView'), 'public');
   assert.equal(s.h.evaluate('managerTool'), '');
@@ -60,14 +60,14 @@ await test('bare home defaults to the original 30-city overview with all-city co
   assert.equal(s.h.get('manager-tool-bar').hidden, true);
   assert.equal(s.h.doc.body.classList.contains('mayor-view'), false);
   assert.equal(s.h.evaluate('alertScope'), 'all');
-  assert.equal((s.h.get('rows').innerHTML.match(/<tr\b/g) || []).length, 15);
-  assert.equal((s.h.get('rows-secondary').innerHTML.match(/<tr\b/g) || []).length, 15);
+  assert.equal((s.h.get('rows').innerHTML.match(/<tr\b/g) || []).length, 22);
+  assert.equal((s.h.get('rows-secondary').innerHTML.match(/<tr\b/g) || []).length, 22);
   for (const id of ['city', 'daily-city', 'reportcity']) {
-    assert.equal((s.h.get(id).innerHTML.match(/<option\b/g) || []).length, 30);
+    assert.equal((s.h.get(id).innerHTML.match(/<option\b/g) || []).length, 44);
   }
-  assert.ok(s.h.moduleCalls.some(call => call.module === 'explorer' && call.method === 'overview'), 'bare home fits all 30 city locations');
+  assert.ok(s.h.moduleCalls.some(call => call.module === 'explorer' && call.method === 'overview'), 'bare home fits all 44 city locations');
   assert.ok(!s.h.moduleCalls.some(call => call.module === 'explorer' && call.method === 'focus'), 'bare home does not immediately zoom into Mogadishu');
-  assert.equal(s.init.cities.length, 30);
+  assert.equal(s.init.cities.length, 44);
   assert.equal(typeof s.init.onSelectCity, 'function');
   assert.equal(typeof s.init.onDay, 'function');
   assert.equal(typeof s.init.onOpenSection, 'function');
@@ -125,7 +125,7 @@ await test('view-only mayor links open the briefing while city-only links return
   assert.equal(s.h.get('mayor-panel').hidden, true);
 });
 
-await test('city-only Galkayo and public links open the original 30-city overview', async () => {
+await test('city-only Galkayo and public links open the original 44-city overview', async () => {
   for (const hash of ['#city=Galkayo', '#city=Galkayo&view=public']) {
     const s = await setup(hash);
     assert.equal(s.h.evaluate('dashboardView'), 'public');
@@ -134,12 +134,12 @@ await test('city-only Galkayo and public links open the original 30-city overvie
     assert.equal(s.renderCalls.length, 0);
     assert.equal(s.queueRequests.length, 0);
     assert.equal(s.h.get('mayor-panel').hidden, true);
-    assert.equal((s.h.get('rows').innerHTML.match(/<tr\b/g) || []).length, 15);
-    assert.equal((s.h.get('rows-secondary').innerHTML.match(/<tr\b/g) || []).length, 15);
+    assert.equal((s.h.get('rows').innerHTML.match(/<tr\b/g) || []).length, 22);
+    assert.equal((s.h.get('rows-secondary').innerHTML.match(/<tr\b/g) || []).length, 22);
   }
 });
 
-await test('home and invalid fragments return from mayor tools to the 30-city overview', async () => {
+await test('home and invalid fragments return from mayor tools to the 44-city overview', async () => {
   const s = await setup('#city=Galkayo&view=mayor&tool=weather');
   for (const hash of ['#top', '#unknown-section', '#view=public', '#view=unknown', '#tool=unknown']) {
     s.location.hash = hash;
@@ -333,12 +333,12 @@ await test('explicit public coverage overrides tools while invalid tools remain 
   }
 });
 
-await test('delivered HTML starts on all 30 cities and offers an explicit mayor link', async () => {
+await test('delivered HTML starts on all 44 cities and offers an explicit mayor link', async () => {
   const html = fs.readFileSync(new URL('./somalia-flood-watch/dist/index.html', import.meta.url), 'utf8');
   assert.doesNotMatch(html, /id="(?:workspace-view-switch|public-view-button|mayor-view-button)"/);
   assert.doesNotMatch(html.match(/<body\b[^>]*>/)?.[0] || '', /mayor-view/);
   assert.match(html, /<section\b(?=[^>]*id="mayor-panel")(?=[^>]*\bhidden)[^>]*>/);
-  assert.match(html, /<a\b(?=[^>]*data-dashboard-view="public")[^>]*>All 30 cities<\/a>/);
+  assert.match(html, /<a\b(?=[^>]*data-dashboard-view="public")[^>]*>All 44 cities<\/a>/);
   assert.match(html, /<a\b(?=[^>]*data-dashboard-view="mayor")[^>]*>City planning desk<\/a>/);
   assert.match(html, /id="manager-tool-bar"/);
   assert.match(html, /id="mayor-home-button"/);

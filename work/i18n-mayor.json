@@ -189,7 +189,7 @@
     "Rainfall units must be millimetres.": "Halbeegga roobku waa inuu ahaadaa millimitir.",
     "River discharge units must be cubic metres per second.": "Halbeegga qulqulka biyaha webigu waa inuu ahaadaa mitir saddex-jibbaaran ilbiriqsigiiba (m³/s).",
     "City storage is unavailable.": "Kaydinta magaalooyinka lama heli karo.",
-    "Saved on this device; separate from the monitored 30 cities.": "Waxaa lagu kaydiyey qalabkan; waa ka gooni 30-ka magaalo ee lala socdo.",
+    "Saved on this device; separate from the monitored 44 cities.": "Waxaa lagu kaydiyey qalabkan; waa ka gooni 44-ta magaalo ee lala socdo.",
     "Memory only: city storage is unavailable. Keep this page open; additions will be lost after reload.": "Xusuusta ku meelgaarka ah oo keliya: kaydinta magaalooyinka lama heli karo. Boggan furnaantiisa sii hay; magaalooyinka lagu daray way lumi doonaan marka bogga dib loo cusboonaysiiyo.",
     "Flood outlook presentation is unavailable. Please reload the app.": "Muuqaalka saadaasha hordhaca ah ee fatahaadda lama heli karo. Fadlan dib u cusboonaysii abka.",
     "Rainfall is a screening signal; it does not establish flood depth or extent.": "Roobku waa tilmaame qiimeyn hordhac ah; ma caddeeyo qotada fatahaadda ama aagga ay gaarto.",
@@ -204,7 +204,7 @@
     "Remove this device’s saved city?": "Ma laga saaraa magaalada qalabkan ku kaydsan?",
     "Add coordinates to load an outlook. Unknown coordinates remain unknown.": "Ku dar isku-duwayaasha goobta si loo soo qaado saadaasha. Isku-duwayaasha aan la hayn waxay ahaanayaan xog aan la hayn.",
     "No additional cities yet": "Weli magaalooyin dheeraad ah ma jiraan",
-    "Save a Somali city below. The original 30-city watchlist stays separate.": "Hoos ku kaydi magaalo Soomaaliyeed. Liiska asalka ah ee 30-ka magaalo waa ka gooni.",
+    "Save a Somali city below. The original 44-city watchlist stays separate.": "Hoos ku kaydi magaalo Soomaaliyeed. Liiska asalka ah ee 44-ta magaalo waa ka gooni.",
     "The source could not produce this forecast.": "Isha xogtu ma soo saari karin saadaashan.",
     "Latitude and longitude are needed to load an outlook.": "Loolka iyo dhigta ayaa loo baahan yahay si loo soo qaado saadaasha.",
     "Source request timed out. Retry the outlook.": "Waqtigii loo qabtay codsiga isha xogta ayaa dhammaaday. Mar kale isku day inaad soo qaado saadaasha.",
@@ -224,15 +224,15 @@
     "Review the saved city and save changes.": "Dib u eeg magaalada la kaydiyey, dabadeed kaydi isbeddellada.",
     "City storage is unavailable. Reload the app and try again.": "Kaydinta magaalooyinka lama heli karo. Dib u cusboonaysii abka oo mar kale isku day.",
     "Supply both latitude and longitude, or leave both fields blank.": "Geli loolka iyo dhigta labadaba, ama labada meeloodba bannaan ka tag.",
-    "The monitored 30 cities are unchanged.": "30-ka magaalo ee lala socdo isma beddelin.",
+    "The monitored 44 cities are unchanged.": "44-ta magaalo ee lala socdo isma beddelin.",
     "This saved city could not be removed.": "Magaaladan la kaydiyey lagama saari karin.",
     "Native dialog is unavailable.": "Sanduuqa wada-hadalka ee biraawsarka lama heli karo.",
     "Local planning locations": "Goobaha qorshaynta ee qalabkan",
     "Additional cities": "Magaalooyin dheeraad ah",
     "Close additional cities": "Xir magaalooyinka dheeraadka ah",
-    "Keep locations beyond the 30-city watchlist here. Load a live two-week planning outlook for each location with coordinates.": "Halkan ku kaydi goobaha ka baxsan liiska dabagalka 30-ka magaalo. Goob kasta oo leh isku-duwayaasha goobta, u soo qaado saadaasha qorsheynta ee labada toddobaad ee ku salaysan xogta cusub.",
+    "Keep locations beyond the 44-city watchlist here. Load a live two-week planning outlook for each location with coordinates.": "Halkan ku kaydi goobaha ka baxsan liiska dabagalka 44-ta magaalo. Goob kasta oo leh isku-duwayaasha goobta, u soo qaado saadaasha qorsheynta ee labada toddobaad ee ku salaysan xogta cusub.",
     "Your additional-city list": "Liiskaaga magaalooyinka dheeraadka ah",
-    "Find a city’s coordinates or enter them manually. You can save its name first and add coordinates later. Names, common spelling variants and nearby coordinates are checked for duplicates against this list and the original 30 cities.": "Raadi isku-duwayaasha magaalada ama gacanta ku geli. Marka hore waad kaydin kartaa magaceeda, dabadeedna waad ku dari kartaa isku-duwayaasha. Magacyada, higgaadaha caanka ah ee isku magaca ah iyo isku-duwayaasha isu dhow waxaa laga hubiyaa inay hore ugu jiraan liiskan ama 30-ka magaalo ee asalka ah.",
+    "Find a city’s coordinates or enter them manually. You can save its name first and add coordinates later. Names, common spelling variants and nearby coordinates are checked for duplicates against this list and the original 44 cities.": "Raadi isku-duwayaasha magaalada ama gacanta ku geli. Marka hore waad kaydin kartaa magaceeda, dabadeedna waad ku dari kartaa isku-duwayaasha. Magacyada, higgaadaha caanka ah ee isku magaca ah iyo isku-duwayaasha isu dhow waxaa laga hubiyaa inay hore ugu jiraan liiskan ama 44-ta magaalo ee asalka ah.",
     "City name": "Magaca magaalada",
     "e.g. A city outside the watchlist": "Tusaale: Magaalo aan ku jirin liiska la socodka",
     "Region": "Gobolka",
@@ -246,7 +246,7 @@
     "City additions stay on this device. For emergency support, contact local government offices or the relevant authority.": "Magaalooyinka lagu daray waxay ku kaydsan yihiin qalabkan oo keliya. Marka aad u baahan tahay taageero degdeg ah, la xiriir xafiisyada dawladda hoose ama hay’adda ay arrintu khusayso.",
     "Coordinate lookup source ↗": "Isha raadinta isku-duwayaasha goobta ↗",
     "City edit cancelled.": "Wax ka beddelka magaalada waa la joojiyey.",
-    "The 30-city watchlist has not loaded. Reload the page before adding a city.": "Liiska dabagalka 30-ka magaalo lama soo qaadin. Dib u cusboonaysii bogga ka hor inta aadan magaalo ku darin.",
+    "The 44-city watchlist has not loaded. Reload the page before adding a city.": "Liiska dabagalka 44-ta magaalo lama soo qaadin. Dib u cusboonaysii bogga ka hor inta aadan magaalo ku darin.",
     "Enter both latitude and longitude as valid numbers, or leave both blank.": "Loolka iyo dhigta labadaba u geli tirooyin sax ah, ama labadaba bannaan ka tag.",
     "Coordinates must be within the Somalia-area map bounds: latitude −2 to 13, longitude 40 to 52. These map bounds do not verify a city or national boundary.": "Isuduweyaashu waa inay ku jiraan xadadka khariidadda aagga Soomaaliya: loolka −2 ilaa 13, dhigta 40 ilaa 52. Xadadka khariidaddu ma xaqiijiyaan xuduud magaalo ama xuduud qaran.",
     "Saved city ID is invalid.": "Aqoonsiga magaalada la kaydiyey sax ma aha.",
@@ -257,9 +257,9 @@
     "Saved list exceeds its limit.": "Liiska la kaydiyey wuxuu ka badan yahay xadka loo oggol yahay.",
     "Saved city is a duplicate.": "Magaalada la kaydiyey hore ayay liiska ugu jirtay.",
     "The saved additional-city list could not be read. New entries will remain in memory until browser storage can save them.": "Liiska magaalooyinka dheeraadka ah ee la kaydiyey lama akhrin karin. Gelinnada cusub waxay ku jiri doonaan xusuusta ku meel gaarka ah ilaa kaydka biraawsarku kaydin karo.",
-    "The 30-city watchlist has not loaded. Reload the page before editing a city.": "Liiska dabagalka 30-ka magaalo lama soo qaadin. Dib u cusboonaysii bogga ka hor inta aadan magaalo wax ka beddelin.",
+    "The 44-city watchlist has not loaded. Reload the page before editing a city.": "Liiska dabagalka 44-ta magaalo lama soo qaadin. Dib u cusboonaysii bogga ka hor inta aadan magaalo wax ka beddelin.",
     "This additional city was not found.": "Magaaladan dheeraadka ah lama helin.",
-    "30 monitored cities": "30 magaalo oo lala socdo",
+    "44 monitored cities": "44 magaalo oo lala socdo",
     "＋ Additional cities": "＋ Magaalooyin dheeraad ah",
     "Action must be an object.": "Hawsha waa inay ahaataa xog isku urursan oo qaab sax ah leh.",
     "Action cannot contain inherited fields.": "Hawsha ma yeelan karto qaybo laga dhaxlay xog kale.",
@@ -538,40 +538,40 @@
       "so": "Isku-duwayaasha {0} waa la doortay. Dib u eeg, dabadeed dooro Ku dar magaalo."
     },
     {
-      "en": "{0} updated in the additional-city list. The monitored 30 cities are unchanged.",
-      "so": "{0} waxaa lagu cusboonaysiiyey liiska magaalooyinka dheeraadka ah. 30-ka magaalo ee lala socdo isma beddelin."
+      "en": "{0} updated in the additional-city list. The monitored 44 cities are unchanged.",
+      "so": "{0} waxaa lagu cusboonaysiiyey liiska magaalooyinka dheeraadka ah. 44-ta magaalo ee lala socdo isma beddelin."
     },
     {
-      "en": "{0} added to the additional-city list. The monitored 30 cities are unchanged.",
-      "so": "{0} waxaa lagu daray liiska magaalooyinka dheeraadka ah. 30-ka magaalo ee lala socdo isma beddelin."
+      "en": "{0} added to the additional-city list. The monitored 44 cities are unchanged.",
+      "so": "{0} waxaa lagu daray liiska magaalooyinka dheeraadka ah. 44-ta magaalo ee lala socdo isma beddelin."
     },
     {
       "en": "{0} removed from this device.",
       "so": "{0} waxaa laga saaray qalabkan."
     },
     {
-      "en": "{0} is already in the 30-city watchlist.",
-      "so": "{0} waxay hore ugu jirtaa liiska la socodka ee 30-ka magaalo."
+      "en": "{0} is already in the 44-city watchlist.",
+      "so": "{0} waxay hore ugu jirtaa liiska la socodka ee 44-ta magaalo."
     },
     {
       "en": "{0} is already in the additional-city list.",
       "so": "{0} waxay hore ugu jirtaa liiska magaalooyinka dheeraadka ah."
     },
     {
-      "en": "These coordinates are within 2 km of {0}, which is already in the 30-city watchlist. Choose its existing entry or check the location.",
-      "so": "Isku-duwayaashani waxay 2 km gudahood u jiraan {0}, oo hore ugu jirta liiska la socodka ee 30-ka magaalo. Dooro gelinteeda hore ama hubi goobta."
+      "en": "These coordinates are within 2 km of {0}, which is already in the 44-city watchlist. Choose its existing entry or check the location.",
+      "so": "Isku-duwayaashani waxay 2 km gudahood u jiraan {0}, oo hore ugu jirta liiska la socodka ee 44-ta magaalo. Dooro gelinteeda hore ama hubi goobta."
     },
     {
       "en": "These coordinates are within 2 km of {0}, which is already in the additional-city list. Choose its existing entry or check the location.",
       "so": "Isku-duwayaashani waxay 2 km gudahood u jiraan {0}, oo hore ugu jirta liiska magaalooyinka dheeraadka ah. Dooro gelinteeda hore ama hubi goobta."
     },
     {
-      "en": "{0} invalid or duplicate saved city was skipped. Review this additional-city list; the 30-city watchlist is unchanged.",
-      "so": "Waxaa la iska dhaafay {0} magaalo oo la kaydiyey oo aan sax ahayn ama hore liiska ugu jirtay. Dib u eeg liiskan magaalooyinka dheeraadka ah; liiska la socodka ee 30-ka magaalo isma beddelin."
+      "en": "{0} invalid or duplicate saved city was skipped. Review this additional-city list; the 44-city watchlist is unchanged.",
+      "so": "Waxaa la iska dhaafay {0} magaalo oo la kaydiyey oo aan sax ahayn ama hore liiska ugu jirtay. Dib u eeg liiskan magaalooyinka dheeraadka ah; liiska la socodka ee 44-ta magaalo isma beddelin."
     },
     {
-      "en": "{0} invalid or duplicate saved cities were skipped. Review this additional-city list; the 30-city watchlist is unchanged.",
-      "so": "Waxaa la iska dhaafay {0} magaalo oo la kaydiyey oo aan sax ahayn ama hore liiska ugu jiray. Dib u eeg liiskan magaalooyinka dheeraadka ah; liiska la socodka ee 30-ka magaalo isma beddelin."
+      "en": "{0} invalid or duplicate saved cities were skipped. Review this additional-city list; the 44-city watchlist is unchanged.",
+      "so": "Waxaa la iska dhaafay {0} magaalo oo la kaydiyey oo aan sax ahayn ama hore liiska ugu jiray. Dib u eeg liiskan magaalooyinka dheeraadka ah; liiska la socodka ee 44-ta magaalo isma beddelin."
     },
     {
       "en": "This device has reached its {0}-additional-city limit. Remove an entry to add another.",
@@ -590,8 +590,8 @@
       "so": "Xog xallinteedu tahay {0} m"
     },
     {
-      "en": "Saved on this device; separate from the monitored 30 cities. {0}",
-      "so": "Waxaa lagu kaydiyey qalabkan; waa ka gooni 30-ka magaalo ee lala socdo. {0}",
+      "en": "Saved on this device; separate from the monitored 44 cities. {0}",
+      "so": "Waxaa lagu kaydiyey qalabkan; waa ka gooni 44-ta magaalo ee lala socdo. {0}",
       "translate": [
         0
       ]

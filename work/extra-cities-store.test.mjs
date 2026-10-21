@@ -53,7 +53,7 @@ function harness({values = new Map(), saved, readFails = false, writeFails = fal
   check(h.store.remove(originalId), false);
   check(harness({values: h.values}).store.list().length, 0, 'removal persists');
   check(JSON.stringify(h.root.SOMALIA_CITIES), h.original, 'original watchlist is byte-for-byte unchanged');
-  check(h.root.SOMALIA_CITIES.length, 30);
+  check(h.root.SOMALIA_CITIES.length, 44);
   check([...h.values.keys()], [KEY], 'the Mayor and public-report stores are untouched');
   reject(() => h.store.remove('__proto__'), /ID/);
   reject(() => h.store.update('extra-missing', {name: 'Elsewhere'}), /not found/);
@@ -61,24 +61,24 @@ function harness({values = new Map(), saved, readFails = false, writeFails = fal
 
 {
   const h = harness();
-  for (const city of h.root.SOMALIA_CITIES) reject(() => h.store.add({name: city[0]}), /30-city watchlist/);
-  for (const alias of ['muqdisho', 'MOGADISCIO', 'Gáalkacyo', 'Galkacyo', 'Hargeysa', 'Kismaayo', 'Baydhabo', 'Beletweyne', 'Beled-Weyne', 'Jawhar', 'Afgoye', 'Garoowe', 'Burco', 'Boosaaso', 'Merca', 'Dhuusamareeb', 'Laas Caanood', 'Kardo', 'Ceerigaabo', 'Baardheere', 'Dolow', 'Balad', 'Xudur', 'Boorama', 'Las Khorey', 'Cadaado', 'Adaado', 'Guri Ceel', 'Guriel', 'Caabudwaaq', 'Cabud Waaq', 'Abudwak', 'Abudwaq', 'Buulo Burde', 'Buloburde', 'Bulo Burti', 'Bulo Burte']) reject(() => h.store.add({name: alias}), /30-city watchlist/);
+  for (const city of h.root.SOMALIA_CITIES) reject(() => h.store.add({name: city[0]}), /44-city watchlist/);
+  for (const alias of ['muqdisho', 'MOGADISCIO', 'Gáalkacyo', 'Galkacyo', 'Hargeysa', 'Kismaayo', 'Baydhabo', 'Beletweyne', 'Beled-Weyne', 'Jawhar', 'Afgoye', 'Garoowe', 'Burco', 'Boosaaso', 'Merca', 'Dhuusamareeb', 'Laas Caanood', 'Kardo', 'Ceerigaabo', 'Baardheere', 'Dolow', 'Balad', 'Xudur', 'Boorama', 'Las Khorey', 'Cadaado', 'Adaado', 'Guri Ceel', 'Guriel', 'Caabudwaaq', 'Cabud Waaq', 'Abudwak', 'Abudwaq', 'Buulo Burde', 'Buloburde', 'Bulo Burti', 'Bulo Burte']) reject(() => h.store.add({name: alias}), /44-city watchlist/);
   check(h.store.normalizeName(' Gáal-kacyo '), h.store.normalizeName('Galkayo'), 'aliases and punctuation share their canonical name');
   h.store.add({name: 'Ceel-Buur'});
   reject(() => h.store.add({name: '  CEEL  BUUR  '}), /additional-city list/);
   reject(() => h.store.add({name: 'Céélbuur'}), /additional-city list/);
   const another = h.store.add({name: 'Ceel Dheer'});
   reject(() => h.store.update(another.id, {name: 'Ceelbuur'}), /additional-city list/);
-  reject(() => h.store.update(another.id, {name: 'Gaalkacyo'}), /30-city watchlist/);
+  reject(() => h.store.update(another.id, {name: 'Gaalkacyo'}), /44-city watchlist/);
   check(h.store.list()[1].name, 'Ceel Dheer', 'failed edit does not change the saved record');
 }
 
 {
   const h = harness();
   for (const name of ['Badhan', 'Zeylac', 'Wanla Weyn', 'Eyl']) h.store.add({name});
-  check(h.store.list().length, 4, 'retired monitored cities can be added separately without entering the new 30');
+  check(h.store.list().length, 4, 'retired monitored cities can be added separately without entering the new 44');
   reject(() => h.store.add({name: 'Zeila'}), /additional-city list/, 'retired aliases still detect duplicate optional entries');
-  check(h.root.SOMALIA_CITIES.length, 30);
+  check(h.root.SOMALIA_CITIES.length, 44);
 }
 
 {

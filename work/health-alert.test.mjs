@@ -38,7 +38,7 @@ test('the public health alert and the trainings have their own Diseases tab, aft
 test('the phone bottom bar has Diseases too, after Alerts, in six columns that fit 320px in Somali', async () => {
   const bar = index.slice(index.indexOf('<nav class="mobile-bottom-nav"'), index.indexOf('</nav>', index.indexOf('<nav class="mobile-bottom-nav"')));
   const labels = [...bar.matchAll(/<span>([^<]+)<\/span><\/a>/g)].map(match => match[1]);
-  assert.deepEqual(labels, ['30 cities', 'Weather', 'Map', 'Alerts', 'Diseases', 'Report']);
+  assert.deepEqual(labels, ['44 cities', 'Weather', 'Map', 'Alerts', 'Diseases', 'Report']);
   assert.ok(bar.includes('<a href="#diseases-panel" data-site-tab-target="diseases">'), 'an in-page link tabs.js opens, in either view');
   const tabs = readFileSync(new URL('tabs.js', dist), 'utf8');
   assert.match(tabs, /querySelectorAll\('\[data-site-tab-target\]'\)/, 'tabs.js marks it as the current page');

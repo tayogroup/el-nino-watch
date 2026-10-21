@@ -48,7 +48,7 @@ async function setup(options = {}) {
   };
 }
 
-test('rankings receive the original 30 cities and date-aligned source rows independently of the selected day and scenario', async () => {
+test('rankings receive the original 44 cities and date-aligned source rows independently of the selected day and scenario', async () => {
   const weather=weatherFixture();
   weather.forEach((city,index)=>{
     city.daily.precipitation_sum=days().map((_,day)=>index*100+day);
@@ -56,8 +56,8 @@ test('rankings receive the original 30 cities and date-aligned source rows indep
   });
   const s=await setup({weather,hash:'#city=Galkayo&day=2026-10-26&scenario=heavy-rain'}), input=s.latest();
   assert.deepEqual(plain(input.cities),citiesFixture);
-  assert.equal(input.cities.length,30);
-  assert.equal(input.weatherRowsByCity.length,30);
+  assert.equal(input.cities.length,44);
+  assert.equal(input.weatherRowsByCity.length,44);
   assert.deepEqual(plain(input.weatherRowsByCity[10].map(row=>row.date)),days());
   assert.equal(input.weatherRowsByCity[10][0].rain,1000);
   assert.equal(input.weatherRowsByCity[10][7].rain,1007);
@@ -77,7 +77,7 @@ test('the initial ranking input carries unavailable source data without inventin
   const first=s.initial[0];
   assert.equal(first.weatherFeed.data,null);
   assert.equal(first.communityFeed.data,null);
-  assert.equal(first.cities.length,30);
+  assert.equal(first.cities.length,44);
   assert.ok(first.weatherRowsByCity.every(rows=>rows.every(row=>row.rain===null)));
 });
 
@@ -118,7 +118,7 @@ test('a failed global-report refresh retains its last data and timestamp and exp
   assert.equal(input.weatherFeed.lastSuccess,timestamp(BASE+16*60000));
 });
 
-test('a city-scoped or malformed response cannot be accepted as a fresh 30-city report feed', async () => {
+test('a city-scoped or malformed response cannot be accepted as a fresh 44-city report feed', async () => {
   const s=await setup(), previous=plain(s.latest().communityFeed);
   for (const invalid of [
     {...response([report(10)],BASE+16*60000),cityId:'galkayo'},
@@ -212,6 +212,6 @@ test('rankings are mounted outside city-only content and their scripts and style
   for (const hash of ['', '#view=mayor&city=Galkayo']) {
     const s=await setup({hash});
     assert.ok(s.latest(),'rankings render in '+(hash?'mayor':'all-city')+' view');
-    assert.equal(s.latest().cities.length,30);
+    assert.equal(s.latest().cities.length,44);
   }
 });

@@ -29,7 +29,7 @@ function harness({saved, values = new Map(), crypto = {randomUUID}, readFails = 
 {
   const h = harness();
   check(plain(h.store.storageStatus()), {persisted: true, error: null}, 'storage is confirmed by a write and read');
-  check(h.root.SOMALIA_CITIES.length, 30);
+  check(h.root.SOMALIA_CITIES.length, 44);
   for (const city of h.root.SOMALIA_CITIES) check(h.store.list(city[0].toLowerCase().replace(/[^a-z0-9]+/g, '-')).length, 0, 'all cities start without fake actions');
   check(plain(JSON.parse(h.values.get(KEY))), {schema: 1, cities: {}}, 'private storage is separate from community records');
   const action = h.store.add('Galkayo', {title: ' Clear market drain ', owner: ' Works team ', dueDate: '2028-02-29', priority: 'high'});
