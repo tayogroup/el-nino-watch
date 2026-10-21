@@ -1,15 +1,19 @@
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import {once} from 'node:events';
-import {mkdtemp, rm, readFile, readdir} from 'node:fs/promises';
+import {mkdtemp, rm, readFile, readdir, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {createCommunityHandler} from './somalia-flood-watch/community.mjs';
+import {createCommunityHandler, reviewKeysFrom} from './somalia-flood-watch/community.mjs';
 
 const testParent = path.dirname(fileURLToPath(import.meta.url));
 const folder = await mkdtemp(path.join(testParent, 'community-test-'));
 const cities = [{id:'mogadishu', name:'Mogadishu'}, {id:'jowhar', name:'Jowhar'}];
-let handler = createCommunityHandler({dataDir:folder, cities});
+const REVIEW_KEY = 'reviewer-key-for-tests-0123456789', OWNER_KEY = 'owner-stats-key-for-tests-0123456789';
+const reviewers = reviewKeysFrom({statsKey:OWNER_KEY, reviewKeys:` short, ${REVIEW_KEY} `});
+// A report saved before the review hold has no review field and stays public.
+await writeFile(path.join(folder, 'reports.json'), JSON.stringify({version:1, reports:[{id:'00000000-0000-4000-8000-000000000001', cityId:'jowhar', cityName:'Jowhar', category:'rain', observedAt:'2026-10-01T08:00:00.000Z', receivedAt:'2026-10-01T08:05:00.000Z', status:'unverified', description:'Saved before the review hold.', author:'Anonymous', media:[], comments:[], receiptHash:'0'.repeat(64)}]}));
+let handler = createCommunityHandler({dataDir:folder, cities, reviewers});
 const server = http.createServer(async (req, res) => {
   if (!await handler(req, res, new URL(req.url, 'http://localhost'))) { res.writeHead(404); res.end('fallback'); }
 });
@@ -30,12 +34,41 @@ const form = (payload = base, files = []) => {
   for (const file of files) result.append('media', new Blob([file.bytes], {type:file.type}), file.name || 'evidence.png');
   return result;
 };
-const post = (payload, files, headers = {}) => request('/api/community/reports', {method:'POST', headers:{Origin:origin, ...headers}, body:form(payload, files)});
+const postHeld = (payload, files, headers = {}) => request('/api/community/reports', {method:'POST', headers:{Origin:origin, ...headers}, body:form(payload, files)});
+const review = (id, decision, key = REVIEW_KEY) => request(`/api/community/review/${id}`, {method:'POST', headers:{Origin:origin, 'Content-Type':'application/json', 'X-Review-Key':key}, body:JSON.stringify({decision})});
+// The checks below are about publishing, so each accepted report is approved straight away.
+const post = async (payload, files, headers) => { const made = await postHeld(payload, files, headers); if (made.response.status === 201) equal((await review(made.body.report.id, 'approve')).response.status, 200); return made; };
 
 try {
   equal((await fetch(origin + '/not-community')).status, 404);
   let result = await request('/api/community/reports');
+  equal(result.response.status, 200); equal(result.body.total, 1); equal(result.body.reports[0].description, 'Saved before the review hold.');
+  equal((await review('00000000-0000-4000-8000-000000000001', 'remove', OWNER_KEY)).response.status, 200);
+  result = await request('/api/community/reports');
   equal(result.response.status, 200); equal(result.body.reports.length, 0); equal(result.body.total, 0);
+  // Review hold (owner, 2026-10-21): a new report, its media and its comments stay private until approved.
+  const held = await postHeld(base, [{bytes:png, type:'image/png', name:'held.png'}]);
+  equal(held.response.status, 201); equal(held.body.report.review, 'pending'); equal(held.body.report.status, 'unverified');
+  result = await request('/api/community/reports'); equal(result.body.total, 0);
+  const heldMedia = origin + held.body.report.media[0].url;
+  equal((await fetch(heldMedia)).status, 401);
+  equal((await fetch(heldMedia, {headers:{'X-Review-Key':'w'.repeat(40)}})).status, 403);
+  let heldResponse = await fetch(heldMedia, {headers:{'X-Review-Key':REVIEW_KEY}}); equal(heldResponse.status, 200); equal(heldResponse.headers.get('cache-control'), 'no-store');
+  result = await request(`/api/community/reports/${held.body.report.id}/comments`, {method:'POST', headers:{Origin:origin, 'Content-Type':'application/json'}, body:JSON.stringify({body:'Seen it too.'})}); equal(result.response.status, 404);
+  equal((await request('/api/community/review')).response.status, 401);
+  equal((await request('/api/community/review', {headers:{'X-Review-Key':'short'}})).response.status, 403);
+  result = await request('/api/community/review', {headers:{'X-Review-Key':REVIEW_KEY}});
+  equal(result.response.status, 200); equal(result.body.reviewer, 'reviewer'); equal(result.body.pendingTotal, 1); equal(result.body.pending[0].id, held.body.report.id); ok(!JSON.stringify(result.body).includes('receiptHash'));
+  equal((await request('/api/community/review', {headers:{'X-Review-Key':OWNER_KEY}})).body.reviewer, 'owner');
+  equal((await review(held.body.report.id, 'publish')).response.status, 400);
+  equal((await review(held.body.report.id, 'approve', 'x'.repeat(40))).response.status, 403);
+  result = await request(`/api/community/review/${held.body.report.id}`, {method:'POST', headers:{Origin:'https://attacker.example', 'Content-Type':'application/json', 'X-Review-Key':REVIEW_KEY}, body:JSON.stringify({decision:'approve'})}); equal(result.response.status, 403);
+  equal((await review(held.body.report.id, 'approve')).response.status, 200);
+  result = await request('/api/community/reports'); equal(result.body.total, 1); equal(result.body.reports[0].review, 'approved'); equal(result.body.reports[0].status, 'unverified'); ok(!('reviewedBy' in result.body.reports[0]));
+  equal((await fetch(heldMedia)).status, 200);
+  equal((await review(held.body.report.id, 'remove')).response.status, 200);
+  result = await request('/api/community/reports'); equal(result.body.total, 0); equal((await fetch(heldMedia)).status, 404); equal((await readdir(path.join(folder,'media'))).length, 0);
+  equal((await review(held.body.report.id, 'approve')).response.status, 404);
   result = await post(base, [{bytes:png, type:'image/png', name:'../../photo.png'}]);
   equal(result.response.status, 201);
   const first = result.body.report, receipt = result.body.receiptToken;
@@ -104,7 +137,7 @@ try {
   equal(result.response.status, 201); equal(result.body.comment.author, 'Responder'); ok(result.body.comment.id);
   result = await request(`/api/community/reports/${first.id}/comments`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({body:'x'})}); equal(result.response.status, 400);
   // A new handler simulates process restart; submissions and discussion survive.
-  handler = createCommunityHandler({dataDir:folder, cities});
+  handler = createCommunityHandler({dataDir:folder, cities, reviewers});
   result = await request('/api/community/reports'); equal(result.body.reports[0].comments.length, 1); equal(result.body.reports[0].media.length, 1);
   const disk = JSON.parse(await readFile(path.join(folder,'reports.json'),'utf8')); ok(disk.reports[0].receiptHash); ok(!JSON.stringify(disk).includes(receipt));
   // Concurrent report writes are serialized; neither update overwrites the other.
@@ -121,7 +154,14 @@ try {
   const large = Buffer.alloc(50 * 1024 * 1024 + 1); png.copy(large);
   result = await post(base, [{bytes:large, type:'image/png'}]); equal(result.response.status, 413);
   result = await request('/api/community/reports'); equal(result.body.total, 1); equal((await readdir(path.join(folder,'media'))).length, 0);
-  console.log(`Community API: ${assertions} assertions passed (durable reports/media/comments, unknown counts, receipt removal, origin/upload validation, ranges and concurrent writes).`);
+  // Wrong review keys are counted per address and day; after 20 the right key waits too.
+  handler = createCommunityHandler({dataDir:folder, cities, reviewers});
+  for (let attempt = 0; attempt < 20; attempt++) equal((await request('/api/community/review', {headers:{'X-Review-Key':'guess-'.repeat(6)}})).response.status, 403);
+  equal((await request('/api/community/review', {headers:{'X-Review-Key':REVIEW_KEY}})).response.status, 429);
+  // Without any review key the queue is closed and new reports simply wait.
+  handler = createCommunityHandler({dataDir:folder, cities});
+  result = await request('/api/community/review', {headers:{'X-Review-Key':REVIEW_KEY}}); equal(result.response.status, 403); equal(result.body.error, 'Report review is not set up on this server.');
+  console.log(`Community API: ${assertions} assertions passed (review hold, durable reports/media/comments, unknown counts, receipt removal, origin/upload validation, ranges and concurrent writes).`);
 } finally {
   server.close(); await once(server, 'close');
   assert.ok(path.resolve(folder).startsWith(path.resolve(testParent) + path.sep));

@@ -13,6 +13,18 @@ class RequestError extends Error { constructor(status, message) { super(message)
 const fail = (status, message) => { throw new RequestError(status, message); };
 const slug = name => String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const sha = value => createHash('sha256').update(value).digest('hex');
+// Review hold (owner, 2026-10-21): a new report waits for the owner or a reviewer before anyone else sees it.
+// Reports saved before the hold have no review field and stay public. Approval only makes a report visible;
+// it stays an unverified community report.
+const isPublic = report => !report.review || report.review === 'approved';
+const REVIEW_MIN_KEY = 24, REVIEW_MAX_FAILURES = 20;
+// The owner's STATS_KEY and each REVIEW_KEYS entry (comma-separated, 24+ characters) open the review queue.
+export function reviewKeysFrom({statsKey = '', reviewKeys = ''} = {}) {
+  const keys = [];
+  if (typeof statsKey === 'string' && statsKey.length >= REVIEW_MIN_KEY) keys.push({who:'owner', key:Buffer.from(statsKey)});
+  String(reviewKeys || '').split(',').map(key => key.trim()).filter(key => key.length >= REVIEW_MIN_KEY).forEach(key => keys.push({who:'reviewer', key:Buffer.from(key)}));
+  return keys;
+}
 
 function reply(res, status, body, head = false) {
   const bytes = Buffer.from(JSON.stringify(body));
@@ -186,7 +198,7 @@ function observedBetween(fromDay, toDay) {
 }
 
 function publicReport(report) {
-  const {receiptHash, ...result} = report;
+  const {receiptHash, reviewedBy, ...result} = report;
   return result;
 }
 
@@ -198,7 +210,7 @@ function sameOrigin(req) {
   if (!['http:', 'https:'].includes(origin.protocol) || origin.host !== req.headers.host) fail(403, 'Community writes must come from this app.');
 }
 
-export function createCommunityHandler({dataDir, cities, onChange} = {}) {
+export function createCommunityHandler({dataDir, cities, onChange, reviewers = []} = {}) {
   if (!dataDir || !Array.isArray(cities) || !cities.length) throw new Error('Community storage and supported cities are required.');
   const supported = new Map(cities.map(city => {
     const name = Array.isArray(city) ? city[0] : city.name;
@@ -207,7 +219,21 @@ export function createCommunityHandler({dataDir, cities, onChange} = {}) {
   }));
   const storage = path.resolve(dataDir), mediaDir = path.join(storage, 'media'), database = path.join(storage, 'reports.json');
   let records = [], serial = 0;
-  const rate = new Map();
+  const rate = new Map(), reviewFailures = new Map();
+  let reviewFailureDay = '';
+  // Which key opened the review queue: 'owner' or 'reviewer'. Wrong keys are counted per address and day.
+  function reviewer(req) {
+    const offered = req.headers['x-review-key'];
+    if (typeof offered !== 'string' || !offered) fail(401, 'A review key is required.');
+    const day = new Date().toISOString().slice(0, 10), address = req.socket.remoteAddress || 'unknown';
+    if (reviewFailureDay !== day) { reviewFailureDay = day; reviewFailures.clear(); }
+    const failures = reviewFailures.get(address) || 0;
+    if (failures >= REVIEW_MAX_FAILURES) fail(429, 'Too many attempts. Try again tomorrow.');
+    const given = Buffer.from(offered);
+    const match = reviewers.find(item => item.key.length === given.length && timingSafeEqual(item.key, given));
+    if (!match) { reviewFailures.set(address, failures + 1); fail(403, reviewers.length ? 'Review key not recognised.' : 'Report review is not set up on this server.'); }
+    return match.who;
+  }
   const ready = (async () => {
     await mkdir(mediaDir, {recursive:true});
     try {
@@ -246,6 +272,8 @@ export function createCommunityHandler({dataDir, cities, onChange} = {}) {
     await ready; await queue;
     const media = records.flatMap(report => report.media).find(item => item.id === id);
     if (!media) fail(404, 'Media not found.');
+    const owner = records.find(report => report.media.some(item => item.id === id));
+    if (!isPublic(owner)) reviewer(req);
     const target = path.join(mediaDir, `${id}.${MIME[media.type]}`), info = await stat(target);
     let start = 0, end = info.size - 1, status = 200;
     const range = req.headers.range;
@@ -258,6 +286,7 @@ export function createCommunityHandler({dataDir, cities, onChange} = {}) {
     }
     const headers = {'Content-Type':media.type, 'Content-Length':end-start+1, 'X-Content-Type-Options':'nosniff', 'Content-Security-Policy':"default-src 'none'; sandbox", 'Cache-Control':'private, max-age=300', 'Accept-Ranges':'bytes', 'Content-Disposition':`inline; filename="${id}.${MIME[media.type]}"`};
     if (status === 206) headers['Content-Range'] = `bytes ${start}-${end}/${info.size}`;
+    if (!isPublic(owner)) headers['Cache-Control'] = 'no-store';
     res.writeHead(status, headers);
     if (req.method === 'HEAD') return res.end();
     const stream = createReadStream(target, {start, end});
@@ -284,8 +313,16 @@ export function createCommunityHandler({dataDir, cities, onChange} = {}) {
         const fromDay = dayParam(url.searchParams.get('from'), 'from'), toDay = dayParam(url.searchParams.get('to'), 'to');
         if (fromDay && toDay && fromDay > toDay) fail(400, 'The from date must not be after the to date.');
         const inRange = observedBetween(fromDay, toDay);
-        const matching = records.filter(report => (!cityId || report.cityId === cityId) && inRange(report)).sort((a,b) => b.receivedAt.localeCompare(a.receivedAt));
-        reply(res, 200, {reports:matching.slice(0, maximum).map(publicReport), total:matching.length, truncated:matching.length > maximum, cityId:cityId || null, from:fromDay, to:toDay, fetchedAt:new Date().toISOString(), status:'unverified', coverageNote:'Community reports are unverified and may overlap. Reported impact counts must not be added into verified totals.'}, req.method === 'HEAD');
+        const matching = records.filter(report => isPublic(report) && (!cityId || report.cityId === cityId) && inRange(report)).sort((a,b) => b.receivedAt.localeCompare(a.receivedAt));
+        reply(res, 200, {reports:matching.slice(0, maximum).map(publicReport), total:matching.length, truncated:matching.length > maximum, cityId:cityId || null, from:fromDay, to:toDay, fetchedAt:new Date().toISOString(), status:'unverified', coverageNote:'Community reports are unverified and may overlap. New reports appear after review. Reported impact counts must not be added into verified totals.'}, req.method === 'HEAD');
+        return true;
+      }
+      if (url.pathname === '/api/community/review' && req.method === 'GET') {
+        const who = reviewer(req); await queue;
+        const newest = (a, b) => b.receivedAt.localeCompare(a.receivedAt);
+        const pending = records.filter(report => report.review === 'pending').sort(newest);
+        const published = records.filter(isPublic).sort(newest).slice(0, 50);
+        reply(res, 200, {reviewer:who, pending:pending.map(publicReport), published:published.map(publicReport), pendingTotal:pending.length, fetchedAt:new Date().toISOString()});
         return true;
       }
       if (!['POST','DELETE'].includes(req.method)) fail(405, 'Unsupported community request method.');
@@ -295,7 +332,7 @@ export function createCommunityHandler({dataDir, cities, onChange} = {}) {
         if (!/^multipart\/form-data\s*;/i.test(contentType)) fail(415, 'Submit reports as multipart/form-data with payload and optional media.');
         const form = multipart(await readBody(req, MAX_BODY), contentType);
         const payload = reportPayload(form.payload, supported), receiptToken = randomBytes(32).toString('hex');
-        const report = {...payload, id:randomUUID(), receivedAt:new Date().toISOString(), status:'unverified', media:[], comments:[], receiptHash:sha(receiptToken)};
+        const report = {...payload, id:randomUUID(), receivedAt:new Date().toISOString(), status:'unverified', review:'pending', media:[], comments:[], receiptHash:sha(receiptToken)};
         await mutate(async () => {
           if (records.length >= 10000) fail(503, 'Community storage is full. Contact the site administrator.');
           const written = [];
@@ -317,12 +354,31 @@ export function createCommunityHandler({dataDir, cities, onChange} = {}) {
         const comment = {id:randomUUID(), author:text(body.author, 'Display name', 1, 60, true) || 'Anonymous', body:text(body.body, 'Comment', 2, 2000), receivedAt:new Date().toISOString()};
         await mutate(async () => {
           const index = records.findIndex(report => report.id === commentRoute[1]);
-          if (index < 0) fail(404, 'Report not found.');
+          if (index < 0 || !isPublic(records[index])) fail(404, 'Report not found.');
           if (records[index].comments.length >= 250) fail(429, 'This report has reached its comment limit.');
           const next = [...records]; next[index] = {...records[index], comments:[...records[index].comments, comment]};
           await persist(next);
         });
         reply(res, 201, {comment}); return true;
+      }
+      const reviewRoute = /^\/api\/community\/review\/([^/]+)$/.exec(url.pathname);
+      if (reviewRoute && ID.test(reviewRoute[1]) && req.method === 'POST') {
+        const who = reviewer(req), body = await jsonBody(req);
+        const decision = body?.decision;
+        if (!['approve', 'remove'].includes(decision)) fail(400, 'Decision must be approve or remove.');
+        await mutate(async () => {
+          const index = records.findIndex(report => report.id === reviewRoute[1]);
+          if (index < 0) fail(404, 'Report not found.');
+          if (decision === 'approve') {
+            const next = [...records]; next[index] = {...records[index], review:'approved', reviewedAt:new Date().toISOString(), reviewedBy:who};
+            await persist(next);
+          } else {
+            const removed = records[index];
+            await persist(records.filter(record => record.id !== removed.id));
+            await Promise.all(removed.media.map(media => unlink(path.join(mediaDir, `${media.id}.${MIME[media.type]}`)).catch(() => {})));
+          }
+        });
+        reply(res, 200, decision === 'approve' ? {approved:true} : {removed:true}); return true;
       }
       const deleteRoute = /^\/api\/community\/reports\/([^/]+)$/.exec(url.pathname);
       if (deleteRoute && ID.test(deleteRoute[1]) && req.method === 'DELETE') {

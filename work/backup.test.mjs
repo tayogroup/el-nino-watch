@@ -104,10 +104,13 @@ test('real reports and photos back up, skip unchanged runs, survive a restart an
     assert.equal(await backupFor(storage, dataDir, {restoreIfEmpty:false}).restoreIfEmpty(), false);
     assert.deepEqual(await readdir(dataDir), []);
     assert.equal(await backupFor(storage, dataDir).restoreIfEmpty(), true);
-    const restored = await listen(createServer({dataDir}));
-    const list = await (await fetch(restored.origin + '/api/community/reports')).json();
-    assert.equal(list.total, 2);
-    const photo = await fetch(restored.origin + list.reports.find(report => report.id === first.report.id).media[0].url);
+    // New reports are held for review (owner, 2026-10-21): they come back still held, with their photo.
+    const key = 'backup-test-review-key-0123456789';
+    const restored = await listen(createServer({dataDir, reviewKeys:key}));
+    assert.equal((await (await fetch(restored.origin + '/api/community/reports')).json()).total, 0);
+    const list = await (await fetch(restored.origin + '/api/community/review', {headers:{'X-Review-Key':key}})).json();
+    assert.equal(list.pendingTotal, 2);
+    const photo = await fetch(restored.origin + list.pending.find(report => report.id === first.report.id).media[0].url, {headers:{'X-Review-Key':key}});
     assert.equal(photo.status, 200);
     assert.deepEqual(Buffer.from(await photo.arrayBuffer()), PNG);
     await restored.close();

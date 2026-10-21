@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#082448">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Report review | El Nino Watch</title>
+<style>
+:root{--ink:#153653;--muted:#586f89;--navy:#082448;--blue:#1473cf;--paper:#f0f5fb;--line:#dce6f0;--card:#fff;--ok:#11734b;--bad:#a1301c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 'Segoe UI',system-ui,-apple-system,Arial,sans-serif}
+header{background:var(--navy);color:#fff;padding:18px max(16px,calc((100vw - 1000px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header a{color:#fff;text-decoration:none;font-weight:800;font-size:18px}
+header small{display:block;color:#a9c4e2;letter-spacing:.12em;font-size:11px;font-weight:700;margin-top:2px}
+.lang{display:flex;gap:4px}
+.lang button{font:inherit;font-size:13px;font-weight:800;border:1px solid #2c4c74;background:transparent;color:#cfe0f3;border-radius:8px;padding:4px 10px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:#fff;color:#082448}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+main{max-width:1000px;margin:0 auto;padding:26px 16px 60px}
+h1{font-size:28px;margin:0 0 6px;color:var(--navy)}
+h2{font-size:18px;margin:26px 0 12px;color:var(--navy);display:flex;align-items:center;gap:10px}
+h2 b{background:var(--navy);color:#fff;border-radius:999px;padding:0 10px;font-size:14px;line-height:24px}
+.lede{color:var(--muted);margin:0 0 20px;max-width:70ch}
+.key{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.key input[type=password]{font:inherit;flex:1 1 240px;min-height:40px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--card);color:var(--ink)}
+button.action,.key button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 14px;cursor:pointer;min-height:40px}
+button.approve{background:var(--ok);border-color:var(--ok);color:#fff}
+button.remove{color:var(--bad);border-color:#e7b8ae}
+button:disabled{opacity:.55;cursor:wait}
+.msg{margin:12px 0 0;font-weight:600}
+.msg.error{color:var(--bad)}
+.hint{color:var(--muted);font-size:13px;flex-basis:100%;margin:0}
+.list{display:grid;gap:12px}
+.report{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+.report h3{margin:0 0 2px;font-size:17px;color:var(--navy)}
+.report .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#e9f1fa;color:var(--muted);border-radius:6px;padding:1px 7px;margin-right:6px}
+.report p.text{white-space:pre-wrap;overflow-wrap:anywhere;margin:10px 0}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margin:8px 0;font-size:14px}
+dt{color:var(--muted);font-weight:600}
+dd{margin:0;overflow-wrap:anywhere}
+.media{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.media img,.media video{max-width:min(100%,320px);max-height:240px;border-radius:10px;border:1px solid var(--line);background:#e9f1fa}
+.buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.empty{color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:18px;text-align:center}
+details.published summary{cursor:pointer;font-weight:700;color:var(--navy);margin:26px 0 12px}
+a{color:var(--blue)}
+.note{color:var(--muted);font-size:13px;margin-top:22px}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--ink:#dbe7f5;--muted:#9fb3c9;--paper:#0b1626;--line:#22344b;--card:#111f33;--navy:#e6f0fb}header{background:#06101d}header a{color:#fff}h2 b{color:#0b1626}.report .tag{background:#1a2c44}}
+</style>
+</head>
+<body>
+<header><div><a href="/">El Nino Watch</a><small>REPORT REVIEW</small></div><div class="lang" role="group" aria-label="Language / Luqad" data-i18n-skip><button type="button" id="language-en" data-site-language="en" lang="en" aria-pressed="true">EN</button><button type="button" id="language-so" data-site-language="so" lang="so" aria-pressed="false">SO</button></div><span id="language-status" class="sr-only" role="status" aria-live="polite"></span></header>
+<main>
+  <h1>Report review</h1>
+  <p class="lede">New community reports wait here until you check them. Approve a report to show it on the site; it stays marked as an unverified community report. Remove deletes the report and its photos or videos for good.</p>
+  <form id="key-form" class="key" autocomplete="off">
+    <input type="password" id="review-key" aria-label="Review key" placeholder="Review key" autocomplete="current-password" required>
+    <label><input type="checkbox" id="remember"> Remember on this device</label>
+    <button type="submit">Open the queue</button>
+    <button type="button" id="forget" hidden>Forget the key on this device</button>
+    <p class="hint">Use the review key from your private review link. The key is sent only to this site, in a request header.</p>
+  </form>
+  <p id="msg" class="msg" role="status" aria-live="polite"></p>
+  <section id="queue" hidden>
+    <h2>Waiting for review <b id="pending-count">0</b></h2>
+    <div id="pending" class="list"></div>
+    <details class="published"><summary>Recently published reports</summary><div id="published" class="list"></div></details>
+  </section>
+  <p class="note"><a href="/">← Back to El Nino Watch</a></p>
+</main>
+<script src="translations-so.js"></script>
+<script src="i18n.js"></script>
+<script>
+(function () {
+  'use strict';
+  const STORE = 'elnino-review-key';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+  const CATEGORY = {flood: 'Flooding', rain: 'Rainfall', damage: 'Flood impact'};
+  const objectUrls = [];
+  // A private review link carries the key after "#key=". The fragment never reaches the server; it is
+  // taken out of the address at once and sent only as the X-Review-Key header.
+  let key = '';
+  const fromLink = /^#key=(.+)$/.exec(location.hash);
+  if (fromLink) { key = decodeURIComponent(fromLink[1]); history.replaceState(null, '', location.pathname + location.search); }
+  if (!key) { try { key = localStorage.getItem(STORE) || ''; } catch {} }
+  const message = (text, error = false) => { $('msg').textContent = text; $('msg').className = 'msg' + (error ? ' error' : ''); };
+  const when = iso => { const t = Date.parse(iso); return Number.isFinite(t) ? new Date(t + 3 * 3600000).toISOString().slice(0, 16).replace('T', ' ') + ' EAT' : ''; };
+  async function call(path, options = {}) {
+    const response = await fetch(path, {...options, cache: 'no-store', headers: {...(options.headers || {}), 'X-Review-Key': key}});
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || 'The review service is unavailable. Try again later.');
+    return data;
+  }
+  function card(report, held) {
+    const counts = [['Reported deaths', report.deaths], ['Reported injuries', report.injuries], ['Properties damaged', report.damagedProperties]].filter(([, n]) => Number.isFinite(n));
+    const place = Number.isFinite(report.latitude) && Number.isFinite(report.longitude)
+      ? `<a href="https://www.openstreetmap.org/?mlat=${report.latitude}&amp;mlon=${report.longitude}#map=15/${report.latitude}/${report.longitude}" target="_blank" rel="noopener noreferrer" data-i18n-skip>${report.latitude.toFixed(5)}, ${report.longitude.toFixed(5)} ↗</a>` : '<span>No location</span>';
+    return `<article class="report" data-id="${esc(report.id)}">
+      <h3><span class="tag">${esc(CATEGORY[report.category] || report.category)}</span><span data-i18n-skip>${esc(report.cityName)}${report.district ? ' · ' + esc(report.district) : ''}</span></h3>
+      <dl><dt>Observed</dt><dd data-i18n-skip>${esc(when(report.observedAt))}</dd><dt>Received</dt><dd data-i18n-skip>${esc(when(report.receivedAt))}</dd>
+      <dt>Reported by</dt><dd data-i18n-skip>${esc(report.author || '—')}</dd>${report.landmark ? `<dt>Landmark</dt><dd data-i18n-skip>${esc(report.landmark)}</dd>` : ''}<dt>Location</dt><dd>${place}</dd>
+      ${counts.map(([label, n]) => `<dt>${label}</dt><dd data-i18n-skip>${n}</dd>`).join('')}</dl>
+      <p class="text" data-i18n-skip>${esc(report.description)}</p>
+      ${report.media?.length ? `<div class="media">${report.media.map(item => `<span data-media="${esc(item.url)}" data-type="${esc(item.type)}">Loading media…</span>`).join('')}</div>` : ''}
+      <div class="buttons">${held ? '<button type="button" class="action approve" data-decision="approve">Approve and publish</button>' : ''}<button type="button" class="action remove" data-decision="remove">Remove</button></div>
+    </article>`;
+  }
+  // Held media is not public, so it is fetched with the key and shown from memory.
+  async function loadMedia(root) {
+    for (const slot of root.querySelectorAll('[data-media]')) {
+      try {
+        const response = await fetch(slot.dataset.media, {headers: {'X-Review-Key': key}, cache: 'no-store'});
+        if (!response.ok) throw new Error();
+        const url = URL.createObjectURL(await response.blob()); objectUrls.push(url);
+        const element = document.createElement(slot.dataset.type.startsWith('video/') ? 'video' : 'img');
+        element.src = url; if (element.tagName === 'VIDEO') element.controls = true; else element.alt = '';
+        slot.replaceWith(element);
+      } catch { slot.textContent = 'Media could not be loaded.'; }
+    }
+  }
+  async function load() {
+    if (!key) { $('queue').hidden = true; return; }
+    message('Loading the review queue…');
+    try {
+      const data = await call('/api/community/review');
+      objectUrls.splice(0).forEach(url => URL.revokeObjectURL(url));
+      $('pending-count').textContent = data.pendingTotal;
+      $('pending').innerHTML = data.pending.length ? data.pending.map(report => card(report, true)).join('') : '<p class="empty">Nothing is waiting for review.</p>';
+      $('published').innerHTML = data.published.length ? data.published.map(report => card(report, false)).join('') : '<p class="empty">No published reports yet.</p>';
+      $('queue').hidden = false; $('forget').hidden = false;
+      message(data.reviewer === 'owner' ? 'Signed in as the owner.' : 'Signed in as a reviewer.');
+      await loadMedia($('pending'));
+      await loadMedia($('published'));
+    } catch (error) { $('queue').hidden = true; message(error.message, true); }
+  }
+  document.addEventListener('click', async event => {
+    const button = event.target.closest('[data-decision]'); if (!button) return;
+    const article = button.closest('[data-id]'), decision = button.dataset.decision;
+    if (decision === 'remove' && !confirm(window.SiteLanguage?.translateText?.('Remove this report and its photos or videos for good?') || 'Remove this report and its photos or videos for good?')) return;
+    article.querySelectorAll('button').forEach(item => { item.disabled = true; });
+    try {
+      await call('/api/community/review/' + encodeURIComponent(article.dataset.id), {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({decision})});
+      await load();
+      message(decision === 'approve' ? 'Report published.' : 'Report removed.');
+    } catch (error) { article.querySelectorAll('button').forEach(item => { item.disabled = false; }); message(error.message, true); }
+  });
+  $('key-form').addEventListener('submit', event => {
+    event.preventDefault();
+    key = $('review-key').value.trim(); $('review-key').value = '';
+    if ($('remember').checked) { try { localStorage.setItem(STORE, key); } catch {} }
+    load();
+  });
+  $('forget').addEventListener('click', () => {
+    try { localStorage.removeItem(STORE); } catch {}
+    key = ''; $('queue').hidden = true; $('forget').hidden = true; message('The key is no longer saved on this device.');
+  });
+  load();
+})();
+</script>
+</body>
+</html>

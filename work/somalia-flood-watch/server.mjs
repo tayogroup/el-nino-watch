@@ -5,7 +5,7 @@ import {createReadStream} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {loadEnso, loadStations, SOURCES} from './feeds.mjs';
 import {loadHazardPoint} from './hazards.mjs';
-import {createCommunityHandler} from './community.mjs';
+import {createCommunityHandler, reviewKeysFrom} from './community.mjs';
 import {loadOfficialAlerts, ALERT_SOURCES} from './alerts-feed.mjs';
 import {loadObservedFlood, loadRadarPoint, OBSERVED_SOURCE_URL} from './observed-flood.mjs';
 import {loadCopernicusCity} from './copernicus.mjs';
@@ -96,9 +96,10 @@ function reply(res, status, body, contentType = 'text/plain; charset=utf-8', hea
   res.end(head ? undefined : buffer);
 }
 
-export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null, statsKey = process.env.STATS_KEY || '', whatsapp: whatsappSettings = whatsappConfig(), podcast: podcastSettings = podcastConfig()} = {}) {
+export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.resolve(ROOT, '..', 'data'), backup = null, statsKey = process.env.STATS_KEY || '', reviewKeys = process.env.REVIEW_KEYS || '', whatsapp: whatsappSettings = whatsappConfig(), podcast: podcastSettings = podcastConfig()} = {}) {
   // A report change asks for a backup within minutes rather than the next 6-hour run.
-  const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES, onChange:() => backup?.soon?.()});
+  // New reports wait for the owner (STATS_KEY) or a reviewer (REVIEW_KEYS) at /review.
+  const community = createCommunityHandler({dataDir, cities:COMMUNITY_CITIES, onChange:() => backup?.soon?.(), reviewers:reviewKeysFrom({statsKey, reviewKeys})});
   const visits = createVisits({dataDir, cities:CITY_DATA, statsKey});
   const forecasts = createForecastRelay({cities:CITY_DATA});
   // WhatsApp alerts (whatsapp.mjs): off until the WHATSAPP_* settings are present.
@@ -156,7 +157,7 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
         const audio = podcast.audioFile(url.pathname);
         return audio ? sendFilm(req, res, audio, 'audio/mpeg') : reply(res, 404, 'File not found.');
       }
-      const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname === '/stats' ? '/stats.html' : url.pathname === '/sources' ? '/sources.html' : url.pathname);
+      const requested = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname === '/stats' ? '/stats.html' : url.pathname === '/review' ? '/review.html' : url.pathname === '/sources' ? '/sources.html' : url.pathname);
       if (requested.includes('\0')) return reply(res, 400, 'Invalid path.');
       // A backslash is a separator on Windows but a filename character on Linux;
       // refuse it everywhere so traversal attempts get the same 403 on both.

@@ -349,7 +349,6 @@
     "The report city changed. Add coordinates for the new city if available.": "Magaalada warbixintu way isbeddeshay. Ku dar isku-duwayaasha magaalada cusub haddii la hayo.",
     "Map coordinates added. Check the city and location before publishing.": "Isku-duwayaasha khariidadda waa lagu daray. Hubi magaalada iyo goobta ka hor daabacaadda.",
     "Share what you see on the ground. Photos, videos and local context can help people understand conditions.": "Soo gudbi waxa aad deegaanka ku aragto. Sawirrada, muuqaallada iyo xogta deegaanka waxay dadka ka caawin karaan fahamka xaaladda.",
-    "Community reports are public and unverified. For immediate danger, contact local emergency services or authorities directly.": "Warbixinnaha bulshada waa kuwo dadweynaha u furan oo aan la xaqiijin. Haddii khatar degdeg ah jirto, si toos ah ula xiriir adeegyada gurmadka ama maamulka deegaanka.",
     "LOCAL OBSERVATIONS": "WAXA DEEGAANKA LAGU ARKAY",
     "Report flooding or rain": "Soo sheeg fatahaad ama roob",
     "City": "Magaalada",
@@ -646,7 +645,6 @@
     "What El Nino Watch keeps about you, and who else sees what. There are no accounts, no cookies and no advertising, and nothing is sold.": "Waxa El Nino Watch kaa hayso, iyo cidda kale ee arki karta. Ma jiraan akoonno, kukiis (cookies) ama xayeysiis, waxna lama iibiyo.",
     "Questions about privacy:": "Su'aalaha ku saabsan asturnaanta:",
     "Visit counts": "Tirada booqashooyinka",
-    "Reports and comments are public: what you write, the name or alias you give (or Anonymous), any location you add, and photos or videos exactly as uploaded, which may contain location data. Your internet address is held in memory for up to 10 minutes to limit abuse, and is never saved. Only the browser that sent a report can delete it, using a receipt kept in that browser.": "Warbixinnada iyo faallooyinku waa kuwo dadweyne: waxa aad qorto, magaca ama naanaysta aad bixiso (ama Anonymous), goob kasta oo aad ku darto, iyo sawirro ama muuqaallo sida loo soo geliyay, kuwaas oo laga yaabo inay xog goobeed ku jirto. Cinwaanka internetkaaga waxaa lagu hayaa xusuusta ilaa 10 daqiiqo si looga hortago xadgudub, waligeedna lama kaydiyo. Warbixin waxaa tirtiri kara oo keliya browser-ka soo diray, isagoo adeegsanaya rasiid ku kaydsan browser-kaas.",
     "WhatsApp alerts": "Digniinaha WhatsApp",
     "Saved in your browser": "Waxa ku kaydsan browser-kaaga",
     "Your language, home city, added cities, report receipts, alerts already shown, city manager review stages and private notes are saved in your own browser, not sent to El Nino Watch. Clearing the site's data in your browser removes them.": "Luqaddaada, magaaladaada, magaalooyinka aad ku dartay, rasiidyada warbixinnada, digniinaha horay laguu tusay, heerarka dib-u-eegista ee bogga maamulka magaalada iyo qoraalladaada gaarka ah waxay ku kaydsan yihiin browser-kaaga, looma diro El Nino Watch. Tirtiridda xogta bogga ee browser-kaaga ayaa meesha ka saarta.",
@@ -881,7 +879,40 @@
     "City planning desk tools": "Qalabka miiska qorsheynta magaalada",
     "← City planning desk": "← Miiska qorsheynta magaalada",
     "City planning desk": "Miiska qorsheynta magaalada",
-    "Middle Juba": "Jubbada Dhexe"
+    "Middle Juba": "Jubbada Dhexe",
+    "A reviewer checks each new report before it appears. Community reports are public and unverified. For immediate danger, contact local emergency services or authorities directly.": "Warbixin kasta oo cusub waxaa hubiya dib-u-eege ka hor inta aysan muuqan. Warbixinnaha bulshada waa kuwo dadweynaha u furan oo aan la xaqiijin. Haddii khatar degdeg ah jirto, si toos ah ula xiriir adeegyada gurmadka ama maamulka deegaanka.",
+    "Report review | El Nino Watch": "Dib-u-eegista warbixinnada | El Nino Watch",
+    "REPORT REVIEW": "DIB-U-EEGISTA WARBIXINNADA",
+    "Report review": "Dib-u-eegista warbixinnada",
+    "New community reports wait here until you check them. Approve a report to show it on the site; it stays marked as an unverified community report. Remove deletes the report and its photos or videos for good.": "Warbixinnaha cusub ee bulshada halkan ayay ku sugaan ilaa aad hubiso. Ogolow warbixin si ay bogga uga muuqato; waxay sii ahaanaysaa warbixin bulsho oo aan la xaqiijin. Ka saar waxay si buuxda u tirtiraysaa warbixinta iyo sawirradeeda ama muuqaalladeeda.",
+    "Review key": "Furaha dib-u-eegista",
+    "Remember on this device": "Ku xasuuso qalabkan",
+    "Open the queue": "Fur safka",
+    "Forget the key on this device": "Ka tirtir furaha qalabkan",
+    "Use the review key from your private review link. The key is sent only to this site, in a request header.": "Isticmaal furaha dib-u-eegista ee ku jira xiriirkaaga gaarka ah. Furaha waxaa loo diraa boggan oo keliya.",
+    "Waiting for review": "Sugaya dib-u-eegis",
+    "Recently published reports": "Warbixinnadii dhowaan la daabacay",
+    "Nothing is waiting for review.": "Wax sugaya dib-u-eegis ma jiraan.",
+    "No published reports yet.": "Weli warbixin la daabacay ma jirto.",
+    "Reported by": "Waxaa soo sheegay",
+    "Location": "Goobta",
+    "No location": "Goob lama sheegin",
+    "Loading media…": "Muuqaalka waa la soo rarayaa…",
+    "Media could not be loaded.": "Muuqaalka lama soo rari karin.",
+    "Approve and publish": "Ogolow oo daabac",
+    "Remove this report and its photos or videos for good?": "Ma ka saaraysaa warbixintan iyo sawirradeeda ama muuqaalladeeda si buuxda?",
+    "Report published.": "Warbixinta waa la daabacay.",
+    "Report removed.": "Warbixinta waa laga saaray.",
+    "Loading the review queue…": "Safka dib-u-eegista waa la soo rarayaa…",
+    "Signed in as the owner.": "Waxaad u gashay sida milkiilaha.",
+    "Signed in as a reviewer.": "Waxaad u gashay sida dib-u-eege.",
+    "The key is no longer saved on this device.": "Furaha hadda kuma kaydsana qalabkan.",
+    "A review key is required.": "Furaha dib-u-eegista ayaa loo baahan yahay.",
+    "Review key not recognised.": "Furaha dib-u-eegista lama aqoonsan.",
+    "Report review is not set up on this server.": "Dib-u-eegista warbixinnada lagama diyaarin server-kan.",
+    "Too many attempts. Try again tomorrow.": "Isku day badan ayaa la sameeyay. Berri isku day mar kale.",
+    "The review service is unavailable. Try again later.": "Adeegga dib-u-eegistu hadda ma shaqaynayo. Mar dambe isku day.",
+    "A reviewer checks each new report before it appears. Once approved, reports and comments are public: what you write, the name or alias you give (or Anonymous), any location you add, and your photos or videos. Location and device details stored inside photos and MP4 videos are removed on upload. Your internet address is held in memory for up to 10 minutes to limit abuse, and is never saved. The browser that sent a report can delete it, using a receipt kept in that browser, and a reviewer can remove it.": "Dib-u-eege ayaa hubiya warbixin kasta oo cusub ka hor inta aysan muuqan. Marka la oggolaado, warbixinnada iyo faallooyinku waa kuwo dadweyne: waxa aad qorto, magaca ama naanaysta aad bixiso (ama Anonymous), goob kasta oo aad ku darto, iyo sawirradaada ama muuqaalladaada. Xogta goobta iyo qalabka ee ku jirta sawirrada iyo muuqaallada MP4 waa laga saaraa marka la soo geliyo. Cinwaanka internetkaaga waxaa lagu hayaa xusuusta ilaa 10 daqiiqo si looga hortago xadgudub, waligeedna lama kaydiyo. Browser-ka soo diray warbixinta ayaa tirtiri kara, isagoo adeegsanaya rasiid ku kaydsan browser-kaas, dib-u-eegahuna wuu ka saari karaa."
   },
   "patterns": [
     {
@@ -1214,12 +1245,12 @@
       "so": "Ka saar {0}"
     },
     {
-      "en": "Report published for {0} as unverified. You can delete it from this browser using your saved receipt.",
-      "so": "Warbixin aan la xaqiijin ayaa loo daabacay {0}. Waxaad ka tirtiri kartaa biraawsarkan adigoo adeegsanaya rasiidkaaga kaydsan."
+      "en": "Report received for {0}. It will appear on the site after a reviewer checks it, marked as unverified. You can delete it from this browser using your saved receipt.",
+      "so": "Warbixinta {0} waa la helay. Waxay bogga ka muuqan doontaa marka dib-u-eege hubiyo, iyadoo lagu calaamadeeyay mid aan la xaqiijin. Waxaad ka tirtiri kartaa biraawsarkan adigoo adeegsanaya rasiidkaaga kaydsan."
     },
     {
-      "en": "Report published for {0} as unverified. Your deletion receipt could not be saved. Keep this page open if you need to delete the report.",
-      "so": "Warbixin aan la xaqiijin ayaa loo daabacay {0}. Rasiidka kuu oggolaanaya tirtiridda lama kaydin karin. Boggan furnaantiisa sii hay haddii aad u baahan tahay inaad warbixinta tirtirto."
+      "en": "Report received for {0}. It will appear on the site after a reviewer checks it, marked as unverified. Your deletion receipt could not be saved. Keep this page open if you need to delete the report.",
+      "so": "Warbixinta {0} waa la helay. Waxay bogga ka muuqan doontaa marka dib-u-eege hubiyo, iyadoo lagu calaamadeeyay mid aan la xaqiijin. Rasiidka kuu oggolaanaya tirtiridda lama kaydin karin. Boggan furnaantiisa sii hay haddii aad u baahan tahay inaad warbixinta tirtirto."
     },
     {
       "en": "The requested report was not returned in the latest loaded reports for {0}. It may have been removed or be outside the loaded list.",

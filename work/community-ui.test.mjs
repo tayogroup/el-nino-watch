@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createCommunityHandler } from './somalia-flood-watch/community.mjs';
+import { createCommunityHandler, reviewKeysFrom } from './somalia-flood-watch/community.mjs';
 import { MOGADISHU_DISTRICTS, LANDMARK_TYPES } from './somalia-flood-watch/community.mjs';
 
 const nodes = new Map();
@@ -224,7 +224,8 @@ assert.equal(node('community-refresh').disabled, false);
 const testWorkRoot = path.resolve(fileURLToPath(new URL('.', import.meta.url)));
 const dataDir = await fs.promises.mkdtemp(path.join(testWorkRoot, 'community-ui-e2e-'));
 assert.equal(dataDir.startsWith(testWorkRoot + path.sep), true);
-const handler = createCommunityHandler({ dataDir, cities });
+const REVIEW_KEY = 'ui-test-review-key-0123456789abcdef';
+const handler = createCommunityHandler({ dataDir, cities, reviewers: reviewKeysFrom({ reviewKeys: REVIEW_KEY }) });
 const server = http.createServer((req, res) => {
   handler(req, res, new URL(req.url, 'http://localhost')).then(handled => { if (!handled) { res.writeHead(404); res.end(); } }).catch(error => { res.writeHead(500); res.end(JSON.stringify({ error: error.message })); });
 });
@@ -296,7 +297,14 @@ try {
   assert.equal(elements.description.disabled, true, 'Lock the form while the upload is in progress');
   await submitted;
   assert.equal(elements.description.disabled, false);
-  assert.equal(liveNode('community-form-status').textContent.includes('Report published for Mogadishu'), true, liveNode('community-form-status').textContent);
+  assert.equal(liveNode('community-form-status').textContent.includes('Report received for Mogadishu. It will appear on the site after a reviewer checks it'), true, liveNode('community-form-status').textContent);
+  // Held for review (owner, 2026-10-21): nothing is public until a reviewer approves it.
+  const held = await (await fetch(origin + '/api/community/reports')).json();
+  assert.equal(held.total, 0, 'a new report waits for review');
+  const queue = await (await fetch(origin + '/api/community/review', { headers: { 'X-Review-Key': REVIEW_KEY } })).json();
+  assert.equal(queue.pending.length, 1);
+  assert.equal((await fetch(origin + '/api/community/review/' + queue.pending[0].id, { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json', 'X-Review-Key': REVIEW_KEY }, body: JSON.stringify({ decision: 'approve' }) })).status, 200);
+  await liveApi.refresh();
   assert.equal(liveNode('community-upload-count').textContent.startsWith('Up to 4 files'), true);
   const posted = await (await fetch(origin + '/api/community/reports')).json(), report = posted.reports[0];
   assert.equal(posted.reports.length, 1);
@@ -337,6 +345,7 @@ try {
   rainForm.set('payload', JSON.stringify({ cityId: 'galkayo', category: 'rain', observedAt: new Date(Date.now() - 60000).toISOString(), description: 'Synthetic rainfall report for the type summary test.', deaths: null, injuries: null, damagedProperties: null }));
   const rainPosted = await (await fetch(origin + '/api/community/reports', { method: 'POST', body: rainForm })).json();
   assert.ok(rainPosted.report?.id, 'the rainfall report was saved');
+  assert.equal((await fetch(origin + '/api/community/review/' + rainPosted.report.id, { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json', 'X-Review-Key': REVIEW_KEY }, body: JSON.stringify({ decision: 'approve' }) })).status, 200);
   await liveApi.refresh();
   const summary = liveNode('community-type-summary'), shownNow = locationChanges.at(-1);
   assert.ok(shownNow.some(report => report.category === 'rain') && shownNow.some(report => report.category === 'flood'));

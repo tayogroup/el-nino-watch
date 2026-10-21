@@ -7,12 +7,13 @@ import {createServer} from './somalia-flood-watch/server.mjs';
 const testRoot = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = await mkdtemp(path.join(testRoot, 'community-integration-'));
 const nativeFetch = globalThis.fetch;
+const REVIEW_KEY = 'integration-review-key-0123456789';
 let upstreamRequests = 0, server, origin;
 let checks = 0;
 const equal = (actual, expected) => { assert.equal(actual, expected); checks++; };
 const ok = value => { assert.ok(value); checks++; };
 const start = async () => {
-  server = createServer({dataDir});
+  server = createServer({dataDir, statsKey:'', reviewKeys:REVIEW_KEY});
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   origin = `http://127.0.0.1:${server.address().port}`;
 };
@@ -41,6 +42,10 @@ try {
   result = await api('/api/community/reports', {method:'POST', headers:{Origin:origin}, body:form});
   equal(result.response.status, 201); equal(result.body.report.cityName, 'Laasqoray'); equal(result.body.report.cityId, 'laasqoray'); equal(result.body.report.status, 'unverified'); equal(result.body.report.deaths, null); equal(result.body.report.author, 'Anonymous');
   const {report, receiptToken} = result.body;
+  // Held for review until approved; the review page is served at /review and is not indexed.
+  equal((await api('/api/community/reports?city=laasqoray')).body.reports.length, 0);
+  response = await nativeFetch(origin + '/review'); equal(response.status, 200); ok((await response.text()).includes('<meta name="robots" content="noindex, nofollow">'));
+  result = await api(`/api/community/review/${report.id}`, {method:'POST', headers:{Origin:origin, 'Content-Type':'application/json', 'X-Review-Key':REVIEW_KEY}, body:JSON.stringify({decision:'approve'})}); equal(result.response.status, 200);
   response = await nativeFetch(origin + report.media[0].url); equal(response.status, 200); equal(Buffer.compare(Buffer.from(await response.arrayBuffer()), png), 0);
   response = await nativeFetch(origin + report.media[0].url, {headers:{Range:'bytes=0-7'}}); equal(response.status, 206); equal((await response.arrayBuffer()).byteLength, 8);
   result = await api('/api/community/reports?city=laasqoray'); equal(result.body.reports.length, 1); equal(result.body.reports[0].id, report.id); ok(!('receiptHash' in result.body.reports[0]));

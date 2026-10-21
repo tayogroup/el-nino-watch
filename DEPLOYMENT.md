@@ -65,6 +65,15 @@ The server counts visits itself (`visits.mjs`): every page load is one visit, pl
 
 Setup: create a Storage zone (Delivery > Storage > Add Storage Zone, e.g. `el-nino-watch-backups`, Standard tier, main region Falkenstein) and **do not connect a pull zone to it**; the reports and photos must not be publicly reachable. Then in the Magic Containers app, Container settings > Environment variables, add `BACKUP_STORAGE_ZONE` (the zone name) and `BACKUP_STORAGE_KEY` (the zone's password from its FTP & API Access page). If the zone's main region is not Falkenstein, also set `BACKUP_STORAGE_ENDPOINT` to that region's storage endpoint, for example `https://uk.storage.bunnycdn.com`.
 
+### Report review (REVIEW_KEYS)
+
+New community reports wait for review before anyone else sees them (owner, 2026-10-21). Reports sent before this change stay public. The queue is at `/review`; it lists the waiting reports with their photos and videos, and the 50 newest published ones. **Approve and publish** shows a report on the site, still marked unverified. **Remove** deletes the report and its media for good.
+
+- The owner opens the queue with the existing `STATS_KEY`.
+- Reviewers: set `REVIEW_KEYS` on the container to one or more keys, comma-separated, each at least 24 random characters (shorter ones are ignored). Give each reviewer the private link `https://<site>/review#key=<their key>`. The part after `#` never reaches the server or its logs; the page moves it into a request header and clears it from the address. To take someone off, remove their key and restart.
+- After 20 wrong keys from one address in a day, that address is refused until the next day.
+- With no key set, new reports still wait; nobody can approve them until a key is set.
+
 ### Data-source keys (Google Flood Hub, ReliefWeb)
 
 Two optional sources need a key of their own, and each is switched off until it is set on the container:

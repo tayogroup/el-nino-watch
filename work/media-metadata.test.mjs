@@ -6,7 +6,7 @@ import {mkdtemp, rm, readFile, readdir} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {stripMetadata, MediaMetadataError} from './somalia-flood-watch/media-metadata.mjs';
-import {createCommunityHandler} from './somalia-flood-watch/community.mjs';
+import {createCommunityHandler, reviewKeysFrom} from './somalia-flood-watch/community.mjs';
 
 const GPS = 'GPS 2.0469N 45.3182E owner Halima';
 const has = (bytes, text) => Buffer.from(bytes).includes(Buffer.from(text, 'latin1'));
@@ -94,7 +94,9 @@ test('MP4 uploads lose location boxes without moving the video data', () => {
 
 test('the community API stores cleaned files and refuses unreadable ones', async () => {
   const folder = await mkdtemp(path.join(path.dirname(fileURLToPath(import.meta.url)), 'media-metadata-test-'));
-  const handler = createCommunityHandler({dataDir:folder, cities:[{id:'mogadishu', name:'Mogadishu'}]});
+  // New reports are held for review, so the reviewer's key reads the stored file.
+  const reviewKey = 'media-test-review-key-0123456789';
+  const handler = createCommunityHandler({dataDir:folder, cities:[{id:'mogadishu', name:'Mogadishu'}], reviewers:reviewKeysFrom({reviewKeys:reviewKey})});
   const server = http.createServer(async (req, res) => { if (!await handler(req, res, new URL(req.url, 'http://localhost'))) { res.writeHead(404); res.end(); } });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const origin = `http://127.0.0.1:${server.address().port}`;
@@ -104,7 +106,7 @@ test('the community API stores cleaned files and refuses unreadable ones', async
     let response = await post(jpeg(6), 'image/jpeg');
     assert.equal(response.status, 201);
     const {report} = await response.json();
-    const served = Buffer.from(await (await fetch(origin + report.media[0].url)).arrayBuffer());
+    const served = Buffer.from(await (await fetch(origin + report.media[0].url, {headers:{'X-Review-Key':reviewKey}})).arrayBuffer());
     assert.equal(has(served, GPS), false);
     assert.equal(orientationOf(served), 6);
     const files = (await readdir(path.join(folder, 'media')));

@@ -107,10 +107,14 @@ messages.
   in `i18n.js`), so a Somali reader stays in Somali.
 
 **Community reports**
-- Reports are public and stay unverified. Only the person who sent a report can
-  delete it, with the receipt saved in their browser; there is no admin delete,
-  no expiry and no public moderation. (A public verification status was
-  offered and not chosen.)
+- Reports are public and stay unverified. A new report is held for review
+  (owner, 2026-10-21): it, its media and its comments stay private until the
+  owner (STATS_KEY) or a reviewer (REVIEW_KEYS) approves it at `/review`.
+  Approval only makes it visible; it never verifies it. Reviewers can also
+  remove a report and its media for good. Reports saved before the hold have
+  no `review` field and stay public. The person who sent a report can still
+  delete it with the receipt saved in their browser. There is no expiry and no
+  public verification status (offered and not chosen).
 - District: optional. For Mogadishu it is a dropdown of Banadir's 20 districts
   (including Darusalam, Garasbaley and Gubadley, added in 2024; former names in
   brackets), enforced by the server; other cities keep free text.
