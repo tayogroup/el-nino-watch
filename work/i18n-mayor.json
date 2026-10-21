@@ -1,7 +1,5 @@
 {
   "messages": {
-    "Mayor dashboard": "Bogga maamulka duqa magaalada",
-    "MAYOR DASHBOARD": "BOGGA MAAMULKA DUQA MAGAALADA",
     "To do": "La qabanayo",
     "In progress": "Socota",
     "Blocked": "Hakaday",
@@ -66,7 +64,6 @@
     "ICPAC forecast unavailable or stale": "Saadaasha ICPAC lama hayo ama way duugoowday",
     "Briefing generated": "Warbixin kooban ayaa la diyaariyey",
     "Export daily briefing ↓": "Soo dejiso warbixinta kooban ee maalinlaha ah ↓",
-    "Independent mayor planning view. This is not a government dashboard. Actions and review stages are saved on this device; they are not sent to authorities or other users.": "Tani waa bog qorsheyn oo madaxa bannaan oo duqa magaalada loogu talagalay. Ma aha bog maamul oo dawladdu leedahay. Hawlaha iyo marxaladaha dib-u-eegista waxaa lagu kaydiyaa qalabkan; looma diro hay’adaha ama isticmaalayaasha kale.",
     "City": "Magaalada",
     "Forecast date · EAT": "Taariikhda saadaasha · EAT",
     "Open flood map ↗": "Fur khariidadda fatahaadda ↗",
@@ -330,7 +327,6 @@
     "Action update": "Wax ka beddelka hawsha",
     "Saved list": "Liiska la kaydiyey",
     "City update": "Wax ka beddelka magaalada",
-    "Independent mayor planning view. This is not a government dashboard.": "Tani waa bog qorsheyn oo madaxa bannaan oo duqa magaalada loogu talagalay. Ma aha bog maamul oo dawladdu leedahay.",
     "Local actions and review stages are saved on this device and are not sent to authorities.": "Hawlaha iyo marxaladaha dib-u-eegista waxaa lagu kaydiyaa qalabkan, loomana diro hay'adaha.",
     "Rainfall screening: watch ≥10 mm/day; elevated ≥25 mm/day. App thresholds, not flood probabilities.": "Qiimeynta hordhaca ah ee roobka: la soco ≥10 mm/maalin; roob badan ≥25 mm/maalin. Kuwani waa xadadka abka, ma aha suurtagalnimada fatahaadda.",
     "NEXT 3 DAYS": "3-DA MAALMOOD EE SOO SOCDA",
@@ -367,7 +363,11 @@
     "Evidence and a reason are recorded only when an action is closed or reopened.": "Caddaynta iyo sababta waxaa la diiwaangeliyaa oo keliya marka hawl la xirayo ama dib loo furayo.",
     "Evidence that the job is done must contain 1 to 500 characters.": "Caddaynta in shaqada la dhammaystiray waa inay ka kooban tahay 1 ilaa 500 xaraf.",
     "Reason for closing must contain 1 to 500 characters.": "Sababta loo xirayo waa inay ka kooban tahay 1 ilaa 500 xaraf.",
-    "Reason for reopening must contain at most 500 characters.": "Sababta dib loogu furayo waa inay ka kooban tahay ugu badnaan 500 xaraf."
+    "Reason for reopening must contain at most 500 characters.": "Sababta dib loogu furayo waa inay ka kooban tahay ugu badnaan 500 xaraf.",
+    "Independent city planning view. This is not a government dashboard. Actions and review stages are saved on this device; they are not sent to authorities or other users.": "Tani waa bog qorsheyn magaalo oo madaxa bannaan. Ma aha bog maamul oo dawladdu leedahay. Hawlaha iyo marxaladaha dib-u-eegista waxaa lagu kaydiyaa qalabkan; looma diro hay’adaha ama isticmaalayaasha kale.",
+    "Independent city planning view. This is not a government dashboard.": "Tani waa bog qorsheyn magaalo oo madaxa bannaan. Ma aha bog maamul oo dawladdu leedahay.",
+    "CITY PLANNING DESK": "MIISKA QORSHEYNTA MAGAALADA",
+    "City planning desk": "Miiska qorsheynta magaalada"
   },
   "patterns": [
     {

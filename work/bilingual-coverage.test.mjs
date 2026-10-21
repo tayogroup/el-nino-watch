@@ -190,7 +190,7 @@ test('alert screens and browser status translate; source event text stays origin
   assert.ok(!fragments(h.node('alerts-list').innerHTML).some(item=>item.text===rawTitle||item.text===rawDescription),'raw notices are excluded from translation coverage checks');
 });
 
-test('Mayor dashboard and additional-city dialog labels remain bilingual without changing stored identities',()=>{
+test('City planning desk and additional-city dialog labels remain bilingual without changing stored identities',()=>{
   const h=componentHarness(),rows=days.map((date,i)=>({date,rain:i===0?10:i===1?25:0,probability:40,maxTemperature:32}));
   const input={cities:h.root.SOMALIA_CITIES,selectedCity:10,selectedDate:days[0],days,weatherRows:rows,weatherFeed:feed(),station:null,stationFeed:{...feed(),data:{stations:[]}},officialFeed:{...feed(),data:{alerts:[],sources:[]}},catalogueFeed:{...feed(),data:{missions:{radar:{available:true,scenes:[]},optical:{available:true,scenes:[]}}}},observedState:{source:'radar',date:'2026-10-13',metadata:{radar:{available:true,provider:'CEMS GFM',resolutionM:20}},lastSuccess:LAST,stale:false},community:{available:true,cityId:'galkayo',records:[],lastSuccess:LAST,total:0,truncated:false},alertModel:{alerts:[],fresh:{official:true},coverageNote:'Forecast and event coverage may be incomplete. No returned signal does not establish safety.',messages:[]},actions:[],now:new Clock().toISOString(),floodOutlook:outlookInput()};
   h.root.CityManager.init({cities:h.root.SOMALIA_CITIES});h.root.CityManager.render(input);

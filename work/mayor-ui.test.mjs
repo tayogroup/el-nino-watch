@@ -127,8 +127,8 @@ test('mayor workspace uses focused tools, a touch-sized return control and acces
   assert.match(css,/\.mobile-bottom-nav>a\[aria-current=page\]\{color:var\(--blue-600\);background:var\(--blue-50\)\}/);
   assert.match(css,/#mayor-home-button:focus-visible\{outline:3px solid/);
   assert.ok(!css.includes('workspace-view-switch'));
-  assert.match(h.rootElement.innerHTML,/>MAYOR DASHBOARD<\/p>/);
-  assert.ok(!h.rootElement.innerHTML.includes('CITY MANAGER / MAYOR DASHBOARD'));
+  assert.match(h.rootElement.innerHTML,/>CITY PLANNING DESK<\/p>/);
+  assert.ok(!h.rootElement.innerHTML.includes('CITY MANAGER / CITY PLANNING DESK'));
   assert.match(css,/\.mayor-panel button,.mayor-panel a\{font-size:var\(--text-sm\);min-height:44px/);
   assert.match(h.rootElement.innerHTML,/role="status" aria-live="polite"/);assert.match(h.rootElement.innerHTML,/aria-label="Local review stage/);assert.match(h.rootElement.innerHTML,/data-mayor-day="2026-10-13" aria-pressed="false"/);
 });

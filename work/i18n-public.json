@@ -7,7 +7,6 @@
     "Main navigation": "Hagaha ugu weyn",
     "All 30 cities": "Dhammaan 30-ka magaalo",
     "30 cities": "30 magaalo",
-    "Mayor dashboard": "Bogga maamulka duqa magaalada",
     "Weather": "Cimilada",
     "Flood map": "Khariidadda fatahaadda",
     "Alerts": "Digniino",
@@ -36,8 +35,6 @@
     "Read latest NOAA advisory ↗": "Akhri ogeysiiska ugu dambeeyay ee NOAA ↗",
     "Connecting to live sources…": "Waxaa lala xiriirayaa ilaha xogta cusub…",
     "Automatic refresh every 15 minutes": "Si toos ah ayaa loo cusboonaysiiyaa 15-kii daqiiqoba",
-    "← Mayor dashboard": "← Bogga maamulka duqa magaalada",
-    "Mayor dashboard tools": "Qalabka maamulka duqa magaalada",
     "30 monitored cities": "30 magaalo oo la dabagalo",
     "＋ Additional cities": "＋ Magaalooyin dheeraad ah",
     "Preparing the city leadership briefing…": "Waxaa la diyaarinayaa warbixinta maamulka magaalada…",
@@ -216,7 +213,6 @@
     "date unknown": "taariikhda lama hayo",
     "Observed river watch": "Dabagalka heerka biyaha webiga la arkay",
     "Detailed weather": "Cimilada oo faahfaahsan",
-    "Skip to mayor dashboard": "U gudub bogga maamulka duqa magaalada",
     "Skip to Flood map": "U gudub khariidadda fatahaadda",
     "Skip to Detailed weather": "U gudub cimilada oo faahfaahsan",
     "Skip to Alerts": "U gudub digniinaha",
@@ -880,7 +876,11 @@
     "Under 10 mm rainfall · stale": "Roob ka yar 10 mm · xog duugoobay",
     "10+ mm rainfall · stale": "Roob 10 mm ama ka badan · xog duugoobay",
     "25+ mm rainfall · stale": "Roob 25 mm ama ka badan · xog duugoobay",
-    "Observed river above moderate threshold": "Heerka webiga la arkay oo ka sarreeya xadka dhexdhexaadka"
+    "Observed river above moderate threshold": "Heerka webiga la arkay oo ka sarreeya xadka dhexdhexaadka",
+    "Skip to city planning desk": "U gudub miiska qorsheynta magaalada",
+    "City planning desk tools": "Qalabka miiska qorsheynta magaalada",
+    "← City planning desk": "← Miiska qorsheynta magaalada",
+    "City planning desk": "Miiska qorsheynta magaalada"
   },
   "patterns": [
     {
@@ -940,8 +940,8 @@
       "so": "El Nino Watch | Dhammaan 30-ka magaalo"
     },
     {
-      "en": "Mayor dashboard | El Nino Watch",
-      "so": "Bogga maamulka duqa magaalada | El Nino Watch"
+      "en": "City planning desk | El Nino Watch",
+      "so": "Miiska qorsheynta magaalada | El Nino Watch"
     },
     {
       "en": "El Nino Watch: live weather forecasts, regional rainfall alerts, satellite flood observations and community reports for 30 Somali cities.",
@@ -1020,8 +1020,8 @@
       "so": "{0} · Warbixinno"
     },
     {
-      "en": "{0} · Mayor dashboard",
-      "so": "{0} · Bogga maamulka duqa magaalada"
+      "en": "{0} · City planning desk",
+      "so": "{0} · Miiska qorsheynta magaalada"
     },
     {
       "en": "{0} unverified local report",

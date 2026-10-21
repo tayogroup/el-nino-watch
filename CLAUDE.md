@@ -371,3 +371,8 @@ repository-level secret.
   a folder on the owner's computer; push both there with `git push origin main`
   and `git push backup --all`. Other contributors push to their fork or branch
   and open a pull request.
+
+**City planning desk name** (owner, 2026-10-21): the city manager view is called "City planning desk" (Somali
+"Miiska qorsheynta magaalada") everywhere a visitor reads it, not "Mayor dashboard", because it is an independent
+planning view and not a mayor's or government office. Only visible text changed: code names (`mayor.js`,
+`mayor-store.js`, `.mayor-*` classes), the `#view=mayor` address and the `somalia-*` storage keys stay as they were.

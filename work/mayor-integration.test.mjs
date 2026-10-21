@@ -339,7 +339,7 @@ await test('delivered HTML starts on all 30 cities and offers an explicit mayor 
   assert.doesNotMatch(html.match(/<body\b[^>]*>/)?.[0] || '', /mayor-view/);
   assert.match(html, /<section\b(?=[^>]*id="mayor-panel")(?=[^>]*\bhidden)[^>]*>/);
   assert.match(html, /<a\b(?=[^>]*data-dashboard-view="public")[^>]*>All 30 cities<\/a>/);
-  assert.match(html, /<a\b(?=[^>]*data-dashboard-view="mayor")[^>]*>Mayor dashboard<\/a>/);
+  assert.match(html, /<a\b(?=[^>]*data-dashboard-view="mayor")[^>]*>City planning desk<\/a>/);
   assert.match(html, /id="manager-tool-bar"/);
   assert.match(html, /id="mayor-home-button"/);
   assert.match(html, /id="manager-tool-title"/);
