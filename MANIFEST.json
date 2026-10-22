@@ -40,8 +40,8 @@
     },
     {
       "path": "DEPLOYMENT.md",
-      "bytes": 26424,
-      "sha256": "4f68384eab187324d0bde2b553d2be1d12dfc0662a8e9e3a51c2ec34cd6e5ef3"
+      "bytes": 26582,
+      "sha256": "129a4f43ed6a891c2d825b4acef3686984d3c9967833f00fc9ae4c800ebee2e3"
     },
     {
       "path": "Dockerfile",

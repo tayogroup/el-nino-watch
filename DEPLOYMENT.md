@@ -70,7 +70,7 @@ Setup: create a Storage zone (Delivery > Storage > Add Storage Zone, e.g. `el-ni
 New community reports wait for review before anyone else sees them (owner, 2026-10-21). Reports sent before this change stay public. The queue is at `/review`; it lists the waiting reports with their photos and videos, and the 50 newest published ones. **Approve and publish** shows a report on the site, still marked unverified. **Remove** deletes the report and its media for good.
 
 - The owner opens the queue with the existing `STATS_KEY`.
-- Reviewers: set `REVIEW_KEYS` on the container to one or more keys, comma-separated, each at least 24 random characters (shorter ones are ignored). Give each reviewer the private link `https://<site>/review#key=<their key>`. The part after `#` never reaches the server or its logs; the page moves it into a request header and clears it from the address. To take someone off, remove their key and restart.
+- Reviewers: set `REVIEW_KEYS` on the container to one or more keys, comma-separated, each at least 24 random characters (shorter ones are ignored). Give each reviewer the private link `https://<site>/review#key=<their key>`. The part after `#` never reaches the server or its logs; the page moves it into a request header and clears it from the address. To take someone off, remove their key and restart. To set it on the hosted site, add `REVIEW_KEYS` as a secret of the `bunny-settings` environment and run **Actions > Bunny settings** with mode `source-keys`.
 - After 20 wrong keys from one address in a day, that address is refused until the next day.
 - With no key set, new reports still wait; nobody can approve them until a key is set.
 

@@ -47,3 +47,5 @@ jobs:
           WHATSAPP_PHONE_NUMBER_ID: ${{ secrets.WHATSAPP_PHONE_NUMBER_ID }}
           WHATSAPP_NUMBER: ${{ secrets.WHATSAPP_NUMBER }}
           WHATSAPP_TEMPLATE_SO_LANGUAGE: ${{ secrets.WHATSAPP_TEMPLATE_SO_LANGUAGE }}
+          OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
+          REVIEW_KEYS: ${{ secrets.REVIEW_KEYS }}
