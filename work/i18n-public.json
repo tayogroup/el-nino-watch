@@ -468,8 +468,6 @@
     "Historical flood footprint": "Meelihii hore fatahaaddu u daboolaysay",
     "Terrain screening derived from Copernicus DEM GLO-30 using height above nearest drainage, slope, depression depth, flow routing and upstream contributing area. High classes identify locations to inspect. This is not observed flooding, a flood forecast, water depth, a return period or engineering design data.": "Qiimeynta hordhaca ah ee dhulka waxaa laga soo saaray Copernicus DEM GLO-30, iyadoo la adeegsanayo joogga ka sarreeya biyo-mareenka ugu dhow, janjeerka dhulka, qoto-dheeraanta godadka, marinnada qulqulka iyo dhulka sare ee biyuhu ka yimaadaan. Heerarka sare waxay tilmaamayaan meelo u baahan baaritaan. Tani ma aha fatahaad la arkay, saadaal fatahaad, qoto-dheeraanta biyaha, muddada celcelis ahaan u dhexeysa fatahaado heer gaar ah leh ama xog naqshad injineernimo.",
     "Union of SWALIM historical flood extents: Deyr 2023, Gu 2021, Gu/Hagaa 2020, Gu/Deyr 2019, Gu/Deyr 2018, Gu 2016, Gu 2015 and Deyr 2013. Shows where flooding was mapped in those seasons; absence from the footprint does not prove safety, and the layer is not a current flood extent.": "Isku-darka baaxadihii fatahaadaha hore ee SWALIM: Deyr 2023, Gu 2021, Gu/Hagaa 2020, Gu/Deyr 2019, Gu/Deyr 2018, Gu 2016, Gu 2015 iyo Deyr 2013. Waxay muujinaysaa meelihii fatahaadda lagu khariidadeeyay xilliyadaas; in meel aanay ku jirin baaxaddan ma caddaynayso badbaado, lakabkuna ma aha baaxadda fatahaadda ee hadda.",
-    "SWALIM Shabelle riverbank assessment from very high resolution imagery. Point status describes the observation on its imagery date. Remote sensing interpretation has limited field checks. Current condition and repair status need field verification. The August assessment does not cover the Juba River.": "Qiimeynta SWALIM ee jiinka Shabeelle oo laga sameeyay sawirro aad u faahfaahsan. Xaaladda bar kastaa waxay qeexaysaa wixii la arkay taariikhda sawirkeeda. Fasiraadda sawirrada meel fog laga qaaday waxay leedahay hubin goobta ah oo kooban. Xaaladda hadda iyo xaaladda dayactirku waxay u baahan yihiin hubin goobta ah. Qiimeynta Agoosto ma daboolayso Webiga Jubba.",
-    "March 2026 Juba and Shabelle assessment. Filter river=Juba when combined with the newer Shabelle layer to avoid duplicate and older Shabelle points. Observation date is not a current live riverbank status.": "Qiimeynta Jubba iyo Shabeelle ee Maarso 2026. Adeegso shaandhada river=Juba marka lagu darayo lakabka cusub ee Shabeelle si looga fogaado baraha Shabeelle ee soo noqnoqda ama duugga ah. Taariikhda waxa la arkay ma aha xaaladda jiinka webiga ee hadda.",
     "Observed date & time": "Taariikhda iyo saacadda waxa la arkay",
     "LOWER": "ROOB YAR",
     "WATCH": "DABAGAL",
@@ -537,7 +535,6 @@
     "5 sources": "5 ilood",
     "2 sources": "2 ilood",
     "What has actually been measured or seen from satellites, used to check forecasts and alerts against conditions on the ground.": "Waxa dhab ahaan la cabbiray ama laga arkay dayax-gacmeedyada, oo loo isticmaalo in saadaasha iyo digniinaha lagu hubiyo xaaladda dhulka.",
-    "Daily and hourly rainfall forecasts for all 44 cities. The app's server fetches them once and shares them with every visitor. These are computer model estimates, not station measurements.": "Saadaasha roobka maalinlaha iyo saacadlaha ah ee dhammaan 44-ta magaalo. Server-ka abku hal mar ayuu soo qaataa, kadibna booqde kasta ayuu la wadaagaa. Kuwani waa qiyaaso moodel kombiyuutar, ma aha cabbirro saldhig.",
     "River discharge forecast for each city.": "Saadaasha qulqulka webiga ee magaalo kasta.",
     "Heavy, very heavy and extremely heavy rainfall forecasts for the week (above the 90th, 95th and 99th percentiles for that week of the year). Drives the Alerts tab and the rainfall layers on the flood map.": "Saadaasha toddobaadka ee roob culus, aad u culus iyo si xad-dhaaf ah u culus (ka sarreeya boqolleyda 90aad, 95aad iyo 99aad ee toddobaadkaas sanadka). Waxay quudisaa qaybta Digniinaha iyo lakabyada roobka ee khariidadda fatahaadda.",
     "The current El Niño status and outlook.": "Xaaladda hadda ee El Niño iyo saadaasheeda.",
@@ -1093,7 +1090,34 @@
     "River": "Webiga",
     "Below moderate": "Ka hooseeya dhexdhexaad",
     "River gauge readings are unavailable right now.": "Akhrinta cabbirada webiyada hadda lama heli karo.",
-    "Sources: Open-Meteo forecasts, SWALIM river gauges, MOEWR, ICPAC, GDACS and other feeds listed on the Sources page.": "Ilaha: saadaasha Open-Meteo, cabbirada webiyada SWALIM, MOEWR, ICPAC, GDACS iyo ilaha kale ee ku qoran bogga Ilaha."
+    "Sources: Open-Meteo forecasts, SWALIM river gauges, MOEWR, ICPAC, GDACS and other feeds listed on the Sources page.": "Ilaha: saadaasha Open-Meteo, cabbirada webiyada SWALIM, MOEWR, ICPAC, GDACS iyo ilaha kale ee ku qoran bogga Ilaha.",
+    "SWALIM Shabelle riverbank assessment from very high resolution imagery. Point status describes the observation on its imagery date. Remote sensing interpretation has limited field checks. Current condition and repair status need field verification. The August assessment does not cover the Juba River. Points are shown as last mapped; they are not updated when a bank is repaired or breaks again. A few points share one location, so one marker can stand for more than one breakage.": "Qiimeynta SWALIM ee jiinka Shabeelle oo laga sameeyay sawirro aad u faahfaahsan. Xaaladda bar kastaa waxay qeexaysaa wixii la arkay taariikhda sawirkeeda. Fasiraadda sawirrada meel fog laga qaaday waxay leedahay hubin goobta ah oo kooban. Xaaladda hadda iyo xaaladda dayactirku waxay u baahan yihiin hubin goobta ah. Qiimeynta Agoosto ma daboolayso Webiga Jubba. Baraha waxaa loo muujiyaa sidii markii ugu dambeysay la sawiray; lama cusboonaysiiyo marka jiinka la dayactiro ama mar kale jabo. Dhowr bar ayaa wadaaga hal meel, sidaas darteed hal calaamad waxay matali kartaa jab ka badan hal.",
+    "March 2026 Juba and Shabelle assessment. Filter river=Juba when combined with the newer Shabelle layer to avoid duplicate and older Shabelle points. Observation date is not a current live riverbank status. Points are shown as last mapped; they are not updated when a bank is repaired or breaks again. Many Juba points share a location in the source (one place holds 184 of the 694), so the map shows fewer markers than there are listed breakages.": "Qiimeynta Jubba iyo Shabeelle ee Maarso 2026. Adeegso shaandhada river=Juba marka lagu darayo lakabka cusub ee Shabeelle si looga fogaado baraha Shabeelle ee soo noqnoqda ama duugga ah. Taariikhda waxa la arkay ma aha xaaladda jiinka webiga ee hadda. Baraha waxaa loo muujiyaa sidii markii ugu dambeysay la sawiray; lama cusboonaysiiyo marka jiinka la dayactiro ama mar kale jabo. Baro badan oo Jubba ah ayaa isha xogta ku wadaaga hal meel (hal meel waxaa ku jira 184 ka mid ah 694-ta), sidaas darteed khariidaddu waxay muujinaysaa calaamado ka yar jabadka liiska ku jira.",
+    "RIVER CONTEXT": "XAALADDA WEBIYADA",
+    "Rain upstream and the lower Juba": "Roobka meelaha webiyadu ka yimaadaan iyo Jubbada Hoose",
+    "Rain in the Ethiopian highlands reaches the Shabelle and the Juba in Somalia days later. Both parts below are computer model forecasts, not warnings. Only MOEWR issues official flood warnings.": "Roobka buuraha Itoobiya wuxuu gaaraa webiyada Shabeelle iyo Jubba ee Soomaaliya dhowr maalmood kadib. Labada qaybood ee hoose waa saadaal moodel kombiyuutar, ma aha digniino. MOEWR oo keliya ayaa bixisa digniinaha rasmiga ah ee fatahaadda.",
+    "Rain upstream in Ethiopia · next 7 days": "Roobka Itoobiya ee webiyada sare · 7-da maalmood ee soo socda",
+    "Lower Juba river forecast": "Saadaasha webiga Jubbada Hoose",
+    "A model flow is not a flood level: no flood thresholds are shown, because the source's thresholds were not available. Check SWALIM gauges and MOEWR for river levels.": "Qulqulka moodelku ma aha heer fatahaadeed: heerarka fatahaadda lama muujin, sababtoo ah heerarka ishu lama heli karin. Heerarka webiyada ka eeg cabbirada SWALIM iyo MOEWR.",
+    "rainfall forecast;": "saadaasha roobka;",
+    "(CC BY 4.0), based on ECMWF data.": "(CC BY 4.0), oo ku salaysan xogta ECMWF.",
+    "Loading…": "Waa la soo rarayaa…",
+    "Place": "Meesha",
+    "7 days": "7 maalmood",
+    "Bale highlands, upper Shabelle": "Buuraha Bale, Shabeellaha sare",
+    "Shabelle in Ethiopia": "Shabeelle gudaha Itoobiya",
+    "Shabelle near the border": "Shabeelle meel u dhow xadka",
+    "Upper Genale": "Genale sare",
+    "Genale": "Genale",
+    "Genale and Dawa lowlands": "Dhulka hoose ee Genale iyo Dawa",
+    "Genale and Dawa meet, at the border": "Meesha Genale iyo Dawa ku kulmaan, xadka agtiisa",
+    "Upstream rainfall is unavailable right now.": "Roobka webiyada sare hadda lama heli karo.",
+    "The GEOGLOWS forecast is unavailable right now.": "Saadaasha GEOGLOWS hadda lama heli karo.",
+    "Juba near Jilib": "Jubba agagaarka Jilib",
+    "Juba near Jamaame": "Jubba agagaarka Jamaame",
+    "Daily and hourly rainfall forecasts for all 44 cities, and the 7-day rain forecast at eight points upstream in Ethiopia on the Shabelle and the Juba (Genale and Dawa), shown as river context on the Alerts tab. The app's server fetches them once and shares them with every visitor. These are computer model estimates, not station measurements.": "Saadaasha roobka maalinlaha iyo saacadlaha ah ee dhammaan 44-ta magaalo, iyo saadaasha roobka 7-da maalmood ee siddeed meelood oo Itoobiya ah oo ku yaal webiyada sare ee Shabeelle iyo Jubba (Genale iyo Dawa), oo lagu muujiyo xaaladda webiyada ee qaybta Digniinaha. Server-ka abku hal mar ayuu soo qaataa, kadibna booqde kasta ayuu la wadaagaa. Kuwani waa qiyaaso moodel kombiyuutar, ma aha cabbirro saldhig.",
+    "River flow forecast for the lower Juba near Jilib and Jamaame, shown as river context on the Alerts tab: the middle of the model's range for each of the next 15 days, and whether it is rising or falling. No flood thresholds are shown. The server checks it every 3 hours.": "Saadaasha qulqulka webiga Jubbada Hoose agagaarka Jilib iyo Jamaame, oo lagu muujiyo xaaladda webiyada ee qaybta Digniinaha: bartamaha qiyaasaha moodelka ee maalin kasta 15-ka maalmood ee soo socda, iyo inuu kordhayo ama yaraanayo. Heerarka fatahaadda lama muujiyo. Server-ku wuu hubiyaa 3-dii saacadoodba mar.",
+    "Data under CC BY 4.0, credited to the GEOGLOWS ECMWF Streamflow Service. ECMWF's terms also apply: outputs say they are based on ECMWF data, and ECMWF gives no warranty.": "Xogtu waxay ku hoos jirtaa CC BY 4.0, iyadoo loo aaneynayo GEOGLOWS ECMWF Streamflow Service. Shuruudaha ECMWF sidoo kale way khuseeyaan: wixii laga soo saaro waxay sheegaan inay ku salaysan yihiin xogta ECMWF, ECMWF-na wax dammaanad ah ma bixiso."
   },
   "patterns": [
     {
@@ -1662,6 +1686,30 @@
     {
       "en": "A workspace can hold {0} review notes.",
       "so": "Goob shaqo waxay qaadi kartaa {0} qoraal dib-u-eegis."
+    },
+    {
+      "en": "About {0} m³/s now",
+      "so": "Hadda qiyaastii {0} m³/s"
+    },
+    {
+      "en": "Rising over the next {0} days",
+      "so": "Wuu kordhayaa {0}-ka maalmood ee soo socda"
+    },
+    {
+      "en": "Falling over the next {0} days",
+      "so": "Wuu yaraanayaa {0}-ka maalmood ee soo socda"
+    },
+    {
+      "en": "Steady over the next {0} days",
+      "so": "Wuu degan yahay {0}-ka maalmood ee soo socda"
+    },
+    {
+      "en": "Highest: about {0} m³/s on {1}",
+      "so": "Ugu badnaan: qiyaastii {0} m³/s, {1}"
+    },
+    {
+      "en": "Model run {0}",
+      "so": "Moodelka la sameeyay {0}"
     }
   ]
 }

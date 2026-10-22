@@ -1,0 +1,19 @@
+/* River context on the Alerts tab (river-context.js). */
+.river-context{scroll-margin-top:20px}
+.river-note{max-width:72ch;color:var(--neutral-700);margin:0 0 14px}
+.river-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px}
+.river-grid>div{min-width:0}
+.river-body{overflow-x:auto}
+.river-grid h3{font-size:var(--text-base);margin:0 0 8px}
+.river-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:var(--text-sm);overflow-wrap:break-word}
+.river-table th:nth-child(1){width:38%}.river-table th:nth-child(2){width:26%}
+.river-table .badge{display:inline-block;white-space:normal!important;margin-top:2px;max-width:100%}
+.river-table th,.river-table td{text-align:left;padding:6px 6px;border-bottom:1px solid var(--neutral-200);vertical-align:top}
+.river-table th{font-size:var(--text-xs);color:var(--neutral-600);font-weight:600;white-space:normal}
+.river-table small{display:block;color:var(--neutral-600)}
+.juba-point{border:1px solid var(--neutral-200);border-radius:12px;padding:10px 12px;margin:0 0 10px}
+.juba-point p{margin:3px 0}
+.juba-trend{font-weight:600}
+.juba-rising{color:#a1301c}
+.river-small{font-size:var(--text-xs);color:var(--neutral-600);margin:8px 0 0}
+@media(max-width:760px){.river-grid{grid-template-columns:1fr}}

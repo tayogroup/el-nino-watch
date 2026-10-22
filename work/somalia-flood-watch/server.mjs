@@ -8,6 +8,7 @@ import {loadHazardPoint} from './hazards.mjs';
 import {createCommunityHandler, reviewKeysFrom} from './community.mjs';
 import {createPartners} from './partners.mjs';
 import {renderLite, liteForecastQuery} from './lite.mjs';
+import {createRiverContext, UPSTREAM_RELAY_ROWS, GEOGLOWS} from './river-context.mjs';
 import {loadOfficialAlerts, ALERT_SOURCES} from './alerts-feed.mjs';
 import {loadObservedFlood, loadRadarPoint, OBSERVED_SOURCE_URL} from './observed-flood.mjs';
 import {loadCopernicusCity} from './copernicus.mjs';
@@ -105,7 +106,9 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
   const visits = createVisits({dataDir, cities:CITY_DATA, statsKey});
   // Private partner workspaces: the owner makes links at /partners, partners work at /partner.
   const partners = createPartners({dataDir, statsKey, onChange:() => backup?.soon?.()});
-  const forecasts = createForecastRelay({cities:CITY_DATA});
+  // The relay also carries the upstream rainfall points in Ethiopia (river-context.mjs).
+  const forecasts = createForecastRelay({cities:[...CITY_DATA, ...UPSTREAM_RELAY_ROWS]});
+  const riverContext = createRiverContext({relay:forecasts});
   // WhatsApp alerts (whatsapp.mjs): off until the WHATSAPP_* settings are present.
   const whatsapp = createWhatsApp({dataDir, cities:CITY_DATA, config:whatsappSettings, alerts:() => feed('/api/alerts')});
   // Somali audio bulletins (podcast.mjs): off until the owner approves the template and GEMINI_API_KEY and
@@ -155,6 +158,10 @@ export function createServer({dataDir = process.env.COMMUNITY_DATA_DIR || path.r
         const lon = url.searchParams.has('lon') ? Number(url.searchParams.get('lon')) : NaN;
         const data = await loadHazardPoint(lat, lon);
         return reply(res, 200, JSON.stringify(data), 'application/json; charset=utf-8', req.method === 'HEAD');
+      }
+      if (url.pathname === '/api/river-context') {
+        const data = await feed('/api/river-context', riverContext, GEOGLOWS.site);
+        return reply(res, data.available ? 200 : 503, JSON.stringify(data), 'application/json; charset=utf-8', req.method === 'HEAD');
       }
       if (Object.hasOwn(feeds, url.pathname)) {
         const data = await feed(url.pathname);

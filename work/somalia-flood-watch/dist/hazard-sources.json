@@ -49,7 +49,7 @@
       "publishedAt": "2026-08-20T07:04:00Z",
       "updatedAt": "2026-08-21T07:49:29.831829Z",
       "legendUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WMS&request=GetLegendGraphic&format=image/png&WIDTH=20&HEIGHT=20&LAYER=geonode:som_river_breakage_shabelle_river_june_2026_frrmsa_short_form&STYLE=som_river_breakage_shabelle_river_june_2026_frrmsa_short_form&version=1.3.0&legend_options=fontAntiAliasing:true;fontSize:12;forceLabels:on",
-      "description": "SWALIM Shabelle riverbank assessment from very high resolution imagery. Point status describes the observation on its imagery date. Remote sensing interpretation has limited field checks. Current condition and repair status need field verification. The August assessment does not cover the Juba River.",
+      "description": "SWALIM Shabelle riverbank assessment from very high resolution imagery. Point status describes the observation on its imagery date. Remote sensing interpretation has limited field checks. Current condition and repair status need field verification. The August assessment does not cover the Juba River. Points are shown as last mapped; they are not updated when a bank is repaired or breaks again. A few points share one location, so one marker can stand for more than one breakage.",
       "geometryAuthority": "Use GeoJSON geometry coordinates; some source longitude attributes are projected values.",
       "properties": {"status":"status","date":"imagedate","comments":"comments","district":"district","settlement":"settlement","river":"river"},
       "bbox": [44.12799999990011, 1.550999999950079, 45.67866999982067, 4.892940000180886],
@@ -66,7 +66,7 @@
       "publishedAt": "2026-03-26T06:23:00Z",
       "updatedAt": "2026-05-28T11:33:03.527903Z",
       "legendUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WMS&request=GetLegendGraphic&format=image/png&WIDTH=20&HEIGHT=20&LAYER=geonode:river_breakages_juba_shabelle_march2026&STYLE=river_breakages_juba_shabelle_march2026&version=1.3.0&legend_options=fontAntiAliasing:true;fontSize:12;forceLabels:on",
-      "description": "March 2026 Juba and Shabelle assessment. Filter river=Juba when combined with the newer Shabelle layer to avoid duplicate and older Shabelle points. Observation date is not a current live riverbank status.",
+      "description": "March 2026 Juba and Shabelle assessment. Filter river=Juba when combined with the newer Shabelle layer to avoid duplicate and older Shabelle points. Observation date is not a current live riverbank status. Points are shown as last mapped; they are not updated when a bank is repaired or breaks again. Many Juba points share a location in the source (one place holds 184 of the 694), so the map shows fewer markers than there are listed breakages.",
       "properties": {"status":"status","date":"image date","comments":"comments","district":"district","settlement":"settlement","river":"river"},
       "bbox": [42.06187852925861, -0.095961273859731, 45.67792175611577, 4.893462037080062],
       "verifiedGetFeatureUrl": "https://spatial.faoswalim.org/geoserver/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonode:river_breakages_juba_shabelle_march2026&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=10&bbox=41.9,3.8,42.3,4.3,EPSG:4326"

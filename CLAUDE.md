@@ -401,3 +401,15 @@ and the river gauges. No map, pictures, fonts or scripts; about 13 KB, 3 KB comp
 forecast as the main page (`forecast-relay.mjs` `handle.get`), so it adds no Open-Meteo calls. `?lang=so` gives
 Somali from translations-so.js, so its English strings need catalogue entries like any other page. The main page links
 to it from a skip link and the footer.
+
+**River context** (owner, 2026-10-21): the Alerts tab's "Rain upstream and the lower Juba" section
+(`river-context.mjs`, `dist/river-context.js`, `/api/river-context`). Open-Meteo 7-day rain at eight Ethiopian points
+on the Shabelle and the Juba (Genale and Dawa), relayed and cached like the city forecasts (the relay's place list
+includes them), and the GEOGLOWS ECMWF Streamflow forecast for the Juba near Jilib and Jamaame, cached 3 hours, a failure
+retried after 10 minutes. GEOGLOWS's return-period endpoint was failing, so no flood thresholds are shown and the text
+says a model flow is not a flood level. "Rising" means the forecast peak is at least 10% above today's flow. GEOGLOWS is
+CC BY 4.0 with ECMWF's attribution terms (Sources page).
+
+**Riverbank breakage layers**: the descriptions say points are as last mapped and not updated after repairs. In the Juba
+layer (March 2026) many points share coordinates (694 points, 503 places, one place holds 184), so the map shows fewer
+markers than listed breakages; the Shabelle layer has two shared places.
