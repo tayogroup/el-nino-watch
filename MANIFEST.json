@@ -40,8 +40,8 @@
     },
     {
       "path": "DEPLOYMENT.md",
-      "bytes": 22388,
-      "sha256": "07a38320fc36e81f1bc9367ada8c15a6a6afb331e0f90d84829ef2b524930b27"
+      "bytes": 22451,
+      "sha256": "935eb7f375977d6d5d6b16657240b92794d40ee073b3e14bc1b2b929d2aec366"
     },
     {
       "path": "Dockerfile",
@@ -865,8 +865,8 @@
     },
     {
       "path": "work/i18n-public.json",
-      "bytes": 119603,
-      "sha256": "760bac177f5ebb2bf110c45c2e5ab10850b09b879a42a75b43c9b31a46db6843"
+      "bytes": 119922,
+      "sha256": "2c6ff39c39830f63fcc2299fc880a495cb54dc8b8de9a77d3777ab1bea898ab8"
     },
     {
       "path": "work/i18n-weather.json",
@@ -930,8 +930,8 @@
     },
     {
       "path": "work/news-flash.test.mjs",
-      "bytes": 24123,
-      "sha256": "d27bcfae45aed32290a3083ac62ca541d629c0a4b01c01518797d6ac8ed9fe29"
+      "bytes": 24971,
+      "sha256": "17e894bdf368d892ad46984ffc6b27909de851681c0bdd2e8e379b4643c6e8a5"
     },
     {
       "path": "work/observed-gfm-capabilities.xml",
@@ -970,8 +970,8 @@
     },
     {
       "path": "work/podcast.test.mjs",
-      "bytes": 54416,
-      "sha256": "c8547e356dec4887724164fb1e6e147494a386a2b0b439603151c7ab24ec9740"
+      "bytes": 54432,
+      "sha256": "6189fded43dec32bff747204590a34a585cf709cea79609aaf8e61eacfaf38f9"
     },
     {
       "path": "work/print-social-image.mjs",
@@ -1279,6 +1279,11 @@
       "sha256": "a2dc96c29a1a51a540e37ac3367e2981d4f57ad8ae410efda77d73ba82d5d5e5"
     },
     {
+      "path": "work/somalia-flood-watch/dist/film/thumb-wide-xingod-flooding.jpg",
+      "bytes": 5310,
+      "sha256": "06f2b1e91aa93608e1a85fa771d8585e363b47e19b1864c2550e32621ba051a1"
+    },
+    {
       "path": "work/somalia-flood-watch/dist/film/thumb-wide-xingod-water-dam.jpg",
       "bytes": 14049,
       "sha256": "6a0184b1165fcda7bfdd05970e755812c9fb290088b6486ece3fc44a4ec371b7"
@@ -1302,6 +1307,16 @@
       "path": "work/somalia-flood-watch/dist/film/waterborne-diseases.vtt",
       "bytes": 3978,
       "sha256": "9f5e3f0f7088141a4cc87fa6598d7412aba0bf3b07db2c3d88bb21340546341c"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/xingod-flooding.jpg",
+      "bytes": 10309,
+      "sha256": "72f7a221d97525424e8ea5c4ee7eced9f53c288e2771493f4fae2a5dd71fad03"
+    },
+    {
+      "path": "work/somalia-flood-watch/dist/film/xingod-flooding.mp4",
+      "bytes": 430009,
+      "sha256": "9b502005eea9a8d6cf20178b3ed9ce19e3ad3e913536862c498e2bc155a4a037"
     },
     {
       "path": "work/somalia-flood-watch/dist/film/xingod-water-dam.jpg",
@@ -1375,8 +1390,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/index.html",
-      "bytes": 52846,
-      "sha256": "36e1eb6fe85cb64d8edb67e18453238048116cbe3f0e9d4c21d245a775f7a114"
+      "bytes": 53473,
+      "sha256": "88932bf559d6cc271aeb02ce25105b28203dfc17ee37f0224499e65d789a235a"
     },
     {
       "path": "work/somalia-flood-watch/dist/map-context.js",
@@ -1505,8 +1520,8 @@
     },
     {
       "path": "work/somalia-flood-watch/dist/translations-so.js",
-      "bytes": 236452,
-      "sha256": "a4b14e5ac096447cbd22aeededd4f796366fc853b0445c34129cc53fecfdfcef"
+      "bytes": 236759,
+      "sha256": "7447088c856fbd1330176ef8a12f41932cd1c6d2572387544b2ce3f01fe55920"
     },
     {
       "path": "work/somalia-flood-watch/dist/vendor/images/layers-2x.png",
@@ -1600,8 +1615,8 @@
     },
     {
       "path": "work/somalia-flood-watch/news-feed.mjs",
-      "bytes": 17382,
-      "sha256": "3e88052f8ebb58bc8f7208a3c8967d091f05a6c4bd86e4ba87d445daa3e346f8"
+      "bytes": 17426,
+      "sha256": "ab74864acf9b821f60417cf36a5cd98bc580239ce9d9d782ec75cbbe30869f12"
     },
     {
       "path": "work/somalia-flood-watch/observed-flood.mjs",

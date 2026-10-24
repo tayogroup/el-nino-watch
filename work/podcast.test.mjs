@@ -283,7 +283,7 @@ test('the panel shows when the first bulletin is due, then the latest bulletin w
 test('the footer links to the audio bulletin, in Somali too', async () => {
   const index = await readFile(new URL('index.html', dist), 'utf8');
   const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
-  assert.ok(footer.includes('<a href="#podcast-so">Audio bulletin, Somali</a><a href="#podcast-en">Audio bulletin, English</a><a href="#field-videos">Flood videos: Cabudwaaq, Jowhar and Dalsan</a><a href="#health-films">Health films</a><a href="#diseases-panel">Diseases</a>'), 'beside the other in-page links, one per language');
+  assert.ok(footer.includes('<a href="#podcast-so">Audio bulletin, Somali</a><a href="#podcast-en">Audio bulletin, English</a><a href="#field-videos">Flood videos: Cabudwaaq, Jowhar, Dalsan and Xingod</a><a href="#health-films">Health films</a><a href="#diseases-panel">Diseases</a>'), 'beside the other in-page links, one per language');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['Audio bulletin, Somali'], 'Warbixinta codka, Af-Soomaali');
 });
@@ -600,7 +600,7 @@ test('readers can hear the bulletin in either language: a switch in the panel, a
   assert.equal(onlyOne.nodes['podcast-switch'].hidden, true, 'nothing to switch to');
   const index = await readFile(new URL('index.html', dist), 'utf8');
   const footer = index.slice(index.indexOf('<footer class="site-footer'), index.indexOf('</footer>'));
-  assert.ok(footer.includes('<a href="#podcast-so">Audio bulletin, Somali</a><a href="#podcast-en">Audio bulletin, English</a><a href="#field-videos">Flood videos: Cabudwaaq, Jowhar and Dalsan</a><a href="#health-films">Health films</a><a href="#diseases-panel">Diseases</a>'));
+  assert.ok(footer.includes('<a href="#podcast-so">Audio bulletin, Somali</a><a href="#podcast-en">Audio bulletin, English</a><a href="#field-videos">Flood videos: Cabudwaaq, Jowhar, Dalsan and Xingod</a><a href="#health-films">Health films</a><a href="#diseases-panel">Diseases</a>'));
   assert.ok(index.includes('<span class="podcast-anchor" id="podcast-so"></span><span class="podcast-anchor" id="podcast-en"></span>'), 'their targets, inside the panel');
   const catalog = JSON.parse(await readFile(new URL('./i18n-public.json', import.meta.url), 'utf8'));
   assert.equal(catalog.messages['Audio bulletin, Somali'], 'Warbixinta codka, Af-Soomaali');
